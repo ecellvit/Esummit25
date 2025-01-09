@@ -2,7 +2,7 @@ import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
 export interface TeamToken extends Document {
   teamId: ObjectId,
-  code: string,
+  teamCode: string,
   createdAt: Date,
   expiresAt: Date,
 };
@@ -13,7 +13,7 @@ const TeamTokenSchema: Schema<TeamToken> = new mongoose.Schema({
     ref: 'Teams',
     required: [true, "teamId is required"],
   },
-  code: {
+  teamCode: {
     type: String,
     required: [true, "team code is required"],
   },
