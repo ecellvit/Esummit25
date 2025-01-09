@@ -1,48 +1,46 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
 export interface Team extends Document {
-  name: string;
-  number: number;
-  token: ObjectId;
-  leaderId: ObjectId;
-  leaderName: string;
-  leaderEmail: string;
-  members: [ObjectId];
+  teamName: string;
+  teamNumber: number;
+  teamCode: string;
+  teamLeaderId: ObjectId;
+  teamLeaderName: string;
+  teamLeaderEmail: string;
+  teamMembers: [ObjectId];
   isQualified: boolean;
   createdAt: Date,
 }
 
 const TeamSchema: Schema<Team> = new mongoose.Schema({
-  name: {
+  teamName: {
     type: String,
     required: [true, "Team name is required"],
     unique: true,
   },
-  number: {
+  teamNumber: {
     type: Number,
-    required: [true, "Team number is required"],
     unique: true,
   },
-  token: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "TeamTokens",
-    required: [true, "Team token is required"],
+  teamCode: {
+    type: String,
+    required: [true, "team code is required"],
   },
-  leaderId: {
+  teamLeaderId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     required: [true, "Team leader is required"],
   },
-  leaderName: {
+  teamLeaderName: {
     type: String,
     required: [true, "Team leader name is required"],
   },
-  leaderEmail: {
+  teamLeaderEmail: {
     type: String,
     required: [true, "Team leader email is required"],
     unique: true,
   },
-  members:[{
+  teamMembers:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     required: [true, "Team members are required"],
