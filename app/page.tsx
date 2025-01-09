@@ -1,11 +1,11 @@
 // pages/index.tsx or any page
 import SessionWrapper from "@/components/SessionWrapper";
+import NavBar from "@/components/navbar"
 
 export default function HomePage() {
   return (
     <div>
-      {/* Wrap only SignInBtn with SessionProvider */}
-      <SessionWrapper />
+      <NavBar/>
     </div>
   );
 }
