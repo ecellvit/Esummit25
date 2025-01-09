@@ -7,8 +7,10 @@ export default function SignInBtn(): JSX.Element {
   const { status } = useSession();
 
   return (
+    <div>
     <SessionProvider>
-    <div className="text-black font-bold text-xl md:text-sm bg-sky-500 p-3 rounded-lg w-20 m-2">
+      <div>
+    <div className="relative align-middle w-[7vw] max-w-[600px] h-[7vh] bg-transparent border-[3px] border-gray-300 rounded-[25px] opacity-100 z-10 bg-white ">
       {status === "authenticated" ? (
         <button onClick={() => signOut()}>
           Sign Out
@@ -19,6 +21,8 @@ export default function SignInBtn(): JSX.Element {
         </button>
       )}
     </div>
+    </div>
     </SessionProvider>
+    </div>
   );
 }
