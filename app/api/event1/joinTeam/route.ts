@@ -23,6 +23,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ message: "Team not found." }, { status: 404 });
     }
 
+    // Check if the team has already reached the member limit
+    if (team.teamMembers.length >= 4) {  //throwinng error with '==='
+      return NextResponse.json(
+        { message: "You cannot add more members to the team." },
+        { status: 400 }
+      );
+    }
+
     // Find the user by user ID
     const user = await Users.findById(userId);
     if (!user) {
@@ -37,7 +45,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Push the user to the team's `teamMembers` array
+    // Add the user to the team's `teamMembers` array
     team.teamMembers.push(user._id);
     await team.save();
 
