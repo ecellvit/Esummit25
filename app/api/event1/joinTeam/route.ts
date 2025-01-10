@@ -1,74 +1,65 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
-import { dbConnect } from "@/lib/dbConnect"; // Adjust path as needed for database connection
-import { IUser } from "../../../../models/user.model"; // Adjust paths based on your project structure
-import { Team } from "../../../../models/event1/Team.model"; // Adjust paths based on your project structure
+import { NextRequest, NextResponse } from "next/server";
+import { dbConnect } from "@/lib/dbConnect"; // Adjust the path to your database connection
+import { Users } from "@/models/user.model"; // Adjust paths based on your project structure
+import TeamModel from "@/models/event1/Team.model";
 
-interface JoinTeamRequest extends NextApiRequest {
-  body: {
-    userId: string; // User ID as a string
-    teamCode: string; // Team code to identify the team
-  };
-}
-
-export default async function handler(
-  req: JoinTeamRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed." });
-  }
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  await dbConnect(); // Ensure the database is connected
 
   try {
-    await dbConnect(); // Ensure database is connected
-
-    const { userId, teamCode } = req.body;
+    const { userId, teamCode } = await req.json();
 
     // Validate input
     if (!userId || !teamCode) {
-      return res
-        .status(400)
-        .json({ message: "User ID and Team Code are required." });
+      return NextResponse.json(
+        { message: "User ID and Team Code are required." },
+        { status: 400 }
+      );
     }
 
     // Find the team by team code
-    const team = await Team.findOne({ teamCode });
+    const team = await TeamModel.findOne({ teamCode });
     if (!team) {
-      return res.status(404).json({ message: "Team not found." });
+      return NextResponse.json({ message: "Team not found." }, { status: 404 });
     }
 
     // Find the user by user ID
-    const user = await User.findById(userId);
+    const user = await Users.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found." });
+      return NextResponse.json({ message: "User not found." }, { status: 404 });
     }
 
     // Check if the user is already part of the team
-    const isAlreadyMember = team.teamMembers.some(
-      (member: { userId: mongoose.Types.ObjectId; role: number }) =>
-        member.userId.equals(user._id)
-    );
-    if (isAlreadyMember) {
-      return res
-        .status(400)
-        .json({ message: "You are already part of this team." });
+    if (team.teamMembers.includes(user._id)) {
+      return NextResponse.json(
+        { message: "You are already part of this team." },
+        { status: 400 }
+      );
     }
 
-    // Add the user to the team with role = 1 (team member)
-    team.teamMembers.push({
-      userId: user._id,
-      role: 1, // Team member
-    });
+    // Push the user to the team's `teamMembers` array
+    team.teamMembers.push(user._id);
     await team.save();
 
     // Update the user's team information
     user.event1TeamId = team._id;
     user.event1TeamRole = 1; // Set user role to member
+
+    // Update the `events` array by adding event 1
+    if (!user.events.includes(1)) {
+      user.events.push(1);
+    }
     await user.save();
 
-    return res.status(200).json({ message: "Successfully joined the team." });
+    return NextResponse.json(
+      { message: "Successfully joined the team." },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error joining team:", error);
-    return res.status(500).json({ message: "Internal server error." });
+    return NextResponse.json(
+      { message: "Internal server error." },
+      { status: 500 }
+    );
   }
 }
