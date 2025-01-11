@@ -2,14 +2,14 @@ import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
 export interface Team extends Document {
   teamName: string;
-  teamNumber: number;
+  teamNumber?: number;
   teamCode: string;
   teamLeaderId: ObjectId;
   teamLeaderName: string;
   teamLeaderEmail: string;
-  teamMembers: [ObjectId];
-  isQualified: boolean;
-  createdAt: Date,
+  teamMembers: ObjectId[];
+  isQualified?: boolean;
+  createdAt?: Date,
 }
 
 const TeamSchema: Schema<Team> = new mongoose.Schema({
@@ -27,7 +27,7 @@ const TeamSchema: Schema<Team> = new mongoose.Schema({
     required: [true, "team code is required"],
   },
   teamLeaderId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Users",
     required: [true, "Team leader is required"],
   },
@@ -41,7 +41,7 @@ const TeamSchema: Schema<Team> = new mongoose.Schema({
     unique: true,
   },
   teamMembers:[{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Users",
     required: [true, "Team members are required"],
   }],
