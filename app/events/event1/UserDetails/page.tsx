@@ -41,7 +41,7 @@ export default function UserDetail() {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
       newErrors.email = "Invalid email address";
     if (!formData.regNo) newErrors.regNo = "Registration number is required";
-    else if (!/^\d{2}[A-Za-z]{3}\d{4}$/.test(formData.regNo.trim()))
+    else if (!/^\d{2}[A-Z]{3}\d{4}$/.test(formData.regNo.trim()))
       newErrors.regNo = "Invalid registration number format";
     if (!formData.number) newErrors.number = "Phone number is required";
     else if (!/^\d{10}$/.test(formData.number.trim()))
