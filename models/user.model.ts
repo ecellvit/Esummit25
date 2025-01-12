@@ -38,7 +38,7 @@ const userSchema = new Schema<IUser>(
       required: false,
     },
     event1TeamId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "TeamsEvent1",
       required: false,
     },
@@ -47,7 +47,7 @@ const userSchema = new Schema<IUser>(
       required: false,
     },
     event2TeamId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "TeamsEvent2",
       required: false,
     },
