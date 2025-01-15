@@ -18,11 +18,11 @@ const Footer: React.FC = () => {
           </h1>
           <div className="flex flex-col items-center md:items-start gap-4">
             <div className="flex items-center gap-2">
-              <PhoneIcon className="h-5 w-5 text-white" />
+             
               <a href="tel:+91 87777 93331" className="text-lg hover:text-gray-300 transition-colors">+91 87777 93331</a>
             </div>
             <div className="flex items-center gap-2">
-              <MailIcon className="h-5 w-5 text-white" />
+         
               <a href="mailto:helloecellvit@gmail.com" className="text-lg hover:text-gray-300 transition-colors">helloecellvit@gmail.com</a>
             </div>
           </div>
