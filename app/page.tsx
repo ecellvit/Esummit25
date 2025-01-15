@@ -2,16 +2,14 @@
 import SessionWrapper from "@/components/SessionWrapper";
 import Footer from "@/components/footer";
 import Marq from "@/components/marquee";
-import NavBar from "@/components/navbar"
-import Marquee from "react-fast-marquee";
+import NavBar from "@/components/navbar";
 
 export default function HomePage() {
   return (
     <div>
-      <NavBar/>
-      <Marq/>
-      <Footer/>
-    
+      <NavBar />
+      <Marq speed1={100} speed2={50} speed3={75} speed4={120} />
+      <Footer />
     </div>
   );
 }
