@@ -1,25 +1,34 @@
 'use client';
-import React, { useState, ChangeEvent, FormEvent, KeyboardEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, KeyboardEvent, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useSession } from 'next-auth/react';
+import { useRouter } from "next/navigation";
 
 interface FormData {
   name: string;
-  email: string;
   regNo: string;
   number: string;
 }
 
 interface Errors {
   name?: string;
-  email?: string;
   regNo?: string;
   number?: string;
 }
 
 export default function UserDetail() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  // Redirect user if not logged in, only when session status is 'authenticated'
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push('/');
+    }
+  }, [status, router]);
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    email: "",
     regNo: "",
     number: "",
   });
@@ -37,18 +46,17 @@ export default function UserDetail() {
   const validate = (): Errors => {
     const newErrors: Errors = {};
     if (!formData.name) newErrors.name = "Name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "Invalid email address";
     if (!formData.regNo) newErrors.regNo = "Registration number is required";
     else if (!/^\d{2}[A-Za-z]{3}\d{4}$/.test(formData.regNo.trim()))
       newErrors.regNo = "Invalid registration number format";
+    else if(/^\d{2}[a-z]{3}\d{4}$/.test(formData.regNo.trim()))
+      newErrors.regNo = "enter Registration Number in capital";
     if (!formData.number) newErrors.number = "Phone number is required";
     else if (!/^\d{10}$/.test(formData.number.trim()))
       newErrors.number = "Invalid phone number format";
     return newErrors;
   };
-
+ 
   const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
     const charCode = event.charCode;
     if (!/^[a-zA-Z ]+$/.test(String.fromCharCode(charCode))) {
@@ -68,18 +76,38 @@ export default function UserDetail() {
     }
     try {
       setLoading(true);
-      // Simulate a successful form submission
-      setTimeout(() => {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.user?.email}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error(`Error: ${errorData.message || "Unknown error"}`);
         setLoading(false);
-        toast.success("Form submitted successfully!");
-        setFormData({ name: "", email: "", regNo: "", number: "" });
-        setErrors({});
-      }, 2000);
+        return;
+      }
+
+      const result = await response.json();
+      toast.success(result.message || "Form submitted successfully!");
+      setFormData({ name: "", regNo: "", number: "" });
+      setErrors({});
+      setLoading(false);
+      router.push('/')
     } catch (error) {
       setLoading(false);
       toast.error("Form submission failed: Network error");
     }
   };
+
+  // Return loading state or form based on session
+  if (status === "loading") {
+    return <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50"><div className="text-white text-2xl">Loading...</div></div>;
+  }
 
   return (
     <div className="bg-cover bg-center bg-no-repeat">
@@ -104,17 +132,6 @@ export default function UserDetail() {
                   value={formData.name}
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
-                  className="border rounded-md text-2xl text-black border-gray-300 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <input
-                  placeholder=" Email"
-                  type="text"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
                   className="border rounded-md text-2xl text-black border-gray-300 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
                 />
               </div>
