@@ -1,37 +1,56 @@
-import {  dbConnect } from "@/lib/dbConnect";
-import { Users } from "@/models/user.model";
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";  
+// app/api/register/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { dbConnect } from '@/lib/dbConnect'; // Ensure your DB connection logic
+import { Users } from '@/models/user.model';
 
+// Define Zod validation schema
+const registerSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  regNo: z
+    .string()
+    .regex(/^\d{2}[A-Za-z]{3}\d{4}$/, 'Invalid registration number format'),
+  number: z
+    .string()
+    .regex(/^\d{10}$/, 'Invalid phone number format'),
+});
 
-interface UserRequestBody {
-  name: string;
-  email: string;
-  password: string;
-}
-
+// POST method for /api/register
 export async function POST(req: NextRequest) {
   try {
-    await dbConnect();
-    const { name, email, password }: UserRequestBody = await req.json(); 
-
-    
-    const userExists = await Users.findOne({ email: email });
-    
-    if (!userExists) {
-
-      const newUser = new Users({ name, email, password });
-
-      await newUser.save();
-
-      console.log(name);
-      return NextResponse.json({ message: "User registered", status: 200 });
-    } else {
-      return NextResponse.json({ message: "User has already registered", status: 200 });
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ message: 'unauthorized' }, { status: 401 });
     }
+    
+    const email = authHeader.split(' ')[1];
+    const formData = await req.json();
 
+    const parsedData = registerSchema.parse(formData);
+    const { name, regNo, number } = parsedData;
+
+
+    await dbConnect(); 
+
+  
+    const existingUser = await Users.findOne({ email });
+    if (!existingUser) {
+      return NextResponse.json({ message: 'User Not found' }, { status: 409 });
+    }
+    if(existingUser.hasFilledDetails){
+      return NextResponse.json({ message: 'form already filled' },{status: 410});
+    }
+    existingUser.name=name;
+    existingUser.regNo=regNo;
+    existingUser.mobNo=number;
+    existingUser.hasFilledDetails=true;
+    existingUser.save();
+    return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
   } catch (error) {
-    console.log("An error occurred:", error);
-    return NextResponse.json({ message: "Error occurred while registering user", status: 500 });
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ message: error.errors[0].message }, { status: 400 });
+    }
+    console.error(error);
+    return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });
   }
 }

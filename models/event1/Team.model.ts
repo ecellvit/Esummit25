@@ -58,3 +58,5 @@ const TeamSchema: Schema<Team> = new mongoose.Schema({
 const TeamModel = (mongoose.models.TeamsEvent1 as mongoose.Model<Team>) || (mongoose.model<Team>("TeamsEvent1", TeamSchema));
 
 export default TeamModel;
+
+mongoose.models.Users || mongoose.model<IUser>("Users", userSchema);
