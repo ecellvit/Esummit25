@@ -1,0 +1,33 @@
+{
+    "events": [
+      {
+        "id": 1,
+        "name": "Achievers' Conclave",
+        "date": "2025-02-10",
+        "location": "Main Auditorium, VIT",
+        "description": "A platform where industry leaders and successful entrepreneurs share their inspiring journeys."
+      },
+      {
+        "id": 2,
+        "name": "E-Talk",
+        "date": "2025-02-11",
+        "location": "Seminar Hall A, VIT",
+        "description": "An engaging talk featuring renowned speakers discussing the future of entrepreneurship."
+      },
+      {
+        "id": 3,
+        "name": "Ideathon",
+        "date": "2025-02-12",
+        "location": "Innovation Lab, VIT",
+        "description": "A brainstorming competition to generate and present innovative solutions to real-world problems."
+      },
+      {
+        "id": 4,
+        "name": "Innoventure",
+        "date": "2025-02-13",
+        "location": "Exhibition Center, VIT",
+        "description": "A startup showcase where participants pitch their business ideas to investors and mentors."
+      }
+    ]
+  }
+  

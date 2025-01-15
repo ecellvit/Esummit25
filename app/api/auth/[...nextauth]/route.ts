@@ -62,7 +62,7 @@ const gettokenfrombackend = async (user: User, account: Account): Promise<string
   return accessToken;
 };
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -80,7 +80,7 @@ const authOptions: NextAuthOptions = {
             // Create the user directly within the signIn callback
             const newUser = new Users({ name, email });
             await newUser.save();
-            return true; // User is created and sign-in continues
+            return true; 
           }
           return true; // User exists, continue the sign-in flow
         } catch (error) {
@@ -153,6 +153,13 @@ const authOptions: NextAuthOptions = {
           error: null,
           idToken: null,
         };
+      },
+      async redirect({ url, baseUrl }) {
+        // Redirect users to the form page after successful sign-in
+
+          return '/events/event1/UserDetails'; // Redirect to your desired form page
+        
+        
       }
     }
 };      
