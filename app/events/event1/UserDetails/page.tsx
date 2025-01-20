@@ -3,6 +3,8 @@ import React, { useState, ChangeEvent, FormEvent, KeyboardEvent, useEffect } fro
 import toast, { Toaster } from "react-hot-toast";
 import { useSession } from 'next-auth/react';
 import { useRouter } from "next/navigation";
+import axios, { AxiosResponse } from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
 
 interface FormData {
   name: string;
@@ -76,24 +78,17 @@ export default function UserDetail() {
     }
     try {
       setLoading(true);
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.user?.email}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const response: AxiosResponse<ApiResponse> = await axios.patch('/api/user/addUserDetails', formData);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        toast.error(`Error: ${errorData.message || "Unknown error"}`);
+      if (!response.data.success) {
+        const errorData = response.data.error ?? response.data.message; //? If error is not available then return message
+        toast.error(`Error: ${errorData || "Unknown error"}`);
         setLoading(false);
         return;
       }
 
-      const result = await response.json();
-      toast.success(result.message || "Form submitted successfully!");
+      const result = response.data.message;
+      toast.success(result || "Form submitted successfully!");
       setFormData({ name: "", regNo: "", number: "" });
       setErrors({});
       setLoading(false);

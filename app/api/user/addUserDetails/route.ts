@@ -9,7 +9,11 @@ export async function PATCH(req: Request): Promise<NextResponse<ApiResponse>> {
   await dbConnect();
 
   try {
-    const { name, regNo, mobNo } = await req.json();
+    const { name, regNo, number: mobNo } = await req.json();
+    if (!name || !regNo || !mobNo) {
+      return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
+    }
+
     const session = await getServerSession(authOptions);
     const sessionUser = session?.user;
     
