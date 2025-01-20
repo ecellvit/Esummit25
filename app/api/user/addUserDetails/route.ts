@@ -1,14 +1,15 @@
 import { dbConnect } from "@/lib/dbConnect";
 import { Users } from "@/models/user.model";
+import { ApiResponse } from "@/types/ApiResponse";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
-import { ApiResponse } from "@/types/ApiResponse";
 
-export async function GET(): Promise<NextResponse<ApiResponse>> {
+export async function PATCH(req: Request): Promise<NextResponse<ApiResponse>> {
   await dbConnect();
 
   try {
+    const { name, regNo, mobNo } = await req.json();
     const session = await getServerSession(authOptions);
     const sessionUser = session?.user;
     
@@ -21,23 +22,21 @@ export async function GET(): Promise<NextResponse<ApiResponse>> {
       return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
     }
 
-    const userDetails = {
-      email: user.email,
-      name: user.name,
-      regNo: user?.regNo,
-      mobNo: user?.mobNo,
-      hasFilledDetails: user?.hasFilledDetails,
-      events: user?.events,
-    }
+    user.name = name;
+    user.regNo = regNo;
+    user.mobNo = mobNo;
+    user.hasFilledDetails = true;
 
-    return NextResponse.json({ success: true, message: "Fetched user details", user: userDetails }, { status: 200 });
+    await user.save();
+
+    return NextResponse.json({ success: true, message: "Added user details" }, { status: 200 });
   } catch (error: unknown) {
     if ( error instanceof Error) {
       console.error("Error fetching user details:", error);
-      return NextResponse.json({ success: false, message: "Failed to fetch user details", error: error.message }, { status: 500 });
+      return NextResponse.json({ success: false, message: "Failed to add user details", error: error.message }, { status: 500 });
     } else {
       console.error("Error fetching user details:", error);
-      return NextResponse.json({ success: false, message: "Failed to fetch user details", error: "Internal server error" }, { status: 500 });
+      return NextResponse.json({ success: false, message: "Failed to add user details", error: "Internal server error" }, { status: 500 });
     }
   }
 }
