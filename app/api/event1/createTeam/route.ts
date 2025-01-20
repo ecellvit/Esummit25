@@ -2,6 +2,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import TeamModel, { Team } from "@/models/event1/Team.model";
 import TeamTokenModel from "@/models/event1/TeamToken.model";
 import { IUser, Users } from "@/models/user.model";
+import { ApiResponse } from "@/types/ApiResponse";
 import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 
@@ -21,33 +22,36 @@ async function generateUniqueTeamCode() {
   return teamCode;
 }
 
-export async function POST(request: Request): Promise<NextResponse> {
+export async function POST(request: Request): Promise<NextResponse<ApiResponse>> {
   await dbConnect();
 
   try {
     const { name, email, teamName } = await request.json();
+    if (!name || !email || !teamName) {
+      return NextResponse.json({ success: false, message: "Invalid request" }, { status: 400 });
+    }
 
     const leader: IUser | null = await Users.findOne({ email: email });
     if (!leader) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
     }
 
     if (!leader.hasFilledDetails) {
-      return NextResponse.json({ message: "User has not filled the details" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "User has not filled the details" }, { status: 400 });
     }
 
     if (!leader.events.includes(1)) {
-      return NextResponse.json({ message: "User has not registered for this event" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "User has not registered for this event" }, { status: 400 });
     }
 
     if (leader.event1TeamId) {
-      return NextResponse.json({ message: "User is already part of a team" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "User is already part of a team" }, { status: 400 });
     }
 
     const existingTeam: Team | null = await TeamModel.findOne({ teamName });
 
     if (existingTeam) {
-      return NextResponse.json({ message: "Team with the same name already exists" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "Team with the same name already exists" }, { status: 400 });
     }
 
     const teamCode = await generateUniqueTeamCode();
@@ -71,13 +75,13 @@ export async function POST(request: Request): Promise<NextResponse> {
     leader.event1TeamRole = 0;
 
     if (!(team._id instanceof Types.ObjectId)) {
-      return NextResponse.json({ message: "Error creating team" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "Error creating team" }, { status: 400 });
     }
     leader.event1TeamId = team._id;
     await leader.save();
 
-    return NextResponse.json({ message: "Team created successfully", teamCode: teamCode }, { status: 200 });
+    return NextResponse.json({ success: true, message: "Team created successfully", teamCode: teamCode }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "user registration failed" }, {status: 500});
+    return NextResponse.json({ success: false, message: "user registration failed" }, {status: 500});
   }
 }

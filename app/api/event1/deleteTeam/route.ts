@@ -10,6 +10,9 @@ export async function DELETE(request: Request): Promise<NextResponse<ApiResponse
 
   try {
     const { email } = await request.json();
+    if (!email) {
+      return NextResponse.json({ success: false, message: "Invalid request" }, { status: 400 });
+    }
 
     const user = await Users.findOne({ email: email });
     if (!user) {
