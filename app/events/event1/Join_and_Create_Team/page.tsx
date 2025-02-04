@@ -1,8 +1,35 @@
 "use client";
 
+import { ApiResponse } from "@/types/ApiResponse";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function page() {
-  
+  const router = useRouter();
+  const [teamName, setTeamName] = useState<string>('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTeamName(event.target.value);
+  };
+
+  const createTeam = async () => {
+    try {
+      const response = await axios.post('/api/event1/createTeam', {
+        teamName: teamName
+      })
+
+      if (response.data.success == true) {
+        toast.success(response.data.message);
+        router.push('/events/event1/leaderDashboard');
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast.error(axiosError.response?.data.message || "Error in joining the team");
+      setTeamName('');
+    }
+  }
 
   return (
     <main className="h-[100vh] w-[100vw] flex items-center justify-center ">
@@ -40,8 +67,12 @@ export default function page() {
                 type="text"
                 placeholder="Enter team name"
                 className="border border-black   sm:landscape:w-[20vw] sm:landscape:h-[7vh] md:max-w-[40vw] portrait:md:max-w-[40vw] portrait:lg:w-[30vw] portrait:lg:text-2xl lg:w-[15vw] w-[55vw] h-[5vh] rounded-md text-xl text-slate-900  focus:outline-none focus:placeholder-transparent active:scale-95 transition-all duration-300"
+                value={teamName}
+                onChange={handleChange}
               />
-              <button className="mb-7 sm:landscape:w-[15vw]  rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center portrait:lg:w-[30vw]  md:max-w-[25vw] md:text-[1.6vh]  sm:landscape:md:text-[1.7vh] lg:w-[15vw] w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300">
+              <button className="mb-7 sm:landscape:w-[15vw]  rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center portrait:lg:w-[30vw]  md:max-w-[25vw] md:text-[1.6vh]  sm:landscape:md:text-[1.7vh] lg:w-[15vw] w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300"
+                onClick={createTeam}
+              >
                 Create your own team
               </button>
             </div>
@@ -57,6 +88,7 @@ export default function page() {
           </div>
         </div>
       </div>
+      <Toaster />
     </main>
   );
 }
