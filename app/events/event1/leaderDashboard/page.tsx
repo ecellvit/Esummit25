@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 // import LoadingScreen from "@/components/LoadingScreen";
 import toast, { Toaster } from "react-hot-toast";
 // import Navbar from "@/components/navbar";
+import axios from "axios";
 
 type TeamMember = {
   id: number;
@@ -233,6 +234,25 @@ export default function Page() {
     router.push("/");
   };
 
+  const LeaderDashboard = () => {
+    const [teamCode, setTeamCode] = useState('');
+    const [showModal, setShowModal] = useState(false);
+  };
+  
+    const handleViewTeamCode = async () => {
+      try {
+        const response = await axios.get('/api/getTeamCode');
+        setTeamCode(response.data.teamCode);
+        setShowModal(true);
+      } catch (error) {
+        console.error('Error fetching team code:', error);
+      }
+    };
+  
+    const closeModal = () => {
+      setShowModal(false);
+    };
+
   return (
     <div className="bg-cover bg-center min-h-screen flex flex-col items-center justify-center p-4 text-black pt-[12vh]">
       {/* {loading && <LoadingScreen />} */}
@@ -240,7 +260,6 @@ export default function Page() {
       <h1 className="text-2xl sm:text-3xl font-extrabold mb-4 text-center drop-shadow-lg">
         {teamName}
       </h1>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl px-4 py-6">
         {teamMembers.map((member, index) => (
           <div
@@ -263,7 +282,28 @@ export default function Page() {
           </div>
         ))}
       </div>
-
+      {check === 0 && (
+        <button
+          className="btn-primary mt-4"
+          onClick={handleViewTeamCode}
+        >
+          View Team Code
+        </button>
+      )}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Team Code</h2>
+            <p className="mb-4">{teamCode}</p>
+            <button
+              className="btn-secondary"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       {isQualified ? (
         <div className="flex flex-col text-black items-center border p-2 rounded-xl my-2">
           <h1 className="text-lg font-bold">
@@ -343,4 +383,4 @@ export default function Page() {
       <Toaster />
     </div>
   );
-}
+};
