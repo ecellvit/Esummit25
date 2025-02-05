@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -65,18 +66,11 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch(`/api/joinTeamViaToken`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-        body: JSON.stringify({ teamCode }),
-      });
+      const response = await axios.get(`/api/event1/getTeamName/${teamCode}`);
 
-      if (response.ok) {
-        const data = await response.json();
-        setTeamName(data.teamDetails.teamName);
+      if (response.status == 200) {
+        const { teamName } = response.data;
+        setTeamName(teamName);
         setShowDialog(true);
       } else {
         showMessage("Team code not found. Please try again.", "error");
@@ -91,35 +85,16 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
   const handleConfirmJoin = async () => {
     setIsModalLoading(true);
     try {
-      const response = await fetch("/api/joinTeam", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-        body: JSON.stringify({ teamCode }),
-      });
+      const response = await axios.post('/api/event1/joinTeam', { teamCode: teamCode });
 
-      if (response.ok) {
+      if (response.status == 200) {
         showMessage("Successfully joined the team.", "success");
         setShowDialog(false);
         setTimeout(() => {
           window.location.href = "/memberDashboard";
         }, 1000);
       } else {
-        switch (response.status) {
-          case 503:
-            showMessage("You are already a part of a team.", "error");
-            break;
-          case 400:
-            showMessage("Team is already full.", "error");
-            break;
-          case 506:
-            showMessage("Invalid Team token. Please ask the leader to regenerate the team code.", "error");
-            break;
-          default:
-            showMessage("Failed to join the team. Please check the team code.", "error");
-        }
+        showMessage(response.data.message, "error");
       }
     } catch (error) {
       showMessage("An error occurred while joining the team.", "error");

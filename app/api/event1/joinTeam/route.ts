@@ -2,17 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/dbConnect"; // Adjust the path to your database connection
 import { Users } from "@/models/user.model"; // Adjust paths based on your project structure
 import TeamModel from "@/models/event1/Team.model";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   await dbConnect(); // Ensure the database is connected
 
   try {
-    const { userId, teamCode } = await req.json();
+    const session = await getServerSession(authOptions);
+    const sessionUser = session?.user;
+    
+    if (!session || !sessionUser) {
+      return NextResponse.json({success: false, message: "User not authenticated"}, {status: 401});
+    }
+
+    const { teamCode } = await req.json();
 
     // Validate input
-    if (!userId || !teamCode) {
+    if (!teamCode) {
       return NextResponse.json(
-        { message: "User ID and Team Code are required." },
+        { message: "Team Code is required." },
         { status: 400 }
       );
     }
@@ -32,7 +41,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // Find the user by user ID
-    const user = await Users.findById(userId);
+    const user = await Users.findOne({ email: sessionUser.email });
     if (!user) {
       return NextResponse.json({ message: "User not found." }, { status: 404 });
     }
