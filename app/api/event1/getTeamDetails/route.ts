@@ -22,11 +22,10 @@ export async function GET(req: Request) {
     if (!team) {
       return NextResponse.json({ message: "Team not found." }, { status: 404 });
     }
-    console.log(team)
     // Fetch the team leader details using teamLeaderId
     const teamLeader = await Users.findById(
       team.teamLeaderId,
-      "name email regNo"
+      "name email regNo mobNo event1TeamRole"
     );
     if (!teamLeader) {
       return NextResponse.json(
@@ -34,12 +33,11 @@ export async function GET(req: Request) {
         { status: 404 }
       );
     }
-    console.log("team leader:",teamLeader)
 
     // Fetch the team members details using the teamMembers array
     const teamMembers = await Users.find(
       { _id: { $in: team.teamMembers } },
-      "name email regNo"
+      "name email regNo mobNo event1TeamRole"
     );
 
     // team members check to be asked
@@ -49,8 +47,6 @@ export async function GET(req: Request) {
         { status: 404 }
       );
     }
-
-    console.log("team members:", teamMembers);
 
     // Return the team details including the leader and members
     const teamDetails = {
