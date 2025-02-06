@@ -2,24 +2,30 @@ import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/dbConnect";
 import TeamModel from "@/models/event1/Team.model";
 import { Users } from "@/models/user.model";
-import mongoose from "mongoose";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
-export async function POST(req: Request) {
+export async function PATCH(req: Request) {
+  await dbConnect();
+
   try {
-    await dbConnect();
+    const session = await getServerSession(authOptions);
+    const sessionUser = session?.user;
+    
+    if (!session || !sessionUser) {
+      return NextResponse.json({success: false, message: "User not authenticated"}, {status: 401});
+    }
 
-    const { leaderId, memberIndexToRemove } = await req.json();
+    const { memberIndexToRemove } = await req.json();
 
     // Validate leader existence
-    const leader = await Users.findById(leaderId);
+    const leader = await Users.findOne({ email: sessionUser.email });
     if (!leader) {
       return NextResponse.json(
         { message: "Leader not found" },
         { status: 404 }
       );
     }
-
-    // console.log(',,,,,,,,,,,,,,,,,,,,,,,,',leader);
 
     // Ensure leader has a valid role and is assigned to a team
     if (leader.event1TeamRole !== 0) {

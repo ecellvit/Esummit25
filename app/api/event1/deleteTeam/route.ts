@@ -3,13 +3,23 @@ import TeamModel, { Team } from "@/models/event1/Team.model";
 import TeamTokenModel from "@/models/event1/TeamToken.model";
 import { Users } from "@/models/user.model";
 import { ApiResponse } from "@/types/ApiResponse";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
 export async function DELETE(request: Request): Promise<NextResponse<ApiResponse>> {
   await dbConnect();
 
   try {
-    const { email } = await request.json();
+    const session = await getServerSession(authOptions);
+    const sessionUser = session?.user;
+    
+    if (!session || !sessionUser) {
+      return NextResponse.json({success: false, message: "User not authenticated"}, {status: 401});
+    }
+    
+    const email = sessionUser.email;
+    
     if (!email) {
       return NextResponse.json({ success: false, message: "Invalid request" }, { status: 400 });
     }
