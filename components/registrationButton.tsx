@@ -19,7 +19,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
       // Send event number to the API route
       const response = await axios.post("/api/eventRegistration", { event });
 
-      if (response.status === 200 && response.data.success) {
+      if (response.status === 200) {
         toast.success(response.data.message);
         
         // Redirect based on the event number

@@ -7,7 +7,7 @@ import { authOptions } from '../auth/[...nextauth]/route';
 export async function POST(request: Request) {
     await dbConnect();
     try {
-        const session = await getServerSession({ req: request, options: authOptions });
+        const session = await getServerSession(authOptions);
         const sessionUser = session?.user;
 
         if (!session || !sessionUser) {
