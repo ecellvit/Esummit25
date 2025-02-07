@@ -73,7 +73,7 @@ export default function Page() {
 
   const getUserData = async () => {
     try {
-      const res = await fetch("/api/userInfo", {
+      const res = await fetch("/api/user/getUserDetails", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -368,3 +368,4 @@ export default function Page() {
     </div>
   );
 };
+
