@@ -29,6 +29,32 @@ export default function UserDetail() {
     }
   }, [status, router]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!res.ok) {
+          return;
+        }
+  
+        const data = await res.json();
+  
+        if (data.success && data.user?.hasFilledDetails) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+  
+    fetchData();
+  }, [session, router]);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     regNo: "",

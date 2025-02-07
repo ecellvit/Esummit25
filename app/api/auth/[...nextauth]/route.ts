@@ -154,14 +154,38 @@ export const authOptions: NextAuthOptions = {
           idToken: null,
         };
       },
-      async redirect({ url, baseUrl }) {
-        // Redirect users to the form page after successful sign-in
 
-          return '/events/event1/UserDetails'; // Redirect to your desired form page
-        
-        
+    async redirect({ url, baseUrl }) {
+      try {
+        const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${session?.accessTokenBackend}`,
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+
+
+    
+        if (!res.ok) {
+          return "/events/event1/UserDetails"; // Default to form if API request fails
+        }
+    
+        const data = await res.json();
+        console.log("Redirect response:", data);
+
+        console.log("Redirect response:", data);
+        if (data.success && data.user?.hasFilledDetails) {
+          return "/"; // Redirect to home if details are filled
+        } else {
+          return "/events/event1/UserDetails"; // Otherwise, redirect to the form page
+        }
+      } catch (error) {
+        console.error("Error in redirect:", error);
+        return "/events/event1/UserDetails"; // Fallback in case of an error
       }
-    }
+    }}
 };      
 
 async function refreshAccessToken(token: any) {
