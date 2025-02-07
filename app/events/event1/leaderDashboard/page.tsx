@@ -16,7 +16,7 @@ type TeamMember = {
   regNo: string;
   mobNo: string;
   buttonLabel: string;
-  teamRole?: number;
+  event1TeamRole?: number;
 };
 
 export default function Page() {
@@ -113,7 +113,7 @@ export default function Page() {
       const userDataRes = await axios.get("/api/event1/getTeamDetails");
 
       const userData = userDataRes.data;
-
+      console.log("nnnnnnnnnnnnnnn",userData);
       setTeamName(userData?.teamName);
       setTeamMembers(userData?.teamMembersData);
       // setcheck(userData?.user?.teamRole);
@@ -230,9 +230,9 @@ export default function Page() {
     <div className="bg-cover bg-center min-h-screen flex flex-col items-center justify-center p-4 text-black pt-[12vh]">
       {/* {loading && <LoadingScreen />} */}
       {/* <Navbar /> */}
-      {/* <h1 className="text-2xl sm:text-3xl font-extrabold mb-4 text-center drop-shadow-lg">
+      <h1 className="text-2xl sm:text-3xl font-extrabold mb-4 text-center drop-shadow-lg">
         {teamName}
-      </h1> */}
+      </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl px-4 py-6">
         {teamMembers.map((member, index) => (
           <div
@@ -243,16 +243,16 @@ export default function Page() {
               {member?.name}
             </h2>
             <h2 className="text-lg font-bold mb-1 text-white">
-              Team Role: {member?.teamRole === 0 ? "Leader" : "Member"}
+              Team Role: {member?.event1TeamRole === 0 ? "Leader" : "Member"}
             </h2>
             <p className="text-xs mb-1 text-white">Reg. No.: {member?.regNo}</p>
             <p className="text-xs text-white">Mobile No.: {member?.mobNo}</p>
-            {check === 0 && member.teamRole !== 0 && (
+            {check === 0 && member.event1TeamRole !== 0 && (
               <button
                 className="mb-7 sm:landscape:w-[15vw] rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center portrait:lg:w-[30vw] md:max-w-[25vw] md:text-[1.6vh] sm:landscape:md:text-[1.7vh] lg:w-[15vw] w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300"
                 onClick={() => handleShowModal(member.id, "remove")}
               >
-                Leave
+                Remove
                 {member.buttonLabel}
               </button>
             )}
@@ -281,7 +281,7 @@ export default function Page() {
           </div>
         </div>
       )}
-      {isQualified ? (
+      {/* {isQualified ? (
         <div className="flex flex-col text-black items-center border p-2 rounded-xl my-2">
           <h1 className="text-lg font-bold">
             Congratulations! <br />
@@ -299,7 +299,7 @@ export default function Page() {
             you have not been qualified. We hope to see you in future events.
           </h1>
         </div>
-      )}
+      )} */}
 
       {showModal && modalType === "remove" && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -322,47 +322,8 @@ export default function Page() {
           </div>
         </div>
       )}
-
-      {leaveLeaderModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-5 rounded-md text-center">
-            <p className="mb-4">You can't leave the team, assign a new leader first.</p>
-            <div className="flex flex-col gap-2">
-              {teamMembers.filter(member => member.teamRole !== 0).map((member, index) => (
-                <button
-                  key={index}
-                  onClick={() => setNum(member.id)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                >
-                  {member.name}
-                </button>
-              ))}
-            </div>
-            {num !== null && (
-              <div className="mt-4">
-                <p className="mb-4">Are you sure you want to make this member the leader and leave?</p>
-                <div className="flex justify-around">
-                  <button
-                    onClick={() => {
-                      // Handle leader assignment and leave logic here
-                      setLeaveLeaderModal(false);
-                    }}
-                    className="bg-green-500 text-white px-4 py-2 rounded-md"
-                  >
-                    Yes
-                  </button>
-                  <button
-                    onClick={() => setNum(null)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-md"
-                  >
-                    No
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      
+        
 
       <Toaster />
     </div>
