@@ -177,16 +177,9 @@ export default function Page() {
   const handleRemove = async (index: number) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/removeMember", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-        body: JSON.stringify({ index }),
-      });
+      const response = await axios.patch("/api/event1/removeMember",{memberIndexToRemove: index});
 
-      if (response.ok) {
+      if (response.data.status === 200) {
         toast.success("Team Member is removed");
         setLoading(false);
         window.location.reload();
@@ -205,16 +198,9 @@ export default function Page() {
   const deleteTeam = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/deleteTeam", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-        body: JSON.stringify({}),
-      });
+      const response = await axios.delete("/api/event1/deleteTeam"); 
 
-      if (response.ok) {
+      if (response.data.status === 200) {
         toast.success("Team is deleted");
         setLoading(false);
         router.push("/");
@@ -234,14 +220,14 @@ export default function Page() {
     router.push("/");
   };
 
+  const [teamCode, setTeamCode] = useState('');
   const LeaderDashboard = () => {
-    const [teamCode, setTeamCode] = useState('');
     const [showModal, setShowModal] = useState(false);
   };
   
     const handleViewTeamCode = async () => {
       try {
-        const response = await axios.get('/api/getTeamCode');
+        const response = await axios.get('/api/event1/getTeamCode');
         setTeamCode(response.data.teamCode);
         setShowModal(true);
       } catch (error) {
@@ -305,7 +291,6 @@ export default function Page() {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold mb-4">Team Code</h2>
-            <p className="mb-4">ABC</p>
             <p className="mb-4">{teamCode}</p>
             <button
               className="btn-secondary"
