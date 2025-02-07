@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 // import Navbar from "@/components/navbar";
 import axios from "axios";
+import { error } from "console";
 
 type TeamMember = {
   id: number;
@@ -20,7 +21,7 @@ type TeamMember = {
 
 export default function Page() {
   const router = useRouter();
-  // const { data: session, status } = useSession();
+//  const { data: session, status } = useSession();
   const [googleFormLink, setGoogleFormLink] = useState<string>(""); // New state for the form link
   const [check, setcheck] = useState<number>(0);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
@@ -67,16 +68,8 @@ export default function Page() {
 
   useEffect(() => {
     setLoading(true);
-    if (status === "unauthenticated") {
-      setLoading(false);
-      toast.error("Please Log in or Sign up");
-      router.push("/");
-    } else if (status === "authenticated") {
-      setLoading(false);
-      getUserData();
-      getData();
-    }
-  }, [status, router]);
+    getData();
+  }, []);
 
   const getUserData = async () => {
     try {
@@ -117,26 +110,27 @@ export default function Page() {
   const getData = async () => {
     setLoading(true);
     try {
-      const userDataRes = await axios.get('/api/event1/getTeamDetails');
+      const userDataRes = await axios.get("/api/event1/getTeamDetails");
 
-      const userData = await userDataRes.json();
-      setTeamName(userData?.team?.teamName);
-      setTeamMembers(userData?.members);
-      setcheck(userData?.user?.teamRole);
-      setIsQualified(userData?.team?.isQualified);
+      const userData = userDataRes.data;
 
-      const googleFormRes = await fetch("/api/googleDocs", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-      });
+      setTeamName(userData?.teamName);
+      setTeamMembers(userData?.teamMembersData);
+      // setcheck(userData?.user?.teamRole);
+      // setIsQualified(userData?.team?.isQualified);
 
-      const googleFormData = await googleFormRes.json();
-      if (googleFormData?.googleFormLink) {
-        setGoogleFormLink(googleFormData.googleFormLink);
-      }
+      // const googleFormRes = await fetch("/api/googleDocs", {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     // Authorization: `Bearer ${session?.accessTokenBackend}`,
+      //   },
+      // });
+
+      // const googleFormData = await googleFormRes.json();
+      // if (googleFormData?.googleFormLink) {
+      //   setGoogleFormLink(googleFormData.googleFormLink);
+      // }
 
       setLoading(false);
     } catch (error) {
@@ -172,7 +166,7 @@ export default function Page() {
     try {
       const response = await axios.patch("/api/event1/removeMember",{memberIndexToRemove: index});
 
-      if (response.data.status===200) {
+      if (response.data.status === 200) {
         toast.success("Team Member is removed");
         setLoading(false);
         window.location.reload();
@@ -191,16 +185,9 @@ export default function Page() {
   const deleteTeam = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/event1/deleteTeam", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-        body: JSON.stringify({}),
-      });
+      const response = await axios.delete("/api/event1/deleteTeam"); 
 
-      if (response.ok) {
+      if (response.data.status === 200) {
         toast.success("Team is deleted");
         setLoading(false);
         router.push("/");
@@ -220,7 +207,7 @@ export default function Page() {
     router.push("/");
   };
 
-  const [teamCode, setTeamCode] = useState('');  
+  const [teamCode, setTeamCode] = useState('');
   const LeaderDashboard = () => {
     const [showModal, setShowModal] = useState(false);
   };
@@ -243,23 +230,15 @@ export default function Page() {
     <div className="bg-cover bg-center min-h-screen flex flex-col items-center justify-center p-4 text-black pt-[12vh]">
       {/* {loading && <LoadingScreen />} */}
       {/* <Navbar /> */}
-      <h1 className="text-3xl font-extrabold mb-4 text-center drop-shadow-lg">
+      {/* <h1 className="text-2xl sm:text-3xl font-extrabold mb-4 text-center drop-shadow-lg">
         {teamName}
-      </h1>
-      <h1 className="text-2xl sm:text-3xl text-black font-extrabold mb-4 text-center drop-shadow-lg">
-        {teamName}
-      </h1>
+      </h1> */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl px-4 py-6">
         {teamMembers.map((member, index) => (
           <div
             key={index}
             className="bg-[#141B2B] opacity-85 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-col items-center justify-between"
           >
-            {/* <img
-              src={img1.src}
-              alt="Team Member"
-              className="w-16 h-16 mb-3 rounded-full shadow-md"
-            /> */}
             <h2 className="text-lg font-bold mb-1 text-white">
               {member?.name}
             </h2>
@@ -273,6 +252,7 @@ export default function Page() {
                 className="mb-7 sm:landscape:w-[15vw] rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center portrait:lg:w-[30vw] md:max-w-[25vw] md:text-[1.6vh] sm:landscape:md:text-[1.7vh] lg:w-[15vw] w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300"
                 onClick={() => handleShowModal(member.id, "remove")}
               >
+                Leave
                 {member.buttonLabel}
               </button>
             )}
@@ -310,16 +290,7 @@ export default function Page() {
             determination have truly set your team apart. <br />
             All the best for the next round!
           </h1>
-          <h1 className="googleDocs Link">
-            <a
-              href={googleFormLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gradient-to-l hover:from-blue-500 hover:to-purple-500 transition duration-300 ease-in-out shadow-lg"
-            >
-              Wallet 2
-            </a>
-          </h1>
+          
         </div>
       ) : (
         <div className="flex flex-col text-white items-center border p-2 rounded-xl my-2">
