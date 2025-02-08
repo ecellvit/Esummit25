@@ -228,7 +228,7 @@ export const authOptions: NextAuthOptions = {
 
     
         if (!res.ok) {
-          return "/events/event1/UserDetails"; // Default to form if API request fails
+          return "/userDetails"; // Default to form if API request fails
         }
     
         const data = await res.json();
@@ -238,11 +238,11 @@ export const authOptions: NextAuthOptions = {
         if (data.success && data.user?.hasFilledDetails) {
           return "/"; // Redirect to home if details are filled
         } else {
-          return "/events/event1/UserDetails"; // Otherwise, redirect to the form page
+          return "/userDetails"; // Otherwise, redirect to the form page
         }
       } catch (error) {
         console.error("Error in redirect:", error);
-        return "/events/event1/UserDetails"; // Fallback in case of an error
+        return "/userDetails"; // Fallback in case of an error
       }
     }}
 };      
