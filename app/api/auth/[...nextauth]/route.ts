@@ -1,10 +1,9 @@
 import { dbConnect } from '@/lib/dbConnect';
 import { Users } from '@/models/user.model';
 import { OAuth2Client, LoginTicket } from 'google-auth-library';
-import NextAuth, { NextAuthOptions, Session, User} from 'next-auth';
+import NextAuth, { DefaultUser, NextAuthOptions, User} from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { JWT } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
 import { generateTokens } from '../../login/generateTokensUser/route';
 
 // Ensure proper type for the Google OAuth2 client
@@ -27,11 +26,26 @@ interface Account {
 }
 
 declare module 'next-auth' {
+  interface User extends DefaultUser {
+    hasFilledDetails?: boolean;
+    events?: number[];
+    event1TeamRole?: number;
+    event2TeamRole?: number;
+  }
   interface Session {
     accessToken?: string;
     accessTokenBackend?: string;
     idToken?: string;
     error?: string;
+    user: {
+      name: string;
+      email: string;
+      image: string;
+      hasFilledDetails?: boolean;
+      events?: number[];
+      event1TeamRole?: number;
+      event2TeamRole?: number;
+    }
   }
   interface Token {
     accessTokenExpires: number;
@@ -98,17 +112,44 @@ export const authOptions: NextAuthOptions = {
         refreshToken: string;
         idToken: string | undefined;
         accessTokenFromBackend?: string;
+        user?: {
+          id: string;
+          email: string;
+          name: string;
+          hasFilledDetails?: boolean;
+          events?: number[];
+          event1TeamRole?: number;
+          event2TeamRole?: number;
+        };
       };
 
       if (account && user) {
-        return {
-          idToken: account.id_token,
-          accessToken: account.access_token,
-          accessTokenExpires: account.expires_at ? account.expires_at * 1000 : 0, // Fallback to 0 if undefined
-          refreshToken: account.refresh_token ?? '', // Default to empty string if undefined
-          accessTokenFromBackend: await gettokenfrombackend(user, account),
-          user,
-        };
+        try {
+          await dbConnect();
+          const existingUser = await Users.findOne({ email: user.email });
+          if (existingUser) {
+            return {
+              ...typedToken,
+              idToken: account.id_token,
+              accessToken: account.access_token,
+              accessTokenExpires: account.expires_at ? account.expires_at * 1000 : 0,
+              refreshToken: account.refresh_token ?? '',
+              accessTokenFromBackend: await gettokenfrombackend(user, account),
+              user: {
+                id: user.id,
+                name: user.name,
+                image: user.image,
+                email: user.email,
+                hasFilledDetails: existingUser.hasFilledDetails,
+                events: existingUser.events,
+                event1TeamRole: existingUser.event1TeamRole,
+                event2TeamRole: existingUser.event2TeamRole,
+              },
+            };
+          }
+        } catch (error) {
+          console.error(error);
+        }
       }
 
       if (Date.now() < typedToken.accessTokenExpires!) {
@@ -125,9 +166,23 @@ export const authOptions: NextAuthOptions = {
           refreshToken: string;
           idToken: string | undefined;
           accessTokenFromBackend?: string;
+          hasFilledDetails?: boolean;
+          events?: number[];
+          event1TeamRole?: number;
+          event2TeamRole?: number;
         };
+
+        const midUser = typedToken.user as { name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined };
       
-        session.user = typedToken.user as { name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined };
+        session.user = {
+          name: midUser.name ?? '',
+          email: midUser.email ?? '',
+          image: midUser.image ?? '',
+          hasFilledDetails: typedToken.hasFilledDetails ?? false,
+          events: typedToken.events,
+          event1TeamRole: typedToken.event1TeamRole,
+          event2TeamRole: typedToken.event2TeamRole,
+        };
         session.accessToken = typedToken.accessToken;
         session.accessTokenBackend = typedToken.accessTokenFromBackend;
         session.idToken = typedToken.idToken;
@@ -146,7 +201,11 @@ export const authOptions: NextAuthOptions = {
           user: {
             name: null,
             email: null,
-            image: null
+            image: null,
+            hasFilledDetails: false,
+            events: [],
+            event1TeamRole: null,
+            event2TeamRole: null,
           },
           accessToken: null,
           accessTokenBackend: null,
