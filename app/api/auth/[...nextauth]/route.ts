@@ -1,7 +1,7 @@
 import { dbConnect } from '@/lib/dbConnect';
 import { Users } from '@/models/user.model';
 import { OAuth2Client, LoginTicket } from 'google-auth-library';
-import NextAuth, { DefaultUser , NextAuthOptions, User } from 'next-auth';
+import NextAuth, { DefaultUser, NextAuthOptions, User} from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { JWT } from 'next-auth/jwt';
 import { generateTokens } from '../../login/generateTokensUser/route';
@@ -26,7 +26,7 @@ interface Account {
 }
 
 declare module 'next-auth' {
-  interface User extends DefaultUser  {
+  interface User extends DefaultUser {
     hasFilledDetails?: boolean;
     events?: number[];
     event1TeamRole?: number;
@@ -76,7 +76,7 @@ const gettokenfrombackend = async (user: User, account: Account): Promise<string
   return accessToken;
 };
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -92,8 +92,8 @@ const authOptions: NextAuthOptions = {
           const userExists = await Users.findOne({ email });
           if (!userExists) {
             // Create the user directly within the signIn callback
-            const newUser  = new Users({ name, email });
-            await newUser .save();
+            const newUser = new Users({ name, email });
+            await newUser.save();
             return true; 
           }
           return true; // User exists, continue the sign-in flow
@@ -126,8 +126,8 @@ const authOptions: NextAuthOptions = {
       if (account && user) {
         try {
           await dbConnect();
-          const existingUser  = await Users.findOne({ email: user.email });
-          if (existingUser ) {
+          const existingUser = await Users.findOne({ email: user.email });
+          if (existingUser) {
             return {
               ...typedToken,
               idToken: account.id_token,
@@ -140,10 +140,10 @@ const authOptions: NextAuthOptions = {
                 name: user.name,
                 image: user.image,
                 email: user.email,
-                hasFilledDetails: existingUser .hasFilledDetails,
-                events: existingUser .events,
-                event1TeamRole: existingUser .event1TeamRole,
-                event2TeamRole: existingUser .event2TeamRole,
+                hasFilledDetails: existingUser.hasFilledDetails,
+                events: existingUser.events,
+                event1TeamRole: existingUser.event1TeamRole,
+                event2TeamRole: existingUser.event2TeamRole,
               },
             };
           }
@@ -160,70 +160,73 @@ const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      const typedToken = token as JWT & {
-        accessTokenExpires?: number;
-        accessToken: string;
-        refreshToken: string;
-        idToken: string | undefined;
-        accessTokenFromBackend?: string;
-        hasFilledDetails?: boolean;
-        events?: number[];
-        event1TeamRole?: number;
-        event2TeamRole?: number;
-      };
+        const typedToken = token as JWT & {
+          accessTokenExpires?: number;
+          accessToken: string;
+          refreshToken: string;
+          idToken: string | undefined;
+          accessTokenFromBackend?: string;
+          hasFilledDetails?: boolean;
+          events?: number[];
+          event1TeamRole?: number;
+          event2TeamRole?: number;
+        };
 
-      const midUser  = typedToken.user as { name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined };
-    
-      session.user = {
-        name: midUser .name ?? '',
-        email: midUser .email ?? '',
-        image: midUser .image ?? '',
-        hasFilledDetails: typedToken.hasFilledDetails ?? false,
-        events: typedToken.events,
-        event1TeamRole: typedToken.event1TeamRole,
-        event2TeamRole: typedToken.event2TeamRole,
-      };
-      session.accessToken = typedToken.accessToken;
-      session.accessTokenBackend = typedToken.accessTokenFromBackend;
-      session.idToken = typedToken.idToken;
-    
-      // Safely assign the error value as a string or undefined
-      session.error = typeof typedToken.error === 'string' ? typedToken.error : undefined;
-    
-      // Ensure the session is always returned and not null
-      if (typedToken.accessTokenFromBackend) {
-        return session;  // Return the populated session if available
-      }
-    
-      // Return a default session or an empty session if no valid token
-      return {
-        ...session,
-        user: {
-          name: null,
-          email: null,
-          image: null,
-          hasFilledDetails: false,
-          events: [],
-          event1TeamRole: null,
-          event2TeamRole: null,
-        },
-        accessToken: null,
-        accessTokenBackend: null,
-        error: null,
-        idToken: null,
-      };
-    },
+        const midUser = typedToken.user as { name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined };
+      
+        session.user = {
+          name: midUser.name ?? '',
+          email: midUser.email ?? '',
+          image: midUser.image ?? '',
+          hasFilledDetails: typedToken.hasFilledDetails ?? false,
+          events: typedToken.events,
+          event1TeamRole: typedToken.event1TeamRole,
+          event2TeamRole: typedToken.event2TeamRole,
+        };
+        session.accessToken = typedToken.accessToken;
+        session.accessTokenBackend = typedToken.accessTokenFromBackend;
+        session.idToken = typedToken.idToken;
+      
+        // Safely assign the error value as a string or undefined
+        session.error = typeof typedToken.error === 'string' ? typedToken.error : undefined;
+      
+        // Ensure the session is always returned and not null
+        if (typedToken.accessTokenFromBackend) {
+          return session;  // Return the populated session if available
+        }
+      
+        // Return a default session or an empty session if no valid token
+        return {
+          ...session,
+          user: {
+            name: null,
+            email: null,
+            image: null,
+            hasFilledDetails: false,
+            events: [],
+            event1TeamRole: null,
+            event2TeamRole: null,
+          },
+          accessToken: null,
+          accessTokenBackend: null,
+          error: null,
+          idToken: null,
+        };
+      },
 
     async redirect({ url, baseUrl }) {
       try {
-        const res = await fetch("http://localhost:3000/api/user/getUser Details", {
+        const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            // Authorization: `Bearer ${session?.accessTokenBackend}`,
             "Access-Control-Allow-Origin": "*",
           },
         });
 
+
+    
         if (!res.ok) {
           return "/userDetails"; // Default to form if API request fails
         }
@@ -231,6 +234,7 @@ const authOptions: NextAuthOptions = {
         const data = await res.json();
         console.log("Redirect response:", data);
 
+        console.log("Redirect response:", data);
         if (data.success && data.user?.hasFilledDetails) {
           return "/"; // Redirect to home if details are filled
         } else {
@@ -240,56 +244,57 @@ const authOptions: NextAuthOptions = {
         console.error("Error in redirect:", error);
         return "/userDetails"; // Fallback in case of an error
       }
-    }
-  }
-};
+    }}
+};      
 
 async function refreshAccessToken(token: any) {
-  try {
-    const refreshToken = token.refreshToken;
-    if (typeof refreshToken !== 'string') {
-      throw new Error('Invalid refresh token');
-    }
-
-    const url =
-      'https://oauth2.googleapis.com/token?' +
-      new URLSearchParams({
-        client_id: process.env.GOOGLE_CLIENT_ID as string,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken,
+    try {
+      const refreshToken = token.refreshToken;
+      if (typeof refreshToken !== 'string') {
+        throw new Error('Invalid refresh token');
+      }
+  
+      const url =
+        'https://oauth2.googleapis.com/token?' +
+        new URLSearchParams({
+          client_id: process.env.GOOGLE_CLIENT_ID as string,
+          client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+        });
+  
+      const response = await fetch(url, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        method: 'POST',
       });
-
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      method: 'POST',
-    });
-
-    const refreshedTokens = await response.json();
-
-    if (!response.ok) {
-      throw refreshedTokens;
+  
+      const refreshedTokens = await response.json();
+  
+      if (!response.ok) {
+        throw refreshedTokens;
+      }
+  
+      return {
+        ...token,
+        idToken: refreshedTokens.id_token,
+        accessToken: refreshedTokens.access_token,
+        accessTokenExpires:
+          Date.now() + refreshedTokens.expires_in * 1000,
+        refreshToken:
+          refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        ...token,
+        error: 'RefreshAccessTokenError',
+      };
     }
-
-    return {
-      ...token,
-      idToken: refreshedTokens.id_token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires:
-        Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken:
-        refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError',
-    };
   }
-}
+  
+
 
 const handler = NextAuth(authOptions);
 
