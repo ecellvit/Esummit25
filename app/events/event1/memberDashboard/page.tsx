@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
@@ -11,7 +11,7 @@ type TeamMember = {
   regNo: string;
   mobNo: string;
   buttonLabel: string;
-  teamRole?: number;
+  event1TeamRole?: number;
 };
 
 export default function MemberDashboard() {
@@ -51,17 +51,10 @@ export default function MemberDashboard() {
       },
     ]);
   useEffect(() => {
-    setLoading(true);
-    if (status === "unauthenticated") {
-      setLoading(false);
-      toast.error("Please Log in or Sign up");
-      router.push("/");
-    } else if (status === "authenticated") {
-      setLoading(false);
-      getUserData();
+    setLoading(true)
       getData();
-    }
-  }, [status, router]);
+    
+  }, []);
 
   const getUserData = async () => {
     try {
@@ -102,8 +95,8 @@ export default function MemberDashboard() {
       const userDataRes = await axios.get("/api/event1/getTeamDetails");
 
       const userData = userDataRes.data;
-      setTeamName(userData?.team?.teamName);
-      setTeamMembers(userData?.members);
+      setTeamName(userData?.teamName);
+      setTeamMembers(userData?.teamMembersData);
 
       setLoading(false);
     } catch (error) {
@@ -121,7 +114,7 @@ export default function MemberDashboard() {
     try {
       await axios.patch("/api/event1/leaveTeam", {}, {
         headers: {
-          Authorization: `Bearer ${session?.accessTokenBackend}`,
+          //Authorization: `Bearer ${session?.accessTokenBackend}`,
         },
       });
       toast.success("You have left the team.");
@@ -135,9 +128,6 @@ export default function MemberDashboard() {
     return (
       <div className="bg-cover bg-center min-h-screen flex flex-col items-center justify-center p-4 text-black pt-[12vh]">
         <h1 className="text-3xl font-extrabold mb-4 text-center drop-shadow-lg">
-          {teamName}
-        </h1>
-        <h1 className="text-2xl sm:text-3xl font-extrabold mb-4 text-center drop-shadow-lg">
           {teamName}
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl px-4 py-6">
