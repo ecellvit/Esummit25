@@ -48,7 +48,7 @@ export async function PATCH(request: Request): Promise<NextResponse<ApiResponse>
 
         // Remove the user's association with the team
         user.event1TeamId = null;
-        delete user.event1TeamRole;
+        user.event1TeamRole = null;
         await user.save();
 
         return NextResponse.json({ success: true, message: "User left successfully, new leader assigned" }, { status: 200 });
@@ -64,7 +64,7 @@ export async function PATCH(request: Request): Promise<NextResponse<ApiResponse>
     await team.save();
 
     user.event1TeamId = null;
-    delete user.event1TeamRole;
+    user.event1TeamRole = null;
     await user.save();
 
     return NextResponse.json({ success: true, message: "User left successfully" }, { status: 200 });
