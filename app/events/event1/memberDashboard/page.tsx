@@ -140,7 +140,7 @@ export default function MemberDashboard() {
                 {member?.name}
               </h2>
               <h2 className="text-lg font-bold mb-1 text-white">
-                Team Role: {member?.teamRole === 0 ? "Leader" : "Member"}
+                Team Role: {member?.event1TeamRole === 0 ? "Leader" : "Member"}
               </h2>
               <p className="text-xs mb-1 text-white">Reg. No.: {member?.regNo}</p>
               <p className="text-xs text-white">Mobile No.: {member?.mobNo}</p>
