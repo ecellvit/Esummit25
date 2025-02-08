@@ -14,62 +14,58 @@ export async function PATCH(req: Request) {
     const sessionUser = session?.user;
 
     if (!session || !sessionUser) {
+      console.log(" ERROR: User not authenticated");
       return NextResponse.json({ success: false, message: "User not authenticated" }, { status: 401 });
     }
 
     const { memberIdToRemove } = await req.json();
+    console.log(" Received memberIdToRemove:", memberIdToRemove);
 
-    if (!mongoose.Types.ObjectId.isValid(memberIdToRemove)) {
-      return NextResponse.json({ message: "Invalid member ID" }, { status: 400 });
-    }
-
+    // Ensure memberIdToRemove is a valid number
+    const memberIndex = parseInt(memberIdToRemove, 10);
+    
     // Find the team leader
     const leader = await Users.findOne({ email: sessionUser.email });
     if (!leader) {
+      console.log(" ERROR: Leader not found in database");
       return NextResponse.json({ message: "Leader not found" }, { status: 404 });
     }
 
-    // Ensure user is a team leader
     if (leader.event1TeamRole !== 0 || !leader.event1TeamId) {
-      return NextResponse.json({ message: "User is not a team leader or has no team" }, { status: 403 });
+      console.log(" ERROR: User is not a team leader");
+      return NextResponse.json({ message: "User is not a team leader" }, { status: 403 });
     }
 
-    // Fetch the leader's team
+    // Fetch the team
     const team = await TeamModel.findById(leader.event1TeamId);
     if (!team) {
+      console.log(" ERROR: Team not found");
       return NextResponse.json({ message: "Team not found" }, { status: 404 });
     }
 
-    // Ensure the leader actually leads this team
-    if (team.teamLeaderId.toString() !== leader._id.toString()) {
-      return NextResponse.json({ message: "User is not the leader of this team" }, { status: 403 });
+    // Ensure teamMembers array exists
+    if (!team.teamMembers || team.teamMembers.length === 0) {
+      console.log(" ERROR: Team has no members"); 
+      return NextResponse.json({ message: "No members in the team" }, { status: 400 });
     }
 
-    // Ensure the member exists in the team
-    if (!team.teamMembers.some(id => id.toString() === memberIdToRemove.toString())) {
-      return NextResponse.json({ message: "Member not found in the team" }, { status: 404 });
-    }
 
-    // Ensure at least 1 member remains in the team
-    if (team.teamMembers.length <= 1) {
-      return NextResponse.json({ message: "Cannot remove the last team member" }, { status: 400 });
-    }
+    console.log(" Member found, proceeding to remove:", team.teamMembers[memberIndex]);
 
-    // Remove the member from the team
-    const updatedTeam = await TeamModel.findByIdAndUpdate(team._id, {
-      $pull: { teamMembers: memberIdToRemove }
-    }, { new: true }).exec();
+    // Remove the member using index
+    const removedMember = team.teamMembers.splice(memberIndex, 1);
+    await team.save();
 
-    console.log("Updated Team:", updatedTeam);
+    console.log(" Updated Team:", team);
 
     // Remove the user's team reference
-    await Users.findByIdAndUpdate(memberIdToRemove, {
+    await Users.findByIdAndUpdate(removedMember[0], {
       $unset: { event1TeamId: "", event1TeamRole: "" }
     });
 
     return NextResponse.json({ message: "Member removed successfully" }, { status: 200 });
   } catch (error) {
-    console.error("Error removing member:", error);
+    console.error(" ERROR: Internal Server Error", error);
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }
