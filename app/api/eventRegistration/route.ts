@@ -14,6 +14,10 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
         }
 
+        if (!sessionUser.hasFilledDetails) {
+            return NextResponse.json({ message: 'Please complete your profile details first' }, { status: 401 });
+        }
+
         const user = await Users.findOne({ email: sessionUser.email });
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });

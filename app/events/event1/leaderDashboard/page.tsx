@@ -33,7 +33,16 @@ export default function Page() {
 
       if (data?.teamMembersData?.length) {
         setTeamName(data.teamName);
-        setTeamMembers(data.teamMembersData);
+        const formattedMembers = data.teamMembersData.map((member: TeamMember, index: number) => ({
+        id: index, // Ensure each member has a unique ID
+        name: member.name,
+        regNo: member.regNo,
+        mobNo: member.mobNo,
+        event1TeamRole: member.event1TeamRole,
+      }));
+
+      setTeamMembers(formattedMembers);
+      console.log("Fetched and formatted members:", formattedMembers);
       }
     } catch (error) {
       toast.error("An error occurred while fetching team data.");
@@ -54,27 +63,45 @@ export default function Page() {
     setShowModal(false);
   };
 
-  const handleRemove = async (index: number) => {
+  const handleRemove = async () => {
+    if (modalMemberIndex === null) {
+      toast.error("Error: No team member selected.");
+      return;
+    }
+  
+    const memberToRemove = teamMembers[modalMemberIndex]; // Find the member
+    const memberIdToRemove = memberToRemove.id; // Get ID safely
+    console.log('ripun',memberToRemove);
+  
+    if (!memberIdToRemove) {
+      console.error("Error: Invalid memberIdToRemove", { modalMemberIndex, memberToRemove });
+      toast.error("Error: Member ID is invalid.");
+      return;
+    }
+  
+    console.log(`Removing member ID: ${memberIdToRemove}`); // Debugging
+  
     setLoading(true);
     try {
       const response = await axios.patch("/api/event1/removeMember", {
-        memberIndexToRemove: index,
+        memberIdToRemove,
       });
-
+  
       if (response.status === 200) {
         toast.success("Team member removed successfully");
-        setTeamMembers((prev) => prev.filter((_, i) => i !== index));
+        setTeamMembers((prev) => prev.filter((_, i) => i !== modalMemberIndex));
       } else {
         toast.error(response.data.message || "Failed to remove team member.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error removing team member:", error);
-      toast.error("An error occurred while removing the team member.");
+      toast.error(error.response?.data?.message || "An error occurred.");
     } finally {
       setLoading(false);
       handleCloseModal();
     }
   };
+
 
   const handleViewTeamCode = async () => {
     try {
@@ -104,7 +131,7 @@ export default function Page() {
             {teamMembers.length > 0 ? (
               teamMembers.map((member, index) => (
                 <div
-                  key={member.id}
+                  key={member.id || index}
                   className="bg-[#141B2B] opacity-85 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-col items-center justify-between"
                 >
                   <h2 className="text-lg font-bold mb-1 text-white">{member.name}</h2>
@@ -116,7 +143,7 @@ export default function Page() {
 
                   <button
                     className="mb-7 sm:landscape:w-[15vw] rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300"
-                    onClick={() => handleShowModal(index, member.event1TeamRole === 0 ? "leave" : "remove")}
+                    onClick={() => {handleShowModal(index, member.event1TeamRole === 0 ? "leave" : "remove");}}
                   >
                     {member.event1TeamRole === 0 ? "Leave" : "Remove"}
                   </button>
@@ -127,7 +154,7 @@ export default function Page() {
             )}
           </div>
 
-          <button className="btn-primary mt-4" onClick={() => handleShowModal(null, "teamCode")}>
+          <button className="btn-primary mt-4" onClick={handleViewTeamCode}>
             Add Member
           </button>
 
@@ -138,7 +165,7 @@ export default function Page() {
                 <p className="mb-4">Are you sure you want to remove this user?</p>
                 <div className="flex justify-around">
                   <button
-                    onClick={() => handleRemove(modalMemberIndex)}
+                    onClick={handleRemove}
                     className="bg-green-500 text-white px-4 py-2 rounded-md"
                   >
                     Yes
@@ -161,7 +188,7 @@ export default function Page() {
                 <p className="mb-4">Are you sure you want to leave the team?</p>
                 <div className="flex justify-around">
                   <button
-                    onClick={() => handleRemove(modalMemberIndex)} // Same function for leave action
+                    onClick={handleRemove} // Same function for leave action
                     className="bg-green-500 text-white px-4 py-2 rounded-md"
                   >
                     Yes

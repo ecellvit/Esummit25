@@ -112,7 +112,16 @@ export default function MemberDashboard() {
 
   const handleLeave = async () => {
     try {
-      await axios.patch("/api/event1/leaveTeam", {}, {
+      const info = await fetch("/api/user/getUserDetails", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      const data = await info.json();
+      const userEmail = data?.user?.email;
+      await axios.patch("/api/event1/leaveTeam", { email: userEmail }, {
         headers: {
           //Authorization: `Bearer ${session?.accessTokenBackend}`,
         },
