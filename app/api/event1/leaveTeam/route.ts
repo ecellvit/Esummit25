@@ -18,35 +18,58 @@ export async function PATCH(request: Request): Promise<NextResponse<ApiResponse>
       return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
     }
 
-    //? User does not have an event1teamId
+    // If user does not have a team association
     if (!user.event1TeamId) {
       return NextResponse.json({ success: false, message: "User is not part of a team" }, { status: 400 });
     }
 
-    //? If user is the team leader, he/she cannot leave the team
-    if (user.event1TeamRole == 0) {
-      return NextResponse.json({ success: false, message: "Cannot leave team as team leader" }, { status: 400 });
-    }
-
     const team: Team | null = await TeamModel.findById(user.event1TeamId);
     if (!team) {
-      return NextResponse.json({ success: false, message: "No team assocated with the user" }, { status: 404 });
+      return NextResponse.json({ success: false, message: "No team associated with the user" }, { status: 404 });
     }
 
-    //? Remove the user._id from the members array
+    // If the user is the team leader, they cannot leave without assigning a new leader
+    if (user.event1TeamRole === 0) {
+      // Find a new member to assign as the leader
+      const newLeader = team.teamMembers.find(memberId => memberId.toString() !== user._id.toString());
+      if (!newLeader) {
+        return NextResponse.json({ success: false, message: "No other team members to assign as leader" }, { status: 400 });
+      }
+
+      // Assign the new leader (take the first available member)
+      const newLeaderUser = await Users.findById(newLeader);
+      if (newLeaderUser) {
+        newLeaderUser.event1TeamRole = 0; // New leader
+        await newLeaderUser.save();
+        
+        // Update the team to reflect the new leader
+        team.teamMembers = team.teamMembers.filter(memberId => memberId.toString() !== user._id.toString());
+        team.save();
+
+        // Remove the user's association with the team
+        user.event1TeamId = null;
+        delete user.event1TeamRole;
+        await user.save();
+
+        return NextResponse.json({ success: true, message: "User left successfully, new leader assigned" }, { status: 200 });
+      } else {
+        return NextResponse.json({ success: false, message: "Could not find new leader" }, { status: 404 });
+      }
+    }
+
+    // If the user is not a leader, just remove them from the team
     team.teamMembers = team.teamMembers.filter(
       (memberId) => memberId.toString() !== user._id.toString()
     );
+    await team.save();
 
-    team.save();
-
-    //? Remove the user's associations with the team
     user.event1TeamId = null;
     delete user.event1TeamRole;
     await user.save();
 
     return NextResponse.json({ success: true, message: "User left successfully" }, { status: 200 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ success: false, message: "User could not leave the team" }, { status: 500 });
   }
 }

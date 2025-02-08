@@ -4,48 +4,58 @@ import TeamModel from "@/models/event1/Team.model";
 import { Users } from "@/models/user.model";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
+import mongoose from "mongoose";
 
 export async function GET(req: Request) {
   await dbConnect(); // Connect to the database
+
   try {
     const session = await getServerSession(authOptions);
     const sessionUser = session?.user;
-    
-    if (!session || !sessionUser) {
-      return NextResponse.json({success: false, message: "User not authenticated"}, {status: 401});
+
+    if (!session || !sessionUser?.email) {
+      return NextResponse.json(
+        { success: false, message: "User not authenticated" },
+        { status: 401 }
+      );
     }
 
-    // Find the user by userId and populate event1TeamId to get the team information
+    // Find the user by email
     const user = await Users.findOne({ email: sessionUser.email });
+    console.log("User fetched:", user);
+
     if (!user || !user.event1TeamId) {
       return NextResponse.json(
         { message: "User has no team." },
         { status: 404 }
       );
     }
-    const teamId = user.event1TeamId; // Get the teamId from the query string
 
-    // Check if the teamId is provided in the request
-    if (!teamId) {
+    const teamId = user.event1TeamId; // Ensure this field is used consistently
+
+    // Validate teamId before querying
+    if (!mongoose.Types.ObjectId.isValid(teamId)) {
       return NextResponse.json(
-        { message: "User is not a part of any team." },
+        { message: "Invalid team ID." },
         { status: 400 }
       );
     }
 
-    // Fetch the team using the provided teamId
+    // Fetch the team
     const team = await TeamModel.findById(teamId);
+    console.log("Team fetched:", team);
+
     if (!team) {
       return NextResponse.json({ message: "Team not found." }, { status: 404 });
     }
 
-    // Fetch the team members details using the teamMembers array
+    // Fetch team members based on event1TeamId instead of _id matching
     const teamMembers = await Users.find(
-      { _id: { $in: team.teamMembers } },
+      { event1TeamId: teamId }, // NEW FIX HERE
       "name email regNo mobNo event1TeamRole"
     );
+    console.log("Team members fetched:", teamMembers);
 
-    // team members check to be asked
     if (!teamMembers || teamMembers.length === 0) {
       return NextResponse.json(
         { message: "No team members found." },
@@ -53,7 +63,7 @@ export async function GET(req: Request) {
       );
     }
 
-    // Return the team details including the leader and members
+    // Return the team details
     const teamDetails = {
       teamName: team.teamName,
       teamMembersData: teamMembers, // Members details
