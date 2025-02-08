@@ -3,7 +3,6 @@ import Marquee from "react-fast-marquee";
 import image1 from "../assets/close.jpg";
 import image2 from "../assets/hamburger.jpg";
 
-// Define the interface with no default values
 interface MarqProps {
   speed1?: number;
   speed2?: number;
