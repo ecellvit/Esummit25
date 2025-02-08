@@ -40,7 +40,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         } else if (event >= 3 && event <= 4) {
           router.push("/events/event3");
         } else if (event === 5) {
-          router.push("/events/event6");
+          router.push("/events/event3");
         }
       } else {
         throw new Error("Error processing event registration");
@@ -50,10 +50,10 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
       // toast.error(axiosError.response?.data.message || "Error processing event registration");
       if (event === 1 || event === 2) {
         router.push(`/events/event${event}/Join_and_Create_Team`);
-      } else if (event >= 3 && event <= 5) {
+      } else if (event >= 3 && event <= 4) {
         router.push("/events/event3");
-      } else if (event === 6) {
-        router.push("/events/event6");
+      } else if (event === 5) {
+        router.push("/events/event3");
       }
     }
   };
