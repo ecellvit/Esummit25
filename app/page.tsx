@@ -13,7 +13,7 @@ export default function HomePage() {
       <NavBar />
       <EventButtons
         eventUrls={{
-          1: "/events/event1/Join_and_Create_Team", 
+          1: "/events/event1/createTeam", 
           2: "/events/event2", 
           3: "/events/event3", 
           4: "/events/event4", 
@@ -22,7 +22,7 @@ export default function HomePage() {
       />
       <RegistrationButtons
        eventUrls={{
-        1: "/events/event1/Join_and_Create_Team", 
+        1: "/events/event1/createTeam", 
         2: "/events/event2", 
         3: "/events/event3", 
         4: "/events/event4", 
