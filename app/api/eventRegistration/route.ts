@@ -14,6 +14,10 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
         }
 
+        if (!sessionUser.hasFilledDetails) {
+            return NextResponse.json({ message: 'Please complete your profile details first' }, { status: 401 });
+        }
+
         const user = await Users.findOne({ email: sessionUser.email });
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -26,7 +30,11 @@ export async function POST(request: Request) {
         }
 
         if (parsedNumber < 1 || parsedNumber > 5) {
-            return NextResponse.json({ error: 'Number must be between 1 and 5' }, { status: 400 });
+            return NextResponse.json({ error: 'Number must be between 1 and 6' }, { status: 400 });
+        }
+
+        if (parsedNumber === 5 && user.email.endsWith("@vitstudent.ac.in")) {
+            return NextResponse.json({ error: "VIT students can't register for this event" }, { status: 403 });
         }
 
         if (user.events.includes(parsedNumber)) {
