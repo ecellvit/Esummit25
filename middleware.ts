@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
   if (user) {
     const match = path.match(/\/events\/event(\d+)\b/);
     console.log(!(
-      path.startsWith('/events/event1/Join_and_Create_Team') ||
+      path.startsWith('/events/event1/createTeam') ||
       path.startsWith('/events/event1/joinTeam')
     ))
     if (match) {
@@ -61,20 +61,20 @@ export async function middleware(request: NextRequest) {
       if (eventNumber === 1) {
         //? Check if the user has an event1TeamRole. i.e, if the user is part of a team or not
         //? If not, and the page is not joinTeam or createTeam page
-        //? Redirect to Join_and_Create_Team page
+        //? Redirect to createTeam page
         if (user.event1TeamRole === undefined && !(
-          path.startsWith('/events/event1/Join_and_Create_Team') ||
+          path.startsWith('/events/event1/createTeam') ||
           path.startsWith('/events/event1/joinTeam')
         )) {
-          return NextResponse.redirect(new URL('/events/event1/Join_and_Create_Team', request.url))
+          return NextResponse.redirect(new URL('/events/event1/createTeam', request.url))
         }
 
         //? Check if the user has an event1TeamRole. i.e, if the user is part of a team or not
-        //? If yes and the page is joinTeam or Join_and_Create_Team
+        //? If yes and the page is joinTeam or createTeam
         //? Redirect to the Dashboard
         if (user.event1TeamRole !== undefined && (
           path.startsWith('/events/event1/joinTeam') ||
-          path.startsWith('/events/event1/Join_and_Create_Team')
+          path.startsWith('/events/event1/createTeam')
         )) {
           //? If teamRole == 0 (leader)
           if (user.event1TeamRole === 0) {
