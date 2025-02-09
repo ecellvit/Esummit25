@@ -104,7 +104,7 @@ export const authOptions: NextAuthOptions = {
       }
       return false; // Not a Google sign-in, return false
     },    
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, session, trigger }) {
       // Type `token` explicitly to avoid 'unknown' type
       const typedToken = token as JWT & {
         accessTokenExpires?: number;
@@ -114,14 +114,25 @@ export const authOptions: NextAuthOptions = {
         accessTokenFromBackend?: string;
         user?: {
           id: string;
-          email: string;
-          name: string;
+          name: string; 
+          email: string; 
+          image?: string | null;
           hasFilledDetails?: boolean;
           events?: number[];
           event1TeamRole?: number;
           event2TeamRole?: number;
         };
       };
+
+      if (trigger === "update" && session) {
+        return {
+          ...token,
+          user: {
+            ...(token.user as User),
+            ...session.user
+          }
+        };
+      }
 
       if (account && user) {
         try {
@@ -166,22 +177,25 @@ export const authOptions: NextAuthOptions = {
           refreshToken: string;
           idToken: string | undefined;
           accessTokenFromBackend?: string;
-          hasFilledDetails?: boolean;
-          events?: number[];
-          event1TeamRole?: number;
-          event2TeamRole?: number;
+          user: {
+            name?: string | null; 
+            email?: string | null; 
+            image?: string | null;
+            hasFilledDetails?: boolean;
+            events?: number[];
+            event1TeamRole?: number;
+            event2TeamRole?: number;
+          }
         };
-
-        const midUser = typedToken.user as { name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined };
       
         session.user = {
-          name: midUser.name ?? '',
-          email: midUser.email ?? '',
-          image: midUser.image ?? '',
-          hasFilledDetails: typedToken.hasFilledDetails ?? false,
-          events: typedToken.events,
-          event1TeamRole: typedToken.event1TeamRole,
-          event2TeamRole: typedToken.event2TeamRole,
+          name: typedToken.user.name ?? '',
+          email: typedToken.user.email ?? '',
+          image: typedToken.user.image ?? '',
+          hasFilledDetails: typedToken.user.hasFilledDetails ?? false,
+          events: typedToken.user.events,
+          event1TeamRole: typedToken.user.event1TeamRole,
+          event2TeamRole: typedToken.user.event2TeamRole,
         };
         session.accessToken = typedToken.accessToken;
         session.accessTokenBackend = typedToken.accessTokenFromBackend;
