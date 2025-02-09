@@ -20,7 +20,7 @@ interface Errors {
 
 export default function UserDetail() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
 
   // Redirect user if not logged in, only when session status is 'authenticated'
   useEffect(() => {
@@ -115,6 +115,7 @@ export default function UserDetail() {
 
       const result = response.data.message;
       toast.success(result || "Form submitted successfully!");
+      update({...session, user: {...session?.user, hasFilledDetails: true } })
       setFormData({ name: "", regNo: "", number: "" });
       setErrors({});
       setLoading(false);

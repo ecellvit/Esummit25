@@ -2,6 +2,7 @@
 
 import { ApiResponse } from "@/types/ApiResponse";
 import axios, { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -9,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 export default function page() {
   const router = useRouter();
   const [teamName, setTeamName] = useState<string>('');
+  const { data: session, update } = useSession();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeamName(event.target.value);
@@ -22,6 +24,7 @@ export default function page() {
 
       if (response.data.success == true) {
         toast.success(response.data.message);
+        update({...session, user: {...session?.user, event1TeamRole: 0} });
         router.push('/events/event1/leaderDashboard');
       }
     } catch (error) {
