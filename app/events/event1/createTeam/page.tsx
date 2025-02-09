@@ -17,21 +17,29 @@ export default function page() {
   };
 
   const createTeam = async () => {
+    if (!teamName.trim()) {
+      toast.error("Team name is required");
+      return;
+    }
+
     try {
-      const response = await axios.post('/api/event1/createTeam', {
-        teamName: teamName
-      })
-      if (response.data.success == true) {
+      const response = await axios.post("/api/event1/createTeam", {
+        teamName: teamName,
+      });
+
+      if (response.data.success === true) {
         toast.success(response.data.message);
-        update({...session, user: {...session?.user, event1TeamRole: 0} });
-        router.push('/events/event1/leaderDashboard');
+        update({ ...session, user: { ...session?.user, event1TeamRole: 0 } });
+        router.push("/events/event1/leaderDashboard");
       }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
-      toast.error(axiosError.response?.data.message || "Error in creating the team");
-      setTeamName('');
+      toast.error(
+        axiosError.response?.data.message || "Error in joining the team"
+      );
+      setTeamName("");
     }
-  }
+  };
 
   const joinTeam = () => {
     router.push("joinTeam");
