@@ -11,6 +11,7 @@ import picture from "@/assets/member.png"
 
 type TeamMember = {
   id: number;
+  uid: string; // MongoDB ObjectID
   name: string;
   regNo: string;
   mobNo: string;
@@ -26,6 +27,9 @@ export default function Page() {
   const [modalMemberIndex, setModalMemberIndex] = useState<number | null>(null);
   const [modalType, setModalType] = useState<string>("");
   const [teamCode, setTeamCode] = useState<string>("");
+  const [showLeaderModal, setShowLeaderModal] = useState<boolean>(false);
+  const [newLeaderId, setNewLeaderId] = useState<string | null>(null);
+  const { data: session, update } = useSession();
 
   useEffect(() => {
     getData();
@@ -48,6 +52,8 @@ export default function Page() {
 
         setTeamMembers(formattedMembers);
         console.log("Fetched and formatted members:", formattedMembers);
+        setTeamMembers(formattedMembers);
+        console.log("Fetched and formatted members:", formattedMembers);
       }
     } catch (error) {
       toast.error("An error occurred while fetching team data.");
@@ -68,11 +74,71 @@ export default function Page() {
     setShowModal(false);
   };
 
+
+  const handleLeave = async () => {
+    const leader = teamMembers.find((member) => member.event1TeamRole === 0); // Find the current leader
+
+    if (!leader || !leader.uid) {
+      toast.error("Error: Leader not found.");
+      return;
+    }
+
+    // If there is only one member (leader), delete the team directly
+    if (teamMembers.length === 1) {
+      await leaveTeam(leader.uid, null); // Pass null for new leader as team will be deleted
+      return;
+    }
+
+    // If there are other members, show modal for leader selection
+    setShowLeaderModal(true);
+  };
+
+
+  const leaveTeam = async (leaderId: string, newLeaderId: string | null) => {
+    setLoading(true);
+    try {
+      const response = await axios.patch("/api/event1/leaveTeam", {
+        userId: leaderId,
+        newLeaderId, // Send new leader ID if applicable
+      });
+
+      if (response.status === 200) {
+        toast.success("You have left the team successfully.");
+        update({ ...session, user: { ...session?.user, event1TeamRole: null } });
+        router.push("/"); // Redirect user after leaving
+      } else {
+        toast.error(response.data.message || "Failed to leave the team.");
+      }
+    } catch (error: any) {
+      console.error("Error leaving team:", error);
+      toast.error(error.response?.data?.message || "An error occurred.");
+    } finally {
+      setLoading(false);
+      handleCloseModal();
+    }
+  };
+
+  const handleConfirmLeaderChange = async () => {
+    if (!newLeaderId) {
+      toast.error("Please select a new leader.");
+      return;
+    }
+
+    const leader = teamMembers.find((member) => member.event1TeamRole === 0);
+    if (!leader || !leader.uid) {
+      toast.error("Error: Leader not found.");
+      return;
+    }
+
+    await leaveTeam(leader.uid, newLeaderId);
+  };
+
   const handleRemove = async () => {
     if (modalMemberIndex === null) {
       toast.error("Error: No team member selected.");
       return;
     }
+
 
     const memberToRemove = teamMembers[modalMemberIndex]; // Find the member
     const memberIdToRemove = memberToRemove.id; // Get ID safely
@@ -91,6 +157,7 @@ export default function Page() {
       const response = await axios.patch("/api/event1/removeMember", {
         memberIdToRemove,
       });
+
 
       if (response.status === 200) {
         toast.success("Team member removed successfully");
