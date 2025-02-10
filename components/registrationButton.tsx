@@ -49,7 +49,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
     }
 
     try {
-      const response = await axios.post("/api/eventRegistration", { event });
+      const response = await axios.post("/api/eventRegistration/register", { event });
       if (response.status === 200) {
         toast.success(response.data.message);
 
