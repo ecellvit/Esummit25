@@ -50,7 +50,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         await update({...session, user: {...session?.user, events: newUserEvents } });
 
         if (event === 1 || event === 2) {
-          router.push(`/events/event${event}/Join_and_Create_Team`);
+          router.push(`/events/event${event}/createTeam`);
         } else if (event >= 3 && event <= 4) {
           router.push(`/events/event${event}`);
         } else if (event === 5) {
