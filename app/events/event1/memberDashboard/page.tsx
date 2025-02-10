@@ -105,7 +105,7 @@ export default function MemberDashboard() {
       if (axiosError.response?.status === 409) {
         try {
           await update({...session, user: {...session?.user, event1TeamRole: null}});
-          router.push("/events/event1/Join_and_Create_Team");
+          router.push("/events/event1/createTeam");
           console.log(session?.user);
           toast.error("You have been removed from this team.");
         } catch (error) {
