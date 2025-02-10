@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         }
 
         if (parsedNumber < 1 || parsedNumber > 5) {
-            return NextResponse.json({ error: 'Number must be between 1 and 6' }, { status: 400 });
+            return NextResponse.json({ error: 'Number must be between 1 and 5' }, { status: 400 });
         }
 
         if (parsedNumber === 5 && user.email.endsWith("@vitstudent.ac.in")) {
