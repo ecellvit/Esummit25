@@ -1,79 +1,71 @@
-import { dbConnect } from "@/lib/dbConnect";
-import TeamModel, { Team } from "@/models/event1/Team.model";
-import { Users } from "@/models/user.model";
-import { ApiResponse } from "@/types/ApiResponse";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { dbConnect } from "@/lib/dbConnect";
+import TeamModel from "@/models/event1/Team.model";
+import { Users } from "@/models/user.model";
+import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
-export async function PATCH(request: Request): Promise<NextResponse<ApiResponse>> {
+export async function PATCH(req: Request) {
   await dbConnect();
 
   try {
     const session = await getServerSession(authOptions);
     const sessionUser = session?.user;
-    
+
     if (!session || !sessionUser) {
-      return NextResponse.json({success: false, message: "User not authenticated"}, {status: 401});
+      return NextResponse.json({ success: false, message: "User not authenticated" }, { status: 401 });
     }
 
-    const user = await Users.findOne({ email: sessionUser.email });
+    const { userId } = await req.json();
+    if (!userId) {
+      return NextResponse.json({ success: false, message: "User ID is required" }, { status: 400 });
+    }
+
+    // Find the user
+    const user = await Users.findById(userId);
     if (!user) {
       return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
     }
 
-    // If user does not have a team association
     if (!user.event1TeamId) {
       return NextResponse.json({ success: false, message: "User is not part of a team" }, { status: 400 });
     }
 
-    const team: Team | null = await TeamModel.findById(user.event1TeamId);
+    // Find the team
+    const team = await TeamModel.findById(user.event1TeamId);
     if (!team) {
-      return NextResponse.json({ success: false, message: "No team associated with the user" }, { status: 404 });
+      return NextResponse.json({ success: false, message: "Team not found" }, { status: 404 });
     }
 
-    // If the user is the team leader, they cannot leave without assigning a new leader
-    if (user.event1TeamRole === 0) {
-      // Find a new member to assign as the leader
-      const newLeader = team.teamMembers.find(memberId => memberId.toString() !== user._id.toString());
-      if (!newLeader) {
-        return NextResponse.json({ success: false, message: "No other team members to assign as leader" }, { status: 400 });
-      }
+    // Check if the user is the leader
+    const isLeaderLeaving = team.teamLeaderId.toString() === userId;
 
-      // Assign the new leader (take the first available member)
-      const newLeaderUser = await Users.findById(newLeader);
-      if (newLeaderUser) {
-        newLeaderUser.event1TeamRole = 0; // New leader
-        await newLeaderUser.save();
-        
-        // Update the team to reflect the new leader
-        team.teamMembers = team.teamMembers.filter(memberId => memberId.toString() !== user._id.toString());
-        team.save();
+    // Remove the user from the team
+    team.teamMembers = team.teamMembers.filter((member) => member.toString() !== userId);
 
-        // Remove the user's association with the team
-        user.event1TeamId = null;
-        user.event1TeamRole = null;
-        await user.save();
-
-        return NextResponse.json({ success: true, message: "User left successfully, new leader assigned" }, { status: 200 });
-      } else {
-        return NextResponse.json({ success: false, message: "Could not find new leader" }, { status: 404 });
-      }
+    // If leader leaves and there are remaining members, assign new leader
+    if (isLeaderLeaving && team.teamMembers.length > 0) {
+      team.teamLeaderId = team.teamMembers[0]; // Assign the first member as new leader
+      await Users.findByIdAndUpdate(team.teamMembers[0], { event1TeamRole: 0 });
     }
 
-    // If the user is not a leader, just remove them from the team
-    team.teamMembers = team.teamMembers.filter(
-      (memberId) => memberId.toString() !== user._id.toString()
-    );
+    // If no members remain, delete the team
+    if (team.teamMembers.length === 0) {
+      await TeamModel.findByIdAndDelete(team._id);
+      await Users.findByIdAndUpdate(userId, { $unset: { event1TeamId: "", event1TeamRole: "" } });
+      return NextResponse.json({ success: true, message: "Team deleted as no members are left" }, { status: 200 });
+    }
+
+    // Save the updated team
     await team.save();
 
-    user.event1TeamId = null;
-    user.event1TeamRole = null;
-    await user.save();
+    // Remove user’s association with the team
+    await Users.findByIdAndUpdate(userId, { $unset: { event1TeamId: "", event1TeamRole: "" } });
 
-    return NextResponse.json({ success: true, message: "User left successfully" }, { status: 200 });
+    return NextResponse.json({ success: true, message: "User left the team successfully" }, { status: 200 });
+
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ success: false, message: "User could not leave the team" }, { status: 500 });
+    console.error("Error in leave team:", error);
+    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
   }
 }
