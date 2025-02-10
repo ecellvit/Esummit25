@@ -105,8 +105,8 @@ export default function Page() {
       });
 
       if (response.status === 200) {
+        await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
         toast.success("You have left the team successfully.");
-        update({ ...session, user: { ...session?.user, event1TeamRole: null } });
         router.push("/"); // Redirect user after leaving
       } else {
         toast.error(response.data.message || "Failed to leave the team.");
