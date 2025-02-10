@@ -16,7 +16,7 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ success: false, message: "User not authenticated" }, { status: 401 });
     }
 
-    const { userId } = await req.json();
+    const { userId, newLeaderId } = await req.json();
     if (!userId) {
       return NextResponse.json({ success: false, message: "User ID is required" }, { status: 400 });
     }
@@ -43,17 +43,28 @@ export async function PATCH(req: Request) {
     // Remove the user from the team
     team.teamMembers = team.teamMembers.filter((member) => member.toString() !== userId);
 
-    // If leader leaves and there are remaining members, assign new leader
-    if (isLeaderLeaving && team.teamMembers.length > 0) {
-      team.teamLeaderId = team.teamMembers[0]; // Assign the first member as new leader
-      await Users.findByIdAndUpdate(team.teamMembers[0], { event1TeamRole: 0 });
-    }
+    // If leader is leaving, assign the new leader
+    if (isLeaderLeaving) {
+      if (team.teamMembers.length === 0) {
+        // If no members remain, delete the team
+        await TeamModel.findByIdAndDelete(team._id);
+        await Users.findByIdAndUpdate(userId, { $unset: { event1TeamId: "", event1TeamRole: "" } });
+        return NextResponse.json({ success: true, message: "Team deleted as no members are left" }, { status: 200 });
+      } else if (newLeaderId) {
+        // Assign the selected new leader
+        const newLeader = await Users.findById(newLeaderId);
+        if (!newLeader) {
+          return NextResponse.json({ success: false, message: "New leader not found" }, { status: 404 });
+        }
 
-    // If no members remain, delete the team
-    if (team.teamMembers.length === 0) {
-      await TeamModel.findByIdAndDelete(team._id);
-      await Users.findByIdAndUpdate(userId, { $unset: { event1TeamId: "", event1TeamRole: "" } });
-      return NextResponse.json({ success: true, message: "Team deleted as no members are left" }, { status: 200 });
+        team.teamLeaderId = newLeaderId;
+        team.teamLeaderName = newLeader.name;
+        team.teamLeaderEmail = newLeader.email;
+
+        await Users.findByIdAndUpdate(newLeaderId, { event1TeamRole: 0 }); // Set as leader
+      } else {
+        return NextResponse.json({ success: false, message: "New leader must be selected before leaving" }, { status: 400 });
+      }
     }
 
     // Save the updated team

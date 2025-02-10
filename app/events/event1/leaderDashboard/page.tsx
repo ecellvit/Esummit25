@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 type TeamMember = {
   id: number;
+  uid: string; // MongoDB ObjectID
   name: string;
   regNo: string;
   mobNo: string;
@@ -21,6 +23,9 @@ export default function Page() {
   const [modalMemberIndex, setModalMemberIndex] = useState<number | null>(null);
   const [modalType, setModalType] = useState<string>("");
   const [teamCode, setTeamCode] = useState<string>("");
+  const [showLeaderModal, setShowLeaderModal] = useState<boolean>(false);
+  const [newLeaderId, setNewLeaderId] = useState<string | null>(null);
+  const { data: session, update } = useSession();
 
   useEffect(() => {
     getData();
@@ -66,22 +71,35 @@ export default function Page() {
 
 
   const handleLeave = async () => {
-    const userLeaving = teamMembers.find((member) => member.event1TeamRole === 0); // Find leader
-    const userIdToLeave = userLeaving?.uid; // Get MongoDB ObjectID
+    const leader = teamMembers.find((member) => member.event1TeamRole === 0); // Find the current leader
 
-    if (!userIdToLeave) {
-      toast.error("Error: Could not find user ID.");
+    if (!leader || !leader.uid) {
+      toast.error("Error: Leader not found.");
       return;
     }
 
+    // If there is only one member (leader), delete the team directly
+    if (teamMembers.length === 1) {
+      await leaveTeam(leader.uid, null); // Pass null for new leader as team will be deleted
+      return;
+    }
+
+    // If there are other members, show modal for leader selection
+    setShowLeaderModal(true);
+  };
+
+
+  const leaveTeam = async (leaderId: string, newLeaderId: string | null) => {
     setLoading(true);
     try {
       const response = await axios.patch("/api/event1/leaveTeam", {
-        userId: userIdToLeave, // Send actual MongoDB ObjectID
+        userId: leaderId,
+        newLeaderId, // Send new leader ID if applicable
       });
 
       if (response.status === 200) {
         toast.success("You have left the team successfully.");
+        update({...session, user: {...session?.user, event1TeamRole: null} });
         router.push("/"); // Redirect user after leaving
       } else {
         toast.error(response.data.message || "Failed to leave the team.");
@@ -94,6 +112,22 @@ export default function Page() {
       handleCloseModal();
     }
   };
+
+  const handleConfirmLeaderChange = async () => {
+    if (!newLeaderId) {
+      toast.error("Please select a new leader.");
+      return;
+    }
+
+    const leader = teamMembers.find((member) => member.event1TeamRole === 0);
+    if (!leader || !leader.uid) {
+      toast.error("Error: Leader not found.");
+      return;
+    }
+
+    await leaveTeam(leader.uid, newLeaderId);
+  };
+
   const handleRemove = async () => {
     if (modalMemberIndex === null) {
       toast.error("Error: No team member selected.");
@@ -186,7 +220,41 @@ export default function Page() {
           <button className="btn-primary mt-4" onClick={handleViewTeamCode}>
             Add Member
           </button>
-
+          {showLeaderModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="bg-white p-5 rounded-md text-center">
+                <h2 className="text-xl font-bold mb-4">Select a New Leader</h2>
+                <select
+                  className="border p-2 rounded-md w-full"
+                  value={newLeaderId || ""}
+                  onChange={(e) => setNewLeaderId(e.target.value)}
+                >
+                  <option value="" disabled>Select a team member</option>
+                  {teamMembers
+                    .filter((member) => member.event1TeamRole !== 0) // Exclude current leader
+                    .map((member) => (
+                      <option key={member.uid} value={member.uid}>
+                        {member.name}
+                      </option>
+                    ))}
+                </select>
+                <div className="flex justify-around mt-4">
+                  <button
+                    onClick={handleConfirmLeaderChange}
+                    className="bg-green-500 text-white px-4 py-2 rounded-md"
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    onClick={handleCloseModal}
+                    className="bg-red-500 text-white px-4 py-2 rounded-md"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           {/* Modal for Remove */}
           {showModal && modalType === "remove" && modalMemberIndex !== null && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
