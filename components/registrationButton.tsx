@@ -30,6 +30,16 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
       return;
     }
 
+    if (session?.user.events?.includes(event)) {
+      if (event === 1 || event === 2) {
+        router.push(`/events/event${event}/createTeam`);
+      } else if (event >= 3 && event <= 4) {
+        router.push(`/events/event${event}`);
+      } else if (event === 5) {
+        router.push("/events/event5");
+      }
+    }
+
     try {
       const response = await axios.post("/api/eventRegistration", { event });
       if (response.status === 200) {
@@ -57,18 +67,6 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         router.push('/userDetails');
         return;
       }
-      // If error status === 407, then the user is already registered for the event
-      if (axiosError.response?.status === 407) {
-        if (event === 1 || event === 2) {
-          router.push(`/events/event${event}/Join_and_Create_Team`);
-        } else if (event >= 3 && event <= 4) {
-          router.push(`/events/event${event}`);
-        } else if (event === 5) {
-          router.push("/events/event5");
-        }
-      }
-
-      toast.error("Error processing event registration");
     }
   };
 
