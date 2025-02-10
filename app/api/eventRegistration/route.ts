@@ -15,7 +15,7 @@ export async function POST(request: Request) {
         }
 
         if (!sessionUser.hasFilledDetails) {
-            return NextResponse.json({ message: 'Please complete your profile details first' }, { status: 401 });
+            return NextResponse.json({ message: 'Please complete your profile details first' }, { status: 402 });
         }
 
         const user = await Users.findOne({ email: sessionUser.email });
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
         }
 
         if (user.events.includes(parsedNumber)) {
-            return NextResponse.json({ message: "Already registered for the event." }, { status: 407 });
+            return NextResponse.json({ message: "Already registered for the event." }, { status: 409 });
         }
 
         user.events.push(parsedNumber);

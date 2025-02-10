@@ -38,6 +38,16 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
     }
   }
 
+    if (session?.user.events?.includes(event)) {
+      if (event === 1 || event === 2) {
+        router.push(`/events/event${event}/createTeam`);
+      } else if (event >= 3 && event <= 4) {
+        router.push(`/events/event${event}`);
+      } else if (event === 5) {
+        router.push("/events/event5");
+      }
+    }
+
     try {
       const response = await axios.post("/api/eventRegistration", { event });
       if (response.status === 200) {
@@ -48,7 +58,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         await update({...session, user: {...session?.user, events: newUserEvents } });
 
         if (event === 1 || event === 2) {
-          router.push(`/events/event${event}/Join_and_Create_Team`);
+          router.push(`/events/event${event}/createTeam`);
         } else if (event >= 3 && event <= 4) {
           router.push(`/events/event${event}`);
         } else if (event === 5) {
@@ -58,15 +68,12 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         throw new Error("Error processing event registration");
       }
     } catch (error) {
-      // const axiosError = error as AxiosError<{ message: string }>;
-      // toast.error(axiosError.response?.data.message || "Error processing event registration");
-      //! If error status === 407, only then redirect to the `event${event}` page otherwise show error message
-      if (event === 1 || event === 2) {
-        router.push(`/events/event${event}/Join_and_Create_Team`);
-      } else if (event >= 3 && event <= 4) {
-        router.push(`/events/event${event}`);
-      } else if (event === 5) {
-        router.push("/events/event5");
+      const axiosError = error as AxiosError;
+
+      if (axiosError.response?.status === 402) {
+        toast.error("Please fill out your details first");
+        router.push('/userDetails');
+        return;
       }
     }
   };

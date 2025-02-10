@@ -1,9 +1,9 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
 
 type TeamMember = {
   id: number;
@@ -102,8 +102,17 @@ export default function MemberDashboard() {
 
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      toast.error("An error occurred while fetching data.");
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 409) {
+        try {
+          await update({...session, user: {...session?.user, event1TeamRole: null}});
+          router.push("/events/event1/createTeam");
+          console.log(session?.user);
+          toast.error("You have been removed from this team.");
+        } catch (error) {
+          console.log(error);
+        }
+      }
       setLoading(false);
     }
   };
