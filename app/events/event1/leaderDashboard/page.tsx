@@ -8,6 +8,8 @@ import Navbar from "@/components/navbar";
 import background from "/assets/bg.png";
 import background1 from "/assets/divbg.png";
 import picture from "@/assets/member.png"
+import { useSession } from "next-auth/react";
+
 
 type TeamMember = {
   id: number;
