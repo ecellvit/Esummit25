@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { Users } from '@/models/user.model';
 import { dbConnect } from '@/lib/dbConnect';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import axios from 'axios';
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
         }
 
         if (!sessionUser.hasFilledDetails) {
-            return NextResponse.json({ message: 'Please complete your profile details first' }, { status: 402 });
+            return NextResponse.json({ message: 'Please complete your profile details first' }, { status: 401 });
         }
 
         const user = await Users.findOne({ email: sessionUser.email });
@@ -37,14 +38,25 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "VIT students can't register for this event" }, { status: 403 });
         }
 
-        if (user.events.includes(parsedNumber)) {
-            return NextResponse.json({ message: "Already registered for the event." }, { status: 409 });
+        // code for event 1
+        if (user.events.includes(parsedNumber) && (parsedNumber === 1 || parsedNumber === 2) ) {
+            // user has no team
+            if (!user.teamId) {
+                user.events.pop(parsedNumber);
+                await user.save();
+            }
+            else {
+                await axios.patch("/api/event1/leaveTeam");
+            }
+            return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 201 });
         }
 
-        user.events.push(parsedNumber);
-        await user.save();
-
-        return NextResponse.json({ message: "Successfully Registered for Event", status: 200 });
+        // code for event 3, 4 and 5.
+        if (user.events.includes(parsedNumber)) {
+            user.events.pop(parsedNumber);
+            await user.save();
+            return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 202 });
+        }
     } catch (error) {
         console.error('Error updating user events:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

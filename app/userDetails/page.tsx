@@ -22,39 +22,32 @@ export default function UserDetail() {
   const router = useRouter();
   const { data: session, status, update } = useSession();
 
-  // Redirect user if not logged in, only when session status is 'authenticated'
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push('/');
-    }
-  }, [status, router]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
   
-        if (!res.ok) {
-          return;
-        }
+  //       if (!res.ok) {
+  //         return;
+  //       }
   
-        const data = await res.json();
+  //       const data = await res.json();
   
-        if (data.success && data.user?.hasFilledDetails) {
-          router.push("/");
-        }
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
+  //       if (data.success && data.user?.hasFilledDetails) {
+  //         router.push("/");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user details:", error);
+  //     }
+  //   };
   
-    fetchData();
-  }, [session, router]);
+  //   fetchData();
+  // }, [session, router]);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     regNo: "",
@@ -115,7 +108,7 @@ export default function UserDetail() {
 
       const result = response.data.message;
       toast.success(result || "Form submitted successfully!");
-      update({...session, user: {...session?.user, hasFilledDetails: true } })
+      update({...session, user: {...session?.user, hasFilledDetails: true ,name:formData.name} })
       setFormData({ name: "", regNo: "", number: "" });
       setErrors({});
       setLoading(false);
