@@ -38,7 +38,7 @@ export async function POST(request: Request) {
         }
 
         if (user.events.includes(parsedNumber)) {
-            return NextResponse.json({ message: "Already registered for the event." }, { status: 407 });
+            return NextResponse.json({ message: "Already registered for the event." }, { status: 409 });
         }
 
         user.events.push(parsedNumber);
