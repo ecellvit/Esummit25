@@ -99,7 +99,7 @@ export default function Page() {
 
       if (response.status === 200) {
         toast.success("You have left the team successfully.");
-        update({...session, user: {...session?.user, event1TeamRole: null} });
+        update({ ...session, user: { ...session?.user, event1TeamRole: null } });
         router.push("/"); // Redirect user after leaving
       } else {
         toast.error(response.data.message || "Failed to leave the team.");
@@ -208,7 +208,7 @@ export default function Page() {
                     className="mb-7 sm:landscape:w-[15vw] rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300"
                     onClick={() => { handleShowModal(index, member.event1TeamRole === 0 ? "leave" : "remove"); }}
                   >
-                    {member.event1TeamRole === 0 ? "Leave" : "Remove"}
+                    {member.event1TeamRole === 0 && teamMembers.length === 1 ? "Delete Team" : member.event1TeamRole === 0 ? "Leave" : "Remove"}
                   </button>
                 </div>
               ))
