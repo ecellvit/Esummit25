@@ -124,10 +124,10 @@ export default function MemberDashboard() {
     try {
       const response = await axios.patch("/api/event1/leaveTeam");
 
-      if (response.data.status === 200) {
+      if (response.status === 200) {
         toast.success("You have left the team.");
         await update({...session, user: {...session?.user, event1TeamRole: null}});
-        router.push("/");
+        router.push("/events/event1/createTeam");
       } else {
         toast.error("Error leaving the team. Please try again later.");
       }
