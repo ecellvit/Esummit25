@@ -22,12 +22,11 @@ export async function GET(req: Request) {
 
     // Find the user by email
     const user = await Users.findOne({ email: sessionUser.email });
-    console.log("User fetched:", user);
 
     if (!user || !user.event1TeamId) {
       return NextResponse.json(
         { message: "User has no team." },
-        { status: 404 }
+        { status: 409 }
       );
     }
 
@@ -43,7 +42,6 @@ export async function GET(req: Request) {
 
     // Fetch the team
     const team = await TeamModel.findById(teamId);
-    console.log("Team fetched:", team);
 
     if (!team) {
       return NextResponse.json({ message: "Team not found." }, { status: 404 });
@@ -54,7 +52,6 @@ export async function GET(req: Request) {
       { event1TeamId: teamId }, // NEW FIX HERE
       "name email regNo mobNo event1TeamRole"
     );
-    console.log("Team members fetched:", teamMembers);
 
     if (!teamMembers || teamMembers.length === 0) {
       return NextResponse.json(

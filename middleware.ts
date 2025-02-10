@@ -1,6 +1,5 @@
 //TODO: (1) remove TeamCode page bcoz. it is same as joinTeam page (functionality should be retained)
 //TODO: (2) add User interface to the types folder for reusability
-//TODO: (3) migrate userDetails path from /events/event1/UserDetails to /userDetails and update all it's imports and uses
 
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
@@ -23,9 +22,9 @@ export async function middleware(request: NextRequest) {
 
   const user : User|null = token?.user as User;
 
-  //? Check if user is trying to fill user details again
-  //? If yes, redirect to root route
-  if (user && user.hasFilledDetails && path.startsWith('/userDetails')) {
+  console.log(user);
+
+  if (!token && !(path === "/")) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
@@ -34,12 +33,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
+  //? Check if user is trying to fill user details again
+  //? If yes, redirect to root route
+  if (user && user.hasFilledDetails && path.startsWith('/userDetails')) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
   if (user) {
     const match = path.match(/\/events\/event(\d+)\b/);
-    console.log(!(
-      path.startsWith('/events/event1/createTeam') ||
-      path.startsWith('/events/event1/joinTeam')
-    ))
     if (match) {
       const eventNumber = parseInt(match[1], 10);
 
@@ -62,7 +63,7 @@ export async function middleware(request: NextRequest) {
         //? Check if the user has an event1TeamRole. i.e, if the user is part of a team or not
         //? If not, and the page is not joinTeam or createTeam page
         //? Redirect to createTeam page
-        if (user.event1TeamRole === undefined && !(
+        if ((user.event1TeamRole === undefined || user.event1TeamRole === null) && !(
           path.startsWith('/events/event1/createTeam') ||
           path.startsWith('/events/event1/joinTeam')
         )) {
@@ -72,7 +73,7 @@ export async function middleware(request: NextRequest) {
         //? Check if the user has an event1TeamRole. i.e, if the user is part of a team or not
         //? If yes and the page is joinTeam or createTeam
         //? Redirect to the Dashboard
-        if (user.event1TeamRole !== undefined && (
+        if (user.event1TeamRole !== undefined && user.event1TeamRole !== null && (
           path.startsWith('/events/event1/joinTeam') ||
           path.startsWith('/events/event1/createTeam')
         )) {

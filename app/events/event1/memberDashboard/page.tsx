@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 // import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
 
 type TeamMember = {
   id: number;
@@ -16,6 +17,7 @@ type TeamMember = {
 
 export default function MemberDashboard() {
   const router = useRouter();
+  const { data: session, update } = useSession();
   const [check, setCheck] = useState<number>(0);
   const [teamName, setTeamName] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,9 +54,8 @@ export default function MemberDashboard() {
     ]);
   useEffect(() => {
     setLoading(true)
-      getData();
-    
-  }, []);
+    getData();
+  }, [session?.user?.event1TeamRole]);
 
   const getUserData = async () => {
     try {
@@ -100,8 +101,17 @@ export default function MemberDashboard() {
 
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      toast.error("An error occurred while fetching data.");
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 409) {
+        try {
+          await update({...session, user: {...session?.user, event1TeamRole: null}});
+          router.push("/events/event1/Join_and_Create_Team");
+          console.log(session?.user);
+          toast.error("You have been removed from this team.");
+        } catch (error) {
+          console.log(error);
+        }
+      }
       setLoading(false);
     }
   };
@@ -112,22 +122,15 @@ export default function MemberDashboard() {
 
   const handleLeave = async () => {
     try {
-      const info = await fetch("/api/user/getUserDetails", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const data = await info.json();
-      const userEmail = data?.user?.email;
-      await axios.patch("/api/event1/leaveTeam", { email: userEmail }, {
-        headers: {
-          //Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-      });
-      toast.success("You have left the team.");
-      router.push("/");
+      const response = await axios.patch("/api/event1/leaveTeam");
+
+      if (response.data.status === 200) {
+        toast.success("You have left the team.");
+        await update({...session, user: {...session?.user, event1TeamRole: null}});
+        router.push("/");
+      } else {
+        toast.error("Error leaving the team. Please try again later.");
+      }
     } catch (error) {
       console.error("Error leaving team:", error);
       toast.error("An error occurred while leaving the team.");

@@ -29,7 +29,7 @@ export default function page() {
 
       if (response.data.success === true) {
         toast.success(response.data.message);
-        update({ ...session, user: { ...session?.user, event1TeamRole: 0 } });
+        await update({ ...session, user: { ...session?.user, event1TeamRole: 0 } });
         router.push("/events/event1/leaderDashboard");
       }
     } catch (error) {
