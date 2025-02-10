@@ -14,7 +14,7 @@ interface RegistrationButtonsProps {
 
 const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const userEmail = session?.user?.email || "";
 
   const handleRedirect = async (event: number) => {
@@ -35,12 +35,16 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
       if (response.status === 200) {
         toast.success(response.data.message);
 
+        const newUserEvents = session?.user.events;
+        newUserEvents?.push(event);
+        await update({...session, user: {...session?.user, events: newUserEvents } });
+
         if (event === 1 || event === 2) {
           router.push(`/events/event${event}/Join_and_Create_Team`);
         } else if (event >= 3 && event <= 4) {
-          router.push("/events/event3");
+          router.push(`/events/event${event}`);
         } else if (event === 5) {
-          router.push("/events/event3");
+          router.push("/events/event5");
         }
       } else {
         throw new Error("Error processing event registration");
@@ -48,12 +52,13 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
     } catch (error) {
       // const axiosError = error as AxiosError<{ message: string }>;
       // toast.error(axiosError.response?.data.message || "Error processing event registration");
+      //! If error status === 407, only then redirect to the `event${event}` page otherwise show error message
       if (event === 1 || event === 2) {
         router.push(`/events/event${event}/Join_and_Create_Team`);
       } else if (event >= 3 && event <= 4) {
-        router.push("/events/event3");
+        router.push(`/events/event${event}`);
       } else if (event === 5) {
-        router.push("/events/event3");
+        router.push("/events/event5");
       }
     }
   };
