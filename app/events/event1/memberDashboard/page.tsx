@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-// import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
@@ -16,8 +15,9 @@ type TeamMember = {
 };
 
 export default function MemberDashboard() {
+
   const router = useRouter();
-  const { data: session, update } = useSession();
+  const { data: session, status, update } = useSession();
   const [check, setCheck] = useState<number>(0);
   const [teamName, setTeamName] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -54,9 +54,10 @@ export default function MemberDashboard() {
     ]);
   useEffect(() => {
     setLoading(true)
-    getData();
-  }, [session?.user?.event1TeamRole]);
-
+      getData();
+    
+  }, []);
+  console.log(session);
   const getUserData = async () => {
     try {
       const res = await fetch("/api/user/getUserDetails", {
@@ -122,15 +123,12 @@ export default function MemberDashboard() {
 
   const handleLeave = async () => {
     try {
-      const response = await axios.patch("/api/event1/leaveTeam");
-
-      if (response.status === 200) {
-        toast.success("You have left the team.");
-        await update({...session, user: {...session?.user, event1TeamRole: null}});
-        router.push("/events/event1/createTeam");
-      } else {
-        toast.error("Error leaving the team. Please try again later.");
-      }
+      await axios.patch("/api/event1/leaveTeam");
+      toast.success("You have left the team.");
+      const updatedSession = {...session?.user};
+      updatedSession.event1TeamRole = undefined;
+      update({...session, user: updatedSession });
+      router.push("/");
     } catch (error) {
       console.error("Error leaving team:", error);
       toast.error("An error occurred while leaving the team.");
