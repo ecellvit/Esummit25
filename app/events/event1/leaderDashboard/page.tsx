@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 type TeamMember = {
   id: number;
+  uid: string; // MongoDB ObjectID
   name: string;
   regNo: string;
   mobNo: string;
@@ -21,6 +23,9 @@ export default function Page() {
   const [modalMemberIndex, setModalMemberIndex] = useState<number | null>(null);
   const [modalType, setModalType] = useState<string>("");
   const [teamCode, setTeamCode] = useState<string>("");
+  const [showLeaderModal, setShowLeaderModal] = useState<boolean>(false);
+  const [newLeaderId, setNewLeaderId] = useState<string | null>(null);
+  const { data: session, update } = useSession();
 
   useEffect(() => {
     getData();
@@ -33,16 +38,17 @@ export default function Page() {
 
       if (data?.teamMembersData?.length) {
         setTeamName(data.teamName);
-        const formattedMembers = data.teamMembersData.map((member: TeamMember, index: number) => ({
-        id: index, // Ensure each member has a unique ID
-        name: member.name,
-        regNo: member.regNo,
-        mobNo: member.mobNo,
-        event1TeamRole: member.event1TeamRole,
-      }));
+        const formattedMembers = data.teamMembersData.map((member: any, index: number) => ({
+          id: index, // Keep index for UI purposes
+          uid: member._id, // Store actual MongoDB ObjectID
+          name: member.name,
+          regNo: member.regNo,
+          mobNo: member.mobNo,
+          event1TeamRole: member.event1TeamRole,
+        }));
 
-      setTeamMembers(formattedMembers);
-      console.log("Fetched and formatted members:", formattedMembers);
+        setTeamMembers(formattedMembers);
+        console.log("Fetched and formatted members:", formattedMembers);
       }
     } catch (error) {
       toast.error("An error occurred while fetching team data.");
@@ -63,30 +69,87 @@ export default function Page() {
     setShowModal(false);
   };
 
+
+  const handleLeave = async () => {
+    const leader = teamMembers.find((member) => member.event1TeamRole === 0); // Find the current leader
+
+    if (!leader || !leader.uid) {
+      toast.error("Error: Leader not found.");
+      return;
+    }
+
+    // If there is only one member (leader), delete the team directly
+    if (teamMembers.length === 1) {
+      await leaveTeam(leader.uid, null); // Pass null for new leader as team will be deleted
+      return;
+    }
+
+    // If there are other members, show modal for leader selection
+    setShowLeaderModal(true);
+  };
+
+
+  const leaveTeam = async (leaderId: string, newLeaderId: string | null) => {
+    setLoading(true);
+    try {
+      const response = await axios.patch("/api/event1/leaveTeam", {
+        userId: leaderId,
+        newLeaderId, // Send new leader ID if applicable
+      });
+
+      if (response.status === 200) {
+        toast.success("You have left the team successfully.");
+        update({ ...session, user: { ...session?.user, event1TeamRole: null } });
+        router.push("/"); // Redirect user after leaving
+      } else {
+        toast.error(response.data.message || "Failed to leave the team.");
+      }
+    } catch (error: any) {
+      console.error("Error leaving team:", error);
+      toast.error(error.response?.data?.message || "An error occurred.");
+    } finally {
+      setLoading(false);
+      handleCloseModal();
+    }
+  };
+
+  const handleConfirmLeaderChange = async () => {
+    if (!newLeaderId) {
+      toast.error("Please select a new leader.");
+      return;
+    }
+
+    const leader = teamMembers.find((member) => member.event1TeamRole === 0);
+    if (!leader || !leader.uid) {
+      toast.error("Error: Leader not found.");
+      return;
+    }
+
+    await leaveTeam(leader.uid, newLeaderId);
+  };
+
   const handleRemove = async () => {
     if (modalMemberIndex === null) {
       toast.error("Error: No team member selected.");
       return;
     }
-  
+
     const memberToRemove = teamMembers[modalMemberIndex]; // Find the member
-    const memberIdToRemove = memberToRemove.id; // Get ID safely
-    console.log('ripun',memberToRemove);
-  
+    const memberIdToRemove = memberToRemove.uid; // Get MongoDB ObjectID safely
+    console.log("Removing Member:", memberToRemove);
+
     if (!memberIdToRemove) {
       console.error("Error: Invalid memberIdToRemove", { modalMemberIndex, memberToRemove });
       toast.error("Error: Member ID is invalid.");
       return;
     }
-  
-    console.log(`Removing member ID: ${memberIdToRemove}`); // Debugging
-  
+
     setLoading(true);
     try {
       const response = await axios.patch("/api/event1/removeMember", {
         memberIdToRemove,
       });
-  
+
       if (response.status === 200) {
         toast.success("Team member removed successfully");
         setTeamMembers((prev) => prev.filter((_, i) => i !== modalMemberIndex));
@@ -143,9 +206,9 @@ export default function Page() {
 
                   <button
                     className="mb-7 sm:landscape:w-[15vw] rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300"
-                    onClick={() => {handleShowModal(index, member.event1TeamRole === 0 ? "leave" : "remove");}}
+                    onClick={() => { handleShowModal(index, member.event1TeamRole === 0 ? "leave" : "remove"); }}
                   >
-                    {member.event1TeamRole === 0 ? "Leave" : "Remove"}
+                    {member.event1TeamRole === 0 && teamMembers.length === 1 ? "Delete Team" : member.event1TeamRole === 0 ? "Leave" : "Remove"}
                   </button>
                 </div>
               ))
@@ -157,7 +220,41 @@ export default function Page() {
           <button className="btn-primary mt-4" onClick={handleViewTeamCode}>
             Add Member
           </button>
-
+          {showLeaderModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="bg-white p-5 rounded-md text-center">
+                <h2 className="text-xl font-bold mb-4">Select a New Leader</h2>
+                <select
+                  className="border p-2 rounded-md w-full"
+                  value={newLeaderId || ""}
+                  onChange={(e) => setNewLeaderId(e.target.value)}
+                >
+                  <option value="" disabled>Select a team member</option>
+                  {teamMembers
+                    .filter((member) => member.event1TeamRole !== 0) // Exclude current leader
+                    .map((member) => (
+                      <option key={member.uid} value={member.uid}>
+                        {member.name}
+                      </option>
+                    ))}
+                </select>
+                <div className="flex justify-around mt-4">
+                  <button
+                    onClick={handleConfirmLeaderChange}
+                    className="bg-green-500 text-white px-4 py-2 rounded-md"
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    onClick={handleCloseModal}
+                    className="bg-red-500 text-white px-4 py-2 rounded-md"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           {/* Modal for Remove */}
           {showModal && modalType === "remove" && modalMemberIndex !== null && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -188,7 +285,7 @@ export default function Page() {
                 <p className="mb-4">Are you sure you want to leave the team?</p>
                 <div className="flex justify-around">
                   <button
-                    onClick={handleRemove} // Same function for leave action
+                    onClick={handleLeave} // Same function for leave action
                     className="bg-green-500 text-white px-4 py-2 rounded-md"
                   >
                     Yes
