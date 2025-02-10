@@ -55,7 +55,7 @@ export default function page() {
               Join your team
             </h1>
             <div className="flex flex-col  items-center gap-5">
-              <button onClick={() => router.push("/events/event1/TeamCode")} className=" sm:landscape:w-[15vw]  mb-7 rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center portrait:lg:w-[30vw]  md:max-w-[25vw] md:text-[20px] landscape:md:text-[1.6vh] lg:w-[15vw] w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300 ">
+              <button onClick={() => router.push("/events/event1/joinTeam")} className=" sm:landscape:w-[15vw]  mb-7 rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-center portrait:lg:w-[30vw]  md:max-w-[25vw] md:text-[20px] landscape:md:text-[1.6vh] lg:w-[15vw] w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300 ">
                 Find team to join
               </button>
             </div>

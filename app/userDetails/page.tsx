@@ -115,7 +115,7 @@ export default function UserDetail() {
 
       const result = response.data.message;
       toast.success(result || "Form submitted successfully!");
-      update({...session, user: {...session?.user, hasFilledDetails: true } })
+      update({...session, user: {...session?.user, hasFilledDetails: true ,name:formData.name} })
       setFormData({ name: "", regNo: "", number: "" });
       setErrors({});
       setLoading(false);

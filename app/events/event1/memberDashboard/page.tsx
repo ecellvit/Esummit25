@@ -1,7 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-// import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
@@ -15,7 +15,9 @@ type TeamMember = {
 };
 
 export default function MemberDashboard() {
+
   const router = useRouter();
+  const { data: session, status, update } = useSession();
   const [check, setCheck] = useState<number>(0);
   const [teamName, setTeamName] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -55,7 +57,7 @@ export default function MemberDashboard() {
       getData();
     
   }, []);
-
+  console.log(session);
   const getUserData = async () => {
     try {
       const res = await fetch("/api/user/getUserDetails", {
@@ -112,21 +114,11 @@ export default function MemberDashboard() {
 
   const handleLeave = async () => {
     try {
-      const info = await fetch("/api/user/getUserDetails", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const data = await info.json();
-      const userEmail = data?.user?.email;
-      await axios.patch("/api/event1/leaveTeam", { email: userEmail }, {
-        headers: {
-          //Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-      });
+      await axios.patch("/api/event1/leaveTeam");
       toast.success("You have left the team.");
+      const updatedSession = {...session?.user};
+      updatedSession.event1TeamRole = undefined;
+      update({...session, user: updatedSession });
       router.push("/");
     } catch (error) {
       console.error("Error leaving team:", error);

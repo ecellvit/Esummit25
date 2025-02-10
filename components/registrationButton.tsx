@@ -4,7 +4,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import { useSession } from "next-auth/react";
+
+import { signIn, signOut, useSession } from "next-auth/react";
 
 interface RegistrationButtonsProps {
   eventUrls: {
@@ -18,6 +19,11 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
   const userEmail = session?.user?.email || "";
 
   const handleRedirect = async (event: number) => {
+    if (!userEmail) {
+      signIn("google");
+      return;
+    }
+    else{
     // Event 6: Restrict VIT students
     if (event === 5 && userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("VIT students can't register for this event");
@@ -25,10 +31,12 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
     }
 
     // Events 1 to 5: Only allow VIT students
+    
     if (event >= 1 && event <= 4 && !userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("Use your college email ID (@vitstudent.ac.in) to register");
       return;
     }
+  }
 
     try {
       const response = await axios.post("/api/eventRegistration", { event });
