@@ -4,7 +4,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import axios, { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import bg from "/assets/bg.png"; 
 import divbg from "/assets/divbg.png";
@@ -65,7 +65,7 @@ export default function page() {
             style={{ background: "linear-gradient(90deg, #611212 0%, #C72626 100%)" }}
             onClick={createTeam}
           >
-            Create Your Own Team
+            Create your Own Team
           </button>
         </div>
         <hr className="w-4/5 my-12" style={{ border: "2px solid", borderImageSource: "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)", borderImageSlice: 1 }} />

@@ -147,7 +147,7 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
                 }}
               ></div> // Spinner with inline styles
             ) : (
-              "Join Team"
+              "Join Team with Code"
             )}
           </button>
         </form>
@@ -157,7 +157,7 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
         {showDialog && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <p className="text-black">Do you want to join Team-{teamName}?</p>
+              <p className="text-black">Do you want to join Team - {teamName}?</p>
               <button onClick={handleConfirmJoin} disabled={isModalLoading} className="bg-blue-500 text-white px-4 py-2 rounded">
                 {isModalLoading ? (
                   <div
@@ -178,7 +178,7 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
           </div>
         )}        
         <hr className="w-4/5 my-12" style={{ border: "2px solid", borderImageSource: "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)", borderImageSlice: 1 }} />
-        <p className="text-lg text-center">I don't have a team</p>
+        <p className="text-lg text-center">I don't have a Team</p>
         <button
           className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold hover:scale-105 active:scale-95 transition-transform"
           style={{ background: "linear-gradient(90deg, #611212 0%, #C72626 100%)" }}
