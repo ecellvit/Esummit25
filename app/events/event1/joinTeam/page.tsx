@@ -27,7 +27,7 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
   const createTeam = () => {
     router.push("createTeam");
   };
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
 
   useEffect(() => {
     setLoading(true);
@@ -37,33 +37,33 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
       toast.error("Please Log in or Sign up");
     } else if (status === "authenticated") {
       setLoading(false);
-      getUserData();
+      // getUserData();
     }
   }, [status, router]);
 
-  const getUserData = async () => {
-    try {
-      const res = await fetch(`/api/userInfo`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessTokenBackend}`,
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const data = await res.json();
-      const user = data.user;
+  // const getUserData = async () => {
+  //   try {
+  //     const res = await fetch(`/api/userInfo`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${session?.accessTokenBackend}`,
+  //         "Access-Control-Allow-Origin": "*",
+  //       },
+  //     });
+  //     const data = await res.json();
+  //     const user = data.user;
 
-      if (!user.hasFilledDetails) {
-        router.push("/");
-      } else if (user.teamId) {
-        const redirect = user.teamRole === "1" ? "/memberDashboard" : "/leaderDashboard";
-        router.push(redirect);
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
+  //     if (!user.hasFilledDetails) {
+  //       router.push("/");
+  //     } else if (user.teamId) {
+  //       const redirect = user.teamRole === "1" ? "/memberDashboard" : "/leaderDashboard";
+  //       router.push(redirect);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error);
+  //   }
+  // };
 
   const fetchTeamName = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,10 +91,11 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
       const response = await axios.post('/api/event1/joinTeam', { teamCode: teamCode });
 
       if (response.status == 200) {
+        await update({...session, user: {...session?.user, event1TeamRole: 1}});
         showMessage("Successfully joined the team.", "success");
         setShowDialog(false);
         setTimeout(() => {
-          window.location.href = "/memberDashboard";
+          router.push("/events/event1/memberDashboard")
         }, 1000);
       } else {
         showMessage(response.data.message, "error");
@@ -115,8 +116,7 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
     <div className="h-screen w-screen flex items-center justify-center bg-black">
       <div className="bg-gray-700 text-white opacity-90 p-8 rounded-lg flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5 h-[80vh]">
         <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12">Join Team</h2>
-        <form className="w-full flex flex-col items-center gap-5">
-        <form className="flex flex-col items-center gap-8" onSubmit={fetchTeamName}></form>
+        <form className="w-full flex flex-col items-center gap-5" onSubmit={fetchTeamName}>
           <input
             type="text"
             placeholder="Enter Team Code"
@@ -152,7 +152,7 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
         {showDialog && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <p>Do you want to join Team-{teamName}?</p>
+              <p className="text-black">Do you want to join Team-{teamName}?</p>
               <button onClick={handleConfirmJoin} disabled={isModalLoading} className="bg-blue-500 text-white px-4 py-2 rounded">
                 {isModalLoading ? (
                   <div
