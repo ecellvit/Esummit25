@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import bg from "/assets/bg.png";
 import divbg from "/assets/divbg.png";
 import Loader from "@/components/loader";
+import Navbar from "@/components/navbar";
 
 export default function page() {
   const router = useRouter();
@@ -53,8 +54,12 @@ export default function page() {
   };
 
   const joinTeam = () => {
-    setIsLoading(true); // Show loader when redirecting
+    setIsLoading(true);
     router.push("joinTeam");
+  };  
+  const userConsent = () => {
+    setIsLoading(true);
+    router.push("userConsent");
   };
 
   useEffect(() => {
@@ -113,7 +118,6 @@ export default function page() {
             borderImageSlice: 1,
           }}
         />
-        <p className="text-lg text-center">Don't want to create a team?</p>
         <button
           className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold hover:scale-105 active:scale-95 transition-transform"
           style={{
@@ -128,9 +132,9 @@ export default function page() {
           style={{
             background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
           }}
-          onClick={joinTeam}
+          onClick={userConsent}
         >
-          Join any Random Team
+          Don't Have a Team
         </button>
       </div>
       <Toaster />
