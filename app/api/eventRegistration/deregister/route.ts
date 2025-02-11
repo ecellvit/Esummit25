@@ -3,7 +3,6 @@ import { getServerSession } from 'next-auth';
 import { Users } from '@/models/user.model';
 import { dbConnect } from '@/lib/dbConnect';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import axios from 'axios';
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -38,25 +37,26 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "VIT students can't register for this event" }, { status: 403 });
         }
 
-        // code for event 1
-        if (user.events.includes(parsedNumber) && (parsedNumber === 1 || parsedNumber === 2) ) {
+        // code for event 1 and 2
+        if (user.events.includes(parsedNumber) && (parsedNumber === 1 || parsedNumber === 2)) {
             // user has no team
             if (!user.teamId) {
-                user.events.pop(parsedNumber);
+                user.events = user.events.filter((e: number) => e !== parsedNumber);
                 await user.save();
+                return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 201 });
+            } else {
+                return NextResponse.json({ message: "Please leave your team before deregistering." }, { status: 403 });
             }
-            else {
-                await axios.patch("/api/event1/leaveTeam");
-            }
-            return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 201 });
         }
 
-        // code for event 3, 4 and 5.
+        // code for event 3, 4, and 5
         if (user.events.includes(parsedNumber)) {
-            user.events.pop(parsedNumber);
+            user.events = user.events.filter((e: number) => e !== parsedNumber);
             await user.save();
             return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 202 });
         }
+
+        return NextResponse.json({ error: "User is not registered for this event" }, { status: 400 });
     } catch (error) {
         console.error('Error updating user events:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
