@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { Users } from "@/models/user.model";
 import { dbConnect } from "@/lib/dbConnect";
 import TeamModel from "@/models/event1/Team.model";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "../../../../lib/authOptions";
 
 export async function GET(req: NextRequest) {
   await dbConnect();

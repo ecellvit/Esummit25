@@ -3,7 +3,7 @@ import { dbConnect } from "@/lib/dbConnect"; // Adjust the path to your database
 import { Users } from "@/models/user.model"; // Adjust paths based on your project structure
 import TeamModel from "@/models/event1/Team.model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "../../../../lib/authOptions";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   await dbConnect(); // Ensure the database is connected

@@ -104,6 +104,7 @@ export default function Page() {
       });
 
       if (response.status === 200) {
+        await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
         toast.success("You have left the team successfully.");
         update({
           ...session,
