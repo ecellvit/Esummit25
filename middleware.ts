@@ -65,7 +65,8 @@ export async function middleware(request: NextRequest) {
         //? Redirect to createTeam page
         if ((user.event1TeamRole === undefined || user.event1TeamRole === null) && !(
           path.startsWith('/events/event1/createTeam') ||
-          path.startsWith('/events/event1/joinTeam')
+          path.startsWith('/events/event1/joinTeam') ||
+          path.startsWith('/events/event1/userConsent')
         )) {
           return NextResponse.redirect(new URL('/events/event1/createTeam', request.url))
         }
