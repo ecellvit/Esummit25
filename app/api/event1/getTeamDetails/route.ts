@@ -22,7 +22,7 @@ export async function GET(req: Request) {
 
     // Find the user by email
     const user = await Users.findOne({ email: sessionUser.email });
-
+    console.log('heeeeeeeeeeeeeelllllllllllllloooooooooo',user);
     if (!user || !user.event1TeamId) {
       return NextResponse.json(
         { message: "User has no team." },
@@ -42,7 +42,7 @@ export async function GET(req: Request) {
 
     // Fetch the team
     const team = await TeamModel.findById(teamId);
-
+    console.log('asdfkgaldkfjaldhgaldhfladjf',team);
     if (!team) {
       return NextResponse.json({ message: "Team not found." }, { status: 404 });
     }
@@ -65,6 +65,8 @@ export async function GET(req: Request) {
       teamName: team.teamName,
       teamMembersData: teamMembers, // Members details
     };
+
+    console.log('karannnnnnnnnnnnnnnnnnnnnn',teamDetails);
 
     return NextResponse.json(teamDetails, { status: 200 });
   } catch (error) {
