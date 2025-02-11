@@ -18,8 +18,8 @@ interface Message {
   type: "success" | "error" | "info";
 }
 
-const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
-  const [teamCode, setTeamCode] = useState<string>(propTeamCode || "");
+export default function JoinTeam() {  // Remove the props) {
+  const [teamCode, setTeamCode] = useState<string>("");
   const [teamName, setTeamName] = useState<string>("");
   const [message, setMessage] = useState<Message | null>(null);
   const [showDialog, setShowDialog] = useState<boolean>(false);
@@ -199,4 +199,3 @@ const JoinTeam: React.FC<JoinTeamProps> = ({ teamCode: propTeamCode }) => {
   );
 };
 
-export default JoinTeam;

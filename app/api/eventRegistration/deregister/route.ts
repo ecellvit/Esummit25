@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { Users } from '@/models/user.model';
 import { dbConnect } from '@/lib/dbConnect';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '../../../../lib/authOptions';
 
 export async function POST(request: Request) {
     await dbConnect();
