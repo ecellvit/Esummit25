@@ -191,9 +191,24 @@ export default function Page() {
     }
   };
 
+  const handleCopyTeamCode = async () => {
+    try {
+      await navigator.clipboard.writeText(teamCode);
+      toast.success("Team code copied to clipboard!");
+    } catch (error) {
+      toast.error("Failed to copy team code.");
+    }
+  };
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   return (
     <div
-      className="bg-cover bg-center min-h-screen flex flex-col items-center justify-center p-4 text-black pt-[12vh]"
+      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black"
       style={{ backgroundImage: `url(${background.src})` }}
     >
       <Navbar />
@@ -205,7 +220,7 @@ export default function Page() {
       ) : (
         <>
           <div
-            className=" min-h-screen w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-center p-4 rounded-lg "
+            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-center p-4 rounded-lg "
             style={{
               backgroundImage: `url(${background1.src})`,
               backgroundSize: "cover",
@@ -216,7 +231,7 @@ export default function Page() {
             <h1 className="text-2xl sm:text-3xl font-extrabold mb-4 text-center drop-shadow-lg text-red-500">
               {teamName || "Team Name Not Found"}
             </h1>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl px-8 py-10">
               {teamMembers.length > 0 ? (
                 teamMembers.map((member, index) => (
@@ -393,15 +408,29 @@ export default function Page() {
             {/* Modal for Team Code */}
             {showModal && modalType === "teamCode" && (
               <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="bg-white p-4 rounded-lg shadow-lg">
-                  <h2 className="text-xl font-bold mb-4">Team Code</h2>
-                  <p className="mb-4">{teamCode}</p>
-                  <button className="btn-secondary" onClick={handleCloseModal}>
-                    Close
-                  </button>
+                <div className="bg-white p-8 rounded-lg shadow-lg w-96 max-w-[90vw]">
+                  <h2 className="text-2xl font-bold mb-6 text-center">Team Code</h2>
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+                    <p className="text-xl font-bold">{teamCode}</p>
+                    <button
+                      onClick={handleCopyTeamCode}
+                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <div className="flex justify-center">
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-md"
+                      onClick={handleCloseModal}
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
+
           </div>
         </>
       )}
