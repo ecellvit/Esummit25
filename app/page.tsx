@@ -12,16 +12,6 @@ export default function HomePage() {
     <div>
       <CustomCursor />
       <SignInBtn/>
-
-      {/* <EventButtons
-        eventUrls={{
-          1: "/events/event1/createTeam", 
-          2: "/events/event2", 
-          3: "/events/event3", 
-          4: "/events/event4", 
-          5: "/events/event5", 
-        }}
-      /> */}
       <RegistrationButtons
        eventUrls={{
         1: "/events/event1/createTeam", 
