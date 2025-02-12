@@ -3,7 +3,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import TeamModel from "@/models/event1/Team.model";
 import { Users } from "@/models/user.model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import mongoose from "mongoose";
 
 export async function GET(req: Request) {
@@ -22,12 +22,11 @@ export async function GET(req: Request) {
 
     // Find the user by email
     const user = await Users.findOne({ email: sessionUser.email });
-    console.log("User fetched:", user);
-
+    console.log('heeeeeeeeeeeeeelllllllllllllloooooooooo',user);
     if (!user || !user.event1TeamId) {
       return NextResponse.json(
         { message: "User has no team." },
-        { status: 404 }
+        { status: 409 }
       );
     }
 
@@ -43,8 +42,7 @@ export async function GET(req: Request) {
 
     // Fetch the team
     const team = await TeamModel.findById(teamId);
-    console.log("Team fetched:", team);
-
+    console.log('asdfkgaldkfjaldhgaldhfladjf',team);
     if (!team) {
       return NextResponse.json({ message: "Team not found." }, { status: 404 });
     }
@@ -54,7 +52,6 @@ export async function GET(req: Request) {
       { event1TeamId: teamId }, // NEW FIX HERE
       "name email regNo mobNo event1TeamRole"
     );
-    console.log("Team members fetched:", teamMembers);
 
     if (!teamMembers || teamMembers.length === 0) {
       return NextResponse.json(
@@ -68,6 +65,10 @@ export async function GET(req: Request) {
       teamName: team.teamName,
       teamMembersData: teamMembers, // Members details
     };
+
+    if ( user.event1TeamRole === 0) {
+      return NextResponse.json(teamDetails, { status: 202 });
+    }
 
     return NextResponse.json(teamDetails, { status: 200 });
   } catch (error) {

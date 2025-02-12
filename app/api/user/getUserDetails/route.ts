@@ -2,7 +2,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import { Users } from "@/models/user.model";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "../../../../lib/authOptions";
 import { ApiResponse } from "@/types/ApiResponse";
 
 export async function GET(): Promise<NextResponse<ApiResponse>> {

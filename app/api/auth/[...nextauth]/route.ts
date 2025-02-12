@@ -4,7 +4,47 @@ import { OAuth2Client, LoginTicket } from 'google-auth-library';
 import NextAuth, { DefaultUser, NextAuthOptions, User} from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { JWT } from 'next-auth/jwt';
-import { generateTokens } from '../../login/generateTokensUser/route';
+
+import { UserToken } from "@/models/usertoken";
+import jwt from "jsonwebtoken";
+import { Types } from "mongoose";
+
+interface UserT {
+  _id: Types.ObjectId;
+}
+
+interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+async function generateTokens(user: UserT): Promise<Tokens> {
+  try {
+    const payload = {
+      _id: user._id,
+    };
+
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET || "", {
+      expiresIn: "5d",
+    });
+
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET || "", {
+      expiresIn: "30d",
+    });
+
+    const userToken = await UserToken.findOne({ userId: user._id });
+    if (userToken) {
+      await userToken.deleteOne();
+    }
+
+    await new UserToken({ userId: user._id, token: refreshToken }).save();
+
+    return { accessToken, refreshToken };
+  } catch (err) {
+    throw err;
+  }
+}
+
 
 // Ensure proper type for the Google OAuth2 client
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID as string);
@@ -76,7 +116,7 @@ const gettokenfrombackend = async (user: User, account: Account): Promise<string
   return accessToken;
 };
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -104,7 +144,7 @@ export const authOptions: NextAuthOptions = {
       }
       return false; // Not a Google sign-in, return false
     },    
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, session, trigger }) {
       // Type `token` explicitly to avoid 'unknown' type
       const typedToken = token as JWT & {
         accessTokenExpires?: number;
@@ -114,14 +154,25 @@ export const authOptions: NextAuthOptions = {
         accessTokenFromBackend?: string;
         user?: {
           id: string;
-          email: string;
-          name: string;
+          name: string; 
+          email: string; 
+          image?: string | null;
           hasFilledDetails?: boolean;
           events?: number[];
           event1TeamRole?: number;
           event2TeamRole?: number;
         };
       };
+
+      if (trigger === "update" && session) {
+        return {
+          ...token,
+          user: {
+            ...(token.user as User),
+            ...session.user
+          }
+        };
+      }
 
       if (account && user) {
         try {
@@ -166,22 +217,25 @@ export const authOptions: NextAuthOptions = {
           refreshToken: string;
           idToken: string | undefined;
           accessTokenFromBackend?: string;
-          hasFilledDetails?: boolean;
-          events?: number[];
-          event1TeamRole?: number;
-          event2TeamRole?: number;
+          user: {
+            name?: string | null; 
+            email?: string | null; 
+            image?: string | null;
+            hasFilledDetails?: boolean;
+            events?: number[];
+            event1TeamRole?: number;
+            event2TeamRole?: number;
+          }
         };
-
-        const midUser = typedToken.user as { name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined };
       
         session.user = {
-          name: midUser.name ?? '',
-          email: midUser.email ?? '',
-          image: midUser.image ?? '',
-          hasFilledDetails: typedToken.hasFilledDetails ?? false,
-          events: typedToken.events,
-          event1TeamRole: typedToken.event1TeamRole,
-          event2TeamRole: typedToken.event2TeamRole,
+          name: typedToken.user.name ?? '',
+          email: typedToken.user.email ?? '',
+          image: typedToken.user.image ?? '',
+          hasFilledDetails: typedToken.user.hasFilledDetails ?? false,
+          events: typedToken.user.events,
+          event1TeamRole: typedToken.user.event1TeamRole,
+          event2TeamRole: typedToken.user.event2TeamRole,
         };
         session.accessToken = typedToken.accessToken;
         session.accessTokenBackend = typedToken.accessTokenFromBackend;
@@ -298,4 +352,12 @@ async function refreshAccessToken(token: any) {
 
 const handler = NextAuth(authOptions);
 
+<<<<<<< HEAD
 export { handler as GET, handler as POST };
+=======
+export { handler as GET, handler as POST };
+
+
+
+
+>>>>>>> 41d11f00bc7faf1b6c38d5bb5a7a24c5cf744cf1

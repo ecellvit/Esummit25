@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-// import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
 
 type TeamMember = {
   id: number;
@@ -15,8 +15,9 @@ type TeamMember = {
 };
 
 export default function MemberDashboard() {
+
   const router = useRouter();
-  const [check, setCheck] = useState<number>(0);
+  const { data: session, update } = useSession();
   const [teamName, setTeamName] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
@@ -52,56 +53,36 @@ export default function MemberDashboard() {
     ]);
   useEffect(() => {
     setLoading(true)
-      getData();
-    
-  }, []);
-
-  const getUserData = async () => {
-    try {
-      const res = await fetch("/api/user/getUserDetails", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const data = await res.json();
-      if (data?.user?.hasFilledDetails) {
-        if (data?.user?.teamId) {
-          if (data?.user?.teamRole === 1) {
-            setLoading(false);
-          } else {
-            setLoading(false);
-            router.push("/leaderDashboard");
-          }
-        } else {
-          setLoading(false);
-          router.push("/");
-        }
-      } else {
-        setLoading(false);
-        router.push("/");
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      toast.error("An error occurred while fetching user data.");
-      setLoading(false);
-    }
-  };
+    getData();
+  }, [session?.user?.event1TeamRole]);
 
   const getData = async () => {
     setLoading(true);
     try {
       const userDataRes = await axios.get("/api/event1/getTeamDetails");
 
+      if (userDataRes.status === 202) {
+        toast.error("You have become the leader of this team.");
+        await update({...session, user: {...session?.user, event1TeamRole: 0}});
+        router.push("/events/event1/leaderDashboard");
+      }
       const userData = userDataRes.data;
       setTeamName(userData?.teamName);
       setTeamMembers(userData?.teamMembersData);
 
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      toast.error("An error occurred while fetching data.");
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 409) {
+        try {
+          await update({...session, user: {...session?.user, event1TeamRole: null}});
+          router.push("/events/event1/createTeam");
+          console.log(session?.user);
+          toast.error("You have been removed from this team.");
+        } catch (error) {
+          console.log(error);
+        }
+      }
       setLoading(false);
     }
   };
@@ -112,22 +93,15 @@ export default function MemberDashboard() {
 
   const handleLeave = async () => {
     try {
-      const info = await fetch("/api/user/getUserDetails", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const data = await info.json();
-      const userEmail = data?.user?.email;
-      await axios.patch("/api/event1/leaveTeam", { email: userEmail }, {
-        headers: {
-          //Authorization: `Bearer ${session?.accessTokenBackend}`,
-        },
-      });
-      toast.success("You have left the team.");
-      router.push("/");
+      const response = await axios.patch("/api/event1/leaveTeam");
+
+      if (response.status === 200) {
+        toast.success("You have left the team.");
+        await update({...session, user: {...session?.user, event1TeamRole: null}});
+        router.push("/events/event1/createTeam");
+      } else {
+        toast.error("Error leaving the team. Please try again later.");
+      }
     } catch (error) {
       console.error("Error leaving team:", error);
       toast.error("An error occurred while leaving the team.");
