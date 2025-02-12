@@ -38,9 +38,9 @@ export async function POST(request: Request) {
         }
 
         // code for event 1 and 2
-        if (user.events.includes(parsedNumber) && (parsedNumber === 1 || parsedNumber === 2)) {
+        if (user.events.includes(parsedNumber) && (parsedNumber === 1)) {
             // user has no team
-            if (!user.teamId) {
+            if (user.teamId) {
                 user.events = user.events.filter((e: number) => e !== parsedNumber);
                 await user.save();
                 return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 201 });
