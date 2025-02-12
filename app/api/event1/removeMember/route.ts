@@ -3,7 +3,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import TeamModel from "@/models/event1/Team.model";
 import { Users } from "@/models/user.model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../../lib/authOptions";
+import { authOptions } from "@/lib/authOptions";
 
 export async function PATCH(req: Request) {
   await dbConnect();

@@ -3,7 +3,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import TeamModel from "@/models/event1/Team.model";
 import { Users } from "@/models/user.model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../../lib/authOptions";
+import { authOptions } from "@/lib/authOptions";
 import mongoose from "mongoose";
 
 export async function GET(req: Request) {
@@ -66,7 +66,9 @@ export async function GET(req: Request) {
       teamMembersData: teamMembers, // Members details
     };
 
-    console.log('karannnnnnnnnnnnnnnnnnnnnn',teamDetails);
+    if ( user.event1TeamRole === 0) {
+      return NextResponse.json(teamDetails, { status: 202 });
+    }
 
     return NextResponse.json(teamDetails, { status: 200 });
   } catch (error) {
