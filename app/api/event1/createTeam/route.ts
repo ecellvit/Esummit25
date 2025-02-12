@@ -5,7 +5,7 @@ import { IUser, Users } from "@/models/user.model";
 import { Types } from "mongoose";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../../../../lib/authOptions";
+import { authOptions } from "@/lib/authOptions";
 
 async function generateUniqueTeamCode() {
   let teamCode;
