@@ -16,9 +16,9 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ success: false, message: "User not authenticated" }, { status: 401 });
     }
 
-    const { memberIdToRemove } = await req.json();
-    if (!memberIdToRemove) {
-      return NextResponse.json({ success: false, message: "Member ID is required" }, { status: 400 });
+    const { index } = await req.json();
+    if (!index) {
+      return NextResponse.json({ success: false, message: "Member index is required" }, { status: 400 });
     }
 
     // Find the leader
@@ -43,29 +43,28 @@ export async function PATCH(req: Request) {
     }
 
     // Check if the leader is removing themselves
-    const isLeaderLeaving = team.teamLeaderId.toString() === memberIdToRemove;
+    if ( index === 0 ) {
+      return NextResponse.json({ success: false, message: "leader cannot leave" }, { status: 412 });
+    } 
+
+    const removedMemberId = team.teamMembers[index];
+    if (!removedMemberId) {
+      return NextResponse.json({ success: false, message: "Invalid member index" }, { status: 400 });
+    }
+
+    const removedMember = await Users.findById(removedMemberId)
+    if (!removedMember) {
+      return NextResponse.json({ success: false, message: "Removed member not found" }, { status: 404 });
+    }
+
+    //TODO: check if it works with undefined
+    removedMember.event1TeamId = null;
+    removedMember.event1TeamRole = null;
+    await removedMember.save();
 
     // Remove the member
-    team.teamMembers = team.teamMembers.filter((member) => member.toString() !== memberIdToRemove);
-    
-    // If leader is leaving and there are remaining members, assign a new leader
-    if (isLeaderLeaving && team.teamMembers.length > 0) {
-      team.teamLeaderId = team.teamMembers[0]; // Assign the first member as leader
-      await Users.findByIdAndUpdate(team.teamMembers[0], { event1TeamRole: 0 });
-    }
-
-    // If no members remain, delete the team
-    if (team.teamMembers.length === 0) {
-      await TeamModel.findByIdAndDelete(team._id);
-      await Users.findByIdAndUpdate(memberIdToRemove, { $unset: { event1TeamId: "", event1TeamRole: "" } });
-      return NextResponse.json({ success: true, message: "Team deleted as no members are left" }, { status: 200 });
-    }
-
-    // Save the updated team
+    team.teamMembers.splice(index, 1);
     await team.save();
-
-    // Update the removed user's details
-    await Users.findByIdAndUpdate(memberIdToRemove, { $unset: { event1TeamId: "", event1TeamRole: "" } });
 
     return NextResponse.json({ success: true, message: "Member removed successfully" }, { status: 200 });
 
