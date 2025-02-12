@@ -140,26 +140,9 @@ export default function Page() {
       return;
     }
 
-    const memberToRemove = teamMembers[modalMemberIndex]; // Find the member
-    const memberIdToRemove = memberToRemove.id; // Get ID safely
-    console.log("puniti", memberToRemove);
-
-    if (!memberIdToRemove) {
-      console.error("Error: Invalid memberIdToRemove", {
-        modalMemberIndex,
-        memberToRemove,
-      });
-      toast.error("Error: Member ID is invalid.");
-      return;
-    }
-
-    console.log(`Removing member ID: ${memberIdToRemove}`);
-
     setLoading(true);
     try {
-      const response = await axios.patch("/api/event1/removeMember", {
-        memberIdToRemove,
-      });
+      const response = await axios.patch("/api/event1/removeMember", { index: modalMemberIndex });
 
       if (response.status === 200) {
         toast.success("Team member removed successfully");
