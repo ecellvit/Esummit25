@@ -7,10 +7,10 @@ import TeamModel from "@/models/event1/Team.model";
 
 // Correct function signature
 export async function GET(
-    request: NextRequest
+    request: Request, { params } : { params: Promise<{teamCode: string}> }
 ): Promise<NextResponse> {
   await dbConnect();
-  const teamCode = request.nextUrl.searchParams.get("teamCode"); // ✅ Access params correctly
+    const teamCode = (await params).teamCode;
     try {
         if (!teamCode) {
             return NextResponse.json({ message: "Missing team code." }, { status: 400 });
