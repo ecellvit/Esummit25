@@ -106,10 +106,6 @@ export default function Page() {
       if (response.status === 200) {
         await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
         toast.success("You have left the team successfully.");
-        update({
-          ...session,
-          user: { ...session?.user, event1TeamRole: null },
-        });
         router.push("/"); // Redirect user after leaving
       } else {
         toast.error(response.data.message || "Failed to leave the team.");
@@ -256,7 +252,7 @@ export default function Page() {
                       </h1>
                       {member.event1TeamRole !== 0 && (
                         <button
-                          className="mt-3 rounded-3xl btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
+                          className="mt-3 btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
                           onClick={() => handleShowModal(index, "remove")}
                         >
                           Remove
