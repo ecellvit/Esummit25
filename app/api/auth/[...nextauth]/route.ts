@@ -352,12 +352,8 @@ async function refreshAccessToken(token: any) {
 
 const handler = NextAuth(authOptions);
 
-<<<<<<< HEAD
-export { handler as GET, handler as POST };
-=======
 export { handler as GET, handler as POST };
 
 
 
 
->>>>>>> 41d11f00bc7faf1b6c38d5bb5a7a24c5cf744cf1
