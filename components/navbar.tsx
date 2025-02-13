@@ -49,7 +49,8 @@ const Navbar: React.FC = () => {
       {/* <nav className="fixed top-0 left-0 w-full shadow-md z-50 p-4 flex items-center justify-between"> */}
       <nav 
   className="fixed top-0 left-0 w-full h-[10vh] shadow-md  z-50 p-4 flex items-center justify-between bg-cover bg-transparent bg-center" 
-  style={{ backgroundImage: `url(${background.src})` }}>
+  style={{ backgroundImage: `url(${background.src})` }}
+  >
 
 
       <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
