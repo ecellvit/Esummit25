@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     // Get the current session from NextAuth
     const session = await getServerSession(authOptions);
-    console.log(session);
+  
     // If there's no session, respond with an unauthorized status
     if (!session) {
       return NextResponse.json(
