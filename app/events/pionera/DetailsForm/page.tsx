@@ -4,6 +4,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import background from "@/assets/bg.png";
 
 interface FormData {
   name: string;
@@ -101,12 +102,18 @@ export default function RegistrationForm() {
   };
 
   return (
-    <main className="flex items-center justify-center h-screen bg-slate-400">
+    <main 
+   className="flex items-center justify-center h-screen"
+   style={{
+     backgroundImage: `url(${background.src})`,
+     backgroundSize: 'cover',
+   }}
+>
       <form
         className="bg-white p-6 rounded-lg shadow-lg w-96"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl font-bold mb-4">Register</h2>
+        <h2 className="text-2xl font-bold mb-4 text-align-center font-sans">Enter Your Information</h2>
         {Object.keys(formData).map((key) => (
           <div key={key} className="mb-3">
             <label className="block text-gray-700 capitalize">{key}</label>

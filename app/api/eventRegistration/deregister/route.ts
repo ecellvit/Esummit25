@@ -38,14 +38,15 @@ export async function POST(request: Request) {
         }
 
         // code for event 1 and 2
-        if (user.events.includes(parsedNumber) && (parsedNumber === 1 || parsedNumber === 2)) {
-            // user has no team
-            if (!user.teamId) {
+        if (user.events.includes(parsedNumber) && (parsedNumber === 1)) {
+            // Check if the user has a team
+            if (user.teamId) {
+                return NextResponse.json({ message: "Please leave your team before deregistering." }, { status: 403 });
+            } else {
+                // User has no team, allow deregistration
                 user.events = user.events.filter((e: number) => e !== parsedNumber);
                 await user.save();
                 return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 201 });
-            } else {
-                return NextResponse.json({ message: "Please leave your team before deregistering." }, { status: 403 });
             }
         }
 

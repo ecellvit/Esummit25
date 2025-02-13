@@ -2,3 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'GreaterTheory';
+    src: url('/app/fonts/GreaterTheory.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: 'GreaterTheory', sans-serif;
+  }
+  

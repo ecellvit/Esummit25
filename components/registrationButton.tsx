@@ -36,9 +36,9 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
     }
 
     if (session?.user.events?.includes(event)) {
-      if (event === 1 || event === 2) {
+      if (event === 1) {
         router.push(`/events/event${event}/createTeam`);
-      } else if (event >= 3 && event <= 4) {
+      } else if (event >= 2 && event <= 4) {
         router.push(`/events/event${event}`);
       } else if (event === 5) {
         router.push("/events/event5");
@@ -76,6 +76,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
   };
 
   const handleDeregister = async (event: number) => {
+    console.log("User  before deregistering:", session?.user);
     try {
       const response = await axios.post("/api/eventRegistration/deregister", { event });
       if (response.status === 201 || response.status === 202) {

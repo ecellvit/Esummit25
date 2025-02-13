@@ -10,6 +10,7 @@ export async function PATCH( request: Request ): Promise<NextResponse<ApiRespons
   await dbConnect();
 
   try {
+    console.log('hhhhhhhhhh');
     const session = await getServerSession(authOptions);
     const sessionUser = session?.user;
 
@@ -88,7 +89,7 @@ export async function PATCH( request: Request ): Promise<NextResponse<ApiRespons
     team.teamLeaderEmail = newLeader.email;
 
     // Remove the current leader's association with the team
-    currentLeader.event1TeamRole = undefined;
+    currentLeader.event1TeamRole = null;
     currentLeader.event1TeamId = null;
     await currentLeader.save();
 
