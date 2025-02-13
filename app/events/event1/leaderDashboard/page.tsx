@@ -75,6 +75,7 @@ export default function Page() {
     setShowModal(false);
   };
 
+<<<<<<< Updated upstream
   const handleDeleteTeam = async () => {
     setLoading(true);
     if (teamMembers.length === 1) {
@@ -95,12 +96,60 @@ export default function Page() {
         }
       } catch (err) {
         toast.error("Failed to delete team");
+=======
+  const handleLeave = async () => {
+    const leader = teamMembers.find((member) => member.event1TeamRole === 0);
+
+    if (!leader || !leader.uid) {
+      toast.error("Error: Leader not found.");
+      return;
+    }
+
+    // If there is only one member (leader), delete the team directly
+    if (teamMembers.length === 1) {
+      await leaveTeam(leader.uid, null); // Pass null for new leader as team will be deleted
+      return;
+    }
+
+    // If there are other members, show modal for leader selection
+    setShowLeaderModal(true);
+  };
+
+  const leaveTeam = async (leaderId: string, newLeaderId: string | null) => {
+    setLoading(true);
+    try {
+      if (newLeaderId) {
+        // Call the reassign leader route
+        const newLeaderIndex = teamMembers.findIndex(member => member.uid === newLeaderId);
+        const response = await axios.patch("/api/event1/reassignLeader", {
+          newLeaderIndex,
+        });
+  
+        if (response.status !== 200) {
+          toast.error(response.data.message || "Failed to reassign leader.");
+          return;
+        }
+      }
+  
+      const response = await axios.patch("/api/event1/leaveTeam", {
+        userId: leaderId,
+        newLeaderId, // Send new leader ID if applicable
+      });
+  
+      if (response.status === 200) {
+        await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
+        toast.success("You have left the team successfully.");
+        router.push("/"); // Redirect user after leaving
+      } else {
+        toast.error(response.data.message || "Failed to leave the team.");
+>>>>>>> Stashed changes
       }
     } else {
       toast.error("First remove all the members");
     }
   };
 
+<<<<<<< Updated upstream
   const handleLeave = async (newLeaderIndex:Number|null) => {
   
     
@@ -117,7 +166,7 @@ export default function Page() {
             ...session,
             user: { ...session?.user, event1TeamRole: null },
           });
-          router.push("events/event1/createTeam");
+          router.push("/events/event1/createTeam");
           setShowModal(false);
           setLoading(false);
         }else{
@@ -135,6 +184,20 @@ export default function Page() {
     }
     setLoading(false);
     setShowModal(false);
+=======
+  const handleConfirmLeaderChange = async () => {
+    if (!newLeaderId) {
+      toast.error("Please select a new leader.");
+      return;
+    }
+    const leader = teamMembers.find((member) => member.event1TeamRole === 0);
+    if (!leader || !leader.uid) {
+      toast.error("Error: Leader not found.");
+      return;
+    }
+  
+    await leaveTeam(leader.uid, newLeaderId);
+>>>>>>> Stashed changes
   };
 
   const handleRemove = async () => {
@@ -343,6 +406,41 @@ export default function Page() {
                   </div>
                 </div>
               )}
+
+{showLeaderModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="bg-white p-5 rounded-md text-center">
+      <h2 className="mb-4">Select a new leader</h2>
+      <select
+        onChange={(e) => setNewLeaderId(e.target.value)}
+        className="mb-4 p-2 border rounded"
+      >
+        <option value="">Select a member</option>
+        {teamMembers
+          .filter(member => member.event1TeamRole !== 0) // Exclude current leader
+          .map((member, index) => (
+            <option key={index} value={member.uid}>
+              {member.name}
+            </option>
+          ))}
+      </select>
+      <div className="flex justify-around">
+        <button
+          onClick={handleConfirmLeaderChange}
+          className="bg-green-500 text-white px-4 py-2 rounded-md"
+        >
+          Confirm
+        </button>
+        <button
+          onClick={() => setShowLeaderModal(false)}
+          className="bg-red-500 text-white px-4 py-2 rounded-md"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
             {/* Modal for Leave
             {showModal && modalType === "leave" && modalMemberIndex !== null && (

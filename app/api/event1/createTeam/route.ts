@@ -90,6 +90,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json({ success: true, message: "Team created successfully", teamCode: teamCode }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ success: false, message: "user registration failed" }, {status: 500});
+    console.error("Error creating team:", error); // Log the error
+    return NextResponse.json({ success: false, message: "User  registration failed" }, { status: 500 });
   }
 }
