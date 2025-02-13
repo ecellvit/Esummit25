@@ -6,6 +6,7 @@ import EventButtons from "@/components/EventButton";
 import RegistrationButtons from "@/components/registrationButton";
 import CustomCursor from "@/components/cursor";
 import SignInBtn from "@/components/signinButton";
+import MeetOurSpeakers from "@/components/meetOurSpeakers";
 import FaqContent from "@/components/faq";
 export default function HomePage() {
   return (
@@ -23,6 +24,7 @@ export default function HomePage() {
       />
       <Marq speed1={100} speed2={50} speed3={75} speed4={120} />
       <FaqContent/>
+      <MeetOurSpeakers />
       <Footer />
     </div>
   );
