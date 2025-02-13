@@ -40,19 +40,16 @@ export async function GET(req: Request) {
     }
 
     // Fetch the team
-    const team = await TeamModel.findById(teamId);
+    const team = await TeamModel.findById(teamId).populate({
+      path: "teamMembers",
+      select: "name email regNo mobNo event1TeamRole",
+    });
     if (!team) {
       return NextResponse.json({ message: "Team not found." }, { status: 404 });
     }
 
-    // Fetch team members based on event1TeamId instead of _id matching
-    const teamMembers = await Users.find(
-      { event1TeamId: teamId }, // NEW FIX HERE
-      "name email regNo mobNo event1TeamRole"
-    );
-
-    teamMembers.sort((a,b)=>(a.event1TeamRole===0?-1:1))
-
+    const teamMembers = team.teamMembers
+    
     if (!teamMembers || teamMembers.length === 0) {
       return NextResponse.json(
         { message: "No team members found." },
