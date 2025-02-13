@@ -23,6 +23,10 @@ type TeamMember = {
 export default function Page() {
   const router = useRouter();
   const [teamName, setTeamName] = useState<string | null>(null);
+  const [newTeamName, setNewTeamName] = useState<string>("");
+  
+  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -190,6 +194,34 @@ export default function Page() {
     };
   }, []);
 
+  const handleChangeTeamName = () => {
+    setShowModal(true);
+    setModalType("changeTeamName");
+  };
+
+  const handleConfirmChangeTeamName = async () => {
+    setShowModal(false);
+    setShowConfirmModal(true);
+  };
+
+  const handleSubmitTeamNameChange = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post("/api/event1/editTeamName", { teamName: newTeamName });
+      if (response.status === 200) {
+        toast.success("Team name changed successfully");
+        setTeamName(newTeamName);
+      } else {
+        toast.error(response.data.message || "Failed to change team name.");
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "An error occurred.");
+    } finally {
+      setLoading(false);
+      setShowConfirmModal(false);
+    }
+  };
+
   return (
     <div
       className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black"
@@ -217,6 +249,10 @@ export default function Page() {
               {teamName || "Team Name Not Found"}
             </h1>
 
+               
+            <button className="btn-primary mt-4" onClick={handleChangeTeamName}>
+            Change Team Name
+          </button>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl px-8 py-10">
               {teamMembers.length > 0 ? (
                 teamMembers.map((member, index) => (
@@ -386,6 +422,46 @@ export default function Page() {
                   </div>
                 </div>
               )}
+
+{showModal && modalType === "changeTeamName" && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-4 rounded-lg shadow-lg text-center">
+                <h2 className="text-xl font-bold mb-4">Enter New Team Name</h2>
+                <input
+                  type="text"
+                  className="border p-2 rounded-md w-full"
+                  value={newTeamName}
+                  onChange={(e) => setNewTeamName(e.target.value)}
+                />
+                <div className="flex justify-around mt-4">
+                  <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={handleConfirmChangeTeamName}>
+                    Confirm
+                  </button>
+                  <button className="bg-red-500 text-white px-4 py-2 rounded-md" onClick={() => setShowModal(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+{showConfirmModal && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-4 rounded-lg shadow-lg text-center">
+                <h2 className="text-xl font-bold mb-4">Confirm Team Name Change</h2>
+                <p>Are you sure you want to change the team name to "{newTeamName}"?</p>
+                <div className="flex justify-around mt-4">
+                  <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={handleSubmitTeamNameChange}>
+                    Yes
+                  </button>
+                  <button className="bg-red-500 text-white px-4 py-2 rounded-md" onClick={() => setShowConfirmModal(false)}>
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+       
 
             {showModal && modalType === "chooseLeader" && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
