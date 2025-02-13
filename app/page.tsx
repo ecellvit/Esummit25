@@ -6,11 +6,11 @@ import EventButtons from "@/components/EventButton";
 import RegistrationButtons from "@/components/registrationButton";
 import CustomCursor from "@/components/cursor";
 import SignInBtn from "@/components/signinButton";
-
+import FaqContent from "@/components/faq";
 export default function HomePage() {
   return (
     <div>
-      <CustomCursor />
+    <CustomCursor /> 
       <SignInBtn/>
       <RegistrationButtons
        eventUrls={{
@@ -22,6 +22,7 @@ export default function HomePage() {
       }}
       />
       <Marq speed1={100} speed2={50} speed3={75} speed4={120} />
+      <FaqContent/>
       <Footer />
     </div>
   );
