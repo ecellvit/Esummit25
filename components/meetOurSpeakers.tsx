@@ -1,17 +1,69 @@
-import React from "react";
+"use client";
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const MeetOurSpeakers: React.FC = () => {
+  const sectionRef = useRef(null);
+  const marqueeRef = useRef(null);
+  const comingSoonRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      // Pin "Meet Our Speakers" until "COMING SOON" fully covers it
+      ScrollTrigger.create({
+        trigger: marqueeRef.current,
+        start: "top top",
+        end: () => `+=${comingSoonRef.current?.offsetHeight || 500}`, // Pins until covered
+        scrub: 1,
+        pin: true,
+      });
+
+      // Parallax effect for "COMING SOON"
+      gsap.to(comingSoonRef.current, {
+        y: "-50%", // Moves up slowly for parallax effect
+        ease: "none",
+        scrollTrigger: {
+          trigger: comingSoonRef.current,
+          start: "top bottom",
+          end: "top top",
+          scrub: 1,
+        },
+      });
+
+      // Move "Meet Our Speakers" up and disappear once covered
+      gsap.to(marqueeRef.current, {
+        y: "-100%", // Moves up and out of view
+        opacity: 0, // Fades out
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: comingSoonRef.current,
+          start: "top center",
+          end: "top top",
+          scrub: 1,
+        },
+      });
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="speakers"
       className="relative w-full flex flex-col items-center justify-center bg-white overflow-hidden mt-7"
     >
-      {/* Wrapper for Background Text & Main Title */}
-      <div className="relative min-h-72 w-full flex flex-col items-center justify-center pt-24 pb-40">
-        {/* Background Moving Text */}
+      {/* Background Moving Text */}
+      <div
+        ref={marqueeRef}
+        className="relative min-h-72 w-full flex flex-col items-center justify-center pt-24 pb-40"
+      >
         <div className="absolute inset-0 flex items-center overflow-hidden whitespace-nowrap">
           <div className="flex w-max animate-speakersMarquee">
-            {/* Two identical lines for seamless looping */}
             {[...Array(2)].map((_, i) => (
               <h1
                 key={i}
@@ -21,7 +73,7 @@ const MeetOurSpeakers: React.FC = () => {
                   WebkitTextStroke: "2px rgba(176, 81, 25, 0.22)",
                 }}
               >
-                MEET OUR SPEAKERS &nbsp; MEET OUR SPEAKERS &nbsp; MEET OUR SPEAKERS &nbsp; MEET OUR SPEAKERS
+                MEET OUR SPEAKERS &nbsp; MEET OUR SPEAKERS &nbsp; MEET OUR SPEAKERS
               </h1>
             ))}
           </div>
@@ -34,7 +86,10 @@ const MeetOurSpeakers: React.FC = () => {
       </div>
 
       {/* Coming Soon Box */}
-      <div className="min-h-72 w-full flex items-center justify-center rounded-t-3xl bg-[#BA551B] z-10">
+      <div
+        ref={comingSoonRef}
+        className="min-h-[40rem] w-full flex items-center justify-center rounded-t-3xl bg-[#BA551B] z-10"
+      >
         <h1 className="uppercase text-5xl md:text-6xl lg:text-7xl font-GreaterTheory font-bold text-white text-center">
           COMING SOON!
         </h1>
