@@ -3,13 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'GreaterTheory';
-    src: url('/app/fonts/GreaterTheory.otf') format('opentype');
-    font-weight: normal;
+    font-family: 'GreaterTheory',sans-serif;
+    src: url('../public/fonts/GreaterTheory.woff') format('woff');
+    font-weight: 400;
     font-style: normal;
   }
-  
-  body {
-    font-family: 'GreaterTheory', sans-serif;
-  }
-  
