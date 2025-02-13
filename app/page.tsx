@@ -22,7 +22,8 @@ export default function HomePage() {
         5: "/events/event5", 
       }}
       />
-      <Marq speed1={100} speed2={50} speed3={75} speed4={120} />
+      {/* <Marq speed1={100} speed2={50} speed3={75} speed4={120} /> */}
+    
       <FaqContent/>
       <MeetOurSpeakers />
       <Footer />

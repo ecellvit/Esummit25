@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
 
         {/* Hamburger Icon */}
         <div className="md:hidden">
-          <button onClick={toggleMenu} className="focus:outline-none">
+          <button onClick={toggleMenu} className="focus:outline-none bg-transparent">
             {!isMenuOpen ? (
               <Image src={hamburgerIcon} alt="Menu" width={40} height={40} />
             ) : (
@@ -81,12 +81,13 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-85 backdrop-blur-sm z-[9999] flex flex-col items-center justify-center space-y-10 text-white text-2xl">
+        <div className="fixed inset-0 bg-black bg-opacity-85 backdrop-blur-sm z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-xl">
           <button onClick={toggleMenu} className="text-3xl">&times;</button>
           <Link href="/" onClick={toggleMenu}>Home</Link>
           <Link href="/#timeline" onClick={toggleMenu}>About</Link>
           <Link href="/#storyBehind" onClick={toggleMenu}>Events</Link>
           <Link href="/#footer" onClick={toggleMenu}>Speakers</Link>
+          <SignInBtn/>
         </div>
       )}
     </>

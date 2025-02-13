@@ -45,7 +45,7 @@ const FaqContent = () => {
   return (
     
     <main className="mt-0 md:px-20 p-10 pt-0">
-        <h1 className="w-10 h-10 text-5xl gap-5">FAQ'S</h1>
+        <h1 className="w-10 h-10 text-5xl gap-8">FAQ'S</h1>
         <br></br>
       <div className="flex flex-col gap-5 lg:flex-row lg:gap-20 justify-around">
         {[faqs.slice(0, 4), faqs.slice(4)].map((faqGroup, index) => (

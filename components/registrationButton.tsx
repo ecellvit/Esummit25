@@ -105,7 +105,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
   };
 
   return (
-    <div className="relative top-12 left-1/2 transform -translate-x-1/2 z-10 w-full py-6 bg-transparent flex justify-center gap-12 flex-wrap">
+    <div className="relative top-18 left-1/2 transform -translate-x-1/2 z-10 w-full py-6 bg-transparent flex justify-center gap-12 flex-wrap">
       {[1, 2, 3, 4, 5].map((event) => (
         <button
           key={event}
