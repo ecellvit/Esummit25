@@ -9,6 +9,7 @@ import bg from "/assets/bg.png";
 import divbg from "/assets/divbg.png";
 import Loader from "@/components/loader";
 
+
 interface JoinTeamProps {
   teamCode?: string;
 }

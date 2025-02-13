@@ -6,13 +6,11 @@ const CustomCursor = () => {
   const [isClickable, setIsClickable] = useState(false);
 
   useEffect(() => {
-    // Hide the default cursor
     document.body.style.cursor = "none";
 
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
 
-      // Check if the hovered element is clickable
       const target = e.target as HTMLElement;
       if (
         target.tagName === "A" ||

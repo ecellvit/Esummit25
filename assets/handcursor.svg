@@ -1,0 +1,21 @@
+<svg
+  width="48"
+  height="48"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Hand outline -->
+  <path
+    d="M15 46C12 45 8 41 8 35V15C8 12 10 10 13 10C16 10 18 12 18 15V27H20V7C20 4 22 2 25 2C28 2 30 4 30 7V27H32V12C32 9 34 7 37 7C40 7 42 9 42 12V33C42 41 34 47 27 47H19C17 47 16 47 15 46Z"
+    stroke="black"
+    stroke-width="2"
+    fill="#FFD5C0"
+  />
+  
+  <!-- Nails -->
+  <rect x="17" y="2" width="6" height="3" rx="1" fill="black" />
+  <rect x="27" y="2" width="6" height="3" rx="1" fill="black" />
+  <rect x="37" y="7" width="6" height="3" rx="1" fill="black" />
+  <rect x="8" y="10" width="6" height="3" rx="1" fill="black" />
+</svg>

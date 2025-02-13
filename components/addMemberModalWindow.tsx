@@ -19,7 +19,7 @@ export default function AddMemberModalWindow({
         const response = await fetch("/api/event1/getTeamCode");
         const data = await response.json();
 
-        console.log("Fetched Team Code:", data); // Debugging log
+     
 
         if (response.ok) {
           setTeamCode(data.teamCode);

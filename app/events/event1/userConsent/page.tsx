@@ -33,7 +33,7 @@ export default function page() {
       }
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.log(axiosError);
+     
       toast.error(
         // axiosError.response?.data?.message || 
         "Error, Please Try Again"

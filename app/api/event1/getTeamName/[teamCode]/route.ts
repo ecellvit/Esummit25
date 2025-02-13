@@ -16,7 +16,7 @@ export async function GET(
             return NextResponse.json({ message: "Missing team code." }, { status: 400 });
         }
 
-        console.log("Team Code:", teamCode);
+       
 
         const team = await TeamModel.findOne({ teamCode: teamCode });
 

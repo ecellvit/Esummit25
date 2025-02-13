@@ -9,6 +9,7 @@ import background from "/assets/bg.png";
 import background1 from "/assets/divbg.png";
 import picture from "@/assets/member.png";
 import { useSession } from "next-auth/react";
+import Loader from "@/components/loader";
 
 type TeamMember = {
   id: number;
@@ -30,6 +31,7 @@ export default function Page() {
   const [teamCode, setTeamCode] = useState<string>("");
   const [showLeaderModal, setShowLeaderModal] = useState<boolean>(false);
   const { data: session, update } = useSession();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     getData();
@@ -100,15 +102,15 @@ export default function Page() {
   };
 
   const handleLeave = async (newLeaderIndex:Number|null) => {
-    console.log("leave team is clicked");
-    console.log(newLeaderIndex);
+  
+    
     if(newLeaderIndex){
-      console.log(newLeaderIndex);
+     
       try{
         const response = await axios.patch("/api/event1/reassignLeader",{
           newLeaderIndex:newLeaderIndex
         });
-        console.log('jjjjjjjjjjjjjjj',response);
+        
         if(response.status===200){
           toast.success("Leader reassigned");
           await update({
@@ -124,7 +126,7 @@ export default function Page() {
           setLoading(false);
         }
       }catch(err){
-        console.log(err);
+    
         toast.error('Invalid Request');
       }
     }else{
@@ -154,7 +156,7 @@ export default function Page() {
         toast.error(response.data.message || "Failed to remove team member.");
       }
     } catch (error: any) {
-      console.error("Error removing team member:", error);
+     
       toast.error(error.response?.data?.message || "An error occurred.");
     } finally {
       setLoading(false);
@@ -195,10 +197,11 @@ export default function Page() {
     >
       <Navbar />
       {loading ? (
-        <div className="flex flex-col items-center justify-center">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-3 text-blue">Loading team details....</p>
-        </div>
+        // <div className="flex flex-col items-center justify-center">
+        //   <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        //   <p className="mt-3 text-blue">Loading team details....</p>
+        // </div>
+        <Loader/>
       ) : (
         <>
           <div
@@ -397,7 +400,6 @@ export default function Page() {
                         <li key={index}>
                           <button
                             onClick={() => {
-                              console.log(index+1);
                               handleLeave(index+1);
                             }} // +1 to match actual index in teamMembers
                             className="bg-blue-500 text-white px-4 py-2 rounded-md w-full"
