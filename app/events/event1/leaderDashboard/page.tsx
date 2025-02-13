@@ -121,7 +121,7 @@ export default function Page() {
             ...session,
             user: { ...session?.user, event1TeamRole: null },
           });
-          router.push("events/event1/createTeam");
+          router.push("/events/event1/createTeam");
           setShowModal(false);
           setLoading(false);
         }else{
