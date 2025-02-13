@@ -1,85 +1,73 @@
-'use client';
-import React from 'react';
+"use client";
 
-import PhoneIcon from '../assets/phoneicon';
-import MailIcon from '../assets/mailicon';
+import { useEffect, useState } from "react";
+import { FaFacebook, FaXTwitter, FaLinkedin, FaYoutube, FaInstagram } from "react-icons/fa6";
+import Clock from "react-clock";
+import "react-clock/dist/Clock.css";
 
-const Footer: React.FC = () => {
+export default function Footer() {
+  const [value, setValue] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setValue(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const clockLabels = "ENTREPRENEUR".split("");
+
   return (
-    <footer className="bg-gradient-to-r from-purple-600 to-purple-800 text-white pt-12 pb-6" id="footer">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center md:items-start px-4 sm:px-8">
-        {/* Left Section - Contact Info */}
-        <div className="w-full md:w-[45%] text-center md:text-left mb-8 md:mb-0">
-          <h1
-            className="text-4xl font-bold leading-tight mb-4"
-            style={{ fontFamily: "'Almarai', sans-serif" }}
-          >
-            E-CELL
-          </h1>
-          <div className="flex flex-col items-center md:items-start gap-4">
-            <div className="flex items-center gap-2">
-             
-              <a href="tel:+91 87777 93331" className="text-lg hover:text-gray-300 transition-colors">+91 87777 93331</a>
-            </div>
-            <div className="flex items-center gap-2">
-         
-              <a href="mailto:helloecellvit@gmail.com" className="text-lg hover:text-gray-300 transition-colors">helloecellvit@gmail.com</a>
-            </div>
-          </div>
+    <footer className="text-black w-full bg-white shadow-md">
+      <div className="flex items-center justify-evenly">
+        <div className="flex-col space-y-1 text-lg h-[11vw] pt-[5vw] justify-center items-center hidden md:flex">
+          <a href="https://www.linkedin.com/company/ecellvitvellore" className="hover:text-gray-500"><FaLinkedin size={20} /></a>
+          <a href="https://www.instagram.com/ecell_vit" className="hover:text-gray-500"><FaInstagram size={20} /></a>
+          <a href="https://twitter.com/ecell_vit" className="hover:text-gray-500"><FaXTwitter size={20} /></a>
+          <a href="https://www.facebook.com/ecellvit" className="hover:text-gray-500"><FaFacebook size={20} /></a>
         </div>
-
-        {/* Right Section - About E-Cell */}
-        <div className="w-full md:w-[45%] text-center md:text-left mb-8 md:mb-0">
-          <p className="text-lg text-gray-300 leading-relaxed">
-            The Entrepreneurship Cell, VIT Vellore.
-          </p>
-        </div>
-      </div>
-
-      {/* Social Media Section */}
-      <div className="flex flex-wrap justify-center gap-10 mb-6">
-        {[
-          { platform: 'Instagram', url: 'https://www.instagram.com/ecell_vit/', description: 'Stay up to Date' },
-          { platform: 'LinkedIn', url: 'https://www.linkedin.com/company/ecellvitvellore', description: 'Let’s connect' },
-          { platform: 'YouTube', url: 'https://www.youtube.com/@e-cellvit7216', description: 'Learn with us' },
-          { platform: 'Twitter', url: 'https://twitter.com/ecell_vit', description: 'Ideas in real time' },
-        ].map(({ platform, url, description }) => (
-          <div key={platform} className="w-[18vw] max-w-[250px] flex flex-col items-center">
-            <div
-              className="text-xl font-semibold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500"
-              style={{ fontFamily: "'Freeman', sans-serif" }}
+        <h1 className="text-[11vw] font-black tracking-widest flex">
+          {["E", "-", "S", "U", "M", "M", "I", "T", "'", "2", "5"].map((char, index) => (
+            <div 
+              key={index}
+              className="inline-block h-[12vw] items-end transition-all duration-400 hover:font-light"
             >
-              {platform}
+              {char}
             </div>
-            <div className="flex flex-col items-center border-2 border-white rounded-xl w-full p-4">
-              <a
-                href={url}
-                className="text-white text-sm text-center hover:text-gray-400 mb-2"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {description}
-              </a>
-              <a
-                href={url}
-                className="p-2 border-2 border-white rounded-xl text-white hover:bg-white hover:text-purple-700 transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="sr-only">{platform} link</span>
-                {/* Add an appropriate icon here (optional) */}
-              </a>
-            </div>
+          ))}
+        </h1>
+      </div>
+      <div className="flex items-center bg-black text-gray-400 text-lg py-4 mt-0 relative overflow-hidden">
+        <div className="w-3/3 md:w-2/3 overflow-hidden whitespace-nowrap">
+          <div className="animate-scroll flex">
+            {Array(10).fill("#WeBreedBusiness").map((text, index) => (
+              <span key={index} className="text-lg font-medium mr-10">
+                {text}
+              </span>
+            ))}
           </div>
-        ))}
+        </div>
+        <div className="w-1/3 text-center font-bold hidden md:block">
+          &copy; 2025, <span className="font-bold">Entrepreneurship Cell VIT</span>
+        </div>
       </div>
-
-      {/* Footer Bottom */}
-      <div className="text-center text-sm text-gray-300 py-4">
-        <p>&copy; {new Date().getFullYear()} E-Cell VIT. All Rights Reserved.</p>
+      <div className="text-center bg-black text-gray-400 pb-4 font-bold md:hidden">
+          &copy; 2025, <span className="font-bold">Entrepreneurship Cell VIT</span>
       </div>
+      <style jsx>{`
+        @keyframes scroll {
+          from {
+            transform: translateX(0%);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-scroll {
+          display: flex;
+          white-space: nowrap;
+          animation: scroll 10s linear infinite;
+          width: max-content;
+        }
+      `}</style>
     </footer>
   );
-};
-
-export default Footer;
+}
