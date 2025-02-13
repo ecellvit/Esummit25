@@ -76,6 +76,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
   };
 
   const handleDeregister = async (event: number) => {
+    console.log("User  before deregistering:", session?.user);
     try {
       const response = await axios.post("/api/eventRegistration/deregister", { event });
       if (response.status === 201 || response.status === 202) {
