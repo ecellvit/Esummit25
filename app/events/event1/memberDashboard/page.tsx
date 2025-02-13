@@ -6,6 +6,9 @@ import axios, { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import Loader from "@/components/loader"
 import Navbar from "@/components/navbar";
+import background from "/assets/bg.png";
+import background1 from "/assets/divbg.png";
+import picture from "@/assets/member.png";
 
 type TeamMember = {
   id: number;
@@ -24,40 +27,40 @@ export default function MemberDashboard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
-      {
-        id: 1,
-        name: "Full Name 1",
-        regNo: "2XXXXXXXX",
-        mobNo: "XXXXXXXXXX",
-        buttonLabel: "Leave",
-      },
-      {
-        id: 2,
-        name: "Full Name 2",
-        regNo: "2XXXXXXXX",
-        mobNo: "XXXXXXXXXX",
-        buttonLabel: "Remove",
-      },
-      {
-        id: 3,
-        name: "Full Name 3",
-        regNo: "2XXXXXXXX",
-        mobNo: "XXXXXXXXXX",
-        buttonLabel: "Remove",
-      },
-      {
-        id: 4,
-        name: "Full Name 4",
-        regNo: "2XXXXXXXX",
-        mobNo: "XXXXXXXXXX",
-        buttonLabel: "Remove",
-      },
-    ]);
+    {
+      id: 1,
+      name: "Full Name 1",
+      regNo: "2XXXXXXXX",
+      mobNo: "XXXXXXXXXX",
+      buttonLabel: "Leave",
+    },
+    {
+      id: 2,
+      name: "Full Name 2",
+      regNo: "2XXXXXXXX",
+      mobNo: "XXXXXXXXXX",
+      buttonLabel: "Remove",
+    },
+    {
+      id: 3,
+      name: "Full Name 3",
+      regNo: "2XXXXXXXX",
+      mobNo: "XXXXXXXXXX",
+      buttonLabel: "Remove",
+    },
+    {
+      id: 4,
+      name: "Full Name 4",
+      regNo: "2XXXXXXXX",
+      mobNo: "XXXXXXXXXX",
+      buttonLabel: "Remove",
+    },
+  ]);
   useEffect(() => {
     setLoading(true)
     getData();
   }, [session?.user?.event1TeamRole]);
-
+  const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const getData = async () => {
     setLoading(true);
     try {
@@ -65,7 +68,7 @@ export default function MemberDashboard() {
 
       if (userDataRes.status === 202) {
         toast.error("You have become the leader of this team.");
-        await update({...session, user: {...session?.user, event1TeamRole: 0}});
+        await update({ ...session, user: { ...session?.user, event1TeamRole: 0 } });
         router.push("/events/event1/leaderDashboard");
       }
       const userData = userDataRes.data;
@@ -77,12 +80,12 @@ export default function MemberDashboard() {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 409) {
         try {
-          await update({...session, user: {...session?.user, event1TeamRole: null}});
+          await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
           router.push("/events/event1/createTeam");
-         
+
           toast.error("You have been removed from this team.");
         } catch (error) {
-          
+
         }
       }
       setLoading(false);
@@ -92,14 +95,13 @@ export default function MemberDashboard() {
   const handleShowConfirmation = () => {
     setShowConfirmation(!showConfirmation);
   };
-
   const handleLeave = async () => {
     try {
       const response = await axios.patch("/api/event1/leaveTeam");
 
       if (response.status === 200) {
         toast.success("You have left the team.");
-        await update({...session, user: {...session?.user, event1TeamRole: null}});
+        await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
         router.push("/events/event1/createTeam");
       } else {
         toast.error("Error leaving the team. Please try again later.");
@@ -108,52 +110,100 @@ export default function MemberDashboard() {
       console.error("Error leaving team:", error);
       toast.error("An error occurred while leaving the team.");
     }
+    finally {
+      setIsLeaving(false);  
+    }
   };
 
   return (
-    <div className="bg-cover bg-center min-h-screen flex flex-col items-center justify-center p-4 text-black pt-[12vh]">
-      <Navbar/>
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black"
+      style={{ backgroundImage: `url(${background.src})` }}
+    >
+      <Navbar />
       {loading ? (
-        <Loader/>
+        <Loader />
       ) : (
-        <>
-          <h1 className="text-3xl font-extrabold mb-4 text-center drop-shadow-lg">
+        <div className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-center p-4 rounded-lg"
+          style={{
+            backgroundImage: `url(${background1.src})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+          }}
+        >
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-center drop-shadow-lg text-red-500">
             {teamName}
           </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl px-4 py-6">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl px-8 py-10">
             {teamMembers.map((member, index) => (
               <div
                 key={index}
-                className="bg-[#141B2B] opacity-85 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-col items-center justify-between"
+                className="bg-[#141B2B] opacity-85 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4"
+                style={{ backgroundImage: `url(${background.src})` }}
               >
-                <h2 className="text-lg font-bold mb-1 text-white">
-                  {member?.name}
-                </h2>
-                <h2 className="text-lg font-bold mb-1 text-white">
-                  Team Role: {member?.event1TeamRole === 0 ? "Leader" : "Member"}
-                </h2>
-                <p className="text-xs mb-1 text-white">Reg. No.: {member?.regNo}</p>
-                <p className="text-xs text-white">Mobile No.: {member?.mobNo}</p>
+                <div className="absolute right-0 top-0 w-1/2 h-full">
+                  <img
+                    src={picture.src}
+                    alt={`${member.name}'s profile`}
+                    style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                    className="opacity-100"
+                  />
+                </div>
+                <div className="relative z-10 flex-1 p-4 text-left right-8">
+                  <h2 className="text-l font-bold mb-1 text-white">
+                    {member?.name}
+                  </h2>
+                  <h2 className="text-l font-bold mb-1 text-white">
+                    Team Role: {member?.event1TeamRole === 0 ? "Leader" : "Member"}
+                  </h2>
+                  <p className="text-xs mb-1 text-white">Reg. No.: {member?.regNo}</p>
+                  <p className="text-xs text-white">Mobile No.: {member?.mobNo}</p>
+                </div>
               </div>
             ))}
           </div>
-          <div>
-            <button onClick={handleShowConfirmation} className="btn-primary bg-gradient-to-r from-blue-500 to-green-500 text-white p-5 rounded-3xl hover:scale-110 active:scale-95">
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+            <button
+              onClick={handleShowConfirmation}
+              className="btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform-secondary bottom-5"
+            >
               Leave Team
             </button>
+
             {showConfirmation && (
-              <div className="mt-4 p-4 bg-white rounded shadow-md text-center">
-                <p className="mb-4">Do you want to leave this team?</p>
-                <button onClick={handleLeave} className="btn-primary mr-4 rounded hover:scale-110 active:scale-95 shadow-md text-center">
-                  Yes
-                </button>
-                <button onClick={handleShowConfirmation} className="btn-secondary rounded hover:scale-110 active:scale-95 shadow-md text-center">
-                  No
-                </button>
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-4 rounded-lg flex flex-col items-center justify-center font-bold mt-[-75px]">
+                  <p className="mb-4 text-lg sm:text-xl text-center whitespace-nowrap">
+                    Do you want to leave this team?
+                  </p>
+                  <div className="flex items-center justify-center">
+                    <button
+                      onClick={handleLeave}
+                      disabled={isLeaving}
+                      className="bg-green-500 text-white px-4 py-2 rounded-md"
+                    >
+                      {isLeaving ? ( 
+                        <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin"></div>
+                      ) : (
+                        "Yes"
+                      )}
+                    </button>
+                    <button
+                      onClick={handleShowConfirmation}
+                      disabled={isLeaving}
+                      className="bg-red-500 text-white px-4 py-2 rounded-md ml-4"
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>
-        </>
+        </div>
       )}
       <Toaster />
     </div>
