@@ -59,30 +59,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
     }
   };
 
-<<<<<<< HEAD
-  const handleDeregister = async (event: number) => {
-    try {
-      const response = await axios.post("/api/eventRegistration/deregister", { event });
 
-      if (response.status === 201 || response.status === 202) {
-        toast.success(response.data.message);
-        const newUserEvents = session?.user.events?.filter(e => e !== event);
-        await update({ ...session, user: { ...session?.user, events: newUserEvents } });
-        router.push("/");
-      }
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Deregistration error:", axiosError.response?.data);
-
-      if (axiosError.response?.status === 403) {
-        toast.error("Please leave your team before deregistering.");
-      } else if (axiosError.response?.status === 402) {
-        toast.error("Please fill out your details first");
-        return;
-      } else {
-        toast.error("An error occurred while deregistering.");
-      }
-=======
   const handleDeregister = async (event: Number | null) => {
     try {
         console.log("Deregistering event:", event); // Log the event being deregistered
@@ -111,7 +88,6 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
             toast.error("An error occurred while deregistering.");
             console.log(error);
         }
->>>>>>> 725c1c9 (deregister event final push (hope so..))
     }
 };
 
