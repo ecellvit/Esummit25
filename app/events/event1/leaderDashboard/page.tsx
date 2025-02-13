@@ -77,6 +77,37 @@ export default function Page() {
     setShowModal(false);
   };
 
+
+  const handleDeleteTeam = async () => {
+    console.log('clicked delete button');
+    setLoading(true);
+    if(teamMembers.length===1){
+      try{
+        const response = await axios.delete('/api/event1/deleteTeam');
+        console.log('jjjjjjjjjjjjjjjjjj',response);
+        if(response.status===200){
+          toast.success('Team deleted successfully');
+          await update({
+            ...session,
+            user: { ...session?.user, event1TeamRole: null },
+          });
+          setTeamMembers([]);
+          router.push('/');
+          setLoading(false);
+        }else{
+          var message = response.data.message;
+          toast.error(message)
+        }
+      }catch(err){
+        toast.error('Failed to delete team')
+      }
+    }else{
+      toast.error('First remove all the members');
+    }
+    
+  };
+
+
   const handleLeave = async () => {
     const leader = teamMembers.find((member) => member.event1TeamRole === 0); // Find the current leader
 
@@ -104,7 +135,10 @@ export default function Page() {
       });
 
       if (response.status === 200) {
-        await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
+        await update({
+          ...session,
+          user: { ...session?.user, event1TeamRole: null },
+        });
         toast.success("You have left the team successfully.");
         router.push("/"); // Redirect user after leaving
       } else {
@@ -294,17 +328,14 @@ export default function Page() {
                 Add Member
               </button>
 
-              {/* Leave Team Button (Only for Leader)
-  {teamMembers.some(member => member.event1TeamRole === 0) && (
-    <button
-      className="btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
-      onClick={() => handleShowModal(null, "leave")}
-    >
-      Leave Team
-    </button>
-  )} */}
-              {/* Leave Team Button (Only for Leader) */}
-              {teamMembers.some((member) => member.event1TeamRole === 0) && (
+              {teamMembers.length === 1 ? (
+                <button
+                  className="btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
+                  onClick={() => handleShowModal(null, "delete")}
+                >
+                  Delete Team
+                </button>
+              ) : (
                 <button
                   className="btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
                   onClick={() => handleShowModal(null, "leave")}
@@ -321,7 +352,7 @@ export default function Page() {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                   <div className="bg-white p-5 rounded-md text-center">
                     <p className="mb-4">
-                      Are you sure you want to remove this user?
+                      Are you sure you want to remove this member?
                     </p>
                     <div className="flex justify-around">
                       <button
@@ -384,11 +415,39 @@ export default function Page() {
                 </div>
               )}
 
+            {showModal &&
+              modalType === "delete" &&
+              modalMemberIndex === null && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                  <div className="bg-white p-5 rounded-md text-center">
+                    <p className="mb-4">
+                      Are you sure you want to delete this team?
+                    </p>
+                    <div className="flex justify-around">
+                      <button
+                        onClick={handleDeleteTeam}
+                        className="bg-green-500 text-white px-4 py-2 rounded-md"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={handleCloseModal}
+                        className="bg-red-500 text-white px-4 py-2 rounded-md"
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
             {/* Modal for Team Code */}
             {showModal && modalType === "teamCode" && (
               <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white p-8 rounded-lg shadow-lg w-96 max-w-[90vw]">
-                  <h2 className="text-2xl font-bold mb-6 text-center">Team Code</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-center">
+                    Team Code
+                  </h2>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
                     <p className="text-xl font-bold">{teamCode}</p>
                     <button
@@ -409,7 +468,6 @@ export default function Page() {
                 </div>
               </div>
             )}
-
           </div>
         </>
       )}

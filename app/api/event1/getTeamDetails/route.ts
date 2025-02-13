@@ -22,7 +22,6 @@ export async function GET(req: Request) {
 
     // Find the user by email
     const user = await Users.findOne({ email: sessionUser.email });
-    console.log('heeeeeeeeeeeeeelllllllllllllloooooooooo',user);
     if (!user || !user.event1TeamId) {
       return NextResponse.json(
         { message: "User has no team." },
@@ -42,7 +41,6 @@ export async function GET(req: Request) {
 
     // Fetch the team
     const team = await TeamModel.findById(teamId);
-    console.log('asdfkgaldkfjaldhgaldhfladjf',team);
     if (!team) {
       return NextResponse.json({ message: "Team not found." }, { status: 404 });
     }
@@ -52,6 +50,8 @@ export async function GET(req: Request) {
       { event1TeamId: teamId }, // NEW FIX HERE
       "name email regNo mobNo event1TeamRole"
     );
+
+    teamMembers.sort((a,b)=>(a.event1TeamRole===0?-1:1))
 
     if (!teamMembers || teamMembers.length === 0) {
       return NextResponse.json(
