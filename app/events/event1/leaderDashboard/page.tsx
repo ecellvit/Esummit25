@@ -17,6 +17,7 @@ type TeamMember = {
   name: string;
   regNo: string;
   mobNo: string;
+  email?:string;
   event1TeamRole?: number;
 };
 
@@ -66,6 +67,29 @@ export default function Page() {
       setLoading(false);
     }
   };
+
+  const handleLeaderLeave = async (index: number) => {
+    setLoading(true);
+    try {
+      const email = teamMembers[index].email; // Ensure you're sending the email
+  
+      const response = await axios.patch("/api/event1/leaveTeam", { email });
+  
+      if (response.status === 200) {
+        toast.success("Team leader removed successfully");
+        setTeamMembers((prev) => prev.filter((member) => member.email !== email));
+      } else {
+        toast.error(response?.data.message || "Failed to remove team member.");
+      }
+    } catch (error) {
+      console.error("Error removing team leader:", error);
+      toast.error("An error occurred while removing the team leader.");
+    } finally {
+      setLoading(false);
+      handleCloseModal();
+    }
+  };
+  
 
   const handleShowModal = (index: number | null = null, type: string = "") => {
     setModalMemberIndex(index);
@@ -224,7 +248,7 @@ export default function Page() {
 
   return (
     <div
-      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black"
+      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black opacity-100"
       style={{ backgroundImage: `url(${background.src})` }}
     >
       <Navbar />
@@ -237,13 +261,13 @@ export default function Page() {
       ) : (
         <>
           <div
-            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-center p-4 rounded-lg "
-            style={{
-              backgroundImage: `url(${background1.src})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
-            }}
+            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-white opacity-100 bg-center p-4 rounded-lg "
+            // style={{
+            //   backgroundImage: `url(${background1.src})`,
+            //   backgroundSize: "cover",
+            //   backgroundPosition: "center",
+            //   backgroundColor: "rgba(255, 255, 255, 0.5)",
+            // }}
           >
             <h1 className="text-2xl sm:text-3xl font-extrabold mb-4 text-center drop-shadow-lg text-red-500">
               {teamName || "Team Name Not Found"}
@@ -258,7 +282,7 @@ export default function Page() {
                 teamMembers.map((member, index) => (
                   <div
                     key={member.id || index}
-                    className="bg-[#141B2B] opacity-85 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4"
+                    className="  rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4 opacity-100"
                     style={{ backgroundImage: `url(${background.src})` }}
                   >
                     {/* Left Section - Member Details */}
@@ -329,12 +353,32 @@ export default function Page() {
             </button> */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
               {/* Add Member Button */}
-              <button
+              {/* <button
                 className="btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
                 onClick={handleViewTeamCode}
+                
               >
+                
+                
                 Add Member
-              </button>
+              </button> */}
+     <button
+  className="btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
+  onClick={async () => {
+    setIsLoading(true);
+    await handleViewTeamCode();
+    setIsLoading(false);
+  }}
+  disabled={isLoading}
+>
+  {isLoading ? (
+    <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+  ) : (
+    "Add Member"
+  )}
+</button>
+
+
 
               {teamMembers.length === 1 ? (
                 <button

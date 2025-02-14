@@ -68,19 +68,20 @@ export default function page() {
 
   return (
     <main
-      className="h-screen w-screen flex items-center justify-center bg-black opacity-90"
+      className=" bg-cover bg-center bg-no-repeat flex items-center justify-center opacity-100"
       style={{ backgroundImage: `url(${bg.src})`, backgroundSize: "cover" }}
     >
       {isLoading && <Loader />} {/* Show loader based on isLoading state */}
       <div
-        className="bg-white text-red p-8 rounded-3xl flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5 h-[80vh] opacity-80"
-        style={{
-          backgroundImage: `url(${divbg.src})`,
-          backgroundSize: "cover",
-        }}
+        className="bg-white text-red p-4 rounded-3xl flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5  lg:h-[90vh] opacity-100"
+        
+        // style={{
+        //   backgroundImage: `url(${divbg.src})`,
+        //   backgroundSize: "cover",
+        // }}
       >
         <h2
-          className="text-3xl lg:text-4xl font-bold text-center mb-12"
+          className="text-3xl lg:text-4xl font-bold text-center mb-12 btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2 "
           style={{
             background:
               "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)",
@@ -88,7 +89,12 @@ export default function page() {
             WebkitTextFillColor: "transparent",
           }}
         >
-          Create Team
+          {isLoading ? (
+    <span className="w-4 h-5 border-5 border-t-5 border-white rounded-full animate-spin"></span>
+  ) : (
+    "Create Team"
+  )}
+          
         </h2>
         <div className="w-full flex flex-col items-center gap-5">
           <input
@@ -100,13 +106,18 @@ export default function page() {
             onChange={handleChange}
           />
           <button
-            className="w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold hover:scale-105 active:scale-95 transition-transform"
+            className="w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
             style={{
               background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
             }}
             onClick={createTeam}
           >
-            Create your Own Team
+            {isLoading ? (
+    <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+  ) : (
+    "Create your Own Team"
+  )}
+            
           </button>
         </div>
         <hr
@@ -119,22 +130,31 @@ export default function page() {
           }}
         />
         <button
-          className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold hover:scale-105 active:scale-95 transition-transform"
+          className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg rounded-md btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
           style={{
             background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
           }}
           onClick={joinTeam}
         >
-          Find Team with Code
+           {isLoading ? (
+    <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+  ) : (
+    "Find Team with Code"
+  )}
+          
         </button>
         <button
-          className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold hover:scale-105 active:scale-95 transition-transform"
+          className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold rounded-md btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
           style={{
             background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
           }}
           onClick={userConsent}
         >
-          Don't Have a Team
+           {isLoading ? (
+    <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+  ) : (
+    "Don't Have a Team"
+  )}
         </button>
       </div>
       <Toaster />

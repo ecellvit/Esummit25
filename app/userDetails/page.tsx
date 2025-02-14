@@ -9,6 +9,8 @@ import Image from "next/image";
 import background from "@/assets/bg.png"
 import background1 from "@/assets/divbg.png"
 import logo from "@/assets/redLogo.png"
+import loader from "@/components/loader"
+import Loader from "@/components/loader";
 interface FormData {
   name: string;
   regNo: string;
@@ -124,27 +126,28 @@ export default function UserDetail() {
 
   // Return loading state or form based on session
   if (status === "loading") {
-    return <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50"><div className="text-white text-2xl">Loading...</div></div>;
+   <Loader/>
+    // return <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50"><div className="text-white text-2xl">Loading...</div></div>;
   }
 
   return (
     <div
-      className="bg-cover bg-center bg-no-repeat min-h-screen flex items-center justify-center"
+      className="bg-cover bg-center bg-no-repeat flex items-center justify-center"
       style={{
         backgroundImage: `url(${background.src})`,
         backgroundSize: "cover",
+        
       }}
     >
       {loading && (
-        <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50">
-          <div className="text-white text-2xl">Loading...</div>
-        </div>
+        <Loader/>
       )}
   
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-8 lg:p-20 w-full max-w-6xl">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-11 w-full ">
         
-        <div className=" rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg bg-white opacity-90"
-        style={{backgroundImage: `url(${background1.src})`}}>
+        <div className=" rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg bg-white opacity-100"
+        // style={{backgroundImage: `url(${background1.src})`}}
+        >
          <div className="flex flex-col items-center">
   <Image 
     src={logo} 
@@ -159,8 +162,9 @@ export default function UserDetail() {
         </div>
   
         {/* Right Form Box */}
-        <div className="flex items-center justify-center p-4 lg:p-8 bg-cover bg-center rounded-2xl overflow-hidden  bg-white opacity-90"
-        style={{backgroundImage: `url(${background1.src})`}}>
+        <div className="flex items-center justify-center p-4 lg:p-8 bg-cover bg-center rounded-2xl overflow-hidden  bg-white opacity-100"
+        // style={{backgroundImage: `url(${background1.src})`}}
+        >
           <div className="w-full max-w-md lg:max-w-lg">
             <form
               onSubmit={handleSubmit}
@@ -207,10 +211,17 @@ export default function UserDetail() {
               </div>
               <button
                 type="submit"
-                className="p-2 bg-red-800 rounded-lg text-white text-xl hover:text-black active:transform transition duration-200 h-auto text-center w-24 font-sans"
+                className="p-2 bg-red-800 rounded-lg text-white text-xl hover:text-black active:transform transition duration-200 h-auto text-center w-24 font-sansrounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
               >
-                Register
+                 {loading ? (
+    <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+  ) : (
+    "Register"
+  )}
+                {/* Register */}
               </button>
+     
+
             </form>
           </div>
         </div>
