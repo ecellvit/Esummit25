@@ -124,7 +124,7 @@ export default function JoinTeam() {  // Remove the props) {
 
   return (
     <main 
-      className="h-screen w-screen flex items-center justify-center bg-black opacity-90" style={{ backgroundImage: `url(${bg.src})`, backgroundSize: 'cover' }}
+      className="h-screen w-screen flex items-center justify-center bg-black opacity-100" style={{ backgroundImage: `url(${bg.src})`, backgroundSize: 'cover' }}
     >
       {isLoading && <Loader />} {/* Show loader based on isLoading state */}
       <div className="bg-white text-red p-8 rounded-3xl flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5 h-[80vh] opacity-80" style={{ backgroundImage: `url(${divbg.src})`, backgroundSize: 'cover' }}>

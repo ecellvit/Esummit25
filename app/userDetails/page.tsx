@@ -129,10 +129,11 @@ export default function UserDetail() {
 
   return (
     <div
-      className="bg-cover bg-center bg-no-repeat min-h-screen flex items-center justify-center"
+      className="bg-cover bg-center bg-no-repeat flex items-center justify-center"
       style={{
         backgroundImage: `url(${background.src})`,
         backgroundSize: "cover",
+        
       }}
     >
       {loading && (
@@ -141,10 +142,11 @@ export default function UserDetail() {
         </div>
       )}
   
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-8 lg:p-20 w-full max-w-6xl">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-11 w-full ">
         
-        <div className=" rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg bg-white opacity-90"
-        style={{backgroundImage: `url(${background1.src})`}}>
+        <div className=" rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg bg-white opacity-100"
+        // style={{backgroundImage: `url(${background1.src})`}}
+        >
          <div className="flex flex-col items-center">
   <Image 
     src={logo} 
@@ -159,8 +161,9 @@ export default function UserDetail() {
         </div>
   
         {/* Right Form Box */}
-        <div className="flex items-center justify-center p-4 lg:p-8 bg-cover bg-center rounded-2xl overflow-hidden  bg-white opacity-90"
-        style={{backgroundImage: `url(${background1.src})`}}>
+        <div className="flex items-center justify-center p-4 lg:p-8 bg-cover bg-center rounded-2xl overflow-hidden  bg-white opacity-100"
+        // style={{backgroundImage: `url(${background1.src})`}}
+        >
           <div className="w-full max-w-md lg:max-w-lg">
             <form
               onSubmit={handleSubmit}

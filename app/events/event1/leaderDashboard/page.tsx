@@ -224,7 +224,7 @@ export default function Page() {
 
   return (
     <div
-      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black"
+      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black opacity-100"
       style={{ backgroundImage: `url(${background.src})` }}
     >
       <Navbar />
@@ -237,13 +237,13 @@ export default function Page() {
       ) : (
         <>
           <div
-            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-center p-4 rounded-lg "
-            style={{
-              backgroundImage: `url(${background1.src})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
-            }}
+            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-white opacity-100 bg-center p-4 rounded-lg "
+            // style={{
+            //   backgroundImage: `url(${background1.src})`,
+            //   backgroundSize: "cover",
+            //   backgroundPosition: "center",
+            //   backgroundColor: "rgba(255, 255, 255, 0.5)",
+            // }}
           >
             <h1 className="text-2xl sm:text-3xl font-extrabold mb-4 text-center drop-shadow-lg text-red-500">
               {teamName || "Team Name Not Found"}
@@ -258,7 +258,7 @@ export default function Page() {
                 teamMembers.map((member, index) => (
                   <div
                     key={member.id || index}
-                    className="bg-[#141B2B] opacity-85 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4"
+                    className="  rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4 opacity-100"
                     style={{ backgroundImage: `url(${background.src})` }}
                   >
                     {/* Left Section - Member Details */}
