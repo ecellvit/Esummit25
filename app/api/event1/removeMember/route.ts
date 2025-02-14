@@ -3,8 +3,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import TeamModel from "@/models/event1/Team.model";
 import { Users } from "@/models/user.model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
-import mongoose from "mongoose";
+import { authOptions } from "@/lib/authOptions";
 
 export async function PATCH(req: Request) {
   await dbConnect();
@@ -14,58 +13,63 @@ export async function PATCH(req: Request) {
     const sessionUser = session?.user;
 
     if (!session || !sessionUser) {
-      console.log(" ERROR: User not authenticated");
       return NextResponse.json({ success: false, message: "User not authenticated" }, { status: 401 });
     }
 
-    const { memberIdToRemove } = await req.json();
-    console.log(" Received memberIdToRemove:", memberIdToRemove);
+    const { index } = await req.json();
+    if (!index) {
+      return NextResponse.json({ success: false, message: "Member index is required" }, { status: 400 });
+    }
 
-    // Ensure memberIdToRemove is a valid number
-    const memberIndex = parseInt(memberIdToRemove, 10);
-    
-    // Find the team leader
+    // Find the leader
     const leader = await Users.findOne({ email: sessionUser.email });
     if (!leader) {
-      console.log(" ERROR: Leader not found in database");
-      return NextResponse.json({ message: "Leader not found" }, { status: 404 });
+      return NextResponse.json({ success: false, message: "Leader not found" }, { status: 404 });
     }
 
     if (leader.event1TeamRole !== 0 || !leader.event1TeamId) {
-      console.log(" ERROR: User is not a team leader");
-      return NextResponse.json({ message: "User is not a team leader" }, { status: 403 });
+      return NextResponse.json({ success: false, message: "User is not a team leader" }, { status: 403 });
     }
 
-    // Fetch the team
+    // Find the team
     const team = await TeamModel.findById(leader.event1TeamId);
     if (!team) {
-      console.log(" ERROR: Team not found");
-      return NextResponse.json({ message: "Team not found" }, { status: 404 });
+      return NextResponse.json({ success: false, message: "Team not found" }, { status: 404 });
     }
 
-    // Ensure teamMembers array exists
+    // Ensure the team has members
     if (!team.teamMembers || team.teamMembers.length === 0) {
-      console.log(" ERROR: Team has no members"); 
-      return NextResponse.json({ message: "No members in the team" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "No members in the team" }, { status: 400 });
     }
 
+    // Check if the leader is removing themselves
+    if ( index === 0 ) {
+      return NextResponse.json({ success: false, message: "leader cannot leave" }, { status: 412 });
+    } 
 
-    console.log(" Member found, proceeding to remove:", team.teamMembers[memberIndex]);
+    const removedMemberId = team.teamMembers[index];
+    if (!removedMemberId) {
+      return NextResponse.json({ success: false, message: "Invalid member index" }, { status: 400 });
+    }
 
-    // Remove the member using index
-    const removedMember = team.teamMembers.splice(memberIndex, 1);
+    const removedMember = await Users.findById(removedMemberId)
+    if (!removedMember) {
+      return NextResponse.json({ success: false, message: "Removed member not found" }, { status: 404 });
+    }
+
+    //TODO: check if it works with undefined
+    removedMember.event1TeamId = null;
+    removedMember.event1TeamRole = null;
+    await removedMember.save();
+
+    // Remove the member
+    team.teamMembers.splice(index, 1);
     await team.save();
 
-    console.log(" Updated Team:", team);
+    return NextResponse.json({ success: true, message: "Member removed successfully" }, { status: 200 });
 
-    // Remove the user's team reference
-    await Users.findByIdAndUpdate(removedMember[0], {
-      $unset: { event1TeamId: "", event1TeamRole: "" }
-    });
-
-    return NextResponse.json({ message: "Member removed successfully" }, { status: 200 });
   } catch (error) {
-    console.error(" ERROR: Internal Server Error", error);
-    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+    console.error("Error removing team member:", error);
+    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
   }
 }

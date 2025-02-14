@@ -1,17 +1,22 @@
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { dbConnect } from "@/lib/dbConnect";
 import TeamModel from "@/models/event1/Team.model";
 
-export async function GET( req: Request, {params}: {params: {teamCode: string}}): Promise<NextResponse> {
-    await dbConnect();
-    const teamCode: string = params.teamCode; 
 
+
+// Correct function signature
+export async function GET(
+    request: Request, { params } : { params: Promise<{teamCode: string}> }
+): Promise<NextResponse> {
+  await dbConnect();
+    const teamCode = (await params).teamCode;
     try {
         if (!teamCode) {
             return NextResponse.json({ message: "Missing team code." }, { status: 400 });
         }
 
-        console.log("Team Code:", teamCode);
+       
 
         const team = await TeamModel.findOne({ teamCode: teamCode });
 

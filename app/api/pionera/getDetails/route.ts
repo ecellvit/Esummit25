@@ -1,10 +1,9 @@
 import { dbConnect } from "@/lib/dbConnect";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/pionera/user.model";
 import type { NextRequest } from "next/server";
-import { log } from "console";
 
 export async function POST(request: NextRequest) {
   await dbConnect();
@@ -12,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     // Get the current session from NextAuth
     const session = await getServerSession(authOptions);
-    console.log(session);
+  
     // If there's no session, respond with an unauthorized status
     if (!session) {
       return NextResponse.json(

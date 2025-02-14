@@ -1,19 +1,27 @@
+import { authOptions } from "@/lib/authOptions";
 import { dbConnect } from "@/lib/dbConnect";
 import TeamModel, { Team } from "@/models/event1/Team.model";
 import { Users } from "@/models/user.model";
 import { ApiResponse } from "@/types/ApiResponse";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-export async function PATCH(
-  request: Request
-): Promise<NextResponse<ApiResponse>> {
+export async function PATCH( request: Request ): Promise<NextResponse<ApiResponse>> {
   await dbConnect();
 
   try {
-    const { userId, newLeaderIndex } = await request.json();
+    console.log('hhhhhhhhhh');
+    const session = await getServerSession(authOptions);
+    const sessionUser = session?.user;
+
+    if (!session || !sessionUser) {
+      return NextResponse.json({ success: false, message: "User not authenticated" }, { status: 401 });
+    }
+
+    const { newLeaderIndex } = await request.json();
 
     // Find the current user (current leader)
-    const currentLeader = await Users.findById(userId);
+    const currentLeader = await Users.findOne({ email: sessionUser.email });
     if (!currentLeader) {
       return NextResponse.json(
         { success: false, message: "Current leader not found" },
@@ -30,9 +38,7 @@ export async function PATCH(
     }
 
     // Find the team associated with the current leader
-    const team: Team | null = await TeamModel.findById(
-      currentLeader.event1TeamId
-    );
+    const team: Team | null = await TeamModel.findById(currentLeader.event1TeamId);
     if (!team) {
       return NextResponse.json(
         { success: false, message: "No team associated with the user" },
@@ -83,7 +89,7 @@ export async function PATCH(
     team.teamLeaderEmail = newLeader.email;
 
     // Remove the current leader's association with the team
-    currentLeader.event1TeamRole = undefined;
+    currentLeader.event1TeamRole = null;
     currentLeader.event1TeamId = null;
     await currentLeader.save();
 
@@ -102,10 +108,7 @@ export async function PATCH(
   } catch (error) {
     console.error("Error in reassigning team leader:", error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "An error occurred while reassigning the leader",
-      },
+      { success: false, message: "An error occurred while reassigning the leader" },
       { status: 500 }
     );
   }

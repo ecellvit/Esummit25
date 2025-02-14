@@ -5,7 +5,7 @@ import { Users } from "@/models/user.model";
 import { ApiResponse } from "@/types/ApiResponse";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 
 export async function DELETE(request: Request): Promise<NextResponse<ApiResponse>> {
   await dbConnect();
@@ -46,14 +46,14 @@ export async function DELETE(request: Request): Promise<NextResponse<ApiResponse
     }
 
     //? Delete the team token
-    TeamTokenModel.deleteOne({teamId: team._id});
-
+    await TeamTokenModel.deleteOne({teamId: team._id});
     //? Delete the team
-    TeamModel.findByIdAndDelete(team._id);
+    await TeamModel.findByIdAndDelete(team._id);
 
     //? Remove the user's associations with the team
     user.event1TeamId = null;
-    delete user.event1TeamRole;
+    user.event1TeamRole=null;
+    user.event1Consent=false;
     await user.save();
 
     return NextResponse.json({ success: true, message: "Team deleted successfully" }, { status: 200 });

@@ -5,7 +5,10 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 import axios, { AxiosResponse } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
-
+import Image from "next/image";
+import background from "@/assets/bg.png"
+import background1 from "@/assets/divbg.png"
+import logo from "@/assets/redLogo.png"
 interface FormData {
   name: string;
   regNo: string;
@@ -22,39 +25,32 @@ export default function UserDetail() {
   const router = useRouter();
   const { data: session, status, update } = useSession();
 
-  // Redirect user if not logged in, only when session status is 'authenticated'
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push('/');
-    }
-  }, [status, router]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
   
-        if (!res.ok) {
-          return;
-        }
+  //       if (!res.ok) {
+  //         return;
+  //       }
   
-        const data = await res.json();
+  //       const data = await res.json();
   
-        if (data.success && data.user?.hasFilledDetails) {
-          router.push("/");
-        }
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
+  //       if (data.success && data.user?.hasFilledDetails) {
+  //         router.push("/");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user details:", error);
+  //     }
+  //   };
   
-    fetchData();
-  }, [session, router]);
+  //   fetchData();
+  // }, [session, router]);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     regNo: "",
@@ -67,7 +63,7 @@ export default function UserDetail() {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: name==="regNo"?value.toUpperCase():value,
     });
   };
 
@@ -115,7 +111,7 @@ export default function UserDetail() {
 
       const result = response.data.message;
       toast.success(result || "Form submitted successfully!");
-      update({...session, user: {...session?.user, hasFilledDetails: true } })
+      await update({...session, user: {...session?.user, hasFilledDetails: true, name: formData.name } });
       setFormData({ name: "", regNo: "", number: "" });
       setErrors({});
       setLoading(false);
@@ -132,22 +128,49 @@ export default function UserDetail() {
   }
 
   return (
-    <div className="bg-cover bg-center bg-no-repeat">
+    <div
+      className="bg-cover bg-center bg-no-repeat min-h-screen flex items-center justify-center"
+      style={{
+        backgroundImage: `url(${background.src})`,
+        backgroundSize: "cover",
+      }}
+    >
       {loading && (
         <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50">
           <div className="text-white text-2xl">Loading...</div>
         </div>
       )}
-      <div className="flex justify-center items-center lg:grid-cols-3 min-h-screen gap-4 p-4 md:p-8 lg:p-10">
-        <div className="col-span-1 sm:col-span-2 lg:col-span-2 flex items-center justify-center p-4 lg:p-8 bg-cover bg-center sm:border border-gray-600 rounded-3xl overflow-hidden">
+  
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-8 lg:p-20 w-full max-w-6xl">
+        
+        <div className=" rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg bg-white opacity-90"
+        style={{backgroundImage: `url(${background1.src})`}}>
+         <div className="flex flex-col items-center">
+  <Image 
+    src={logo} 
+    alt="redlogo" 
+    width={200} 
+    height={200} 
+    className="cursor-pointer"
+  />
+  <p className="mt-3 text-3xl font-bold font-Gotham Black text-red-800"
+  style={{ fontFamily: "Classic Sans", letterSpacing: "0%" }}>E-SUMMIT'25</p>
+</div>
+        </div>
+  
+        {/* Right Form Box */}
+        <div className="flex items-center justify-center p-4 lg:p-8 bg-cover bg-center rounded-2xl overflow-hidden  bg-white opacity-90"
+        style={{backgroundImage: `url(${background1.src})`}}>
           <div className="w-full max-w-md lg:max-w-lg">
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col gap-10 bg-transparent p-2 rounded-lg shadow-none min-w-[full] min-h-[full] text-3xl"
+              className="flex flex-col gap-5 bg-transparent p-2 rounded-lg shadow-none text-3xl"
             >
-              <div className="flex flex-col gap-2">
+              <h2><b>Enter Your Information</b></h2>
+              <div className="flex flex-col gap-3">
+                <label htmlFor="full Name"  className="block text-lg font-medium ">Full Name</label>
                 <input
-                  placeholder=" Full Name"
+                  placeholder="Your name here"
                   type="text"
                   id="name"
                   name="name"
@@ -157,9 +180,10 @@ export default function UserDetail() {
                   className="border rounded-md text-2xl text-black border-gray-300 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
+              <label htmlFor="regNo"  className="block text-lg font-medium">Registration Number</label>
                 <input
-                  placeholder=" Registration Number"
+                  placeholder="Your Reg. no here"
                   type="text"
                   id="regNo"
                   name="regNo"
@@ -168,9 +192,10 @@ export default function UserDetail() {
                   className="border rounded-md text-2xl text-black border-gray-300 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
+              <label htmlFor="number"  className="block text-lg font-medium ">Phone Number</label>
                 <input
-                  placeholder=" Phone Number"
+                  placeholder="Your Phone no. here"
                   type="tel"
                   id="number"
                   name="number"
@@ -182,14 +207,15 @@ export default function UserDetail() {
               </div>
               <button
                 type="submit"
-                className="p-2 rounded-3xl bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl hover:text-black active:transform transition duration-200 w-full h-auto text-center"
+                className="p-2 bg-red-800 rounded-lg text-white text-xl hover:text-black active:transform transition duration-200 h-auto text-center w-24 font-sans"
               >
-                Submit
+                Register
               </button>
             </form>
           </div>
         </div>
       </div>
+      
       <Toaster />
     </div>
   );

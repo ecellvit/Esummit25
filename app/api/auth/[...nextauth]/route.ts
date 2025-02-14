@@ -4,7 +4,47 @@ import { OAuth2Client, LoginTicket } from 'google-auth-library';
 import NextAuth, { DefaultUser, NextAuthOptions, User} from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { JWT } from 'next-auth/jwt';
-import { generateTokens } from '../../login/generateTokensUser/route';
+
+import { UserToken } from "@/models/usertoken";
+import jwt from "jsonwebtoken";
+import { Types } from "mongoose";
+
+interface UserT {
+  _id: Types.ObjectId;
+}
+
+interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+async function generateTokens(user: UserT): Promise<Tokens> {
+  try {
+    const payload = {
+      _id: user._id,
+    };
+
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET || "", {
+      expiresIn: "5d",
+    });
+
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET || "", {
+      expiresIn: "30d",
+    });
+
+    const userToken = await UserToken.findOne({ userId: user._id });
+    if (userToken) {
+      await userToken.deleteOne();
+    }
+
+    await new UserToken({ userId: user._id, token: refreshToken }).save();
+
+    return { accessToken, refreshToken };
+  } catch (err) {
+    throw err;
+  }
+}
+
 
 // Ensure proper type for the Google OAuth2 client
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID as string);
@@ -76,7 +116,7 @@ const gettokenfrombackend = async (user: User, account: Account): Promise<string
   return accessToken;
 };
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -313,3 +353,7 @@ async function refreshAccessToken(token: any) {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+
+
+
+
