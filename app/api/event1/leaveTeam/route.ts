@@ -24,7 +24,7 @@ export async function PATCH(req: Request) {
     }
     
     if (!user.event1TeamId) {
-      return NextResponse.json({ success: false, message: "User is not part of a team" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "User is not part of a team" }, { status: 403 });
     }
     
     if ( sessionUser.event1TeamRole === 0 ) {
@@ -43,7 +43,7 @@ export async function PATCH(req: Request) {
 
     //TODO: These values could be changed to undefined, check if that works
     user.event1TeamId = null;
-    user.event1TeamRole = null;
+    user.event1TeamRole = undefined;
     await user.save();
 
     return NextResponse.json({ success: true, message: "User left the team successfully" }, { status: 200 });
