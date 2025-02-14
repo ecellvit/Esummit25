@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     // Get the current session from NextAuth
     const session = await getServerSession(authOptions);
-  
+
     // If there's no session, respond with an unauthorized status
     if (!session) {
       return NextResponse.json(
@@ -20,56 +20,87 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Ensure that the session contains the required user details
-    const { user } = session;
-    if (!user || !user.email) {
-      return NextResponse.json(
-        { success: false, message: "User session is missing email." },
-        { status: 400 }
-      );
-    }
-
     // Parse the incoming request body to get the user details for registration
     const {
+      name,
+      email,
       startupName,
       mobileNumber,
       driveLink,
       collegeName,
     }: {
+      name: string;
+      email: string;
       startupName: string;
-      mobileNumber: number;
+      mobileNumber: string;
       driveLink: string;
       collegeName: string;
     } = await request.json();
-    console.log(startupName, mobileNumber, driveLink, collegeName);
-    // Validate required fields
-    if (!startupName || !mobileNumber || !driveLink || !collegeName) {
-      return NextResponse.json(
-        { success: false, message: "All fields are required" },
-        { status: 400 }
-      );
-    }
 
-    // Check if user already exists
-    const existingUser = await Users.findOne({ email: user.email }).lean();
-    if (existingUser) {
-      return NextResponse.json(
-        { success: false, message: "User already registered" },
-        { status: 409 }
-      );
-    }
-
-    // Create a new user using the provided details
-    const newUser = new Users({
-      name: user.name, // Use name from session
-      email: user.email, // Use email from session
+    // Log the request data for debugging
+    console.log("Received Registration Data:", {
+      name,
+      email,
       startupName,
       mobileNumber,
       driveLink,
       collegeName,
     });
 
+    // Validate required fields
+    if (
+      !name ||
+      !email ||
+      !startupName ||
+      !mobileNumber ||
+      !driveLink ||
+      !collegeName
+    ) {
+      return NextResponse.json(
+        { success: false, message: "All fields are required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if a user with the same email already exists
+    const existingEmail = await Users.findOne({ email }).lean();
+    if (existingEmail) {
+      return NextResponse.json(
+        { success: false, message: "Email is already registered." },
+        { status: 409 }
+      );
+    }
+
+    // Check if a user with the same mobile number already exists
+    const existingMobile = await Users.findOne({ mobileNumber }).lean();
+    if (existingMobile) {
+      return NextResponse.json(
+        { success: false, message: "Mobile number is already registered." },
+        { status: 409 }
+      );
+    }
+
+    // Log that we're going to create the user
+    console.log("Creating new user");
+
+    // Create a new user using the provided details, omitting `regNo`
+    const newUser = new Users({
+      name,
+      email,
+      startupName,
+      mobileNumber,
+      driveLink,
+      collegeName,
+    });
+
+    // Log the newUser data to ensure it does not contain regNo
+    console.log("New User Object Before Saving:", newUser);
+
+    // Save the new user
     await newUser.save();
+
+    // Log the success after saving
+    console.log("User saved successfully:", newUser);
 
     // Return a success response with the created user details
     return NextResponse.json(
