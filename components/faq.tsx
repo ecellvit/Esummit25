@@ -32,8 +32,9 @@ const FaqContent = () => {
   };
 
   return (
-    <section className="bg-[#E7E2D8] py-16 px-6 md:px-20">
-      <h2 className="text-4xl md:text-5xl font-extrabold text-center text-[#14110E]">
+    <section className="py-16 px-6 md:px-20 bg-gradient-to-b from-[#6F0F0F] via-[#C72423] via-38% to-[#510D0D] z-10  "
+   >
+      <h2 className="text-4xl md:text-5xl font-extrabold text-center text-white">
         FREQUENTLY ASKED QUESTIONS
       </h2>
 
