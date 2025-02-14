@@ -17,6 +17,7 @@ type TeamMember = {
   name: string;
   regNo: string;
   mobNo: string;
+  email?:string;
   event1TeamRole?: number;
 };
 
@@ -66,6 +67,29 @@ export default function Page() {
       setLoading(false);
     }
   };
+
+  const handleLeaderLeave = async (index: number) => {
+    setLoading(true);
+    try {
+      const email = teamMembers[index].email; // Ensure you're sending the email
+  
+      const response = await axios.patch("/api/event1/leaveTeam", { email });
+  
+      if (response.status === 200) {
+        toast.success("Team leader removed successfully");
+        setTeamMembers((prev) => prev.filter((member) => member.email !== email));
+      } else {
+        toast.error(response?.data.message || "Failed to remove team member.");
+      }
+    } catch (error) {
+      console.error("Error removing team leader:", error);
+      toast.error("An error occurred while removing the team leader.");
+    } finally {
+      setLoading(false);
+      handleCloseModal();
+    }
+  };
+  
 
   const handleShowModal = (index: number | null = null, type: string = "") => {
     setModalMemberIndex(index);
