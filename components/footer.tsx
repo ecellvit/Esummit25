@@ -16,7 +16,7 @@ export default function Footer() {
   const clockLabels = "ENTREPRENEUR".split("");
 
   return (
-    <footer className="text-black w-full bg-white shadow-md">
+    <footer className="text-black w-full bg-white shadow-md" id="footer">
       <div className="flex items-center justify-evenly">
         <div className="flex-col space-y-1 text-lg h-[11vw] pt-[5vw] justify-center items-center hidden md:flex">
           <a href="https://www.linkedin.com/company/ecellvitvellore" className="hover:text-gray-500"><FaLinkedin size={20} /></a>
