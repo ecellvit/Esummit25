@@ -143,7 +143,7 @@ export default function UserDetail() {
         <Loader/>
       )}
   
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-11 w-full ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 md:p-11 w-full h-[calc(100vh-10vh)]">
         
         <div className=" rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg bg-white opacity-100"
         // style={{backgroundImage: `url(${background1.src})`}}

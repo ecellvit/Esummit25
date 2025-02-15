@@ -3,7 +3,7 @@ import scheduleDetails from "@/components/scheduleDetails";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import ScheduleRegisterButton from "@/components/events/ScheduleRegisterButton";
-import Loader from "@/components/Loader";
+import Loader from "@/components/loader";
 import background from "/assets/bg.png"
 import axios, { AxiosError } from "axios";
 import Event from "./event";
