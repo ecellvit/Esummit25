@@ -19,6 +19,7 @@ const EsummitMotion = () => {
     <div
       className="h-screen w-full relative overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${EsummitMotionbg.src})` }}
+      id="home"
     >
       {/* Content container with absolute positioning */}
       <div className="w-full h-full">
