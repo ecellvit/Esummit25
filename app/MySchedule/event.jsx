@@ -14,6 +14,8 @@ import Link from "next/link";
 
 const Event = ({ event, userDetails }) => {
   const [loader, setLoader] = useState(false);
+  const [team1,setTeam1]=useState(false);
+  const [team2,setTeam2]=useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const { data: session, status } = useSession();
   useEffect(() => {
@@ -21,10 +23,16 @@ const Event = ({ event, userDetails }) => {
       if (!session?.user?.event1TeamId) {
         setShowWarning(true);
       }
+      else{
+        setTeam1(true);
+      }
     }
     if (event.id == 2) {
       if (!session?.user?.event2TeamId) {
         setShowWarning(true);
+      }
+      else{
+        setTeam2(true);
       }
     }
   }, []);
@@ -58,14 +66,19 @@ const Event = ({ event, userDetails }) => {
         <p className="font-poppins py-2">{event.description}</p>
         <div className="flex flex-col md:flex-row gap-2">
           {(event.id === 1 || event.id === 2) && (
-            <button
-              className="text-black font-semibold hover:scale-105 transition-all bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] p-2 rounded-lg hover:bg-opacity-80"
-              onClick={() => {
-                window.location.href = `/events/event${event.id}/memberDashboard`;
-              }}
-            >
-              Go to Dashboard
-            </button>
+           <button
+           className="text-black font-semibold hover:scale-105 transition-all bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] p-2 rounded-lg hover:bg-opacity-80"
+           onClick={() => {
+             if ((event.id === 1 && team1) || (event.id === 2 && team2)) {
+               window.location.href = `/events/event${event.id}/memberDashboard`;
+             } else {
+               window.location.href = `/events/event${event.id}/createTeam`;
+             }
+           }}
+         >
+           { (event.id === 1 && team1) || (event.id === 2 && team2) ? "Go to Dashboard" : "Create Team" }
+         </button>
+         
           )}
           {event.loc && (
             <Link
