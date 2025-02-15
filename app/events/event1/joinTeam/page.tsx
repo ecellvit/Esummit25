@@ -124,10 +124,10 @@ export default function JoinTeam() {  // Remove the props) {
 
   return (
     <main 
-      className="h-screen w-screen flex items-center justify-center bg-black opacity-90" style={{ backgroundImage: `url(${bg.src})`, backgroundSize: 'cover' }}
+      className="h-screen w-screen flex items-center justify-center bg-black opacity-100" style={{ backgroundImage: `url(${bg.src})`, backgroundSize: 'cover' }}
     >
       {isLoading && <Loader />} {/* Show loader based on isLoading state */}
-      <div className="bg-white text-red p-8 rounded-3xl flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5 h-[80vh] opacity-80" style={{ backgroundImage: `url(${divbg.src})`, backgroundSize: 'cover' }}>
+      <div className="bg-white text-red p-8 rounded-3xl flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5 h-[80vh] opacity-100 bg-white" style={{ backgroundSize: 'cover' }}>
         <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12" style={{ background: "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Join Team</h2>
         <form className="w-full flex flex-col items-center gap-5" onSubmit={fetchTeamName}>
           <input
@@ -145,19 +145,10 @@ export default function JoinTeam() {  // Remove the props) {
             disabled={loading}
           >
             {loading ? (
-              <div
-                style={{
-                  border: "4px solid #f3f3f3",
-                  borderTop: "4px solid #3498db",
-                  borderRadius: "50%",
-                  width: "20px",
-                  height: "20px",
-                  animation: "spin 2s linear infinite",
-                  margin: "0 auto",
-                }}
-              ></div> // Spinner with inline styles
+              <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
             ) : (
-              "Join Team with Code"
+              "Join Team With Code"
+          
             )}
           </button>
         </form>
@@ -193,14 +184,26 @@ export default function JoinTeam() {  // Remove the props) {
           style={{ background: "linear-gradient(90deg, #611212 0%, #C72626 100%)" }}
           onClick={createTeam}
         >
-          Create your Own Team
+          {loading ? (
+              <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+            ) : (
+              "Create your Own Team"
+          
+            )}
+         
         </button>
         <button
           className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold hover:scale-105 active:scale-95 transition-transform"
           style={{ background: "linear-gradient(90deg, #611212 0%, #C72626 100%)" }}
           onClick={userConsent}
         >
-          Don't Have a Team
+          {loading ? (
+              <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+            ) : (
+              "Don't have a Team"
+          
+            )}
+          
         </button>
       </div>
       <Toaster />

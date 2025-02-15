@@ -49,11 +49,11 @@ const Navbar: React.FC = () => {
       {/* <nav className="fixed top-0 left-0 w-full shadow-md z-50 p-4 flex items-center justify-between"> */}
       <nav 
   className="fixed top-0 left-0 w-full h-[10vh] shadow-md  z-50 p-4 flex items-center justify-between bg-cover bg-transparent bg-center" 
-  style={{ backgroundImage: `url(${background.src})` }}
+   style={{ backgroundImage: `url(${background.src})` }}
   >
-
-
+      <Link href="/">
       <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
+      </Link>
 
         {/* Hamburger Icon */}
         <div className="md:hidden">
@@ -71,8 +71,8 @@ const Navbar: React.FC = () => {
           <Link href="/" className="text-white font-sans hover:text-black-400">Home</Link>
           <Link href="/#timeline" className="text-white font-sans hover:text-black-400">About</Link>
           <Link href="/#storyBehind" className="text-white font-sans hover:text-black-400">Events</Link>
-          <Link href="/#footer" className="text-white font-sans hover:text-black-400">Speakers</Link>
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Shcedule</Link>
+          <Link href="#meetOurSpeakers" className="text-white font-sans hover:text-black-400">Speakers</Link>
+          <Link href="#scheduleDetails" className="text-white font-sans hover:text-black-400">My Shcedule</Link>
           <SignInBtn/>
         </div>
       </nav>

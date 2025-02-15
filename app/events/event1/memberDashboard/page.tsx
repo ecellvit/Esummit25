@@ -117,20 +117,20 @@ export default function MemberDashboard() {
 
   return (
     <div
-      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black"
+      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black opacity-100"
       style={{ backgroundImage: `url(${background.src})` }}
     >
       <Navbar />
       {loading ? (
         <Loader />
       ) : (
-        <div className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-center p-4 rounded-lg"
-          style={{
-            backgroundImage: `url(${background1.src})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundColor: "rgba(255, 255, 255, 0.5)",
-          }}
+        <div className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-coverbg-white opacity-100 bg-center p-4 rounded-lg "
+          // style={{
+          //   backgroundImage: `url(${background1.src})`,
+          //   backgroundSize: "cover",
+          //   backgroundPosition: "center",
+          //   backgroundColor: "rgba(255, 255, 255, 0.5)",
+          // }}
         >
           <h1 className="text-2xl sm:text-3xl font-extrabold text-center drop-shadow-lg text-red-500">
             {teamName}
@@ -140,7 +140,7 @@ export default function MemberDashboard() {
             {teamMembers.map((member, index) => (
               <div
                 key={index}
-                className="bg-[#141B2B] opacity-85 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4"
+                className=" opacity-100 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4"
                 style={{ backgroundImage: `url(${background.src})` }}
               >
                 <div className="absolute right-0 top-0 w-1/2 h-full">

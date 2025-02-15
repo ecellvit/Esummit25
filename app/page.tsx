@@ -9,6 +9,7 @@ import SignInBtn from "@/components/signinButton";
 import MeetOurSpeakers from "@/components/meetOurSpeakers";
 import Sponsors from "@/components/sponsors";
 import FaqContent from "@/components/faq";
+import EsummitMotion from "@/components/EsummitMotion";
 export default function HomePage() {
   return (
     <div>
@@ -24,12 +25,11 @@ export default function HomePage() {
       }}
       />
       {/* <Marq speed1={100} speed2={50} speed3={75} speed4={120} /> */}
-    
-      
+      <EsummitMotion/>
       <MeetOurSpeakers />
       <Sponsors />
       <FaqContent/>
-      <Footer />
+      <Footer /> 
     </div>
   );
 }
