@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import EsummitMotionbg from '../assets/EsummitMotionbg.jpg';
+import CountdownTimer from './counter';
 
 const EsummitMotion = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,13 +18,16 @@ const EsummitMotion = () => {
   return (
     <div
       className="h-screen w-full relative overflow-hidden bg-cover bg-center bg-no-repeat"
-      style={{backgroundImage: `url(${EsummitMotionbg.src})`}}
+      style={{ backgroundImage: `url(${EsummitMotionbg.src})` }}
     >
       {/* Content container with absolute positioning */}
       <div className="w-full h-full">
         {/* Black bottom div */}
-        <div className="absolute bottom-0 left-0 right-0 h-54 lg:h-44 bg-black z-40 " />
-        
+        <div className="absolute bottom-0 left-0 right-0 h-54 lg:h-44 bg-black z-40 flex items-center justify-center">
+          <div className="flex space-x-4 p-4 rounded-lg shadow-lg">
+            <CountdownTimer targetDate="2025-03-04T00:00:00" />
+          </div>
+        </div>
         {/* Animated content */}
         <div
           className={`
