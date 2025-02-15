@@ -29,6 +29,7 @@ export default function Footer() {
             <div 
               key={index}
               className="inline-block h-[12vw] items-end transition-all duration-400 hover:font-light"
+           
             >
               {char}
             </div>

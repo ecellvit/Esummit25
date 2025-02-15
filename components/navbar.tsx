@@ -3,32 +3,30 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import logo from "/assets/whiteLogo.png"
-import hamburgerIcon from "/assets/hamburger.jpg"; 
-import closeIcon from "/assets/close.jpg"; 
-import background from "/assets/bg.png"
+import logo from "/assets/whiteLogo.png";
+import hamburgerIcon from "/assets/hamburger.jpg";
+import closeIcon from "/assets/close.jpg";
+import background from "/assets/bg.png";
 import SignInBtn from "./signinButton";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const heroSectionRef = useRef<HTMLDivElement | null>(null);
-  const timelineRef = useRef<HTMLDivElement | null>(null);
-  const storyBehindRef = useRef<HTMLDivElement | null>(null);
-  const footerRef = useRef<HTMLDivElement | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [visible, setVisible] = useState(true); // Track navbar visibility
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const currentUrl = window.location.href;
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY.current) {
+        setVisible(false); // Hide on scroll down
+      } else {
+        setVisible(true); // Show on scroll up
+      }
+      lastScrollY.current = window.scrollY;
+    };
 
-    if (currentUrl.endsWith("/#timeline")) {
-      timelineRef.current?.click();
-    } else if (currentUrl.endsWith("/#storyBehind")) {
-      storyBehindRef.current?.click();
-    } else if (currentUrl.endsWith("/#footer")) {
-      footerRef.current?.click();
-    } else {
-      heroSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -41,19 +39,18 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  
 
   return (
     <>
-    
-      {/* <nav className="fixed top-0 left-0 w-full shadow-md z-50 p-4 flex items-center justify-between"> */}
-      <nav 
-  className="fixed top-0 left-0 w-full h-[10vh] shadow-md  z-50 p-4 flex items-center justify-between bg-cover bg-transparent bg-center" 
-   style={{ backgroundImage: `url(${background.src})` }}
-  >
-      <Link href="/">
-      <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
-      </Link>
+      <nav
+        className={`fixed top-0 left-0 w-full h-[10vh] shadow-md z-50 p-4 flex items-center justify-between bg-cover bg-transparent bg-center transition-transform duration-300 ${
+          visible ? "translate-y-0" : "-translate-y-full"
+        }`}
+        style={{ backgroundImage: `url(${background.src})` }}
+      >
+        <Link href="/">
+          <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
+        </Link>
 
         {/* Hamburger Icon */}
         <div className="md:hidden">
@@ -67,13 +64,16 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-10 width-50">
+        <div className="hidden md:flex space-x-10">
           <Link href="/" className="text-white font-sans hover:text-black-400">Home</Link>
           <Link href="/#timeline" className="text-white font-sans hover:text-black-400">About</Link>
           <Link href="/#storyBehind" className="text-white font-sans hover:text-black-400">Events</Link>
           <Link href="#meetOurSpeakers" className="text-white font-sans hover:text-black-400">Speakers</Link>
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Shcedule</Link>
-          <SignInBtn/>
+
+
+          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Schedule</Link>
+          <SignInBtn />
+
         </div>
       </nav>
 
@@ -88,8 +88,11 @@ const Navbar: React.FC = () => {
           <Link href="/#timeline" onClick={toggleMenu}>About</Link>
           <Link href="/#storyBehind" onClick={toggleMenu}>Events</Link>
           <Link href="/#footer" onClick={toggleMenu}>Speakers</Link>
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Shcedule</Link>
+          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Schedule</Link>
           <SignInBtn/>
+
+          <SignInBtn />
+
         </div>
       )}
     </>

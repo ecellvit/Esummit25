@@ -14,6 +14,7 @@ const MySchedule = () => {
   const [regEvent, setRegEvents] = useState([]);
   const [regEventsList, setRegEventsList] = useState([]);
   const [userDetails, setUserDeatials] = useState(null);
+  
 //   const [loader, setLoader] = useState(true);
   const { data: session, status } = useSession();
 
