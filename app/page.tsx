@@ -13,6 +13,7 @@ import FaqContent from "@/components/faq";
 import EsummitMotion from "@/components/EsummitMotion";
 import IdeateComponent from "@/components/iiaMotion";
 import React, { useState, useEffect } from "react";
+import RegisterBtn from "@/components/registernowButton";
 
 export default function HomePage() {
   const [ideateCompleted, setIdeateCompleted] = useState(false);
@@ -32,6 +33,7 @@ export default function HomePage() {
               5: "/events/event5",
             }}
           />
+          <RegisterBtn/>
           <EsummitMotion />
           <MeetOurSpeakers />
           <Sponsors />
