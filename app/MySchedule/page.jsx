@@ -14,6 +14,7 @@ const MySchedule = () => {
   const [regEvent, setRegEvents] = useState([]);
   const [regEventsList, setRegEventsList] = useState([]);
   const [userDetails, setUserDeatials] = useState(null);
+  
 //   const [loader, setLoader] = useState(true);
   const { data: session, status } = useSession();
 
@@ -61,7 +62,7 @@ const MySchedule = () => {
         </div>
       ) : (
         <>
-          <h1 className="pt-20 uppercase text-center mt-10 mb-5 text-4xl md:text-5xl lg:text-7xl font-bold bg-gradient-to-br from-[#FFFFFF] via-[#F5F5F5] to-[#E0E0E0]
+          <h1 className="pt-20 uppercase text-center  mb-5 text-4xl md:text-5xl lg:text-7xl font-bold bg-gradient-to-br from-[#FFFFFF] via-[#F5F5F5] to-[#E0E0E0]
  bg-clip-text text-transparent">
             my schedule
           </h1>
