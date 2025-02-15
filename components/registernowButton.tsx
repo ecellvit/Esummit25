@@ -7,13 +7,6 @@ export default function RegisterBtn(): JSX.Element {
   const { status } = useSession();
   const router = useRouter();
 
-  // Automatically navigate to "#timeline" when the user is authenticated
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.push("#timeline");
-    }
-  }, [status, router]);
-
   const handleClick = () => {
     if (status === "authenticated") {
       router.push("#timeline");

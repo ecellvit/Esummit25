@@ -10,20 +10,7 @@ const Sponsors: React.FC = () => {
   const sponsorsRef = useRef<HTMLDivElement>(null);
   const comingSoonRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (comingSoonRef.current) {
-      const handleScroll = (event: WheelEvent) => {
-        if (event.deltaY > 20) {
-          window.scrollTo({
-            top: document.getElementById("timeline")?.offsetTop,
-            behavior: "smooth",
-          });
-      };
-    }
-    window.addEventListener("wheel", handleScroll);
-    return () => window.removeEventListener("wheel", handleScroll);
-    }
-  
+  useEffect(() => {  
     let ctx = gsap.context(() => {
       // Keep "SPONSORS" pinned in place initially
       ScrollTrigger.create({
