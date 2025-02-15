@@ -274,8 +274,8 @@ export default function Page() {
             </h1>
 
                
-            <button className="btn-primary mt-4" onClick={handleChangeTeamName}>
-            Change Team Name
+            <button className="btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2" onClick={handleChangeTeamName} >
+            edit Team Name
           </button>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl px-8 py-10">
               {teamMembers.length > 0 ? (

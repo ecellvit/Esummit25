@@ -12,15 +12,15 @@ const Sponsors: React.FC = () => {
 
   useEffect(() => {
     let ctx = gsap.context(() => {
-      // Pin "SPONSORS" until "COMING SOON" fully covers it
+      // Keep "SPONSORS" pinned in place initially
       ScrollTrigger.create({
         trigger: sponsorsRef.current,
         start: "top top",
-        end: () => `+=${(comingSoonRef.current?.offsetHeight || 500)*2.0}`,
-        scrub: 1,
+        end: () => `+=${comingSoonRef.current?.offsetHeight || 500}`,
         pin: true,
+        scrub: true,
       });
-
+  
       // Parallax effect for "COMING SOON"
       gsap.to(comingSoonRef.current, {
         y: "-50%", // Moves up slowly for parallax effect
@@ -32,29 +32,32 @@ const Sponsors: React.FC = () => {
           scrub: 1,
         },
       });
-
-      // Move "SPONSORS" up and disappear once covered
+  
+      // Move "SPONSORS" up slightly later, so it stays visible longer
       gsap.to(sponsorsRef.current, {
-        y: "-100%", // Moves up and out of view
-        opacity: 0, // Fades out
+        y: "-100%", // Moves up and disappears
         ease: "power2.out",
         scrollTrigger: {
           trigger: comingSoonRef.current,
-          start: "top center",
-          end: "top top",
+          start: "top 40%", // DELAYED START: Wait until "COMING SOON" moves further up
+          end: "top 10%", // Moves out smoothly as "COMING SOON" goes up
           scrub: 1,
         },
       });
+  
     }, sectionRef);
-
+  
     return () => ctx.revert();
   }, []);
+  
+  
+  
 
   return (
     <section
   ref={sectionRef}
   id="sponsors"
-  className="relative w-full flex flex-col items-center justify-center bg-white overflow-hidden mt-[-20rem]" // Set margin-top to 0
+  className="relative w-full flex flex-col items-center justify-center bg-white overflow-hidden mt-[-70rem]" // Set margin-top to 0
 >
   <div
     ref={sponsorsRef}
