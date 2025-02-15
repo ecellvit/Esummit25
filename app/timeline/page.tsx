@@ -20,27 +20,32 @@ const events = [
   {
     name: "INNOVENTURE",
     date: "March 4",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
     name: "E TALK",
     date: "March 5",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
     name: "MARKETING WORKSHOP",
     date: "March 6",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
     name: "ACHIEVERS CONCLAVE",
     date: "March 6",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
     name: "IDEATHON",
     date: "March 7",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
 ];
 
@@ -76,27 +81,54 @@ export default function Schedule() {
   }, [activeIndex, scrollDelta]);
 
   useEffect(() => {
-    gsap.to(containerRef.current.children, {
-      y: "-=100%",
-      duration: 0.6,
-      ease: "power3.out",
-      stagger: 0.1,
-    });
+    if (containerRef.current) {
+      const yOffset = -activeIndex * (100 / 3);
+      gsap.to(containerRef.current, {
+        y: `${yOffset}%`,
+        duration: 0.6,
+        ease: "power3.out",
+        stagger: 0.1,
+      });
+    }
+  }, [activeIndex]);
+
+  // GSAP for Event text
+  useEffect(() => {
+    const tl = gsap.timeline();
+
+    tl.fromTo(dateRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 });
+    tl.fromTo(nameRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 }, "-=0.2"); // Overlap slightly
+    tl.fromTo(descriptionRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 }, "-=0.2"); // Overlap slightly
+
+    return () => {
+      tl.kill(); // Cleanup the timeline on unmount
+    };
   }, [activeIndex]);
 
   const gradientStyle = "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
-
   return (
     <div className="flex h-screen">
       {/* Left Section */}
       <div className="w-2/3 flex flex-col p-10 relative">
         {/* Navigation Bar */}
         <div className="relative">
-          <h2 className="text-7xl font-bold my-6" style={{ background: gradientStyle, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>SCHEDULE</h2>
+          <h2
+            className="text-7xl font-bold my-6"
+            style={{
+              background: gradientStyle,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            SCHEDULE
+          </h2>
           <div className="absolute left-1 bottom-1 w-2 bg-gray-300 h-[55%]"></div>
           <ul className="space-y-2 relative">
             {events.map((event, idx) => (
-              <li key={idx} className="relative flex items-center cursor-pointer text-xl">
+              <li
+                key={idx}
+                className="relative flex items-center cursor-pointer text-xl"
+              >
                 {activeIndex === idx && (
                   <div
                     className="absolute left-0 w-4 h-full"
@@ -105,7 +137,11 @@ export default function Schedule() {
                   ></div>
                 )}
                 <span
-                  className={`pl-8 ${activeIndex === idx ? "text-black font-bold" : "text-gray-400 hover:text-black"}`}
+                  className={`pl-8 ${
+                    activeIndex === idx
+                      ? "text-black font-bold"
+                      : "text-gray-400 hover:text-black"
+                  }`}
                   onClick={() => setActiveIndex(idx)}
                 >
                   {event.name}
@@ -120,7 +156,15 @@ export default function Schedule() {
           <p ref={dateRef} className="text-3xl font-black text-black">
             {events[activeIndex].date}
           </p>
-          <h3 ref={nameRef} className="text-7xl font-bold" style={{ background: gradientStyle, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <h3
+            ref={nameRef}
+            className="text-7xl font-bold"
+            style={{
+              background: gradientStyle,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
             {events[activeIndex].name}
           </h3>
           <p ref={descriptionRef} className="text-lg text-gray-700">
@@ -136,13 +180,56 @@ export default function Schedule() {
       </div>
 
       {/* Right Section */}
-      <div className="w-1/3 relative overflow-hidden" style={{ height: "80vh" }}>
-        <div ref={containerRef} className="absolute top-0 left-0 w-full h-full flex flex-col transition-transform duration-500">
-          {images.map((image, idx) => (
-            <div key={idx} className={`relative w-full h-1/3 flex justify-center ${idx === activeIndex ? "opacity-100 scale-105" : "opacity-60"}`}>
-              <Image src={image} alt={`Event ${idx + 1}`} layout="fill" objectFit="cover" className="transition-all duration-500" />
-            </div>
-          ))}
+      <div className="w-1/3 relative overflow-hidden mr-16 h-full">
+        <div
+          ref={containerRef}
+          className="absolute top-0 left-0 w-full h-[300%]  transition-transform duration-500"
+        >
+          {images.map((image, idx) => {
+            const imagePosition = idx - activeIndex;
+            let opacity = 0.6;
+            let scale = 1;
+            let zIndex = 0;
+
+            if (imagePosition === 0) {
+              opacity = 1;
+              scale = 1.05;
+              zIndex = 1;
+            } else if (Math.abs(imagePosition) === 1) {
+              opacity = 0.8;
+              scale = 1;
+            } else if (Math.abs(imagePosition) > 2) {
+              return null;
+            }
+            return (
+              <div
+                key={idx}
+                className="relative w-full h-1/3 flex justify-center items-center overflow-hidden"
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    opacity: opacity,
+                    transform: `scale(${scale})`,
+                    transition: "opacity 0.3s, transform 0.3s",
+                    zIndex: zIndex,
+                  }}
+                >
+                  <Image
+                    src={image}
+                    alt={`Event ${idx + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    style={{ transition: "opacity 0.3s" }}
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
