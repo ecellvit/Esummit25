@@ -13,7 +13,7 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
 
     setTimeout(() => {
       onComplete(); 
-    }, 4500);
+    }, 3000);
     
     if (cycleCount >= maxCycles) return; 
 
@@ -24,7 +24,7 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
         }
         return (prevIndex + 1) % texts.length;
       });
-    }, 1500); // Change text every 3 seconds
+    }, 1000); // Change text every 3 seconds
 
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, [cycleCount]);
@@ -42,7 +42,8 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
       <h1
         key={currentTextIndex}
         className="absolute z-10 text-red-800 text-[69.661px] font-extrabold font-[Brigends Expanded,sans-serif]"
-        style={{ animation: "fadeInOut 3s ease-in-out " }}
+        style={{ opacity: 0, animation: "textTransition 2s forwards",
+          transform: "translateY(0px)"}}
       >
         {texts[currentTextIndex]}
       </h1>
@@ -50,7 +51,7 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
       <Image
         src={bg}
         alt="background"
-        className="w-full h-full object-cover absolute top-0 left-0 z-0"
+        className="w-full h-full object-cover absolute top-0 left-0 z-10"
       />
     </div>
   );
