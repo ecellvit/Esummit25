@@ -3,8 +3,53 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'GreaterTheory',sans-serif;
-    src: url('../public/fonts/GreaterTheory.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+  font-family: 'GreaterTheory', sans-serif;
+  src: url('../public/fonts/GreaterTheory.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Akira Expanded', sans-serif;
+  src: url('../public/fonts/AkiraExpanded.otf') format('otf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes easeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.text-animate {
+  color: #B32710;
+  font-family: 'Akira Expanded', sans-serif;
+  font-size: 59.661px;
+  font-weight: 800;
+  line-height: normal;
+  position: absolute;
+  z-index: 10;
+  animation: ease-out 3s ease-out r;
+}
+
+.text-animate:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.text-animate:nth-child(2) {
+  animation-delay: 3s;
+}
+
+.text-animate:nth-child(3) {
+  animation-delay: 6s;
+}
