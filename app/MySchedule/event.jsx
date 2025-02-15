@@ -76,7 +76,7 @@ const Event = ({ event, userDetails }) => {
              }
            }}
          >
-           { (event.id === 1 && team1) || (event.id === 2 && team2) ? "Go to Dashboard" : "Create Team" }
+           Dashboard
          </button>
          
           )}
