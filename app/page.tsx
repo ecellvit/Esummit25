@@ -20,6 +20,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
+import RegisterBtn from "@/components/registernowButton";
 
 export default function HomePage() {
   const [ideateCompleted, setIdeateCompleted] = useState(false);
@@ -30,6 +31,7 @@ export default function HomePage() {
     {ideateCompleted && (
         <>
           <NavBar />
+          <RegisterBtn/>
           <EsummitMotion />
           <MeetOurSpeakers />
           <Sponsors />
