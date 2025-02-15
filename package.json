@@ -10,7 +10,7 @@
     "vercel-build": "npm rebuild sharp && next build"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^15.1.7",
+    "@next/swc-linux-x64-gnu": "^15.1.7",
     "axios": "^1.7.9",
     "google-auth-library": "^9.15.0",
     "gsap": "^3.12.7",
