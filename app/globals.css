@@ -10,29 +10,9 @@
   font-style: normal;
 }
 
-
 /* Apply AllRoundGothic only to the navbar */
 .navbar {
   font-family: 'AllRoundGothic', sans-serif !important;
-}
-@font-face {
-  font-family: 'BrigendsExpandedSecond', sans-serif;
-  src: url("../public/fonts/brigendsexpanded-nrek1.otf") format("otf");
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'BrigendsExpanded';
-  src: url('/fonts/BrigendsExpanded.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* Apply AllRoundGothic font globally */
-body {
-  font-family: 'AllRoundGothic', sans-serif;
-
 }
 
 /* Ensure the footer appears when scrolling to the FAQ section */
