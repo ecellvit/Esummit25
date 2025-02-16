@@ -17,7 +17,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="text-black w-full bg-white shadow-md  bottom-0 left-0 z-[-1] h-[20vh] flex flex-col justify-end items-center ">
+    <footer className="text-black w-full bg-white shadow-md  bottom-0 left-0 z-[-1] h-[35vh] flex flex-col justify-end items-center ">
 
       <div className="flex items-center justify-evenly w-full">
         {/* Desktop Social Media Links */}
@@ -65,7 +65,7 @@ export default function Footer() {
 
       {/* Scrolling Text */}
       <div className="flex items-center bg-black text-gray-400 text-lg py-4 w-full relative overflow-hidden">
-        <div className="lg:w-2/3 sm:w-full overflow-hidden whitespace-nowrap">
+        <div className="lg:wscreen sm:w-full overflow-hidden">
           <div className="animate-scroll flex">
             {Array(10)
               .fill("#WeBreedBusiness")
@@ -75,11 +75,6 @@ export default function Footer() {
                 </span>
               ))}
           </div>
-        </div>
-        {/* Desktop Copyright */}
-        <div className="w-1/3 text-center font-bold hidden md:block">
-          &copy; 2025,{" "}
-          <span className="font-bold">Entrepreneurship Cell VIT</span>
         </div>
       </div>
 
