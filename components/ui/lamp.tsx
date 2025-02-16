@@ -129,6 +129,7 @@ import { div } from "motion/react-client";
 import Image from "next/image";
 import rays from "@/assets/god-rays.gif";
 import CountdownTimer from "../counter";
+import RegisterBtn from "@/components/registernowButton";
 
 
 
@@ -136,7 +137,7 @@ export function LampDemo() {
   return (
     <div
       className="w-full min-h-screen font-[BrigendsExpanded]"
-      
+      id="home"
     >
       <video
         src={rays.src} // Use .src if necessary, or just rays if it's already a string
@@ -247,7 +248,10 @@ export const LampContainer = ({
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-5">
         {children}
       </div>
-      <div className="flex w-full justify-center absolute bottom-[10vh] items-center">
+      <div className="flex justify-center items-center absolute bottom-[15vh] w-full">
+      <RegisterBtn/>
+      </div>
+      <div className="flex w-full justify-center absolute bottom-[5vh] items-center">
       <CountdownTimer targetDate="2025-03-04T00:00:00"/>
       </div>
     </div>

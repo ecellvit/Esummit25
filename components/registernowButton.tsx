@@ -16,13 +16,13 @@ export default function RegisterBtn(): JSX.Element {
   };
 
   return (
-    <div className="relative top-18 left-1/2 transform -translate-x-1/2 z-10 w-full py-6 bg-transparent flex justify-center gap-12 flex-wrap">
-    <button
-          className="bg-gradient-to-r from-blue-500 to-green-500 text-white p-5 rounded-3xl hover:scale-110 active:scale-95"
-          onClick={handleClick}
-        >
-      Register now
-    </button>
+    <div className="relative top-18 left-1/2 transform -translate-x-1/2 z-10 w-full py-2 px-5 bg-transparent flex justify-center gap-12 flex-wrap">
+      <button
+        className="hover:text-red-600 hover:bg-white hover:shadow-sm hover:shadow-red-600 bg-red-600 text-white px-4 py-2 rounded-xl hover:scale-110 active:scale-95"
+        onClick={handleClick}
+      >
+        Register now
+      </button>
     </div>
   );
 }
