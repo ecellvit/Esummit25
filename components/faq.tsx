@@ -1,6 +1,10 @@
-"use client";
+import { useEffect, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { useState } from "react";
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const FaqContent = () => {
   const faqs = [
@@ -17,7 +21,7 @@ const FaqContent = () => {
         <>
           For any further queries, you can contact the following POCs:
           <br />
-          <strong>1. XYZ :</strong> +91 XXXXX XXXXX
+          <strong>1. ABC :</strong> +91 XXXXX XXXXX
           <br />
           <strong>2. ABC:</strong> +91 XXXXX XXXXX
         </>
@@ -31,11 +35,20 @@ const FaqContent = () => {
     setVisibleFaq(visibleFaq === id ? null : id);
   };
 
+  useEffect(() => {
+    ScrollTrigger.create({
+      trigger: "#faq",
+      start: "top bottom",
+      onEnter: () => document.body.classList.add("faq-visible"),
+      onLeaveBack: () => document.body.classList.remove("faq-visible"),
+    });
+  }, []);
+
   return (
     <section
       id="faq"
-      className="py-16 px-6 md:px-20 bg-gradient-to-b from-[#6F0F0F] via-[#C72423] via-38% to-[#510D0D] z-10 h-screen"
-   >
+      className="py-16 px-6 md:px-20 bg-gradient-to-b from-[#6F0F0F] via-[#C72423] via-38% to-[#510D0D] z-10"
+    >
       <h2 className="text-4xl md:text-5xl font-extrabold text-center text-white">
         FREQUENTLY ASKED QUESTIONS
       </h2>

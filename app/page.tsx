@@ -22,24 +22,39 @@ if (typeof window !== "undefined") {
 }
 import RegisterBtn from "@/components/registernowButton";
 
+
 export default function HomePage() {
   const [ideateCompleted, setIdeateCompleted] = useState(false);
+
+  useEffect(() => {
+    ScrollTrigger.create({
+      trigger: "#faq",
+      start: "top bottom",
+      onEnter: () => document.body.classList.add("faq-visible"),
+      onLeaveBack: () => document.body.classList.remove("faq-visible"),
+    });
+  }, []);
+
   return (
-    <div>
-    <CustomCursor /> 
-    {!ideateCompleted && <IdeateComponent onComplete={() => setIdeateCompleted(true)} />}
-    {ideateCompleted && (
-        <>
-          <NavBar />
-          <RegisterBtn/>
-          <EsummitMotion />
-          <MeetOurSpeakers />
-          <Sponsors />
-          <Timeline />
+    <div className={ideateCompleted ? "page-container" : "overflow-hidden h-screen"}>
+  <CustomCursor /> 
+  {!ideateCompleted && <IdeateComponent onComplete={() => setIdeateCompleted(true)} />}
+  {ideateCompleted && (
+      <>
+        <NavBar />
+        <RegisterBtn />
+        <EsummitMotion />
+        <MeetOurSpeakers />
+        <Sponsors />
+        <Timeline />
+        <div className="faq-container">
           <FaqContent />
-          <Footer />
-        </>
-      )}
-    </div>
+        </div>
+        <Footer />
+      </>
+  )}
+</div>
+
+
   );
 }

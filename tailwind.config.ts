@@ -22,6 +22,10 @@ const config: Config = {
           "100%": { transform: "translateX(-50%)" }, // Moves exactly half the width, but slower
         },
       },
+      fontFamily: {
+        myCustom: ["BrigendsExpanded", "sans-serif"],
+     },
+
     },
   },
   plugins: [],
