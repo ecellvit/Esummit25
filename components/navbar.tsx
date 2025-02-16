@@ -67,9 +67,9 @@ const Navbar: React.FC = () => {
         <div className="hidden md:flex space-x-10">
           <Link href="/" className="text-white font-sans hover:text-black-400">Home</Link>
           <Link href="/#timeline" className="text-white font-sans hover:text-black-400">About</Link>
-          <Link href="/#storyBehind" className="text-white font-sans hover:text-black-400">Events</Link>
-          <Link href="#meetOurSpeakers" className="text-white font-sans hover:text-black-400">Speakers</Link>
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Shcedule</Link>
+          <Link href="/#timeline" className="text-white font-sans hover:text-black-400">Events</Link>
+          <Link href="#speakers" className="text-white font-sans hover:text-black-400">Speakers</Link>
+          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Schedule</Link>
           <SignInBtn/>
         </div>
       </nav>
@@ -83,9 +83,9 @@ const Navbar: React.FC = () => {
           <button onClick={toggleMenu} className="text-3xl">&times;</button>
           <Link href="/" onClick={toggleMenu}>Home</Link>
           <Link href="/#timeline" onClick={toggleMenu}>About</Link>
-          <Link href="/#storyBehind" onClick={toggleMenu}>Events</Link>
-          <Link href="/#footer" onClick={toggleMenu}>Speakers</Link>
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Shcedule</Link>
+          <Link href="/#timeline" onClick={toggleMenu}>Events</Link>
+          <Link href="/#speakers" onClick={toggleMenu}>Speakers</Link>
+          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Schedule</Link>
           <SignInBtn/>
         </div>
       )}

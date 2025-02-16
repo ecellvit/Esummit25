@@ -25,7 +25,7 @@ interface FormData {
 
 
 export default function page() {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
@@ -172,6 +172,7 @@ export default function page() {
           Authorization: `Bearer ${session?.accessTokenBackend}`,
         },
       });
+      await update({...session, user: {...session?.user, hasFilledDetails: true}})
       toast.success(response.data.message || "Registration successful!");
       setTimeout(() => router.push("/"), 2000);
     } catch (error: any) {
