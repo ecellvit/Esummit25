@@ -85,6 +85,7 @@ declare module 'next-auth' {
       events?: number[];
       event1TeamRole?: number;
       event2TeamRole?: number;
+      isVitStudent?:boolean;
     }
   }
   interface Token {
@@ -136,6 +137,8 @@ const authOptions: NextAuthOptions = {
             await newUser.save();
             return true; 
           }
+         
+
           return true; // User exists, continue the sign-in flow
         } catch (error) {
           console.error(error);
@@ -145,6 +148,10 @@ const authOptions: NextAuthOptions = {
       return false; // Not a Google sign-in, return false
     },    
     async jwt({ token, user, account, session, trigger }) {
+
+      if (user) {
+        token.isVITStudent = user.email?.endsWith("@vitstudent.ac.in") || false;
+      }
       // Type `token` explicitly to avoid 'unknown' type
       const typedToken = token as JWT & {
         accessTokenExpires?: number;
@@ -225,6 +232,7 @@ const authOptions: NextAuthOptions = {
             events?: number[];
             event1TeamRole?: number;
             event2TeamRole?: number;
+            isVitStudent:boolean;
           }
         };
       
@@ -236,6 +244,7 @@ const authOptions: NextAuthOptions = {
           events: typedToken.user.events,
           event1TeamRole: typedToken.user.event1TeamRole,
           event2TeamRole: typedToken.user.event2TeamRole,
+          isVitStudent: typedToken.user.isVitStudent
         };
         session.accessToken = typedToken.accessToken;
         session.accessTokenBackend = typedToken.accessTokenFromBackend;
@@ -268,7 +277,7 @@ const authOptions: NextAuthOptions = {
         };
       },
 
-    async redirect({ url, baseUrl }) {
+    async redirect({ url, baseUrl,token }) {
       try {
         const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
           method: "GET",

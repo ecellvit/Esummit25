@@ -14,6 +14,7 @@ import img4 from "/assets/image (4).jpg";
 import img5 from "/assets/image (5).jpg";
 import img6 from "/assets/image (6).jpg";
 import logo from "/assets/fpback.svg";
+import MobileSchedule from "./mobileSchedule";
 
 const events = [
   {
@@ -148,9 +149,14 @@ export default function Schedule() {
       }
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.error("Registration error:", axiosError.response?.data);
+      console.log("Registration error:", axiosError.response?.data);
       if (axiosError.response?.status === 402) {
         toast.error("Please fill out your details first");
+        if (event === 5) {
+          router.push('/events/pioneira/detailsForm');
+          return;
+        }
+        router.push('/userDetails');
         return;
       }
       toast.error("An error occurred while registering.");
@@ -165,14 +171,18 @@ export default function Schedule() {
         if (response.status === 201 || response.status === 202) {
             toast.success(response.data.message);
             const newUserEvents = session?.user.events?.filter(e => e !== event);
-            await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+            if (event === 5) {
+              await update({ ...session, user: { ...session?.user, events: newUserEvents, hasFilledDetails: false } });
+            } else {
+              await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+            }
             router.push('/');
         } else {
             throw new Error("Error processing event deregistration");
         }
     } catch (error) {
         const axiosError = error as AxiosError;
-        console.error("Deregistration error:", axiosError);
+        console.log("Deregistration error:", axiosError);
         if (axiosError.response?.status === 403) {
             toast.error("Please leave your team before deregistering.");
         } else if (axiosError.response?.status === 401) {
@@ -187,7 +197,10 @@ export default function Schedule() {
 
   const gradientStyle = "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
   return (
-    <div className="flex h-screen bg-white" ref={mainRef} id="timeline">
+    <>
+    <MobileSchedule images={images} />
+    <div className="hidden md:block">
+    <div className=" flex h-screen bg-white" ref={mainRef} id="timeline">
       {/* Left Section */}
       <div className="w-2/3 flex flex-col pl-10 pr-4 py-auto relative">
         {/* Navigation Bar */}
@@ -324,5 +337,7 @@ export default function Schedule() {
       </div>
       <Toaster />
     </div>
+    </div>
+    </>
   );
 }

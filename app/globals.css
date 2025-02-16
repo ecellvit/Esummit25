@@ -4,8 +4,22 @@
 
 @font-face {
   font-family: 'GreaterTheory';
-  src: url('/fonts/GreaterTheory.woff') format('woff');
+  src: url('../public/fonts/GreaterTheory.woff') format('woff');
   font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OurClassicBlack', sans-serif;
+  src: url("../public/fonts/classicsansblack.otf") format("otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'BrigendsExpandedSecond', sans-serif;
+  src: url("../public/fonts/brigendsexpanded-nrek1.otf") format("otf");
+  font-weight: normal;
   font-style: normal;
 }
 

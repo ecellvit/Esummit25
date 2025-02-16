@@ -38,7 +38,7 @@ const EsummitMotion = () => {
             ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-[70vh] opacity-0'}
           `}
         >
-          <div className="w-full flex flex-col items-center justify-center gap-4 md:gap-6">
+          <div className="w-full flex flex-col items-center justify-center gap-4 md:gap-6 font-[GreaterTheory]">
             <h2 className="text-lg md:text-2xl font-light tracking-[0.2em] md:tracking-[0.3em] text-white text-center">
               ECELL VIT PRESENTS
             </h2>
