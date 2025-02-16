@@ -1,4 +1,9 @@
-import events from '../events.json'
+import { LampDemo } from "@/components/ui/lamp";
+
 export default function Events(){
-    return
+    return(
+        <div className=" min-h-screen">
+            <LampDemo/>
+        </div>
+    )
 }
