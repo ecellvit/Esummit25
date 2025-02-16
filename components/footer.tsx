@@ -12,7 +12,7 @@ export default function Footer() {
 
   const clockLabels = "ENTREPRENEUR".split("");
   return (
-    <footer className="text-black w-full bg-white shadow-md fixed bottom-0 left-0 z-[-1] h-[20vh] flex flex-col justify-end items-center ">
+    <footer className="text-black w-full bg-white shadow-md  bottom-0 left-0 z-[-1] h-[20vh] flex flex-col justify-end items-center ">
 
       <div className="flex items-center justify-evenly w-full">
         <div className="flex-col space-y-1 text-lg pt-[5vw] hidden md:flex">
