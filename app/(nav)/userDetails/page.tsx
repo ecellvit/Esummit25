@@ -27,32 +27,32 @@ export default function UserDetail() {
   const router = useRouter();
   const { data: session, status, update } = useSession();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
   
-  //       if (!res.ok) {
-  //         return;
-  //       }
+        if (!res.ok) {
+          return;
+        }
   
-  //       const data = await res.json();
+        const data = await res.json();
   
-  //       if (data.success && data.user?.hasFilledDetails) {
-  //         router.push("/");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching user details:", error);
-  //     }
-  //   };
+        if (data.success && !data.user?.email.endsWith("vitstudent.ac.in")) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
   
-  //   fetchData();
-  // }, [session, router]);
+    fetchData();
+  }, [session, router]);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     regNo: "",
