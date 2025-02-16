@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { Users } from '@/models/user.model';
+import { Users as PionieraUsers } from "@/models/pioneira/user.model";
 import { dbConnect } from '@/lib/dbConnect';
 import { authOptions } from '@/lib/authOptions';
 
@@ -62,6 +63,16 @@ export async function POST(request: Request) {
         // Handling deregistration for events 3, 4, and 5
         if (user.events.includes(parsedNumber)) {
             user.events = user.events.filter((e: number) => e !== parsedNumber);
+            if (parsedNumber === 5) {
+                const pionieraUser = await PionieraUsers.findOne({ email: sessionUser.email });
+                if (pionieraUser) {
+                    pionieraUser.hasFilledDetails = false;
+                    await pionieraUser.save();
+                    user.hasFilledDetails = false;
+                } else {
+                    console.error("Pioniera user not found for:", sessionUser.name);
+                }
+            }
             await user.save();
             return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 202 });
         }

@@ -12,6 +12,7 @@ export interface User extends Document {
   startupStage:string,
   technologyReadinessLevel:string,
   portfolioLink:string,
+  hasFilledDetails:boolean,
 }
 
 const userSchema = new Schema<User>(
@@ -60,6 +61,10 @@ const userSchema = new Schema<User>(
       type: String,
       required: true,
     },
+    hasFilledDetails: {
+      type: Boolean,
+      default: false,
+    }
   },
   { collection: "PioneiraUsers" }
 );
