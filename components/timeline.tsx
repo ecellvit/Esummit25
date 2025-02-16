@@ -46,7 +46,7 @@ const events = [
     url: "/events/event4",
   },
   {
-    name: "Pioneira Phase 2",
+    name: "PIONEIRA PHASE 2",
     date: "March 7",
     description:
       "Pioneira, a conclave for startups to pitch their ideas to industry leaders and prominent personalities while embarking on a journey to gain exposure, withstand market competition, and build connections.",
@@ -59,35 +59,43 @@ const images = [img0, img1, img2, img3, img4, img5, img6];
 export default function Schedule() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollDelta, setScrollDelta] = useState(0);
-  const scrollThreshold = 50;
+  const scrollThreshold = 100;
   const containerRef = useRef(null);
   const dateRef = useRef(null);
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const mainRef = useRef<HTMLDivElement | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (mainRef.current) {
       const handleScroll = (event: WheelEvent) => {
+        if (isPaused) return;
         event.preventDefault();
         setScrollDelta((prevDelta) => prevDelta + event.deltaY);
         if (Math.abs(scrollDelta) >= scrollThreshold) {
+          setIsPaused(true);
           if (event.deltaY > 0 && activeIndex < events.length - 1) {
             setActiveIndex((prev) => prev + 1);
-          } else if (event.deltaY > 0) {
+          } else if (event.deltaY > 0 && activeIndex === events.length - 1) {
             window.scrollTo({
               top: document.getElementById("speakers")?.offsetTop,
               behavior: "smooth",
             });
           } else if (event.deltaY < 0 && activeIndex > 0) {
             setActiveIndex((prev) => prev - 1);
-          } else if (event.deltaY < 0) {
+          } else if (event.deltaY < 0 && activeIndex === 0) {
             window.scrollTo({
               top: document.getElementById("home")?.offsetTop,
               behavior: "smooth",
             });
           }
           setScrollDelta(0);
+          scrollTimeout.current = setTimeout(() => {
+            setIsPaused(false);
+            scrollTimeout.current = null;
+          }, 1000);
         }
       };
       mainRef.current.addEventListener("wheel", handleScroll, { passive: false });
