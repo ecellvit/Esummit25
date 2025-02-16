@@ -2,32 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Fonts */
+@font-face {
+  font-family: 'AllRoundGothic';
+  src: url('/fonts/AllRoundGothic-Book.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 @font-face {
   font-family: 'GreaterTheory';
-  src: url('../public/fonts/GreaterTheory.woff') format('woff');
+  src: url('/fonts/GreaterTheory.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'OurClassicBlack', sans-serif;
-  src: url("../public/fonts/classicsansblack.otf") format("otf");
+  font-family: 'OurClassicBlack';
+  src: url('/fonts/classicsansblack.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'BrigendsExpandedSecond', sans-serif;
-  src: url("../public/fonts/brigendsexpanded-nrek1.otf") format("otf");
+  font-family: 'BrigendsExpandedSecond';
+  src: url('/fonts/brigendsexpanded-nrek1.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'BrigendsExpanded', sans-serif;
-  src: url("../public/fonts/BrigendsExpanded.otf") format("otf");
+  font-family: 'BrigendsExpanded';
+  src: url('/fonts/BrigendsExpanded.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
+}
+
+/* Apply AllRoundGothic font globally */
+body {
+  font-family: 'AllRoundGothic', sans-serif;
 }
 
 /* Ensure the footer appears when scrolling to the FAQ section */
@@ -55,54 +68,17 @@ main {
 .faq-visible #footer {
   transform: translateY(0%);
 }
+
 .faq-container {
-    position: relative;
-    z-index: 1;
-    padding-bottom: 22vh; /* Allows scrolling past FAQ */
-  }
-  
-  .page-container {
-    min-height: 100vh; /* Ensures enough scrolling space */
-  }
-  
-  
-/* Animation for text transition */
-/* Ensure the footer appears when scrolling to the FAQ section */
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 22vh; /* Allows scrolling past FAQ */
 }
 
-main {
-  flex-grow: 1;
+.page-container {
+  min-height: 100vh; /* Ensures enough scrolling space */
 }
 
-/* Footer animation */
-#footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  z-index: 0;
-  transform: translateY(100%);
-  transition: transform 0.5s ease-in-out;
-}
-
-.faq-visible #footer {
-  transform: translateY(0%);
-}
-.faq-container {
-    position: relative;
-    z-index: 1;
-    padding-bottom: 22vh; /* Allows scrolling past FAQ */
-  }
-  
-  .page-container {
-    min-height: 100vh; /* Ensures enough scrolling space */
-  }
-  
-  
 /* Animation for text transition */
 @keyframes textTransition {
   0% {
@@ -119,7 +95,6 @@ main {
   }
 }
 
-/* Custom scrollbar */
 /* Custom scrollbar */
 html::-webkit-scrollbar {
   width: 10px; 

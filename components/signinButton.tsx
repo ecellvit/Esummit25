@@ -10,14 +10,15 @@ export default function SignInBtn(): JSX.Element {
     <div>
     <SessionProvider>
       <div>
-    <div className="relative align-middle w-[7vw] max-w-[600px] h-[7vh] bg-transparent opacity-100 z-10 text-white ">
+    <div className="relative align-middle w-[7vw] max-w-[600px] h-[4vh] bg-red-600 opacity-100 z-10 text-white flex items-center justify-center rounded-lg">
+
       {status === "authenticated" ? (
         <button onClick={() => signOut()}>
-          Sign Out
+          SIGN OUT
         </button>
       ) : (
         <button onClick={() => signIn("google")}>
-          Sign In
+          SIGN IN
         </button>
       )}
     </div>
