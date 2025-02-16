@@ -5,11 +5,28 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const MeetOurSpeakers: React.FC = () => {
-  const sectionRef = useRef(null);
-  const comingSoonRef = useRef<HTMLDivElement>(null);
+const Schedule: React.FC = () => {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const section = sectionRef.current;
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top bottom",
+      end: "bottom bottom",
+      anticipatePin: 1,
+      onLeave: () => {
+        window.scrollTo({
+          top: document.getElementById("timeline")?.offsetTop,
+          behavior: "smooth",
+        });
+      },
+    });
+  }, []);
   return (
-    <section ref={sectionRef} className="relative w-full h-[50vh] bg-white">
+    <section
+      ref={sectionRef}
+      className="relative w-full h-[50vh] bg-white"
+    >
       <div className="sticky top-0 left-0 w-full h-[50vh] flex flex-col items-center justify-center z-0 bg-white">
         <div className="absolute inset-0 flex items-center overflow-hidden whitespace-nowrap">
           <div className="flex w-max animate-speakersMarquee">
@@ -44,4 +61,4 @@ const MeetOurSpeakers: React.FC = () => {
   );
 };
 
-export default MeetOurSpeakers;
+export default Schedule;

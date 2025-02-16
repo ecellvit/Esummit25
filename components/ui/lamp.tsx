@@ -126,27 +126,21 @@ import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
 // import GodRays from "@/components/gif";
 import { div } from "motion/react-client";
+import Image from "next/image";
 import rays from "@/assets/god-rays.gif";
 
 
 export function LampDemo() {
   return (
-    <div className="w-full h-full">
-      <video
-      src={rays.src} // Use .src if necessary, or just rays if it's already a string
-      autoPlay
-      loop
-      muted
-      playsInline
-      className="absolute inset-0 w-full h-full object-cover z-80"
-    />
+    <div className="w-full top-10 h-full">
+      <Image src={rays} alt="God Rays" layout="fit" objectFit="cover" className="absolute inset-0 z-10" />
       <LampContainer>
         <motion.h1
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 0.8, y: 0 }}
+          initial={{ opacity: 0, y: 80 }}
+          whileInView={{ opacity: 0.8, y: -20 }}
           transition={{
-            delay: 0.3,
-            duration: 1,
+            delay: 0.8,
+            duration: 2,
             ease: "easeInOut",
           }}
           className="bg-white bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-9xl"
@@ -189,7 +183,7 @@ export const LampContainer = ({
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
             className="absolute right-1/2 h-56 w-[30rem] -scale-y-150
- bg-gradient-conic from-red-600 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
+ bg-gradient-conic from-red-600 via-transparent to-transparent text-white [--conic-position:from_80deg_at_center_top]"
           >
             {/* Mask divs */}
             <div className="absolute bottom-0 left-0 z-20 h-40 w-full bg-black [mask-image:linear-gradient(to_top,white,transparent)]" />
@@ -209,7 +203,7 @@ export const LampContainer = ({
               backgroundImage:
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
-            className="absolute left-1/2 h-56 w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_290deg_at_center_top]"
+            className="absolute left-1/2 h-56 w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_280deg_at_center_top]"
           >
             {/* Mask divs */}
             <div className="absolute bottom-0 right-0 z-20 h-full w-40 bg-black [mask-image:linear-gradient(to_left,white,transparent)]" />
