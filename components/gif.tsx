@@ -1,6 +1,6 @@
 // GodRays.tsx
 import React from "react";
-import videoSrc from "@/assets/rays.mp4";
+import videoSrc from "@/assets/god-rays.gif";
 
 const GodRays: React.FC = () => {
   return (

@@ -4,7 +4,7 @@ import Image from "next/image";
 import bg from "@/assets/Noise & Texture.png";
 
 const getRandomChar = () => {
-  const chars = 'QQWERTYUIO';
+  const chars = 'INNOVATEACTUATE';
   return chars[Math.floor(Math.random() * chars.length)];
 };
 

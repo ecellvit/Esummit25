@@ -126,6 +126,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
 // import GodRays from "@/components/gif";
 import { div } from "motion/react-client";
+import Image from "next/image";
 import rays from "@/assets/god-rays.gif";
 import CountdownTimer from "../counter";
 
@@ -147,11 +148,11 @@ export function LampDemo() {
       />
       <LampContainer>
         <motion.h1
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 0.8, y: 0 }}
+          initial={{ opacity: 0, y: 80 }}
+          whileInView={{ opacity: 0.8, y: -20 }}
           transition={{
-            delay: 0.3,
-            duration: 1,
+            delay: 0.8,
+            duration: 2,
             ease: "easeInOut",
           }}
           className="bg-white bg-clip-text text-center font-medium tracking-tight text-transparent "
