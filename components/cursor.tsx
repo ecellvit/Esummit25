@@ -4,8 +4,18 @@ import { useState, useEffect } from "react";
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isClickable, setIsClickable] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768); // Adjust breakpoint as needed
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    if (isMobile) return; // Don't run cursor logic on mobile
+
     document.body.style.cursor = "none";
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -27,12 +37,14 @@ const CustomCursor = () => {
     };
 
     document.addEventListener("mousemove", handleMouseMove);
-    
+
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.body.style.cursor = "auto"; // Reset cursor when component unmounts
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) return null; // Don't render cursor on mobile
 
   return (
     <div
