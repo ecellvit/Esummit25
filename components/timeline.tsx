@@ -182,7 +182,7 @@ export default function Schedule() {
 
   const gradientStyle = "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
   return (
-    <div className="flex h-screen" ref={mainRef} id="timeline">
+    <div className="flex h-screen bg-white" ref={mainRef} id="timeline">
       {/* Left Section */}
       <div className="w-2/3 flex flex-col pl-10 pr-4 py-auto relative">
         {/* Navigation Bar */}
