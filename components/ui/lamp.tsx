@@ -128,12 +128,24 @@ import { cn } from "@/utils/cn";
 import { div } from "motion/react-client";
 import Image from "next/image";
 import rays from "@/assets/god-rays.gif";
+import CountdownTimer from "../counter";
+
 
 
 export function LampDemo() {
   return (
-    <div className="w-full top-10 h-full">
-      <Image src={rays} alt="God Rays" layout="fit" objectFit="cover" className="absolute inset-0 z-10" />
+    <div
+      className="w-full min-h-screen font-[BrigendsExpanded]"
+      
+    >
+      <video
+        src={rays.src} // Use .src if necessary, or just rays if it's already a string
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full min-h-screen object-cover z-80"
+      />
       <LampContainer>
         <motion.h1
           initial={{ opacity: 0, y: 80 }}
@@ -143,9 +155,13 @@ export function LampDemo() {
             duration: 2,
             ease: "easeInOut",
           }}
-          className="bg-white bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-9xl"
+          className="bg-white bg-clip-text text-center font-medium tracking-tight text-transparent "
         >
-          E-SUMMIT '25
+          <p className="text-xl">ECELL VIT PRESENTS</p>
+          <p className="text-9xl">E-SUMMIT '25</p>
+          <p className="text-xl">
+            THE 8TH EDITION OF THE BIGGEST FEST IN SOUTH INDIA
+          </p>
         </motion.h1>
       </LampContainer>
     </div>
@@ -182,8 +198,8 @@ export const LampContainer = ({
               backgroundImage:
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
-            className="absolute right-1/2 h-56 w-[30rem] -scale-y-150
- bg-gradient-conic from-red-600 via-transparent to-transparent text-white [--conic-position:from_80deg_at_center_top]"
+            className="absolute right-1/2 bottom-[60vh] h-[120vh] w-[30 rem] -scale-y-150
+ bg-gradient-conic from-red-600 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
           >
             {/* Mask divs */}
             <div className="absolute bottom-0 left-0 z-20 h-40 w-full bg-black [mask-image:linear-gradient(to_top,white,transparent)]" />
@@ -203,7 +219,7 @@ export const LampContainer = ({
               backgroundImage:
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
-            className="absolute left-1/2 h-56 w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_280deg_at_center_top]"
+            className="absolute left-1/2 bottom-[60vh] h-[120vh] w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_290deg_at_center_top]"
           >
             {/* Mask divs */}
             <div className="absolute bottom-0 right-0 z-20 h-full w-40 bg-black [mask-image:linear-gradient(to_left,white,transparent)]" />
@@ -222,17 +238,22 @@ export const LampContainer = ({
               duration: 1,
               ease: "easeInOut",
             }}
-            className="absolute z-30 h-36 w-64  -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-2xl scale-x-[3] opacity-50"
+            className="absolute z-30 h-36 w-64 top-[35vh] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
           />
         </div>
       </div>
 
       {/* Foreground Content Container (Centered) */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-5">
-         {children}
+        {children}
+      </div>
+      <div className="flex w-full justify-center absolute bottom-[10vh] items-center">
+      <CountdownTimer targetDate="2025-03-04T00:00:00"/>
       </div>
     </div>
   );
 };
+
+
 
 

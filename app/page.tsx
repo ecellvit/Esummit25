@@ -17,6 +17,7 @@ import IdeateComponent from "@/components/iiaMotion";
 import React, { useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LampDemo } from "@/components/ui/lamp";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -44,14 +45,12 @@ export default function HomePage() {
       <>
         <NavBar />
         <RegisterBtn />
-        <EsummitMotion />
+        <LampDemo/>
         <Schedule />
         <Timeline />
         <MeetOurSpeakers />
         <Sponsors />
-        <div className="faq-container">
-          <FaqContent />
-        </div>
+        <FaqContent />
         <Footer />
       </>
   )}
