@@ -38,10 +38,10 @@ export default function HomePage() {
 
   return (
     <div className={ideateCompleted ? "page-container" : "overflow-hidden h-screen"}>
-  <CustomCursor /> 
+    <CustomCursor /> 
   {!ideateCompleted && <IdeateComponent onComplete={() => setIdeateCompleted(true)} />}
   {ideateCompleted && (
-      <>
+    <>
         <NavBar />
         <LampDemo/>
         <Schedule />
