@@ -14,6 +14,7 @@ import img4 from "/assets/image (4).jpg";
 import img5 from "/assets/image (5).jpg";
 import img6 from "/assets/image (6).jpg";
 import logo from "/assets/fpback.svg";
+import MobileSchedule from "./mobileSchedule";
 
 const events = [
   {
@@ -187,7 +188,10 @@ export default function Schedule() {
 
   const gradientStyle = "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
   return (
-    <div className="flex h-screen bg-white" ref={mainRef} id="timeline">
+    <>
+    <MobileSchedule images={images} />
+    <div className="hidden md:block">
+    <div className=" flex h-screen bg-white" ref={mainRef} id="timeline">
       {/* Left Section */}
       <div className="w-2/3 flex flex-col pl-10 pr-4 py-auto relative">
         {/* Navigation Bar */}
@@ -324,5 +328,7 @@ export default function Schedule() {
       </div>
       <Toaster />
     </div>
+    </div>
+    </>
   );
 }
