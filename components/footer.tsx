@@ -22,12 +22,12 @@ export default function Footer() {
           <a href="https://www.facebook.com/ecellvit" className="hover:text-gray-500"><FaFacebook size={20} /></a>
         </div>
         <h1 className="text-[11vw] font-black tracking-widest flex">
-          {["E", "-", "S", "U", "M", "M", "I", "T", "'", "2", "5"].map((char, index) => (
+          {["E", "-", "S", "U", "M", "M", "I", "T", "'", "2", "5"].map((chars, index) => (
             <div 
               key={index}
               className="inline-block h-[12vw] items-end transition-all duration-400 hover:font-light"
             >
-              {char}
+              {chars}
             </div>
           ))}
         </h1>

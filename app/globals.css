@@ -53,6 +53,43 @@ main {
   
   
 /* Animation for text transition */
+/* Ensure the footer appears when scrolling to the FAQ section */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
+/* Footer animation */
+#footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+  transform: translateY(100%);
+  transition: transform 0.5s ease-in-out;
+}
+
+.faq-visible #footer {
+  transform: translateY(0%);
+}
+.faq-container {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 22vh; /* Allows scrolling past FAQ */
+  }
+  
+  .page-container {
+    min-height: 100vh; /* Ensures enough scrolling space */
+  }
+  
+  
+/* Animation for text transition */
 @keyframes textTransition {
   0% {
     opacity: 0;
@@ -68,6 +105,7 @@ main {
   }
 }
 
+/* Custom scrollbar */
 /* Custom scrollbar */
 html::-webkit-scrollbar {
   width: 10px; 

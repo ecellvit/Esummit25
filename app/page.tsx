@@ -22,6 +22,7 @@ if (typeof window !== "undefined") {
 }
 import RegisterBtn from "@/components/registernowButton";
 
+
 export default function HomePage() {
   const [ideateCompleted, setIdeateCompleted] = useState(false);
 

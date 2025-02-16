@@ -21,7 +21,7 @@ const FaqContent = () => {
         <>
           For any further queries, you can contact the following POCs:
           <br />
-          <strong>1. XYZ :</strong> +91 XXXXX XXXXX
+          <strong>1. ABC :</strong> +91 XXXXX XXXXX
           <br />
           <strong>2. ABC:</strong> +91 XXXXX XXXXX
         </>
