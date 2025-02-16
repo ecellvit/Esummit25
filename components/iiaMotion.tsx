@@ -73,7 +73,7 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
       }}
     >
       <h1
-        className="flex justify-center items-center z-10 text-red-800 text-[45px] md:text-[59.661px] lg:[59.661px] font-myCustom tracking-wide" >
+        className="flex justify-center items-center z-10 text-red-800 text-[45px] md:text-[59.660px] lg:[59.661px] font-myCustom tracking-wide" >
         {displayText}
       </h1>
 
