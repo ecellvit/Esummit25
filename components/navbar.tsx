@@ -45,9 +45,14 @@ const Navbar: React.FC = () => {
       style={{
         fontFamily: 'AllRoundGothic, sans-serif'
       }}
-        className={`fixed left-1/2 top-3 w-[60vw] h-[8vh] rounded-xl border border-red-400 shadow-xl z-50 p-5 flex items-center justify-between bg-cover bg-black opacity-80 bg-center backdrop-blur-lg transition-transform duration-300 transform -translate-x-1/2 -translate-y-1/2${
-          visible ? "translate-y-0" : "-translate-y-full"
-        }`}
+      className={`fixed left-[45%] sm:left-[48%] md:left-[50%] top-2 
+        w-[95vw] sm:w-[75vw] md:w-[60vw] h-[8vh] 
+        rounded-xl border border-red-400 shadow-xl z-50 p-4 
+        flex items-center justify-between 
+        bg-cover bg-black opacity-90 bg-center backdrop-blur-lg 
+        transition-transform duration-300 transform -translate-x-1/2
+        `}
+      
        
       >
         <Link href="/">
@@ -66,7 +71,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-10 font-allround">
+        <div className="hidden md:flex space-x-12 font-allround">
     
           <Link href="/#timeline" className="text-white hover:text-red-400 ">ABOUT</Link>
           <Link href="/MySchedule" className="text-white font-allround hover:text-red-400">MY SCHEDULE</Link>
