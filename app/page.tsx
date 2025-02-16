@@ -10,6 +10,7 @@ import SignInBtn from "@/components/signinButton";
 import MeetOurSpeakers from "@/components/meetOurSpeakers";
 import Sponsors from "@/components/sponsors";
 import FaqContent from "@/components/faq";
+import Schedule from "@/components/schedule";
 import Timeline from "@/components/timeline";
 import EsummitMotion from "@/components/EsummitMotion";
 import IdeateComponent from "@/components/iiaMotion";
@@ -44,9 +45,10 @@ export default function HomePage() {
         <NavBar />
         <RegisterBtn />
         <EsummitMotion />
+        <Schedule />
+        <Timeline />
         <MeetOurSpeakers />
         <Sponsors />
-        <Timeline />
         <div className="faq-container">
           <FaqContent />
         </div>

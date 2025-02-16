@@ -69,11 +69,8 @@ const Navbar: React.FC = () => {
           <Link href="/#timeline" className="text-white font-sans hover:text-black-400">About</Link>
           <Link href="/#storyBehind" className="text-white font-sans hover:text-black-400">Events</Link>
           <Link href="#meetOurSpeakers" className="text-white font-sans hover:text-black-400">Speakers</Link>
-
-
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Schedule</Link>
-          <SignInBtn />
-
+          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Shcedule</Link>
+          <SignInBtn/>
         </div>
       </nav>
 
@@ -88,11 +85,8 @@ const Navbar: React.FC = () => {
           <Link href="/#timeline" onClick={toggleMenu}>About</Link>
           <Link href="/#storyBehind" onClick={toggleMenu}>Events</Link>
           <Link href="/#footer" onClick={toggleMenu}>Speakers</Link>
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Schedule</Link>
+          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Shcedule</Link>
           <SignInBtn/>
-
-          <SignInBtn />
-
         </div>
       )}
     </>

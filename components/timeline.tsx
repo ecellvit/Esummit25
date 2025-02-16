@@ -14,6 +14,7 @@ import img4 from "/assets/image (4).jpg";
 import img5 from "/assets/image (5).jpg";
 import img6 from "/assets/image (6).jpg";
 import logo from "/assets/fpback.svg";
+import MobileSchedule from "./mobileSchedule";
 
 const events = [
   {
@@ -41,7 +42,7 @@ const events = [
     name: "ACHIEVERS CONCLAVE",
     date: "March 6",
     description:
-      "Lorem ipsum dolor sit amet, consur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     url: "/events/event4",
   },
   {
@@ -73,13 +74,18 @@ export default function Schedule() {
         if (Math.abs(scrollDelta) >= scrollThreshold) {
           if (event.deltaY > 0 && activeIndex < events.length - 1) {
             setActiveIndex((prev) => prev + 1);
-          } else if (event.deltaY > scrollThreshold / 2) {
+          } else if (event.deltaY > 0) {
             window.scrollTo({
-              top: document.getElementById("faq")?.offsetTop,
+              top: document.getElementById("speakers")?.offsetTop,
               behavior: "smooth",
             });
           } else if (event.deltaY < 0 && activeIndex > 0) {
             setActiveIndex((prev) => prev - 1);
+          } else if (event.deltaY < 0) {
+            window.scrollTo({
+              top: document.getElementById("home")?.offsetTop,
+              behavior: "smooth",
+            });
           }
           setScrollDelta(0);
         }
@@ -182,7 +188,10 @@ export default function Schedule() {
 
   const gradientStyle = "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
   return (
-    <div className="flex h-screen bg-white" ref={mainRef} id="timeline">
+    <>
+    <MobileSchedule images={images} />
+    <div className="hidden md:block">
+    <div className=" flex h-screen bg-white" ref={mainRef} id="timeline">
       {/* Left Section */}
       <div className="w-2/3 flex flex-col pl-10 pr-4 py-auto relative">
         {/* Navigation Bar */}
@@ -229,7 +238,7 @@ export default function Schedule() {
         {/* Event Details */}
         <div className="flex flex-col items-start mt-8 gap-4">
           <p ref={dateRef} className="text-3xl font-black text-black">
-            {events[activeIndex].date}
+            {events[activeIndex]?.date}
           </p>
           <h3
             ref={nameRef}
@@ -240,10 +249,10 @@ export default function Schedule() {
               WebkitTextFillColor: "transparent",
             }}
           >
-            {events[activeIndex].name}
+            {events[activeIndex]?.name}
           </h3>
           <p ref={descriptionRef} className="text-md text-gray-700">
-            {events[activeIndex].description}
+            {events[activeIndex]?.description}
           </p>
           <button
             key={activeIndex+1}
@@ -319,5 +328,7 @@ export default function Schedule() {
       </div>
       <Toaster />
     </div>
+    </div>
+    </>
   );
 }
