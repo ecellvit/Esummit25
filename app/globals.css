@@ -10,6 +10,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'BrigendsExpanded';
+  src: url('/fonts/BrigendsExpanded.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FontSpring';
+  src: url('/fonts/FontSpring-DEMO-allroundgothic-text.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Apply AllRoundGothic only to the navbar */
 .navbar {
   font-family: 'AllRoundGothic', sans-serif !important;
@@ -52,7 +66,7 @@ main {
 }
 
 /* Animation for text transition */
-@keyframes textTransition {
+/* @keyframes textTransition {
   0% {
     opacity: 0;
     transform: translateY(20px);
@@ -60,6 +74,21 @@ main {
   50% {
     opacity: 1;
     transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+} */
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0px);
   }
   100% {
     opacity: 0;
