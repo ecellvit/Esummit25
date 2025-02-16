@@ -22,7 +22,6 @@ import { LampDemo } from "@/components/ui/lamp";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-import RegisterBtn from "@/components/registernowButton";
 
 
 export default function HomePage() {
@@ -44,7 +43,6 @@ export default function HomePage() {
   {ideateCompleted && (
       <>
         <NavBar />
-        <RegisterBtn />
         <LampDemo/>
         <Schedule />
         <Timeline />
