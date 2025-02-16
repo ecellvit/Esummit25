@@ -9,7 +9,7 @@ const MeetOurSpeakers: React.FC = () => {
   const sectionRef = useRef(null);
   const comingSoonRef = useRef<HTMLDivElement>(null);
   return (
-    <section id="speakers" ref={sectionRef} className="relative w-full h-[150vh] bg-white">
+    <section ref={sectionRef} className="relative w-full h-[50vh] bg-white">
       <div className="sticky top-0 left-0 w-full h-[50vh] flex flex-col items-center justify-center z-0 bg-white">
         <div className="absolute inset-0 flex items-center overflow-hidden whitespace-nowrap">
           <div className="flex w-max animate-speakersMarquee">
@@ -22,7 +22,7 @@ const MeetOurSpeakers: React.FC = () => {
                   WebkitTextStroke: "2px rgba(176, 81, 25, 0.22)",
                 }}
               >
-                MEET OUR SPEAKERS &nbsp; MEET OUR SPEAKERS &nbsp; MEET OUR SPEAKERS
+                SCHEDULE &nbsp; SCHEDULE &nbsp; SCHEDULE
               </h1>
             ))}
           </div>
@@ -37,19 +37,7 @@ const MeetOurSpeakers: React.FC = () => {
             WebkitTextFillColor: "transparent",
           }}
         >
-          MEET OUR SPEAKERS
-        </h1>
-      </div>
-
-      {/* Coming Soon Section */}
-      <div
-        ref={comingSoonRef}
-        className="absolute top-[50vh] h-[100vh] w-full flex items-center justify-center rounded-t-3xl bg-gradient-to-b from-[#510D0D] to-[#C72423] z-1"
-      >
-        <h1
-          className="uppercase text-5xl md:text-6xl lg:text-7xl font-bold text-center text-white"
-        >
-          COMING SOON!
+          SCHEDULE
         </h1>
       </div>
     </section>

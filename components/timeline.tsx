@@ -41,7 +41,7 @@ const events = [
     name: "ACHIEVERS CONCLAVE",
     date: "March 6",
     description:
-      "Lorem ipsum dolor sit amet, consur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     url: "/events/event4",
   },
   {
@@ -73,13 +73,18 @@ export default function Schedule() {
         if (Math.abs(scrollDelta) >= scrollThreshold) {
           if (event.deltaY > 0 && activeIndex < events.length - 1) {
             setActiveIndex((prev) => prev + 1);
-          } else if (event.deltaY > scrollThreshold / 2) {
+          } else if (event.deltaY > 0) {
             window.scrollTo({
-              top: document.getElementById("faq")?.offsetTop,
+              top: document.getElementById("speakers")?.offsetTop,
               behavior: "smooth",
             });
           } else if (event.deltaY < 0 && activeIndex > 0) {
             setActiveIndex((prev) => prev - 1);
+          } else if (event.deltaY < 0) {
+            window.scrollTo({
+              top: document.getElementById("home")?.offsetTop,
+              behavior: "smooth",
+            });
           }
           setScrollDelta(0);
         }
@@ -229,7 +234,7 @@ export default function Schedule() {
         {/* Event Details */}
         <div className="flex flex-col items-start mt-8 gap-4">
           <p ref={dateRef} className="text-3xl font-black text-black">
-            {events[activeIndex].date}
+            {events[activeIndex]?.date}
           </p>
           <h3
             ref={nameRef}
@@ -240,10 +245,10 @@ export default function Schedule() {
               WebkitTextFillColor: "transparent",
             }}
           >
-            {events[activeIndex].name}
+            {events[activeIndex]?.name}
           </h3>
           <p ref={descriptionRef} className="text-md text-gray-700">
-            {events[activeIndex].description}
+            {events[activeIndex]?.description}
           </p>
           <button
             key={activeIndex+1}
