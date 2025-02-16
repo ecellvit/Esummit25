@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import logo from "/assets/whiteLogo.png";
+import logo from "/assets/whiteLogo.png"; // Verify the path
+import Head from "next/head";
 
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthProvider";
 import Navbar from "@/components/navbar";
 
-// Fonts
 const geistSans = localFont({
   src: "/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -22,19 +22,18 @@ export const metadata: Metadata = {
   title: "E-Summit'25",
   description: "Entrepreneurship: Turning The Impossible Into The Inevitable.",
   icons: {
-    icon: logo.src, 
+    icon: logo.src, // using the imported logo's src
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
-        {/* If you need a specific favicon link in addition to metadata: */}
         <link rel="icon" href={logo.src} type="image/png" />
       </head>
       <AuthProvider>
