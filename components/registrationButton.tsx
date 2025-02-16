@@ -49,10 +49,15 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
       }
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.error("Registration error:", axiosError.response?.data);
+      console.log("Registration error:", axiosError.response?.data);
 
       if (axiosError.response?.status === 402) {
         toast.error("Please fill out your details first");
+        if (event === 5) {
+          router.push('/events/pioneira/detailsForm');
+          return;
+        }
+        router.push('/userDetails');
         return;
       }
       toast.error("An error occurred while registering.");
@@ -70,14 +75,18 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         if (response.status === 201 || response.status === 202) {
             toast.success(response.data.message);
             const newUserEvents = session?.user.events?.filter(e => e !== event);
-            await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+            if (event === 5) {
+              await update({ ...session, user: { ...session?.user, events: newUserEvents, hasFilledDetails: false } });
+            } else {
+              await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+            }
             router.push('/');
         } else {
             throw new Error("Error processing event deregistration");
         }
     } catch (error) {
         const axiosError = error as AxiosError;
-        console.error("Deregistration error:", axiosError); // Log the error details
+        console.log("Deregistration error:", axiosError); // Log the error details
 
         if (axiosError.response?.status === 403) {
             toast.error("Please leave your team before deregistering.");
