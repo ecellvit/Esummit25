@@ -32,7 +32,7 @@ export default function Footer() {
           ))}
         </h1>
       </div>
-      <div className="flex items-center bg-black text-gray-400 text-lg py-4 w-full relative overflow-hidden">
+      {/* <div className="flex items-center bg-black text-gray-400 text-lg py-4 w-full relative overflow-hidden">
         <div className="w-2/3 overflow-hidden whitespace-nowrap">
           <div className="animate-scroll flex">
             {Array(10).fill("#WeBreedBusiness").map((text, index) => (
@@ -48,7 +48,19 @@ export default function Footer() {
       </div>
       <div className="text-center bg-black text-gray-400 pb-4 font-bold md:hidden">
         &copy; 2025, <span className="font-bold">Entrepreneurship Cell VIT</span>
-      </div>
+      </div> */}
+      <div className="flex items-center bg-black text-gray-400 text-lg py-4 w-full relative overflow-hidden">
+  <div className="w-full overflow-hidden whitespace-nowrap">
+    <div className="animate-scroll flex">
+      {Array(10).fill("#WeBreedBusiness").map((text, index) => (
+        <span key={index} className="text-lg font-medium mr-10">
+          {text}
+        </span>
+      ))}
+    </div>
+  </div>
+</div>
+
       <style jsx>{`
         @keyframes scroll {
           from {

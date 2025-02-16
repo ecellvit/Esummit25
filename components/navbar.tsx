@@ -12,15 +12,15 @@ import SignInBtn from "./signinButton";
 const Navbar: React.FC = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [visible, setVisible] = useState(true); // Track navbar visibility
+  const [visible, setVisible] = useState(true); 
   const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY.current) {
-        setVisible(false); // Hide on scroll down
+        setVisible(false);
       } else {
-        setVisible(true); // Show on scroll up
+        setVisible(true);
       }
       lastScrollY.current = window.scrollY;
     };
@@ -43,10 +43,10 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full h-[10vh] shadow-md z-50 p-4 flex items-center justify-between bg-cover bg-transparent bg-center transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-full h-[10vh] shadow-xl z-50 p-4 flex items-center justify-between bg-cover bg-black opacity-80 bg-center backdrop-blur-lg transition-transform  duration-300 ${
           visible ? "translate-y-0" : "-translate-y-full"
         }`}
-        style={{ backgroundImage: `url(${background.src})` }}
+       
       >
         <Link href="/">
           <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
