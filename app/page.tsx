@@ -49,9 +49,7 @@ export default function HomePage() {
         <Timeline />
         <MeetOurSpeakers />
         <Sponsors />
-        <div className="faq-container">
-          <FaqContent />
-        </div>
+        <FaqContent />
         <Footer />
       </>
   )}
