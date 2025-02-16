@@ -6,21 +6,20 @@ import { useRouter } from "next/navigation";
 import logo from "/assets/whiteLogo.png";
 import hamburgerIcon from "/assets/hamburger.jpg";
 import closeIcon from "/assets/close.jpg";
-import background from "/assets/bg.png";
 import SignInBtn from "./signinButton";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [visible, setVisible] = useState(true); // Track navbar visibility
+  const [visible, setVisible] = useState(true); 
   const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY.current) {
-        setVisible(false); // Hide on scroll down
+        setVisible(false);
       } else {
-        setVisible(true); // Show on scroll up
+        setVisible(true);
       }
       lastScrollY.current = window.scrollY;
     };
@@ -43,10 +42,13 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full h-[10vh] shadow-md z-50 p-4 flex items-center justify-between bg-cover bg-transparent bg-center transition-transform duration-300 ${
+      style={{
+        fontFamily: 'AllRoundGothic, sans-serif'
+      }}
+        className={`fixed left-1/2 top-3 w-[60vw] h-[8vh] rounded-xl border border-red-400 shadow-xl z-50 p-5 flex items-center justify-between bg-cover bg-black opacity-80 bg-center backdrop-blur-lg transition-transform duration-300 transform -translate-x-1/2 -translate-y-1/2${
           visible ? "translate-y-0" : "-translate-y-full"
         }`}
-        style={{ backgroundImage: `url(${background.src})` }}
+       
       >
         <Link href="/">
           <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
@@ -64,12 +66,12 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-10">
-          <Link href="/" className="text-white font-sans hover:text-black-400">Home</Link>
-          <Link href="/#timeline" className="text-white font-sans hover:text-black-400">About</Link>
-          <Link href="/#timeline" className="text-white font-sans hover:text-black-400">Events</Link>
-          <Link href="#speakers" className="text-white font-sans hover:text-black-400">Speakers</Link>
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Schedule</Link>
+        <div className="hidden md:flex space-x-10 font-allround">
+    
+          <Link href="/#timeline" className="text-white hover:text-red-400 ">ABOUT</Link>
+          <Link href="/MySchedule" className="text-white font-allround hover:text-red-400">MY SCHEDULE</Link>
+          <Link href="#speakers" className="text-white font-allround hover:text-red-400">OUR PATRONS</Link>
+          <Link href="/#footer" className="text-white font-allround hover:text-red-400">CONTACT US</Link>
           <SignInBtn/>
         </div>
       </nav>
@@ -81,11 +83,10 @@ const Navbar: React.FC = () => {
       {isMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-85 backdrop-blur-sm z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-xl">
           <button onClick={toggleMenu} className="text-3xl">&times;</button>
-          <Link href="/" onClick={toggleMenu}>Home</Link>
-          <Link href="/#timeline" onClick={toggleMenu}>About</Link>
-          <Link href="/#timeline" onClick={toggleMenu}>Events</Link>
-          <Link href="/#speakers" onClick={toggleMenu}>Speakers</Link>
-          <Link href="/MySchedule" className="text-white font-sans hover:text-black-400">My Schedule</Link>
+          <Link href="/#timeline" onClick={toggleMenu}>ABOUT</Link>
+          <Link href="/#MySchedule" onClick={toggleMenu}>MY SCHEDULE</Link>
+          <Link href="/#speakers" onClick={toggleMenu}>OUR PATRONS</Link>
+          <Link href="/#footer" className="text-white font-allround hover:text-red-400">CONTACT US</Link>
           <SignInBtn/>
         </div>
       )}

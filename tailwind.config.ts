@@ -25,6 +25,7 @@ const config: Config = {
       fontFamily: {
         myCustom: ["BrigendsExpanded", "sans-serif"],
      },
+     
 
     },
   },
