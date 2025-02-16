@@ -8,6 +8,21 @@ gsap.registerPlugin(ScrollTrigger);
 const MeetOurSpeakers: React.FC = () => {
   const sectionRef = useRef(null);
   const comingSoonRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const section = sectionRef.current;
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: "bottom bottom",
+      anticipatePin: 1,
+      onLeaveBack: () => {
+        window.scrollTo({
+          top: document.getElementById("timeline")?.offsetTop,
+          behavior: "smooth",
+        });
+      },
+    });
+  }, []);
   return (
     <section id="speakers" ref={sectionRef} className="relative w-full h-[150vh] bg-white">
       <div className="sticky top-0 left-0 w-full h-[50vh] flex flex-col items-center justify-center z-0 bg-white">
