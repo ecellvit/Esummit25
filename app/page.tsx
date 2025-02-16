@@ -10,9 +10,16 @@ import SignInBtn from "@/components/signinButton";
 import MeetOurSpeakers from "@/components/meetOurSpeakers";
 import Sponsors from "@/components/sponsors";
 import FaqContent from "@/components/faq";
+import Timeline from "@/components/timeline";
 import EsummitMotion from "@/components/EsummitMotion";
 import IdeateComponent from "@/components/iiaMotion";
 import React, { useState, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 import RegisterBtn from "@/components/registernowButton";
 
 export default function HomePage() {
@@ -23,20 +30,12 @@ export default function HomePage() {
     {!ideateCompleted && <IdeateComponent onComplete={() => setIdeateCompleted(true)} />}
     {ideateCompleted && (
         <>
-          <SignInBtn />
-          <RegistrationButtons
-            eventUrls={{
-              1: "/events/event1/createTeam",
-              2: "/events/event2",
-              3: "/events/event3",
-              4: "/events/event4",
-              5: "/events/event5",
-            }}
-          />
+          <NavBar />
           <RegisterBtn/>
           <EsummitMotion />
           <MeetOurSpeakers />
           <Sponsors />
+          <Timeline />
           <FaqContent />
           <Footer />
         </>

@@ -10,7 +10,7 @@ const Sponsors: React.FC = () => {
   const sponsorsRef = useRef<HTMLDivElement>(null);
   const comingSoonRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useEffect(() => {  
     let ctx = gsap.context(() => {
       // Keep "SPONSORS" pinned in place initially
       ScrollTrigger.create({
@@ -57,7 +57,7 @@ const Sponsors: React.FC = () => {
     <section
   ref={sectionRef}
   id="sponsors"
-  className="relative w-full flex flex-col items-center justify-center bg-white overflow-hidden mt-[-70rem]" // Set margin-top to 0
+  className="relative w-full flex flex-col items-center justify-center bg-white overflow-hidden mt-[-70rem] " // Set margin-top to 0
 >
   <div
     ref={sponsorsRef}

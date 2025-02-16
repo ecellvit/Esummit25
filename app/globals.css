@@ -12,9 +12,9 @@
 }
 
 @font-face {
-  font-family: 'Brigends Expanded', sans-serif;
-  src: url('../public/fonts/BrigendsExpanded.otf') format('otf');
-  font-weight: 800;
+  font-family: 'BrigendsExpanded', sans-serif;
+  src: url("../public/fonts/BrigendsExpanded.otf") format("otf");
+  font-weight: normal;
   font-style: normal;
 }
 
