@@ -25,9 +25,9 @@
 }
 
 @font-face {
-  font-family: 'BrigendsExpandedSecond';
-  src: url('/fonts/brigendsexpanded-nrek1.otf') format('opentype');
-  font-weight: normal;
+  font-family: 'BrigendsExpandedSecond', sans-serif;
+  src: url("../public/fonts/brigendsexpanded-nrek1.otf") format("otf");
+  font-weight: 800;
   font-style: normal;
 }
 
