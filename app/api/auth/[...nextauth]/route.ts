@@ -277,9 +277,9 @@ const authOptions: NextAuthOptions = {
         };
       },
 
-    async redirect({ url, baseUrl,token }) {
+    async redirect({ url, baseUrl }) {
       try {
-        const res = await fetch("http://localhost:3000/api/user/getUserDetails", {
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user/getUserDetails`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
