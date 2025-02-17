@@ -112,7 +112,7 @@ export const LampContainer = ({
               duration: 1,
               ease: "easeInOut",
             }}
-            className="absolute z-30 h-36 w-64 top-[30vh] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
+            className="absolute z-30 h-36 w-64 top-[25vh] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
           />
         </div>
       </div>
