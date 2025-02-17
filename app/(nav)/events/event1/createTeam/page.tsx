@@ -30,7 +30,7 @@ export default function page() {
     setIsLoading(true); // Show loader when creating a team
 
     try {
-      const response = await axios.post("/api/event1/createTeam", {
+      const response = await axios.post(`${process.env.NEXTAUTH_URL}/api/event1/createTeam`, {
         teamName: teamName,
       });
 
