@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
         }}
         className={`fixed top-3 left-[45%] sm:left-[48%] md:left-[50%] 
         w-[95vw] sm:w-[75vw] md:w-[60vw] h-[8vh] 
-        rounded-xl border border-red-400 shadow-xl z-[1000] p-4 
+        rounded-xl border border-red-400 shadow-xl z-10 p-4 
         flex items-center justify-between 
         bg-cover bg-black opacity-80 bg-center backdrop-blur-lg 
         transition-transform duration-300 transform -translate-x-1/2`}
@@ -94,7 +94,7 @@ const Navbar: React.FC = () => {
             MY SCHEDULE
           </Link>
           <Link
-            href="#speakers"
+            href="/patrons"
             className="text-white font-allround hover:text-red-400"
           >
             OUR PATRONS

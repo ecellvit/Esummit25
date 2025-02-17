@@ -184,7 +184,7 @@ export default function page() {
 
   return (
     <div
-      className="border-box flex items-center justify-center bg-cover bg-center sm:h-screen lg:pt-[0.75vh] px-4 sm:px-8"
+      className="border-box flex items-center justify-center bg-cover bg-center sm:min-h-screen min-h-screen lg:pt-[0.75vh] px-4 sm:px-8"
       style={{
         backgroundImage: `url(${background.src})`,
         backgroundSize: "cover",
@@ -197,7 +197,7 @@ export default function page() {
         </div>
       )}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 sm:p-8 w-full max-w-6xl">
-        <div className="rounded-2xl p-6 flex flex-col justify-center items-center shadow-lg bg-white opacity-90">
+        <div className="rounded-2xl flex flex-col justify-center mt-7 items-center shadow-lg bg-white opacity-90">
           <Image
             src={logo}
             alt="redlogo"
@@ -205,7 +205,7 @@ export default function page() {
             className="w-48 sm:w-96"
           />
         </div>
-        <div className="flex items-center justify-center p-4 sm:p-8 bg-white opacity-90 rounded-2xl w-full">
+        <div className="flex items-center justify-center sm:p-8 mt-7 bg-white opacity-90 rounded-2xl w-full">
           <div className="w-full max-w-lg">
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <h2 className="text-2xl sm:text-3xl font-bold">
@@ -410,7 +410,14 @@ export default function page() {
                 </div>
               )}
             </form>
-            <Toaster />
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                style: {
+                  zIndex:1000000, // Adjust Toaster's z-index
+                },
+              }}
+            />
           </div>
         </div>
       </div>
