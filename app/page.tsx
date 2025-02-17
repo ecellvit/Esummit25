@@ -11,6 +11,7 @@ import MeetOurSpeakers from "@/components/meetOurSpeakers";
 import Sponsors from "@/components/sponsors";
 import FaqContent from "@/components/faq";
 import Scroll from "@/components/scroll";
+import About from "@/components/about";
 import Schedule from "@/components/schedule";
 import Timeline from "@/components/timeline";
 import EsummitMotion from "@/components/EsummitMotion";
@@ -45,6 +46,7 @@ export default function HomePage() {
     <>
         <NavBar />
         <LampDemo/>
+        <About />
         <Scroll />
         <Timeline />
         <MeetOurSpeakers />

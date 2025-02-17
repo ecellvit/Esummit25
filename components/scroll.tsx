@@ -52,7 +52,7 @@ const Animation: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[100vh] bg-white flex flex-col items-center justify-center text-black text-3xl font-[GreaterTheory]"
+      className="relative w-full h-[100vh] bg-white flex flex-col items-center justify-center text-black text-4xl font-[GreaterTheory]"
       id="scroll"
     >
       <Image src={bg} alt="bg" className="absolute inset-0 w-full h-full object-cover opacity-60 z-0" />

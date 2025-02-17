@@ -52,7 +52,7 @@ export const LampContainer = ({
   return (
     <div
       className={cn(
-        "relative w-[100vw] min-h-screen bg-black overflow-hidden z-0",
+        "relative w-[100vw] min-h-screen bg-[#1E1B1A] overflow-hidden z-0",
         className
       )}
     >
