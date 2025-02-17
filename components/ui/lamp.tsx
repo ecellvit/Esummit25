@@ -2,7 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
-// import GodRays from "@/components/gif";
 import { div } from "motion/react-client";
 import Image from "next/image";
 import rays from "@/assets/god-rays.gif";
@@ -36,7 +35,7 @@ export function LampDemo() {
           }}
           className="bg-white bg-clip-text text-center font-medium tracking-tight text-transparent "
         >
-          <EsummitHeroText/>
+          <EsummitHeroText />
         </motion.h1>
       </LampContainer>
     </div>
@@ -122,10 +121,10 @@ export const LampContainer = ({
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-5">
         {children}
       </div>
-      <div className="flex justify-center items-center absolute bottom-[15vh] w-full">
+      <div className="flex justify-center items-center absolute bottom-[150px] w-full">
       <RegisterBtn/>
       </div>
-      <div className="flex w-full justify-center absolute bottom-[5vh] items-center">
+      <div className="flex w-full justify-center absolute bottom-[50px] items-center">
       <CountdownTimer targetDate="2025-03-04T00:00:00"/>
       </div>
     </div>
