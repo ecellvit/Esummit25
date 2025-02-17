@@ -231,7 +231,7 @@ const Navbar: React.FC = () => {
               <Image src={closeIcon} alt="Close" width={40} height={40} />
             )}
           </button>
-          <SignInBtn className="text-white border-none bg-transparent" />
+          <SignInBtn className="text-white border-none bg-transparent hidden" />
         </div>
 
         {/* Desktop Navigation */}
@@ -252,7 +252,8 @@ const Navbar: React.FC = () => {
             CONTACT US
           </Link>
         </div>
-            <SignInBtn />
+        <div className="hidden md:block">
+            <SignInBtn /></div>
       </nav>
 
       {/* Mobile Menu */}
