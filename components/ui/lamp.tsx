@@ -2,7 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
-// import GodRays from "@/components/gif";
 import { div } from "motion/react-client";
 import Image from "next/image";
 import rays from "@/assets/god-rays.gif";
@@ -36,7 +35,7 @@ export function LampDemo() {
           }}
           className="bg-white bg-clip-text text-center font-medium tracking-tight text-transparent "
         >
-          <EsummitHeroText/>
+          <EsummitHeroText />
         </motion.h1>
       </LampContainer>
     </div>
@@ -53,7 +52,7 @@ export const LampContainer = ({
   return (
     <div
       className={cn(
-        "relative w-full min-h-screen bg-black overflow-hidden z-0",
+        "relative w-[100vw] min-h-screen bg-black overflow-hidden z-0",
         className
       )}
     >
@@ -73,7 +72,7 @@ export const LampContainer = ({
               backgroundImage:
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
-            className="absolute right-[49.9999%] bottom-[60vh] h-[120vh] w-[30 rem] -scale-y-150
+            className="absolute right-[49.9999%] bottom-[65vh] h-[120vh] w-[30 rem] -scale-y-150
  bg-gradient-conic from-red-600 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
           >
             {/* Mask divs */}
@@ -94,7 +93,7 @@ export const LampContainer = ({
               backgroundImage:
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
-            className="absolute left-1/2 bottom-[60vh] h-[120vh] w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_290deg_at_center_top]"
+            className="absolute left-1/2 bottom-[65vh] h-[120vh] w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_290deg_at_center_top]"
           >
             {/* Mask divs */}
             <div className="absolute bottom-0 right-0 z-20 h-full w-40 bg-black [mask-image:linear-gradient(to_left,white,transparent)]" />
@@ -113,7 +112,7 @@ export const LampContainer = ({
               duration: 1,
               ease: "easeInOut",
             }}
-            className="absolute z-30 h-36 w-64 top-[35vh] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
+            className="absolute z-30 h-36 w-64 top-[30vh] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
           />
         </div>
       </div>
@@ -122,10 +121,10 @@ export const LampContainer = ({
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-5">
         {children}
       </div>
-      <div className="flex justify-center items-center absolute bottom-[15vh] w-full">
+      <div className="flex justify-center items-center absolute bottom-[150px] w-full">
       <RegisterBtn/>
       </div>
-      <div className="flex w-full justify-center absolute bottom-[5vh] items-center">
+      <div className="flex w-full justify-center absolute bottom-[30px] items-center">
       <CountdownTimer targetDate="2025-03-04T00:00:00"/>
       </div>
     </div>

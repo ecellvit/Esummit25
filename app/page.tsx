@@ -10,6 +10,7 @@ import SignInBtn from "@/components/signinButton";
 import MeetOurSpeakers from "@/components/meetOurSpeakers";
 import Sponsors from "@/components/sponsors";
 import FaqContent from "@/components/faq";
+import Scroll from "@/components/scroll";
 import Schedule from "@/components/schedule";
 import Timeline from "@/components/timeline";
 import EsummitMotion from "@/components/EsummitMotion";
@@ -44,7 +45,7 @@ export default function HomePage() {
     <>
         <NavBar />
         <LampDemo/>
-        <Schedule />
+        <Scroll />
         <Timeline />
         <MeetOurSpeakers />
         <Sponsors />

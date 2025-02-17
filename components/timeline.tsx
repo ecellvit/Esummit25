@@ -19,35 +19,35 @@ import MobileSchedule from "./mobileSchedule";
 const events = [
   {
     name: "INNOVENTURE",
-    date: "March 4",
+    date: "COMING SOON!!",
     description:
       "Innoventure is a dynamic business simulation event where participants tackle real-world challenges, honing their problem-solving skills through hands-on experience in product development, business analysis, and entrepreneurial strategy .",
     url: "/events/event1/createTeam",
   },
   {
     name: "E TALK",
-    date: "March 5",
+    date: "COMING SOON!!",
     description:
-      "E-Talk brings together renowned entrepreneurs to offer valuable lessons and inspiration through engaging discussions and influential motivational speeches for emerging entrepreneurs.",
+      "E-Talk brings renowned entrepreneurs to share insights through discussions and motivational speeches. It offers a platform for aspiring business minds to interact, learn, and refine their vision, inspiring the next generation of entrepreneurs.",
     url: "/events/event2",
   },
   {
     name: "MARKETING WORKSHOP",
-    date: "March 6",
+    date: "COMING SOON!!",
     description:
       "The Marketing Workshop equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
       url: "/events/event3",
   },
   {
     name: "ACHIEVERS CONCLAVE",
-    date: "March 6",
+    date: "COMING SOON!!",
     description:
       "At Achiever’s Conclave, accomplished industry stalwarts from diverse fields come together to share their journeys, insights, and success strategies to inspire and empower participants to scale new heights in their endeavors.",
     url: "/events/event4",
   },
   {
     name: "PIONEIRA PHASE 2",
-    date: "March 7",
+    date: "COMING SOON!!",
     description:
       "Pioneira, a conclave for startups to pitch their ideas to industry leaders and prominent personalities while embarking on a journey to gain exposure, withstand market competition, and build connections.",
     url: "/events/event5",
@@ -65,17 +65,25 @@ export default function Schedule() {
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const mainRef = useRef<HTMLDivElement | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (mainRef.current) {
       const handleScroll = (event: WheelEvent) => {
-        if (isPaused) return;
         event.preventDefault();
+        if (event.deltaY < 0 && activeIndex <= 0) {
+          window.scrollTo({
+            top: document.getElementById("scroll")?.offsetTop,
+            behavior: "smooth",
+          });
+        }
+        if (event.deltaY > 0 && activeIndex >= events.length - 1) {
+          window.scrollTo({
+            top: document.getElementById("speakers")?.offsetTop,
+            behavior: "smooth",
+          });
+        }
         setScrollDelta((prevDelta) => prevDelta + event.deltaY);
         if (Math.abs(scrollDelta) >= scrollThreshold) {
-          setIsPaused(true);
           if (event.deltaY > 0 && activeIndex < events.length - 1) {
             setActiveIndex((prev) => prev + 1);
           } else if (event.deltaY > 0 && activeIndex === events.length - 1) {
@@ -87,15 +95,11 @@ export default function Schedule() {
             setActiveIndex((prev) => prev - 1);
           } else if (event.deltaY < 0 && activeIndex === 0) {
             window.scrollTo({
-              top: document.getElementById("home")?.offsetTop,
+              top: document.getElementById("scroll")?.offsetTop,
               behavior: "smooth",
             });
           }
           setScrollDelta(0);
-          scrollTimeout.current = setTimeout(() => {
-            setIsPaused(false);
-            scrollTimeout.current = null;
-          }, 1000);
         }
       };
       mainRef.current.addEventListener("wheel", handleScroll, { passive: false });
@@ -214,7 +218,7 @@ export default function Schedule() {
         {/* Navigation Bar */}
         <div className="relative">
           <h2
-            className="text-5xl font-bold my-6 font-[GreaterTheory]"
+            className="text-5xl font-bold my-6 font-[BrigendsExpanded]"
             style={{
               background: gradientStyle,
               WebkitBackgroundClip: "text",
@@ -224,7 +228,7 @@ export default function Schedule() {
             SCHEDULE
           </h2>
           <div className="absolute left-1 bottom-2 w-2 bg-gray-300 h-[52%]"></div>
-          <ul className="space-y-1 relative font-[FontSpring]">
+          <ul className="space-y-1 relative font-[PoppinsRegular]">
             {events.map((event, idx) => (
               <li
                 key={idx}
@@ -268,7 +272,7 @@ export default function Schedule() {
           >
             {events[activeIndex]?.name}
           </h3>
-          <p ref={descriptionRef} className="text-lg text-gray-700 font-[FontSpring]">
+          <p ref={descriptionRef} className="text-lg text-gray-700 pr-36 font-[PoppinsRegular]">
             {events[activeIndex]?.description}
           </p>
           <button

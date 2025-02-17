@@ -11,6 +11,20 @@
 }
 
 @font-face {
+  font-family: 'PoppinsRegular';
+  src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PoppinsSemibold';
+  src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'BrigendsExpanded';
   src: url('/fonts/BrigendsExpanded.otf') format('opentype');
   font-weight: normal;
@@ -123,4 +137,11 @@ html::-webkit-scrollbar-thumb {
 
 html::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #390303 0%, rgba(208, 33, 33, 0.888) 50%, #390303 100%);
+}
+
+/* @import 'react-hot-toast/dist/react-hot-toast.css'; */
+
+/* Ensure Toaster appears above everything */
+.__react-hot-toast__ {
+  z-index: 9999 !important; /* Ensure the toast container appears above everything else */
 }

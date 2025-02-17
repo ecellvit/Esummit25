@@ -9,21 +9,23 @@ import axios, { AxiosError } from "axios";
 import Event from "./event";
 
 // const page = () =>
-const loader=false;
 const MySchedule = () => {
   const [regEvent, setRegEvents] = useState([]);
   const [regEventsList, setRegEventsList] = useState([]);
   const [userDetails, setUserDeatials] = useState(null);
   
-//   const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    // setLoader(true);
+
+    
     getData();
+   
   }, []);
 
   const getData= async ()=>{
+    setLoader(true);
    const data=await axios.get("/api/user/getUserDetails")
    console.log("bcjbjhdwdkwkdhjhwkd",data.data.user);
         setUserDeatials(data.data.user);
@@ -31,10 +33,9 @@ const MySchedule = () => {
           scheduleDetails.filter((event) =>
             data.data.user.events?.includes(event.id)
           )
-        
+         
         );
-        // setLoader(false);
-        console.log(regEventsList);
+        setLoader(false);
       }
 
   const events = regEventsList.map((event) => {
@@ -44,17 +45,24 @@ const MySchedule = () => {
   return (
     <section className="bg-cover bg-center items-center-20 text-white min-h-screen bg-[#0E0E0E] font-poppins px-10 sm:px-16 md:px-20"   style={{ backgroundImage: `url(${background.src})` }}>
       {loader ? (
-       <div></div>
-      ) : userDetails?.user?.events.length === 0 ||
-        status === "unauthenticated" ? (
+       <Loader></Loader>
+      ) : userDetails?.events.length === 0 ||
+        status === "unauthenticated"? (
         <div className="flex flex-col min-h-[calc(100vh-5rem)] gap-10 items-center justify-center">
           <h1 className="text-xl md:text-3xl lg:text-5xl capitalize font-[BrigendsExpanded]">
             No events registered
           </h1>
           <button
-            className="py-2 px-4 font-semibold rounded-xl font-[GreaterTheory] uppercase border-4 border-[#FEFAB7] bg-transparent hover:scale-105 transition-all"
+            className="py-2 px-4 font-semibold rounded-xl font-[GreaterTheory] uppercase border-4 border-red-400 bg-transparent hover:scale-105 transition-all"
             onClick={() => {
-              window.location.href = "/#schedule";
+              console.log("fbjhwfkhwdkj",userDetails);
+              if(userDetails.hasFilledDetails === false){
+                window.location.href = "/userDetails";
+              }
+              else{
+                window.location.href = "/#schedule";
+              }
+             
             }}
           >
             Register Now
@@ -73,4 +81,4 @@ const MySchedule = () => {
   );
 };
 
-export default MySchedule;
+export default MySchedule; 
