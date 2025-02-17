@@ -127,7 +127,7 @@ export default function UserDetail() {
   // Return loading state or form based on session
   if (status === "loading") {
    <Loader/>
-    // return <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50"><div className="text-white text-2xl">Loading...</div></div>;
+    // return <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50"><div className="text-white text-xl">Loading...</div></div>;
   }
 
   return (
@@ -166,14 +166,14 @@ export default function UserDetail() {
         <div className="flex items-center justify-center p-4 lg:p-8 bg-cover bg-center rounded-2xl overflow-hidden  bg-white opacity-100"
         // style={{backgroundImage: `url(${background1.src})`}}
         >
-          <div className="w-full max-w-md lg:max-w-lg">
+          <div className="w-full max-w-lg lg:max-w-lg ">
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col gap-5 bg-transparent p-2 rounded-lg shadow-none text-3xl"
+              className="flex flex-col gap-5 bg-transparent p-2 rounded-lg shadow-none text-4xl "
             >
-              <h2><b>Enter Your Information</b></h2>
+              <h2 className="font-[BrigendsExpanded]"><b>Enter Your Information</b></h2>
               <div className="flex flex-col gap-3">
-                <label htmlFor="full Name"  className="block text-lg font-medium ">Full Name</label>
+                <label htmlFor="full Name"  className="block text-xl font-[FontSpring] uppercase font-extrabold ">Full Name</label>
                 <input
                   placeholder="Your name here"
                   type="text"
@@ -182,11 +182,11 @@ export default function UserDetail() {
                   value={formData.name}
                   onChange={handleChange}
                   onKeyPress={handleKeyPress}
-                  className="border rounded-md text-2xl text-black border-gray-300 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
+                  className="border rounded-md lowercase  text-black font-[GreaterTheory] font-extralight text-lg border-gray-200 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
                 />
               </div>
               <div className="flex flex-col gap-3">
-              <label htmlFor="regNo"  className="block text-lg font-medium">Registration Number</label>
+              <label htmlFor="regNo"  className="block text-xl font-[FontSpring] uppercase font-extrabold">Registration Number</label>
                 <input
                   placeholder="Your Reg. no here"
                   type="text"
@@ -194,11 +194,11 @@ export default function UserDetail() {
                   name="regNo"
                   value={formData.regNo}
                   onChange={handleChange}
-                  className="border rounded-md text-2xl text-black border-gray-300 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
+                  className="border rounded-md lowercase  font-[GreaterTheory] font-extralight text-lg text-black border-gray-200 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
                 />
               </div>
               <div className="flex flex-col gap-3">
-              <label htmlFor="number"  className="block text-lg font-medium ">Phone Number</label>
+              <label htmlFor="number"  className="block text-xl font-[FontSpring] uppercase font-extrabold ">Phone Number</label>
                 <input
                   placeholder="Your Phone no. here"
                   type="tel"
@@ -207,12 +207,12 @@ export default function UserDetail() {
                   value={formData.number}
                   onChange={handleChange}
                   onWheel={(e) => e.currentTarget.blur()}
-                  className="border rounded-md text-2xl text-black border-gray-300 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
+                  className="border rounded-md lowercase  font-[GreaterTheory] font-extralight text-lg text-black border-gray-200 focus:ring-blue-200 focus:outline-none focus:ring-2 p-2"
                 />
               </div>
               <button
                 type="submit"
-                className="p-2 bg-red-800 rounded-lg text-white text-xl hover:text-black active:transform transition duration-200 h-auto text-center w-24 font-sansrounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
+                className="p-3 bg-red-800 rounded-lg text-white font-[FontSpring] uppercase text-lg hover:text-black active:transform transition duration-200 h-auto text-center w-30 font-sansrounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
               >
                  {loading ? (
     <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>

@@ -10,7 +10,7 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
   useEffect(() => {
     setTimeout(() => {
       onComplete(); 
-    }, 4500);
+    }, 3600);
     
     if (cycleCount >= maxCycles) return; 
     const interval = setInterval(() => {
@@ -20,7 +20,7 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
         }
         return (prevIndex + 1) % texts.length;
       });
-    }, 1500); // Change text every 3 seconds
+    }, 1200); // Change text every 3 seconds
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, [cycleCount]);
 3
@@ -35,7 +35,7 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
     >
       <h1
         key={currentTextIndex}
-        className="absolute z-10 text-red-800 text-[69.661px] font-extrabold font-[Brigends Expanded,sans-serif]"
+        className="absolute z-10 text-red-800 text-[69.661px] font-bold font-[BrigendsExpanded]"
         style={{ animation: "fadeInOut 3s ease-in-out " }}
       >
         {texts[currentTextIndex]}

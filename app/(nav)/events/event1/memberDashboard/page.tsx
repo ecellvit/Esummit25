@@ -132,7 +132,7 @@ export default function MemberDashboard() {
           //   backgroundColor: "rgba(255, 255, 255, 0.5)",
           // }}
         >
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-center drop-shadow-lg text-red-500">
+          <h1 className="text-2xl sm:text-3xl font-[GreaterTheory] text-center drop-shadow-lg text-red-500">
             {teamName}
           </h1>
 
@@ -152,10 +152,10 @@ export default function MemberDashboard() {
                   />
                 </div>
                 <div className="relative z-10 flex-1 p-4 text-left right-8">
-                  <h2 className="text-l font-bold mb-1 text-white">
+                  <h2 className="text-l font-bold mb-1 text-white font-[FontSpring]">
                     {member?.name}
                   </h2>
-                  <h2 className="text-l font-bold mb-1 text-white">
+                  <h2 className="text-l font-bold mb-1 text-white font-[FontSpring]">
                     Team Role: {member?.event1TeamRole === 0 ? "Leader" : "Member"}
                   </h2>
                   <p className="text-xs mb-1 text-white">Reg. No.: {member?.regNo}</p>
@@ -168,7 +168,7 @@ export default function MemberDashboard() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
             <button
               onClick={handleShowConfirmation}
-              className="btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform-secondary bottom-5"
+              className="btn-secondary bg-red-500 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase hover:scale-105 transition-transform-secondary bottom-5"
             >
               Leave Team
             </button>
@@ -176,14 +176,14 @@ export default function MemberDashboard() {
             {showConfirmation && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                 <div className="bg-white p-4 rounded-lg flex flex-col items-center justify-center font-bold mt-[-75px]">
-                  <p className="mb-4 text-lg sm:text-xl text-center whitespace-nowrap">
+                  <p className="mb-4 text-lg sm:text-xl text-center whitespace-nowrap font-[FontSpring]">
                     Do you want to leave this team?
                   </p>
                   <div className="flex items-center justify-center">
                     <button
                       onClick={handleLeave}
                       disabled={isLeaving}
-                      className="bg-green-500 text-white px-4 py-2 rounded-md"
+                      className="bg-green-500 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase"
                     >
                       {isLeaving ? ( 
                         <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin"></div>
@@ -194,7 +194,7 @@ export default function MemberDashboard() {
                     <button
                       onClick={handleShowConfirmation}
                       disabled={isLeaving}
-                      className="bg-red-500 text-white px-4 py-2 rounded-md ml-4"
+                      className="bg-red-500 text-white px-4 py-2 rounded-md ml-4 font-[FontSpring] uppercase"
                     >
                       No
                     </button>
