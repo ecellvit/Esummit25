@@ -72,7 +72,7 @@ export const LampContainer = ({
               backgroundImage:
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
-            className="absolute right-[49.9999%] bottom-[60vh] h-[120vh] w-[30 rem] -scale-y-150
+            className="absolute right-[49.9999%] bottom-[600px] h-[120vh] w-[30 rem] -scale-y-150
  bg-gradient-conic from-red-600 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
           >
             {/* Mask divs */}
@@ -93,7 +93,7 @@ export const LampContainer = ({
               backgroundImage:
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
-            className="absolute left-1/2 bottom-[60vh] h-[120vh] w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_290deg_at_center_top]"
+            className="absolute left-1/2 bottom-[600px] h-[120vh] w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_290deg_at_center_top]"
           >
             {/* Mask divs */}
             <div className="absolute bottom-0 right-0 z-20 h-full w-40 bg-black [mask-image:linear-gradient(to_left,white,transparent)]" />
@@ -112,7 +112,7 @@ export const LampContainer = ({
               duration: 1,
               ease: "easeInOut",
             }}
-            className="absolute z-30 h-36 w-64 top-[35vh] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
+            className="absolute z-30 h-36 w-64 bottom-[500px] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
           />
         </div>
       </div>
