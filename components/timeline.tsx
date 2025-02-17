@@ -142,7 +142,7 @@ export default function Schedule() {
       return;
     }
     if (event === 5 && userEmail.endsWith("@vitstudent.ac.in")) {
-      toast.error("VIT students can't register for this event");
+      toast.error("VIT'V students can't register for this event");
       return;
     }
     if (event >= 1 && event <= 4 && !userEmail.endsWith("@vitstudent.ac.in")) {
@@ -157,7 +157,7 @@ export default function Schedule() {
         const newUserEvents = session?.user.events || [];
         newUserEvents.push(event);
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
-        router.push(event === 1 ? `/events/event${event}/createTeam` : "/");
+        router.push(event === 1 ? `/events/event${event}/createTeam` : "/#timeline");
       }
     } catch (error) {
       const axiosError = error as AxiosError;

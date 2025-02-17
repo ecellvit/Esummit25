@@ -42,7 +42,7 @@ export default function page() {
   });
   const [loading, setLoading] = useState(false);
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^(?!.*@vitstudent\.ac\.in$)[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\d{10}$/;
   const urlRegex = /^(https?:\/\/)?([\w\d-]+\.)+[\w\d]+(\/.*)?$/;
 
@@ -220,7 +220,7 @@ export default function page() {
                       <div key={key} className="mb-5 mt-3">
                         <label className="block text-gray-700 capitalize">
                           {key.replace(/([A-Z])/g, " $1").trim()}
-                        </label>
+                        </label>{key.includes("website") &&<span className="text-red-600">*Required</span>}
                         <input
                           type={key.includes("Contact") ? "tel" : "text"}
                           name={key}
@@ -254,7 +254,7 @@ export default function page() {
               {step === 2 && (
                 <div>
                   <div className="flex flex-col gap-7 mb-5">
-                    <h3 className="font-bold text-lg">Stage of Startup</h3>
+                    <h3 className="font-bold text-lg">Stage of Startup <span className="text-red-600">*Required</span></h3>
                     <div className="flex flex-col gap-2">
                       {[
                         {
@@ -301,7 +301,7 @@ export default function page() {
                     <div>
                       <h3 className="font-bold text-lg">
                         Which TRL (Technology Readiness Level) is your startup
-                        currently on?
+                        currently on? <span className="text-red-600">*Required</span>
                       </h3>
                       <select
                         name="trlLevel"
@@ -338,7 +338,7 @@ export default function page() {
                 <div>
                   <div>
                     <h3 className="font-bold text-lg">
-                      Upload a Drive Link with your Portfolio
+                      Upload a Drive Link with your Portfolio <span className="text-red-600">*Required</span>
                     </h3>
                     <div className="text-md">
                       <p>
