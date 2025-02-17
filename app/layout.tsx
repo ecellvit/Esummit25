@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import logo from "/assets/redLogo.png"; // Verify the path
 import Head from "next/head";
-
-import "./globals.css";
+import "@/app/globals.css";
 import { AuthProvider } from "@/context/AuthProvider";
 
 const geistSans = localFont({
