@@ -38,7 +38,7 @@ export default function UserDetail() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/user/getUserDetails",
+          `${process.env.NEXTAUTH_URL}/api/user/getUserDetails`,
           {
             method: "GET",
             headers: {
