@@ -220,7 +220,7 @@ export default function page() {
                       <div key={key} className="mb-5 mt-3">
                         <label className="block text-gray-700 capitalize">
                           {key.replace(/([A-Z])/g, " $1").trim()}
-                        </label>{key.includes("website") &&<span className="text-red-600">*Required</span>}
+                        </label>{!key.includes("website") &&<span className="text-red-600">*Required</span>}
                         <input
                           type={key.includes("Contact") ? "tel" : "text"}
                           name={key}
