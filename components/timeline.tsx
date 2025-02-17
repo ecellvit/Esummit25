@@ -28,7 +28,7 @@ const events = [
     name: "E TALK",
     date: "COMING SOON!!",
     description:
-      "E-Talk brings together renowned entrepreneurs to offer valuable lessons and inspiration through engaging discussions and influential motivational speeches for emerging entrepreneurs.",
+      "E-Talk brings renowned entrepreneurs to share insights through discussions and motivational speeches. It offers a platform for aspiring business minds to interact, learn, and refine their vision, inspiring the next generation of entrepreneurs.",
     url: "/events/event2",
   },
   {
@@ -65,17 +65,25 @@ export default function Schedule() {
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const mainRef = useRef<HTMLDivElement | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (mainRef.current) {
       const handleScroll = (event: WheelEvent) => {
-        if (isPaused) return;
         event.preventDefault();
+        if (event.deltaY < 0 && activeIndex <= 0) {
+          window.scrollTo({
+            top: document.getElementById("scroll")?.offsetTop,
+            behavior: "smooth",
+          });
+        }
+        if (event.deltaY > 0 && activeIndex >= events.length - 1) {
+          window.scrollTo({
+            top: document.getElementById("speakers")?.offsetTop,
+            behavior: "smooth",
+          });
+        }
         setScrollDelta((prevDelta) => prevDelta + event.deltaY);
         if (Math.abs(scrollDelta) >= scrollThreshold) {
-          setIsPaused(true);
           if (event.deltaY > 0 && activeIndex < events.length - 1) {
             setActiveIndex((prev) => prev + 1);
           } else if (event.deltaY > 0 && activeIndex === events.length - 1) {
@@ -87,15 +95,11 @@ export default function Schedule() {
             setActiveIndex((prev) => prev - 1);
           } else if (event.deltaY < 0 && activeIndex === 0) {
             window.scrollTo({
-              top: document.getElementById("home")?.offsetTop,
+              top: document.getElementById("scroll")?.offsetTop,
               behavior: "smooth",
             });
           }
           setScrollDelta(0);
-          scrollTimeout.current = setTimeout(() => {
-            setIsPaused(false);
-            scrollTimeout.current = null;
-          }, 1000);
         }
       };
       mainRef.current.addEventListener("wheel", handleScroll, { passive: false });
@@ -268,7 +272,7 @@ export default function Schedule() {
           >
             {events[activeIndex]?.name}
           </h3>
-          <p ref={descriptionRef} className="text-lg text-gray-700 font-[PoppinsRegular]">
+          <p ref={descriptionRef} className="text-lg text-gray-700 pr-36 font-[PoppinsRegular]">
             {events[activeIndex]?.description}
           </p>
           <button
