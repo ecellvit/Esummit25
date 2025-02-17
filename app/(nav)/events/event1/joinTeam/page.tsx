@@ -127,7 +127,7 @@ export default function JoinTeam() {  // Remove the props) {
       className="h-screen w-screen flex items-center justify-center bg-black opacity-100" style={{ backgroundImage: `url(${bg.src})`, backgroundSize: 'cover' }}
     >
       {isLoading && <Loader />} {/* Show loader based on isLoading state */}
-      <div className="bg-white text-red p-8 rounded-3xl flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5 h-[80vh] opacity-100 bg-white" style={{ backgroundSize: 'cover' }}>
+      <div className="bg-white text-red p-8 rounded-3xl flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5 h-[80vh] opacity-100" style={{ backgroundSize: 'cover' }}>
         <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12" style={{ background: "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Join Team</h2>
         <form className="w-full flex flex-col items-center gap-5" onSubmit={fetchTeamName}>
           <input

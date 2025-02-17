@@ -22,7 +22,6 @@ import { LampDemo } from "@/components/ui/lamp";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-import RegisterBtn from "@/components/registernowButton";
 
 
 export default function HomePage() {
@@ -39,12 +38,11 @@ export default function HomePage() {
 
   return (
     <div className={ideateCompleted ? "page-container" : "overflow-hidden h-screen"}>
-  <CustomCursor /> 
+    <CustomCursor /> 
   {!ideateCompleted && <IdeateComponent onComplete={() => setIdeateCompleted(true)} />}
   {ideateCompleted && (
-      <>
+    <>
         <NavBar />
-        <RegisterBtn />
         <LampDemo/>
         <Schedule />
         <Timeline />
