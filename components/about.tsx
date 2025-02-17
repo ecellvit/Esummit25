@@ -63,9 +63,9 @@ export default function about() {
                     {/* Right Side: Text Content */}
                     <div className="md:w-3/4 w-full text-black text-md md:text-lg leading-relaxed flex items-center md:px-20 mt-5 md:mt-0">
                         <p>
-                            E-Summit is a launchpad to the evolving world of entrepreneurship. Though it appears as a single event, it is a powerhouse of inspiring activities and thought-provoking sessions that cultivate networking and expand students' business perspectives. Featuring a unique blend of thrilling competitions, engaging workshops, dynamic expos, and remarkable speakers, it is designed to ignite innovation in young minds.
+                            E-Summit is a journey into the world of entrepreneurship, featuring five exhilarating events over a span of four days. It is a platform where ideas spark, fire ignites, and ambition meets opportunity. From high energy pitch battles to game changing workshops, every moment is built to challenge, inspire, and open doors. The biggest names, boldest minds, and brightest opportunities are all here, if you’re ready to push boundaries and make things happen, this is where it starts.
                             <br /><br />
-                            E-Summit features five events over four days which provide an immersive business simulation experience, showcase the journeys of successful entrepreneurs, and bring together industry experts to share their insights. It also offers valuable sessions focused on refining startup strategies. Concluding with a platform to present ideas to seasoned professionals, E-Summit is a comprehensive package of entrepreneurial learning and growth.
+                            The energy is electric, the competition is fierce, and the future is written for those who show up. E-Summit’25 isn’t just another event, it’s a movement where real change begins. Whether you're a founder, or a dreamer with a vision, this is your chance to connect, grow, and leave your mark. The momentum is building, will you be part of it?
                         </p>
                     </div>
                 </div>
