@@ -4,11 +4,19 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function RegisterBtn(): JSX.Element {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handleClick = () => {
     if (status === "authenticated") {
+      if (!session.user.hasFilledDetails) {
+        if (session.user.email.endsWith("@vitstudent.ac.in")) {
+          router.push("/userDetails");
+        } else {
+          router.push("/events/pioneira/detailsForm");  
+        }
+        return;
+      }
       router.push("#timeline");
     } else {
       signIn("google");
