@@ -93,11 +93,8 @@ export default function IdeateComponent({
     >
       <h1
         key={currentTextIndex}
-        className="absolute z-10 text-red-800 text-center font-bold font-[BrigendsExpanded] px-5"
-        style={{
-          animation: "fadeInOut 3s ease-in-out",
-          fontSize: "calc(20px + 5vw)", // Responsive text size
-        }}
+        className="absolute z-10 text-red-800 md:text-7xl text-5xl font-bold font-[BrigendsExpanded]"
+        style={{ animation: "fadeInOut 3s ease-in-out " }}
       >
         {texts[currentTextIndex]}
       </h1>

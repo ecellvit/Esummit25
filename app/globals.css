@@ -76,18 +76,11 @@ main {
   transform: translateY(0%);
 }
 
-.faq-container {
-  position: relative;
-  z-index: 1;
-  padding-bottom: 22vh; /* Allows scrolling past FAQ */
-}
 
-.page-container {
-  min-height: 100vh; /* Ensures enough scrolling space */
-}
+
 
 /* Animation for text transition */
-/* @keyframes textTransition {
+@keyframes textTransition {
   0% {
     opacity: 0;
     transform: translateY(20px);
@@ -100,9 +93,9 @@ main {
     opacity: 0;
     transform: translateY(-20px);
   }
-} */
+}
 
-@keyframes fadeInOut {
+/* @keyframes fadeInOut {
   0% {
     opacity: 0;
     transform: translateY(20px);
@@ -115,7 +108,7 @@ main {
     opacity: 0;
     transform: translateY(-20px);
   }
-}
+} */
 
 /* Custom scrollbar */
 html::-webkit-scrollbar {

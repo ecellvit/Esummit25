@@ -52,7 +52,7 @@
 // //   return (
 // //     <div
 // //       className={cn(
-// //         "relative w-[100vw] min-h-screen bg-black overflow-hidden z-0",
+// //         "relative w-[100vw] min-h-screen bg-[#1E1B1A] overflow-hidden z-0",
 // //         className
 // //       )}
 // //     >
@@ -76,8 +76,8 @@
 // //  bg-gradient-conic from-red-600 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
 // //           >
 // //             {/* Mask divs */}
-// //             <div className="absolute bottom-0 left-0 z-20 h-40 w-full bg-black [mask-image:linear-gradient(to_top,white,transparent)]" />
-// //             <div className="absolute bottom-0 left-0 z-20 h-full w-40 bg-black [mask-image:linear-gradient(to_right,white,transparent)]" />
+// //             <div className="absolute bottom-0 left-0 z-20 h-40 w-full bg-[#1E1B1A] [mask-image:linear-gradient(to_top,white,transparent)]" />
+// //             <div className="absolute bottom-0 left-0 z-20 h-full w-40 bg-[#1E1B1A] [mask-image:linear-gradient(to_right,white,transparent)]" />
 // //           </motion.div>
 
 // //           {/* Right gradient */}
@@ -96,8 +96,8 @@
 // //             className="absolute left-1/2 bottom-[65vh] h-[120vh] w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_290deg_at_center_top]"
 // //           >
 // //             {/* Mask divs */}
-// //             <div className="absolute bottom-0 right-0 z-20 h-full w-40 bg-black [mask-image:linear-gradient(to_left,white,transparent)]" />
-// //             <div className="absolute bottom-0 right-0 z-20 h-40 w-full bg-black [mask-image:linear-gradient(to_top,white,transparent)]" />
+// //             <div className="absolute bottom-0 right-0 z-20 h-full w-40 bg-[#1E1B1A] [mask-image:linear-gradient(to_left,white,transparent)]" />
+// //             <div className="absolute bottom-0 right-0 z-20 h-40 w-full bg-[#1E1B1A] [mask-image:linear-gradient(to_top,white,transparent)]" />
 // //           </motion.div>
 
 // //           {/* Red blurred circle in center */}
@@ -175,7 +175,7 @@
 //   return (
 //     <div
 //       className={cn(
-//         "relative w-full h-screen bg-black overflow-hidden z-0 flex flex-col justify-between",
+//         "relative w-full h-screen bg-[#1E1B1A] overflow-hidden z-0 flex flex-col justify-between",
 //         className
 //       )}
 
@@ -199,8 +199,8 @@
 //             className="absolute right-[49.9999%] bottom-[65vh] h-[120vh] w-[5vw] -scale-y-150 bg-gradient-conic from-red-600 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top] sm:w-[25rem] sm:h-[80vh] sm:bottom-[60vh]"
 //           >
 //             {/* Mask divs */}
-//             <div className="absolute bottom-0 left-0 z-20 h-40 w-full bg-black [mask-image:linear-gradient(to_top,white,transparent)]" />
-//             <div className="absolute bottom-0 left-0 z-20 h-full w-40  bg-black [mask-image:linear-gradient(to_right,white,transparent)]" />
+//             <div className="absolute bottom-0 left-0 z-20 h-40 w-full bg-[#1E1B1A] [mask-image:linear-gradient(to_top,white,transparent)]" />
+//             <div className="absolute bottom-0 left-0 z-20 h-full w-40  bg-[#1E1B1A] [mask-image:linear-gradient(to_right,white,transparent)]" />
 //           </motion.div>
 
 //           {/* Right gradient */}
@@ -219,8 +219,8 @@
 //             className="absolute left-1/2 bottom-[65vh] h-[120vh] w-[30rem] -scale-y-150 bg-gradient-conic from-transparent via-transparent to-red-600 text-white [--conic-position:from_290deg_at_center_top] sm:w-[20rem] sm:h-[80vh] sm:bottom-[60vh]"
 //           >
 //             {/* Mask divs */}
-//             <div className="absolute bottom-0 right-0 z-20 h-full w-40 bg-black [mask-image:linear-gradient(to_left,white,transparent)]" />
-//             <div className="absolute bottom-0 right-0 z-20 h-40 w-full bg-black [mask-image:linear-gradient(to_top,white,transparent)]" />
+//             <div className="absolute bottom-0 right-0 z-20 h-full w-40 bg-[#1E1B1A] [mask-image:linear-gradient(to_left,white,transparent)]" />
+//             <div className="absolute bottom-0 right-0 z-20 h-40 w-full bg-[#1E1B1A] [mask-image:linear-gradient(to_top,white,transparent)]" />
 //           </motion.div>
 
 //           {/* Red blurred circle in center */}
@@ -299,7 +299,7 @@ export const LampContainer = ({
   return (
     <div
       className={cn(
-        "relative w-full min-h-screen bg-black overflow-hidden z-0 flex flex-col justify-between",
+        "relative  min-h-screen w-full bg-[#1E1B1A] overflow-hidden z-0",
         className
       )}
     >
@@ -323,11 +323,11 @@ export const LampContainer = ({
           >
             {/* Mask divs */}
             <div
-              className="absolute bottom-0 left-0 z-20 h-40 w-full bg-black 
+              className="absolute bottom-0 left-0 z-20 h-40 w-full bg-[#1E1B1A] 
               [mask-image:linear-gradient(to_top,white,transparent)]"
             />
             <div
-              className="absolute bottom-0 left-0 z-20 h-full w-40 bg-black 
+              className="absolute bottom-0 left-0 z-20 h-full w-40 bg-[#1E1B1A] 
               [mask-image:linear-gradient(to_right,white,transparent)]"
             />
           </motion.div>
@@ -349,11 +349,11 @@ export const LampContainer = ({
           >
             {/* Mask divs */}
             <div
-              className="absolute bottom-0 right-0 z-20 h-full w-40 bg-black 
+              className="absolute bottom-0 right-0 z-20 h-full w-40 bg-[#1E1B1A] 
               [mask-image:linear-gradient(to_left,white,transparent)]"
             />
             <div
-              className="absolute bottom-0 right-0 z-20 h-40 w-full bg-black 
+              className="absolute bottom-0 right-0 z-20 h-40 w-full bg-[#1E1B1A] 
               [mask-image:linear-gradient(to_top,white,transparent)]"
             />
           </motion.div>

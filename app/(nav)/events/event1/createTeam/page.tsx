@@ -106,7 +106,7 @@ export default function page() {
             onChange={handleChange}
           />
           <button
-            className="w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
+            className="w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold btn-primary btn-secondary bg-red-50 px-4 py-2  hover:scale-105 transition-transform flex items-center justify-center gap-2"
             style={{
               background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
             }}
@@ -130,7 +130,7 @@ export default function page() {
           }}
         />
         <button
-          className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg rounded-md btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
+          className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg  btn-primary btn-secondary bg-red-500  px-4 py-2  hover:scale-105 transition-transform flex items-center justify-center gap-2"
           style={{
             background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
           }}
@@ -144,7 +144,7 @@ export default function page() {
           
         </button>
         <button
-          className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold rounded-md btn-primary btn-secondary bg-red-500 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
+          className="mt-4 w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold  btn-primary btn-secondary bg-red-500 px-4 py-2  hover:scale-105 transition-transform flex items-center justify-center gap-2"
           style={{
             background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
           }}
