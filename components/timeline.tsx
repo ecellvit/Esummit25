@@ -50,7 +50,7 @@ const events = [
     date: "COMING SOON!!",
     description:
       "Pioneira is a major platform for new business ventures, offering startups an exceptional opportunity to pitch their ideas to industry leaders and influential personalities while embarking on a journey to withstand market competition, and build connections.",
-    url: "/events/event5",
+    url: "/events/pioneira",
   },
 ];
 
