@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import logo from "/assets/whiteLogo.png"; // Verify the path
+import logo from "/assets/redLogo.png"; // Verify the path
 import Head from "next/head";
 
 import "./globals.css";
