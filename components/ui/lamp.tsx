@@ -52,7 +52,7 @@ export const LampContainer = ({
   return (
     <div
       className={cn(
-        "relative w-[100vw] min-h-screen bg-black overflow-hidden z-0",
+        "relative w-[100vw] min-h-screen bg-[#1E1B1A] overflow-hidden z-0",
         className
       )}
     >
@@ -112,7 +112,7 @@ export const LampContainer = ({
               duration: 1,
               ease: "easeInOut",
             }}
-            className="absolute z-30 h-36 w-64 top-[30vh] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
+            className="absolute z-30 h-36 w-64 top-[25vh] -translate-y-[-10rem] bg-gradient-to-r from-white to-orange-400 blur-xl scale-x-[3] opacity-50"
           />
         </div>
       </div>

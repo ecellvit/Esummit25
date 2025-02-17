@@ -36,7 +36,7 @@ const Sponsors: React.FC = () => {
 
         {/* Main Title */}
         <h1
-          className="relative uppercase text-6xl md:text-6xl lg:text-8xl font-[BrigendsExpanded] text-center z-0 text-white"
+          className="relative uppercase text-[11vw] md:text-6xl lg:text-8xl font-[BrigendsExpanded] text-center z-0 text-white"
         >
           SPONSORS
         </h1>

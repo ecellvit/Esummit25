@@ -203,7 +203,9 @@ const Navbar: React.FC = () => {
           rounded-xl border border-red-400 shadow-xl z-10 p-4 
           flex items-center justify-between 
           transition-transform duration-300 transform -translate-x-1/2 
-          bg-black opacity-80`}
+          bg-transparent md:bg-black  lg:bg-black opacity-80
+         `}
+
       >
         {/* Logo (Hidden on Small Screens) */}
         <Link href="/" className="hidden md:block">
@@ -217,7 +219,7 @@ const Navbar: React.FC = () => {
         </Link>
 
         {/* Mobile: Hamburger + Sign-In Button */}
-        <div className="md:hidden flex items-center space-x-52">
+        <div className="md:hidden flex items-center space-x-64">
           {/* Sign-In Button styled as white text with no box */}
           <button
             onClick={toggleMenu}
@@ -233,7 +235,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-10 justify-center items-center font-allround">
+        <div className="hidden md:flex space-x-10 justify-center items-center font-allround text-sm md:text-xs ">
           <Link href="/" className="text-white hover:text-red-400">
             HOME
           </Link>
@@ -255,7 +257,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-transparent backdrop-blur-lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-xl">
+        <div className="fixed inset-0 bg-transparent backdrop-blur-lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
           {/* Close Button */}
           <button onClick={toggleMenu} className="text-3xl mb-8">
             &times;
