@@ -18,32 +18,32 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="w-full bg-gradient-to-t from-[#1C0000] to-[#6F0F0F] shadow-md bottom-0 left-0 h-[70vh] flex flex-col justify-between">
+    <div className="relative w-full bg-gradient-to-t from-[#1C0000] to-[#6F0F0F] shadow-md bottom-0  flex flex-col justify-between p-10 pb-0 mb-0" >
   {/* Background text section */}
-  <div className="flex-grow flex items-end justify-center mb-4">
+  <div className="flex-grow flex items-end justify-center mb-4 ">
     <div className="flex flex-col leading-[0.65] p-0 m-0">
-      <h1 className="text-[9vw] text-[rgba(17,17,17,0.13)] font-[GreaterTheory] font-bold tracking-widest p-0 m-0 leading-[0.74]">
+      <h1 className="text-[8vw] md:text-[6vw] text-[rgba(17,17,17,0.13)] font-[GreaterTheory] font-bold tracking-widest p-0 m-2 leading-[0.74]">
         E-SUMMIT'25
       </h1>
-      <h1 className="text-[9vw] text-[rgba(17,17,17,0.3)] font-[GreaterTheory] font-bold tracking-widest p-0 m-0 leading-[0.74]">
+      <h1 className="text-[8vw] md:text-[6vw] text-[rgba(17,17,17,0.3)] font-[GreaterTheory] font-bold tracking-widest p-0 m-2 leading-[0.74]">
         E-SUMMIT'25
       </h1>
-      <h1 className="text-[9vw] text-[rgba(32,7,7,1)] font-[GreaterTheory] font-bold tracking-widest p-0 m-0 leading-[0.74]">
+      <h1 className="text-[8vw] md:text-[6vw] text-[rgba(32,7,7,1)] font-[GreaterTheory] font-bold tracking-widest p-0 m-2 leading-[0.74]">
         E-SUMMIT'25
       </h1>
-      <h1 className="text-[9vw] text-white font-[GreaterTheory] text-center font-bold tracking-widest p-0 m-0 leading-[0.74]">
+      <h1 className=" text-[8vw] md:text-[6vw] text-[rgba(32,7,7,1)] font-[GreaterTheory] text-center font-bold tracking-widest p-0 m-2 leading-[0.74]">
         E-SUMMIT'25
       </h1>
-      <div className="h-[1px] w-full mt-8 bg-white"></div>
+      <div className=" text-[8vw] md:h-[1px] w-full mt-8 bg-white"></div>
     </div>
   </div>
 
   {/* Main content section */}
-  <div className="relative w-full h-full pointer-events-none -mt-[18vh]">
-    <div className="relative h-full w-full hidden md:block">
+  
+   
       
       {/* E-CELL Section (Left-Aligned) */}
-      <div className="absolute left-[5vw] md:left-[12vw] top-[2vh] md:top-[0vh] -mt-[5vh] md:-mt-[35vh] text-left text-white pointer-events-auto">
+      <div className="absolute  top-[0]  pt-5 text-left text-white pointer-events-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-2">E-CELL</h1>
         <p className="text-lg md:text-xl mb-2">#WeBreedBusiness</p>
         <a href="tel:+918005911799" className="text-lg md:text-xl block mb-2">+91 800591199</a>
@@ -54,7 +54,7 @@ export default function Footer() {
       </div>
 
       {/* Navigation Links (Right-Aligned) */}
-      <div className="absolute right-[5vw] top-[4vh] md:right-[12vw] md:-top-[35vh] text-white pointer-events-auto">
+      <div className="absolute right-[0] m-10 text-white pointer-events-auto">
         <nav className="flex flex-col items-start space-y-2">
           <Link href="/" className="hover:text-gray-300">HOME</Link>
           <Link href="/" className="hover:text-gray-300">ABOUT US</Link>
@@ -64,7 +64,8 @@ export default function Footer() {
       </div>
 
       {/* Social Media Links (Below Navigation) */}
-      <div className="absolute right-[5vw] top-[10vh] md:right-[20vw] md:-top-[35vh] text-white pointer-events-auto">
+      <div className="absolute right-[20vw] m-2 text-white pointer-events-auto hidden md:block">
+
         <h2 className="font-semibold">COMMUNITY</h2>
         <div className="flex flex-col space-y-2">
           <a href="https://www.instagram.com/ecell_vit" className="hover:text-gray-300 flex items-center space-x-2">
@@ -86,10 +87,10 @@ export default function Footer() {
         </div>
       </div>
 
-    </div>
+  
 
     {/* Mobile Section */}
-    <div className="text-center bg-black text-gray-400 pb-4 font-bold md:hidden w-full">
+    <div className="text-center bg-transparent text-gray-400 pb-4 font-bold md:hidden w-full">
       <div className="flex justify-center space-x-4 mt-2">
         <a href="https://www.linkedin.com/company/ecellvitvellore" className="hover:text-gray-500">
           <FaLinkedin size={20} />
@@ -106,8 +107,8 @@ export default function Footer() {
       </div>
       &copy; 2025, <span className="font-bold">Entrepreneurship Cell VIT</span>
     </div>
-  </div>
-</footer>
+  
+</div>
 
   );
 }
