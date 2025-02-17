@@ -60,7 +60,7 @@ const MySchedule = () => {
                 window.location.href = "/userDetails";
               }
               else{
-                window.location.href = "/#schedule";
+                window.location.href = "/#timeline";
               }
              
             }}
