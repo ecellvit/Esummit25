@@ -33,7 +33,7 @@ const Schedule: React.FC = () => {
             {[...Array(2)].map((_, i) => (
               <h1
                 key={i}
-                className="uppercase text-[10rem] md:text-[12rem] lg:text-[14rem] font-bold tracking-widest leading-none text-center mx-10"
+                className="uppercase font-[BrigendsExpanded] text-[8rem] md:text-[11rem] lg:text-[14rem] font-bold tracking-widest leading-none text-center mx-10"
                 style={{
                   color: "transparent",
                   WebkitTextStroke: "2px rgba(176, 81, 25, 0.22)",
@@ -46,7 +46,7 @@ const Schedule: React.FC = () => {
         </div>
 
         <h1
-          className="relative uppercase text-6xl md:text-6xl lg:text-8xl font-bold text-center z-0"
+          className="relative uppercase text-6xl md:text-6xl lg:text-8xl font-bold text-center z-0 font-[BrigendsExpanded]"
           style={{
             background:
               "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)",
