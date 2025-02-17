@@ -31,7 +31,7 @@ const FaqContent = () => {
           <br />
           <strong>1. Siddhi:</strong> +91 8484996634
           <br />
-          <strong>2. Hemanth:</strong> +91 8610464790
+          <strong>2. Hemanth:</strong> +91 8610364790
           <br />
           <strong>3. Guganesh:</strong> +91 9845227410
         </>
