@@ -43,7 +43,7 @@ export default function about() {
                 </div>
 
                 <h1
-                    className="relative uppercase text-4xl md:text-4xl lg:text-6xl font-[GreaterTheory] text-center z-0 text-white"
+                    className="relative uppercase pt-1 text-3xl md:text-4xl lg:text-6xl font-[GreaterTheory] text-center z-0 text-white"
                 >
                     ABOUT E-SUMMIT
                 </h1>

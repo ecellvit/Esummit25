@@ -271,10 +271,10 @@ const Navbar: React.FC = () => {
             <Link href="/#timeline" onClick={toggleMenu}>
               ABOUT
             </Link>
-            <Link href="/#MySchedule" onClick={toggleMenu}>
+            <Link href="/MySchedule" onClick={toggleMenu}>
               MY SCHEDULE
             </Link>
-            <Link href="/#speakers" onClick={toggleMenu}>
+            <Link href="/patrons" onClick={toggleMenu}>
               OUR PATRONS
             </Link>
             <Link href="/#footer" onClick={toggleMenu}>
