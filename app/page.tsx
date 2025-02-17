@@ -48,7 +48,7 @@ export default function HomePage() {
         <LampDemo/>
         <About />
         <Scroll />
-        <Timeline />
+        <Timeline /> 
         <MeetOurSpeakers />
         <Sponsors />
         <FaqContent />

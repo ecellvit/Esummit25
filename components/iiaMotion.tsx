@@ -35,7 +35,7 @@ export default function IdeateComponent({ onComplete }: { onComplete: () => void
     >
       <h1
         key={currentTextIndex}
-        className="absolute z-10 text-red-800 text-[69.661px] font-bold font-[BrigendsExpanded]"
+        className="absolute z-10 text-red-800 md:text-7xl text-5xl font-bold font-[BrigendsExpanded]"
         style={{ animation: "fadeInOut 3s ease-in-out " }}
       >
         {texts[currentTextIndex]}
