@@ -124,7 +124,7 @@ export const LampContainer = ({
       <div className="flex justify-center items-center absolute bottom-[150px] w-full">
       <RegisterBtn/>
       </div>
-      <div className="flex w-full justify-center absolute bottom-[50px] items-center">
+      <div className="flex w-full justify-center absolute bottom-[30px] items-center">
       <CountdownTimer targetDate="2025-03-04T00:00:00"/>
       </div>
     </div>
