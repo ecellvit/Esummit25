@@ -11,6 +11,20 @@
 }
 
 @font-face {
+  font-family: 'PoppinsRegular';
+  src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PoppinsSemibold';
+  src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'BrigendsExpanded';
   src: url('/fonts/BrigendsExpanded.otf') format('opentype');
   font-weight: normal;

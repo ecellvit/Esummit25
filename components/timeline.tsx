@@ -214,7 +214,7 @@ export default function Schedule() {
         {/* Navigation Bar */}
         <div className="relative">
           <h2
-            className="text-5xl font-bold my-6 font-[GreaterTheory]"
+            className="text-5xl font-bold my-6 font-[BrigendsExpanded]"
             style={{
               background: gradientStyle,
               WebkitBackgroundClip: "text",
@@ -224,7 +224,7 @@ export default function Schedule() {
             SCHEDULE
           </h2>
           <div className="absolute left-1 bottom-2 w-2 bg-gray-300 h-[52%]"></div>
-          <ul className="space-y-1 relative font-[FontSpring]">
+          <ul className="space-y-1 relative font-[PoppinsRegular]">
             {events.map((event, idx) => (
               <li
                 key={idx}
@@ -268,7 +268,7 @@ export default function Schedule() {
           >
             {events[activeIndex]?.name}
           </h3>
-          <p ref={descriptionRef} className="text-lg text-gray-700 font-[FontSpring]">
+          <p ref={descriptionRef} className="text-lg text-gray-700 font-[PoppinsRegular]">
             {events[activeIndex]?.description}
           </p>
           <button
