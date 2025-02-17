@@ -251,8 +251,8 @@ const Navbar: React.FC = () => {
           <Link href="/#footer" className="text-white hover:text-red-400">
             CONTACT US
           </Link>
-          <SignInBtn />
         </div>
+            <SignInBtn />
       </nav>
 
       {/* Mobile Menu */}
