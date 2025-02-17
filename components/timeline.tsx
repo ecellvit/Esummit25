@@ -19,35 +19,35 @@ import MobileSchedule from "./mobileSchedule";
 const events = [
   {
     name: "INNOVENTURE",
-    date: "March 4",
+    date: "COMING SOON!!",
     description:
       "Innoventure is a dynamic business simulation event where participants tackle real-world challenges, honing their problem-solving skills through hands-on experience in product development, business analysis, and entrepreneurial strategy .",
     url: "/events/event1/createTeam",
   },
   {
     name: "E TALK",
-    date: "March 5",
+    date: "COMING SOON!!",
     description:
       "E-Talk brings together renowned entrepreneurs to offer valuable lessons and inspiration through engaging discussions and influential motivational speeches for emerging entrepreneurs.",
     url: "/events/event2",
   },
   {
     name: "MARKETING WORKSHOP",
-    date: "March 6",
+    date: "COMING SOON!!",
     description:
       "The Marketing Workshop equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
       url: "/events/event3",
   },
   {
     name: "ACHIEVERS CONCLAVE",
-    date: "March 6",
+    date: "COMING SOON!!",
     description:
       "At Achiever’s Conclave, accomplished industry stalwarts from diverse fields come together to share their journeys, insights, and success strategies to inspire and empower participants to scale new heights in their endeavors.",
     url: "/events/event4",
   },
   {
     name: "PIONEIRA PHASE 2",
-    date: "March 7",
+    date: "COMING SOON!!",
     description:
       "Pioneira, a conclave for startups to pitch their ideas to industry leaders and prominent personalities while embarking on a journey to gain exposure, withstand market competition, and build connections.",
     url: "/events/event5",
