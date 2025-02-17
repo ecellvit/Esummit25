@@ -18,7 +18,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="w-full bg-gradient-to-t from-[#1C0000] to-[#6F0F0F] shadow-md bottom-0 left-0 h-[70vh] flex flex-col justify-between">
+    <footer className="w-full bg-gradient-to-t from-[#1C0000] to-[#6F0F0F] shadow-md bottom-0 left-0 h-[80vh] pt-10 flex flex-col justify-between">
   {/* Background text section */}
   <div className="flex-grow flex items-end justify-center mb-4">
     <div className="flex flex-col leading-[0.65] p-0 m-0">
