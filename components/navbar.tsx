@@ -88,7 +88,7 @@ const Navbar: React.FC = () => {
             MY SCHEDULE
           </Link>
           <Link
-            href="#speakers"
+            href="/patrons"
             className="text-white font-allround hover:text-red-400"
           >
             OUR PATRONS
