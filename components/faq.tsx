@@ -59,7 +59,7 @@ const FaqContent = () => {
       id="faq"
       className="py-10 px-6 md:px-20 bg-gradient-to-b from-[#6F0F0F] via-[#C72423] via-38% to-[#510D0D] z-10"
     >
-      <h2 className="text-4xl md:text-5xl font-extrabold text-center text-white">
+      <h2 className="text-4xl md:text-5xl d text-center text-white font-[GreaterTheory]">
         FREQUENTLY ASKED QUESTIONS
       </h2>
 
@@ -72,18 +72,18 @@ const FaqContent = () => {
                 className="bg-white font-bold rounded-lg shadow-md border border-transparent hover:border-black transition-all duration-300"
               >
                 <button
-                  className="w-full flex justify-between items-center py-3 px-6 text-left text-lg font-semibold text-[#14110E]"
+                  className="w-full flex justify-between items-center py-3 px-6 text-left text-lg  text-[#14110E] font-[PoppinsSemibold]"
                   onClick={() => toggleDropdown(faq.id)}
                 >
                   {faq.q}
-                  <span className="text-2xl">{visibleFaq === faq.id ? "x" : "+"}</span>
+                  <span className="text-2xl ">{visibleFaq === faq.id ? "x" : "+"}</span>
                 </button>
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${
                     visibleFaq === faq.id ? "max-h-40 opacity-100 p-6" : "max-h-0 opacity-0"
                   }`}
                 >
-                  <p className="text-[#6F6C66] text-base">{faq.ans}</p>
+                  <p className="text-[#6F6C66] text-base font-[PoppinsRegular]">{faq.ans}</p>
                 </div>
               </div>
             ))}

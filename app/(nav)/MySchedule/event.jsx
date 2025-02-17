@@ -41,33 +41,33 @@ const Event = ({ event, userDetails }) => {
       <div>
         {loader}
         <div className="">
-          <h1 className="uppercase text-2xl md:text-3xl lg:text-5xl font-bold bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] bg-clip-text text-transparent">
+          <h1 className="uppercase text-2xl pb-2 pt-2 md:text-3xl lg:text-5xl font-bold bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] bg-clip-text text-transparent font-[GreaterTheory]">
             {event.eventName}
           </h1>
-          <div className="uppercase flex gap-2 items-center">
+          <div className="uppercase flex gap-2 pt-2 items-center font-[FontSpring]">
             <span>
               <FaCalendarAlt />
             </span>
             {event.date}
           </div>
-          <div className="uppercase flex gap-2 items-center">
+          <div className="uppercase flex gap-2 items-center font-[FontSpring]">
             <span>
               <FaRegClock />
             </span>
             {event.time}
           </div>
-          <div className="uppercase flex gap-2 items-center">
+          <div className="uppercase flex gap-2 items-center font-[FontSpring] pb-1">
             <span>
               <FaLocationDot />
             </span>
             {event.venue}
           </div>
         </div>
-        <p className="font-poppins py-2">{event.description}</p>
-        <div className="flex flex-col md:flex-row gap-2">
+        <p className="font-poppins py-3 font-[FontSpring]">{event.description}</p>
+        <div className="flex flex-col md:flex-row gap-4">
           {(event.id === 1 || event.id === 2) && (
            <button
-           className="text-black font-semibold hover:scale-105 transition-all bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] p-2 rounded-lg hover:bg-opacity-80"
+           className="text-black font-[GreaterTheory] hover:scale-105 transition-all bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] p-3 rounded-lg hover:bg-opacity-80"
            onClick={() => {
              if ((event.id === 1 && team1) || (event.id === 2 && team2)) {
                window.location.href = `/events/event${event.id}/memberDashboard`;
@@ -82,7 +82,7 @@ const Event = ({ event, userDetails }) => {
           )}
           {event.loc && (
             <Link
-              className="text-black flex justify-center items-center gap-2 capitalize font-semibold hover:scale-105 transition-all bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] p-2 rounded-lg hover:bg-opacity-80"
+              className="text-black flex justify-center items-center gap-2 capitalize font-[GreaterTheory] hover:scale-105 transition-all bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] p-3 rounded-lg hover:bg-opacity-80"
               target="_blank"
               href={event.loc}
             >
@@ -93,13 +93,13 @@ const Event = ({ event, userDetails }) => {
             </Link>
           )}
           {(event.id === 1 || event.id === 2) && (
-            <button className="bg-[#50CC5E] p-2 rounded-xl font-semibold">
+            <button className="bg-[#50CC5E] p-3 rounded-xl text-md font-[GreaterTheory]">
               <Link
-                className="flex items-center gap-2 justify-center"
+                className="flex items-center gap-2 justify-cente r"
                 href={event.whatsapp}
               >
-                <span className="h-full">
-                  <FaWhatsapp className="p-0 m-0 text-xl" />
+                <span className="h-full ">
+                  <FaWhatsapp className="p-0 m-0 text-lg" />
                 </span>
                 Join whatsapp group
               </Link>

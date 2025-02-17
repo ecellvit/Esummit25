@@ -214,7 +214,7 @@ export default function Schedule() {
         {/* Navigation Bar */}
         <div className="relative">
           <h2
-            className="text-6xl font-bold my-6"
+            className="text-5xl font-bold my-6 font-[BrigendsExpanded]"
             style={{
               background: gradientStyle,
               WebkitBackgroundClip: "text",
@@ -224,7 +224,7 @@ export default function Schedule() {
             SCHEDULE
           </h2>
           <div className="absolute left-1 bottom-2 w-2 bg-gray-300 h-[52%]"></div>
-          <ul className="space-y-1 relative">
+          <ul className="space-y-1 relative font-[PoppinsRegular]">
             {events.map((event, idx) => (
               <li
                 key={idx}
@@ -253,13 +253,13 @@ export default function Schedule() {
         </div>
 
         {/* Event Details */}
-        <div className="flex flex-col items-start mt-8 gap-4">
-          <p ref={dateRef} className="text-3xl font-black text-black">
+        <div className="flex flex-col items-start mt-20 gap-6">
+          <p ref={dateRef} className="text-2xl font-black text-black font-[GreaterTheory]">
             {events[activeIndex]?.date}
           </p>
           <h3
             ref={nameRef}
-            className="text-6xl font-bold"
+            className="text-5xl font-bold font-[GreaterTheory]"
             style={{
               background: gradientStyle,
               WebkitBackgroundClip: "text",
@@ -268,12 +268,12 @@ export default function Schedule() {
           >
             {events[activeIndex]?.name}
           </h3>
-          <p ref={descriptionRef} className="text-md text-gray-700">
+          <p ref={descriptionRef} className="text-lg text-gray-700 font-[PoppinsRegular]">
             {events[activeIndex]?.description}
           </p>
           <button
             key={activeIndex+1}
-            className="text-white px-8 py-4 mt-4 border-[#D22121] border-solid border-4 rounded-md text-lg font-bold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+            className="text-white px-8 py-4 mt-4 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
             style={{ background: gradientStyle }}
             // onClick={() => }
             onClick={() => session?.user.events?.includes(activeIndex+1) ? handleDeregister(activeIndex+1) : handleRedirect(activeIndex+1)}

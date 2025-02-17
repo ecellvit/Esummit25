@@ -48,11 +48,11 @@ const MySchedule = () => {
       ) : userDetails?.user?.events.length === 0 ||
         status === "unauthenticated" ? (
         <div className="flex flex-col min-h-[calc(100vh-5rem)] gap-10 items-center justify-center">
-          <h1 className="text-2xl md:text-4xl lg:text-6xl capitalize">
+          <h1 className="text-xl md:text-3xl lg:text-5xl capitalize font-[BrigendsExpanded]">
             No events registered
           </h1>
           <button
-            className="py-2 px-4 font-semibold rounded-xl font-poppins uppercase border-4 border-[#FEFAB7] bg-transparent hover:scale-105 transition-all"
+            className="py-2 px-4 font-semibold rounded-xl font-[GreaterTheory] uppercase border-4 border-[#FEFAB7] bg-transparent hover:scale-105 transition-all"
             onClick={() => {
               window.location.href = "/#schedule";
             }}
@@ -62,11 +62,11 @@ const MySchedule = () => {
         </div>
       ) : (
         <>
-          <h1 className="pt-20 uppercase text-center  mb-5 text-4xl md:text-5xl lg:text-7xl font-bold bg-gradient-to-br from-[#FFFFFF] via-[#F5F5F5] to-[#E0E0E0]
+          <h1 className="pt-14 uppercase text-center font-[BrigendsExpanded] mt-9 mb-8 text-4xl md:text-5xl lg:text-7xl bg-gradient-to-br from-[#FFFFFF] via-[#F5F5F5] to-[#E0E0E0]
  bg-clip-text text-transparent">
             my schedule
           </h1>
-          <div className="flex flex-col gap-10 pb-10">{events}</div>
+          <div className="flex flex-col gap-10 pb-10 ">{events}</div>
         </>
       )}
     </section>
