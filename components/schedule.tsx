@@ -25,7 +25,7 @@ const Schedule: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[50vh] bg-white"
+      className="relative w-full h-[80vh] bg-white"
     >
       <div className="sticky top-0 left-0 w-full h-[50vh] flex flex-col items-center justify-center z-0 bg-white">
         <div className="absolute inset-0 flex items-center overflow-hidden whitespace-nowrap">

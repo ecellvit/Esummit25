@@ -9,8 +9,8 @@ const scheduleDetails = [
     image: image,
     venue: "COMING SOON..",
     time: "WILL BE DECLARED SOON!!!",
-    whatsapp: null,
-    loc: null,
+    whatsapp: "",
+    loc: "",
   },
   {
     id: 3,
@@ -21,8 +21,8 @@ const scheduleDetails = [
     image: image,
     venue: "COMING SOON..",
     time: "WILL BE DECLARED SOON!!",
-    whatsapp: null,
-    loc: null,
+    whatsapp: "",
+    loc: "",
   },
   {
     id: 4,
@@ -33,8 +33,8 @@ const scheduleDetails = [
     image: image,
     venue: "COMING SOON...",
     time: "WILL BE DECLARED SOON!!!",
-    whatsapp: null,
-    loc: null,
+    whatsapp: "",
+    loc: "",
   },
   {
     id: 5,
@@ -45,8 +45,8 @@ const scheduleDetails = [
     image: image,
     venue: "COMING SOON...",
     time: "DECLARED SOON!!",
-    whatsapp: null,
-    loc: null,
+    whatsapp: "",
+    loc: "",
   },
   {
     id: 2,
@@ -57,8 +57,8 @@ const scheduleDetails = [
     image: image,
     venue: "COMING SOON...",
     time: "COMING SOON!!",
-    whatsapp: null,
-    loc: null,
+    whatsapp: "",
+    loc: "",
   },
 ];
 
