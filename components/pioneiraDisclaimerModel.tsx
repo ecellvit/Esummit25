@@ -34,8 +34,7 @@ const PioneiraDisclaimerModel: React.FC<PioneiraDisclaimerModelProps> = ({
         </h2>
 
         <p className="text-gray-700 text-center mt-2">
-          You have successfully registered for Pioneira. In addition, you are
-          also eligible to attend the following complementary events:
+            
         </p>
 
         {/* Events List */}
