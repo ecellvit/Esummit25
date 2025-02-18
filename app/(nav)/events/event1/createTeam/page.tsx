@@ -30,9 +30,7 @@ export default function page() {
     setIsLoading(true); // Show loader when creating a team
 
     try {
-      const response = await axios.post("/api/event1/createTeam", {
-        teamName: teamName,
-      });
+      const response = await axios.post("/api/event1/createTeam", teamName);
 
       if (response.data.success === true) {
         toast.success(response.data.message);

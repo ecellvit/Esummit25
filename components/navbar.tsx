@@ -377,7 +377,7 @@ const Navbar: React.FC = () => {
             )}
           </button>
           <div className="absolute right-0 top-0">
-            <SignInBtn className="text-white border-none bg-transparent" />
+            <SignInBtn  />
           </div>
         </div>
 
