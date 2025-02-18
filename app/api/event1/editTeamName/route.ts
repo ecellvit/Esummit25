@@ -54,7 +54,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         return NextResponse.json({ success: false, message: "team with same name already exist" }, { status: 406 });
       }
   
-   
+    existingTeam.teamName = teamName;
     await existingTeam.save();
     return NextResponse.json({ success: true, message: "Team name changed successfully" }, { status: 200 });
   } catch (error) {
