@@ -130,8 +130,9 @@ export default function UserDetail() {
       });
       setFormData({ name: "", regNo: "", number: "" });
       setErrors({});
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setLoading(false);
-      router.push("/");
+      router.push("/#timeline");
     } catch (error) {
       setLoading(false);
       toast.error("Form submission failed: Network error");
