@@ -100,7 +100,7 @@ const MySchedule = () => {
           </h1>
           <div className="flex flex-col gap-10 pb-10 ">{events}</div>
           <div className="flex justify-center">
-          {!(userDetails?.events.length === 4 && userDetails.email.endsWith("vitstudent.ac.in")) && (
+          {(!userDetails?.events.length === 4 && userDetails.email.endsWith("vitstudent.ac.in")) && (
             <button
               className="py-2 px-4  m-2 font-semibold rounded-xl font-[GreaterTheory] uppercase border-4 border-red-400 bg-transparent hover:scale-105 transition-all"
               onClick={() => {
