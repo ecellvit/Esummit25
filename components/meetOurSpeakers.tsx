@@ -10,18 +10,21 @@ const MeetOurSpeakers: React.FC = () => {
   const comingSoonRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const section = sectionRef.current;
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: "bottom bottom",
-      anticipatePin: 1,
-      onLeaveBack: () => {
-        window.scrollTo({
-          top: document.getElementById("timeline")?.offsetTop,
-          behavior: "smooth",
-        });
-      },
-    });
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    if (mediaQuery.matches) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "bottom bottom",
+        anticipatePin: 1,
+        onLeaveBack: () => {
+          window.scrollTo({
+            top: document.getElementById("timeline")?.offsetTop,
+            behavior: "smooth",
+          });
+        },
+      });
+    }
   }, []);
   return (
     <section id="speakers" ref={sectionRef} className="relative w-full h-[150vh] bg-white">
@@ -44,7 +47,7 @@ const MeetOurSpeakers: React.FC = () => {
         </div>
 
         <h1
-          className="relative uppercase text-5xl md:text-6xl lg:text-7xl font-bold text-center z-0 font-[BrigendsExpanded]"
+          className="relative uppercase text-3xl md:text-6xl lg:text-7xl font-bold text-center z-0 font-[BrigendsExpanded]"
           style={{
             background:
               "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)",

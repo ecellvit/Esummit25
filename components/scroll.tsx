@@ -15,18 +15,21 @@ const Animation: React.FC = () => {
 
   useEffect(() => {
     const section = sectionRef.current;
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top bottom",
-      end: "bottom bottom",
-      anticipatePin: 1,
-      onLeave: () => {
-        window.scrollTo({
-          top: document.getElementById("timeline")?.offsetTop,
-          behavior: "smooth",
-        });
-      },
-    });
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    if (mediaQuery.matches) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top bottom",
+        end: "bottom bottom",
+        anticipatePin: 1,
+        onLeave: () => {
+          window.scrollTo({
+            top: document.getElementById("timeline")?.offsetTop,
+            behavior: "smooth",
+          });
+        },
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -45,21 +48,21 @@ const Animation: React.FC = () => {
         },
       });
     }, 1500);
-
+    
     return () => clearInterval(interval);
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[100vh] bg-white flex flex-col items-center justify-center text-black text-4xl font-[GreaterTheory]"
+      className="relative w-full h-[100vh] bg-white flex flex-col items-center justify-center text-black p-6 text-2xl md:text-4xl font-[GreaterTheory]"
       id="scroll"
     >
       <Image src={bg} alt="bg" className="absolute inset-0 w-full h-full object-cover opacity-60 z-0" />
-      <div className="text-center font-bold z-10">THIS EVENT IS FOR YOU IF YOU ARE</div>
+      <div className="text-center z-10">THIS EVENT IS FOR YOU IF YOU ARE</div>
       <div
         ref={textRef}
-        className="text-center mt-5 font-light z-10"
+        className="text-center mt-5 z-10"
         style={{
           background:
             "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)",
