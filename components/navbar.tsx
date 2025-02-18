@@ -162,7 +162,137 @@ import hamburgerIcon from "/assets/hamburger.jpg";
 import closeIcon from "/assets/close.jpg";
 import SignInBtn from "./signinButton";
 
-const Navbar: React.FC = () => {
+// const Navbar: React.FC = () => {
+//   const router = useRouter();
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
+//   const [visible, setVisible] = useState(true);
+//   const lastScrollY = useRef(0);
+
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       if (window.scrollY > lastScrollY.current) {
+//         setVisible(false);
+//       } else {
+//         setVisible(true);
+//       }
+//       lastScrollY.current = window.scrollY;
+//     };
+
+//     window.addEventListener("scroll", handleScroll);
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
+
+//   useEffect(() => {
+//     document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
+//     return () => {
+//       document.body.style.overflow = "auto";
+//     };
+//   }, [isMenuOpen]);
+
+//   const toggleMenu = () => {
+//     setIsMenuOpen(!isMenuOpen);
+//   };
+
+//   return (
+//     <>
+//       <nav
+//         style={{
+//           fontFamily: "AllRoundGothic, sans-serif",
+//         }}
+//         className={`fixed top-3 left-[50%] w-[100vw] sm:w-[85vw] md:w-[70vw] lg:w-[60vw] h-[8vh]   
+//           rounded-xl border border-red-400 shadow-xl z-10 p-4 
+//           flex items-center justify-between 
+//           transition-transform duration-300 transform -translate-x-1/2 
+//           bg-transparent md:bg-black  lg:bg-black opacity-80
+//          `}
+
+//       >
+//         {/* Logo (Hidden on Small Screens) */}
+//         <Link href="/" className="hidden md:block">
+//           <Image
+//             src={logo}
+//             alt="WhiteLogo"
+//             width={30}
+//             height={30}
+//             className="cursor-pointer"
+//           />
+//         </Link>
+
+//         {/* Mobile: Hamburger + Sign-In Button */}
+//         <div className="md:hidden flex justify-center space-x-10 relative">
+//           {/* Sign-In Button styled as white text with no box */}
+//           <button
+//             onClick={toggleMenu}
+//             className="focus:outline-none bg-transparent "
+//           >
+//             {!isMenuOpen ? (
+//               <Image src={hamburgerIcon} alt="Menu" width={40} height={40} />
+//             ) : (
+//               <Image src={closeIcon} alt="Close" width={40} height={40} />
+//             )}
+//           </button>
+//           <div className="fixed left-[60%] pb-[3vh]">
+//           <SignInBtn className="text-white border-none bg-transparent hidden " /></div>
+//         </div>
+
+//         {/* Desktop Navigation */}
+//         <div className="hidden md:flex space-x-10 justify-center items-center font-allround text-sm md:text-sm ">
+//           <Link href="/" className="text-white hover:text-red-400">
+//             HOME
+//           </Link>
+//           <Link href="/#Esummit" className="text-white hover:text-red-400">
+//             ABOUT
+//           </Link>
+//           <Link href="/MySchedule" className="text-white hover:text-red-400">
+//             MY SCHEDULE
+//           </Link>
+//           <Link href="/patrons" className="text-white hover:text-red-400">
+//             OUR PATRONS
+//           </Link>
+//           <Link href="/#footer" className="text-white hover:text-red-400">
+//             CONTACT US
+//           </Link>
+//         </div>
+//         <div className="hidden md:block">
+//             <SignInBtn /></div>
+//       </nav>
+
+//       {/* Mobile Menu */}
+//       {isMenuOpen && (
+//         <div className="fixed inset-0 bg-black opacity-90 backdrop-blur-lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
+//           {/* Close Button */}
+//           <button onClick={toggleMenu} className="text-3xl mb-8">
+//             &times;
+//           </button>
+//           {/* Links */}
+//           <div className="flex flex-col items-center justify-center space-y-6">
+//             <Link href="/" onClick={toggleMenu}>
+//               HOME
+//             </Link>
+//             <Link href="/#Esummit" onClick={toggleMenu}>
+//               ABOUT
+//             </Link>
+//             <Link href="/MySchedule" onClick={toggleMenu}>
+//               MY SCHEDULE
+//             </Link>
+//             <Link href="/patrons" onClick={toggleMenu}>
+//               OUR PATRONS
+//             </Link>
+//             <Link href="/#footer" onClick={toggleMenu}>
+//               CONTACT US
+//             </Link>
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+
+// export default Navbar;
+
+
+const Navbar = () => {
+
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [visible, setVisible] = useState(true);
@@ -199,13 +329,14 @@ const Navbar: React.FC = () => {
         style={{
           fontFamily: "AllRoundGothic, sans-serif",
         }}
-        className={`fixed top-3 left-[50%] w-[100vw] sm:w-[85vw] md:w-[70vw] lg:w-[60vw] h-[8vh] 
-          rounded-xl border border-red-400 shadow-xl z-10 p-4 
+        className={`
+          fixed top-3 left-[50%] 
+          w-[100vw] sm:w-[85vw] md:w-[80vw] lg:w-[65vw] h-[8vh]
+          rounded-xl border border-red-800 shadow-xl z-10 p-3 
           flex items-center justify-between 
           transition-transform duration-300 transform -translate-x-1/2 
-          bg-transparent md:bg-black  lg:bg-black opacity-80
-         `}
-
+          bg-transparent md:bg-black   lg:bg-black opacity-80
+        `}
       >
         {/* Logo (Hidden on Small Screens) */}
         <Link href="/" className="hidden md:block">
@@ -219,11 +350,11 @@ const Navbar: React.FC = () => {
         </Link>
 
         {/* Mobile: Hamburger + Sign-In Button */}
-        <div className="md:hidden flex items-center space-x-64">
-          {/* Sign-In Button styled as white text with no box */}
+        <div className="md:hidden flex justify-between items-center relative w-full">
+          {/* Hamburger Button */}
           <button
             onClick={toggleMenu}
-            className="focus:outline-none bg-transparent"
+            className="focus:outline-none bg-transparent "
           >
             {!isMenuOpen ? (
               <Image src={hamburgerIcon} alt="Menu" width={40} height={40} />
@@ -231,15 +362,18 @@ const Navbar: React.FC = () => {
               <Image src={closeIcon} alt="Close" width={40} height={40} />
             )}
           </button>
-          <SignInBtn className="text-white border-none bg-transparent hidden" />
+          {/* Sign-In Button (fixed at right) */}
+          <div className="absolute right-0 top-0">
+            <SignInBtn className="text-white border-none bg-transparent" />
+          </div>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-10 justify-center items-center font-allround text-sm md:text-xs ">
+        <div className="hidden md:flex flex-nowrap whitespace-nowrap space-x-10 justify-center items-center font-allround text-sm md:text-sm">
           <Link href="/" className="text-white hover:text-red-400">
             HOME
           </Link>
-          <Link href="/#Esummit" className="text-white hover:text-red-400">
+          <Link href="/#ESummit" className="text-white hover:text-red-400">
             ABOUT
           </Link>
           <Link href="/MySchedule" className="text-white hover:text-red-400">
@@ -248,12 +382,15 @@ const Navbar: React.FC = () => {
           <Link href="/patrons" className="text-white hover:text-red-400">
             OUR PATRONS
           </Link>
-          <Link href="/#footer" className="text-white hover:text-red-400">
+          <Link href="/#faq" className="text-white hover:text-red-400">
             CONTACT US
           </Link>
         </div>
+
+        {/* Desktop Sign-In Button */}
         <div className="hidden md:block">
-            <SignInBtn /></div>
+          <SignInBtn />
+        </div>
       </nav>
 
       {/* Mobile Menu */}
@@ -264,7 +401,7 @@ const Navbar: React.FC = () => {
             &times;
           </button>
           {/* Links */}
-          <div className="flex flex-col items-center justify-center space-y-6">
+          <div className="flex flex-col items-center justify-center space-y-6 font-[FontSpring]">
             <Link href="/" onClick={toggleMenu}>
               HOME
             </Link>
