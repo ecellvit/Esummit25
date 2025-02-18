@@ -45,18 +45,18 @@ const FaqContent = () => {
     setVisibleFaq(visibleFaq === id ? null : id);
   };
 
-  useEffect(() => {
-    ScrollTrigger.create({
-      trigger: "#faq",
-      start: "top bottom",
-      onEnter: () => document.body.classList.add("faq-visible"),
-      onLeaveBack: () => document.body.classList.remove("faq-visible"),
-    });
-  }, []);
+  // useEffect(() => {
+  //   ScrollTrigger.create({
+  //     trigger: "#faq",
+  //     start: "top bottom",
+  //     onEnter: () => document.body.classList.add("faq-visible"),
+  //     onLeaveBack: () => document.body.classList.remove("faq-visible"),
+  //   });
+  // }, []);
 
   return (
     <section
-      id="faq"
+      id="faq" 
       className="py-10 px-6 md:px-20 bg-white z-10"
     >
       <h2 className="text-4xl md:text-5xl d text-center text-transparent bg-gradient-to-b from-[#6F0F0F] via-[#C72423] to-[#510D0D] bg-clip-text font-[GreaterTheory]">
@@ -69,7 +69,7 @@ const FaqContent = () => {
             {faqGroup.map((faq) => (
               <div 
                 key={faq.id} 
-                className="bg-[#981B1B] font-bold h-15 w-30 rounded-lg shadow-md border border-transparent hover:border-white transition-all duration-300"
+                className="bg-[#981B1B] font-bold h-15 w-30 rounded-lg shadow-md border border-transparent hover:border-white transition-all duration-3300"
               >
                 <button
                   className="w-full flex justify-between items-center py-2 px-6 text-left text-lg font-semibold text-white"
