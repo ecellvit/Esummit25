@@ -30,25 +30,47 @@ export default function page() {
     setIsLoading(true); // Show loader when creating a team
 
     try {
-      const response = await axios.post("/api/event1/createTeam", teamName);
+      const response = await fetch("/api/event1/createTeam",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          },
+          body: JSON.stringify({teamName}),
+      });
 
-      if (response.data.success === true) {
-        toast.success(response.data.message);
-        await update({
-          ...session,
-          user: { ...session?.user, event1TeamRole: 0 },
-        });
-        router.push("/events/event1/leaderDashboard");
+      if(response.status===200){
+        setIsLoading(false);
+        toast.success("Team has been created");
+        router.push(
+          "/events/event1/leaderDashboard"
+        );
+      }else if(response.status===405){
+        setIsLoading(false);
+        toast.error("User is already a part of team");
       }
-    } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      toast.error(
-        axiosError.response?.data.message || "Error in joining the team"
-      );
-      setTeamName("");
-    } finally {
-      setIsLoading(false); // Hide loader after the API call
+    }catch(err){
+      console.log(err);
+    }finally{
+      setIsLoading(false);
     }
+    //   const response = await axios.post("/api/event1/createTeam", teamName);
+    //   if (response.data.success === true) {
+    //     toast.success(response.data.message);
+    //     await update({
+    //       ...session,
+    //       user: { ...session?.user, event1TeamRole: 0 },
+    //     });
+    //     router.push("/events/event1/leaderDashboard");
+    //   }
+    // } catch (error) {
+    //   const axiosError = error as AxiosError<ApiResponse>;
+    //   toast.error(
+    //     axiosError.response?.data.message || "Error in joining the team"
+    //   );
+    //   setTeamName("");
+    // } finally {
+    //   setIsLoading(false); // Hide loader after the API call
+    // }
   };
 
   const joinTeam = () => {
