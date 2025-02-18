@@ -203,7 +203,7 @@ export default function Page() {
 
       await update({
         ...session,
-        user: { ...session?.user, hasFilledDetails: true },
+        user: { ...session?.user, hasFilledDetails: true, events: [2, 4, 5] },
       });
 
       localStorage.removeItem("pioneiraFormData"); // Clear local storage on success
