@@ -21,11 +21,9 @@ const TeamSchema: Schema<Team> = new Schema(
     },
     teamNumber: {
       type: Number,
-      unique: true,
-      sparse: true,
       trim: true,
       required: false,
-      default: null
+      default: null,
     },
     teamCode: {
       type: String,
