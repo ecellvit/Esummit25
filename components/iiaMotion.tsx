@@ -59,7 +59,7 @@ export default function IdeateComponent({
 }: {
   onComplete: () => void;
 }) {
-  const texts = ["IDEATE.", "INNOVATE.", "ACTUATE."];
+  const texts = ["IDEATE", "INNOVATE", "ACTUATE"];
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [cycleCount, setCycleCount] = useState(0);
   const maxCycles = 1;
@@ -85,7 +85,7 @@ export default function IdeateComponent({
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen min-w-screen bg-black relative overflow-hidden"
+      className="fixed inset-0 flex justify-center items-center bg-black overflow-hidden"
       style={{
         background:
           "linear-gradient(180deg, #1B1A19 100%, rgba(27, 26, 25, 0.00) 50%, #1B1A19 100%)",
@@ -93,16 +93,15 @@ export default function IdeateComponent({
     >
       <h1
         key={currentTextIndex}
-        className="absolute z-10 text-red-800 md:text-7xl text-5xl font-bold font-[BrigendsExpanded]"
-        style={{ animation: "fadeInOut 3s ease-in-out " }}
+        className="absolute z-10 text-red-800 md:text-5xl text-3xl font-bold font-[BrigendsExpanded]"
+        style={{ animation: "fadeInOut 3s ease-in-out" }}
       >
         {texts[currentTextIndex]}
       </h1>
       <Image
         src={bg}
         alt="background"
-        className="w-full h-full object-cover absolute top-0 left-0 z-0"
-        style={{ objectPosition: "center" }} // Ensures background centers properly
+        className="fixed inset-0 w-full h-full overflow-hidden object-cover z-0"
       />
     </div>
   );
