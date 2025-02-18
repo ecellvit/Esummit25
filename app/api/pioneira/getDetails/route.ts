@@ -151,6 +151,7 @@ export async function POST(request: NextRequest) {
         const existingSessionUser = await Users.findOne({ email: session.user.email });
         if (existingSessionUser) {
           existingSessionUser.hasFilledDetails = true;
+          existingSessionUser.events = [2, 4, 5];
           await existingSessionUser.save();
         }
         
@@ -166,6 +167,7 @@ export async function POST(request: NextRequest) {
     const existingSessionUser = await Users.findOne({ email: session.user.email });
     if (existingSessionUser) {
       existingSessionUser.hasFilledDetails = true;
+      existingSessionUser.events = [2, 4, 5];
       await existingSessionUser.save();
     }
     console.log("Creating new user...");
