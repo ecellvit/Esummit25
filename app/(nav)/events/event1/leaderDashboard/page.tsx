@@ -132,7 +132,7 @@ export default function Page() {
 
   const handleLeave = async (newLeaderIndex: Number | null) => {
 
-
+    setLoading(true);
     if (newLeaderIndex) {
 
       try {

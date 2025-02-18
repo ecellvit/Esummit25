@@ -165,7 +165,7 @@ export default function Schedule() {
         }
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
 
-        router.push(event === 1 ? `/events/event${event}/createTeam` : "/#timeline");
+        router.push(event === 1 ? `/events/event${event}/createTeam` : "/MySchedule");
       }
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -228,7 +228,7 @@ export default function Schedule() {
         {/* Navigation Bar */}
         <div className="relative">
           <h2
-            className="text-5xl font-bold my-6 font-[BrigendsExpanded]"
+            className="text-5xl font-bold my-6 font-[GreaterTheory]"
             style={{
               background: gradientStyle,
               WebkitBackgroundClip: "text",
