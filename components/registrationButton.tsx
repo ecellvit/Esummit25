@@ -16,6 +16,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
   const router = useRouter();
   const { data: session, update } = useSession();
   const userEmail = session?.user?.email || "";
+  const hasRegisteredPioneira = session?.user?.events?.includes(5);
 
   const handleRedirect = async (event: number) => {
     if (!userEmail) {
@@ -105,7 +106,7 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
 
   return (
     <div className="relative top-18 left-1/2 transform -translate-x-1/2 z-10 w-full py-6 bg-transparent flex justify-center gap-12 flex-wrap">
-      {[1, 2, 3, 4, 5].map((event) => (
+      {[1, 2, 3, 4, 5].map((event) => !hasRegisteredPioneira ? (
         <button
           key={event}
           className="bg-gradient-to-r from-blue-500 to-green-500 text-white p-5 rounded-3xl hover:scale-110 active:scale-95"
@@ -113,7 +114,15 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         >
           {session?.user.events?.includes(event) ? `Deregister from Event ${event}` : `Register for Event ${event}`}
         </button>
-      ))}
+      ): 
+      <button
+          key={event}
+          className="bg-gradient-to-r from-blue-500 to-green-500 text-white p-5 rounded-3xl hover:scale-110 active:scale-95"
+          // onClick={() => session?.user.events?.includes(event) ? handleDeregister(event) : handleRedirect(event)}
+        >
+          {session?.user.events?.includes(event) ? `Registered in Event ${event}` : `Register for Event ${event}`}
+        </button>
+      )}
       <Toaster />
     </div>
   );

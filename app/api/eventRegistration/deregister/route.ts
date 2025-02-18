@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { Users } from '@/models/user.model';
-import { Users as PionieraUsers } from "@/models/pioneira/user.model";
+// import { Users as PionieraUsers } from "@/models/pioneira/user.model";
 import { dbConnect } from '@/lib/dbConnect';
 import { authOptions } from '@/lib/authOptions';
 
@@ -40,8 +40,8 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Number must be between 1 and 5' }, { status: 400 });
         }
 
-        if (parsedNumber === 5 && user.email.endsWith("@vitstudent.ac.in")) {
-            return NextResponse.json({ error: "VIT students can't register for this event" }, { status: 403 });
+        if (parsedNumber === 5 || user?.events.includes(5)) {
+            return NextResponse.json({ error: "You can't deregister from this event" }, { status: 403 });
         }
 
         if (!Array.isArray(user.events)) {
@@ -62,19 +62,19 @@ export async function POST(request: Request) {
 
         // Handling deregistration for events 3, 4, and 5
         if (user.events.includes(parsedNumber)) {
-            if (parsedNumber === 5) {
-                user.events = [];
-                const pionieraUser = await PionieraUsers.findOne({ email: sessionUser.email });
-                if (pionieraUser) {
-                    pionieraUser.hasFilledDetails = false;
-                    await pionieraUser.save();
-                    user.hasFilledDetails = false;
-                } else {
-                    console.error("Pioniera user not found for:", sessionUser.name);
-                }
-            } else {
+            // if (parsedNumber === 5) {
+            //     user.events = [];
+            //     const pionieraUser = await PionieraUsers.findOne({ email: sessionUser.email });
+            //     if (pionieraUser) {
+            //         pionieraUser.hasFilledDetails = false;
+            //         await pionieraUser.save();
+            //         user.hasFilledDetails = false;
+            //     } else {
+            //         console.error("Pioniera user not found for:", sessionUser.name);
+            //     }
+            // } else {
                 user.events = user.events.filter((e: number) => e !== parsedNumber);
-            }
+            // }
             await user.save();
             return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 202 });
         }
