@@ -51,7 +51,7 @@ export async function POST(request: Request) {
         // Handling deregistration for event 1
         if (user.events.includes(parsedNumber) && parsedNumber === 1) {
             console.log("User's event1TeamRole:", user.event1TeamRole); // Debug log
-            if (user.event1TeamRole === null) {
+            if (user.event1TeamRole === null || user.event1TeamRole === undefined) {
                 user.events = user.events.filter((e: number) => e !== parsedNumber);
                 await user.save();
                 return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 201 });

@@ -10,6 +10,8 @@ import Event from "./event";
 import toast, { Toaster } from "react-hot-toast";
 import { Router } from "next/router";
 import { useRouter } from "next/navigation";
+import bg from "/assets/scrollBg.svg";
+
 
 // const page = () =>
 const MySchedule = () => {
@@ -62,10 +64,8 @@ const MySchedule = () => {
   });
 
   return (
-    <section
-      className="bg-cover bg-center items-center text-white min-h-screen bg-[#0E0E0E] font-poppins px-10 sm:px-16 md:px-20"
-      style={{ backgroundImage: `url(${background.src})` }}
-    >
+    <section className="bg-cover bg-center items-center text-black min-h-screen bg-[#0E0E0E] font-poppins px-10 sm:px-16 md:px-20" style={{ backgroundImage: `url(${bg.src})` }}>
+
       {loader ? (
         <Loader></Loader>
       ) : userDetails?.events.length === 0 || status === "unauthenticated" ? (
@@ -74,7 +74,7 @@ const MySchedule = () => {
             No events registered
           </h1>
           <button
-            className="py-2 px-4 font-semibold rounded-xl font-[GreaterTheory] uppercase border-4 border-red-400 bg-transparent hover:scale-105 transition-all"
+  className="py-2 px-4 font-semibold rounded-xl font-[GreaterTheory] uppercase border-4 border-red-400 bg-transparent hover:scale-105 transition-all"
             onClick={() => {
               if(status==="unauthenticated"){
                 signIn('google');
@@ -93,14 +93,38 @@ const MySchedule = () => {
       ) : (
         <>
           <h1
-            className="pt-14 uppercase text-center font-[BrigendsExpanded] mt-9 mb-8 text-4xl md:text-5xl lg:text-7xl bg-gradient-to-br from-[#FFFFFF] via-[#F5F5F5] to-[#E0E0E0]
- bg-clip-text text-transparent"
-          >
+  className="pt-14 uppercase text-center font-[BrigendsExpanded] mt-9 mb-8 text-4xl md:text-5xl lg:text-7xl bg-clip-text text-transparent"
+  style={{
+    backgroundImage: "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)"
+  }}
+>
             my schedule
           </h1>
           <div className="flex flex-col gap-10 pb-10 ">{events}</div>
+          <div className="flex justify-center">
+
+          {!(userDetails?.events.length === 4 && userDetails.email.endsWith("vitstudent.ac.in")) && (
+           <button
+  className="py-2 px-4 font-semibold rounded-xl font-[GreaterTheory] uppercase border-4 border-red-400 bg-transparent hover:scale-105 transition-all"
+
+              onClick={() => {
+                if (status === "unauthenticated") {
+                  signIn("google");
+                  setLoader(true);
+                } else if (!userDetails?.hasFilledDetails) {
+                  window.location.href = "/userDetails";
+                } else {
+                  window.location.href = "/#timeline";
+                }
+              }}
+            >
+              Register further events
+            </button>
+          )}
+          </div>
         </>
       )}
+      
       <Toaster/>
     </section>
   );

@@ -132,7 +132,7 @@ export default function Page() {
 
   const handleLeave = async (newLeaderIndex: Number | null) => {
 
-
+    setLoading(true);
     if (newLeaderIndex) {
 
       try {
@@ -263,7 +263,7 @@ export default function Page() {
       ) : (
         <>
           <div
-            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover bg-white opacity-100 bg-center p-4 rounded-lg "
+            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center p-4 rounded-lg "
           // style={{
           //   backgroundImage: `url(${background1.src})`,
           //   backgroundSize: "cover",
@@ -364,7 +364,7 @@ export default function Page() {
                 
                 Add Member
               </button> */}
-              <button
+              {teamMembers.length<4 && <button
                 className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
                 onClick={async () => {
                   setIsLoading(true);
@@ -378,7 +378,7 @@ export default function Page() {
                 ) : (
                   "Add Member"
                 )}
-              </button>
+              </button>}
 
 
               {teamMembers.length === 1 ? (

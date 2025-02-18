@@ -47,7 +47,7 @@ const MeetOurSpeakers: React.FC = () => {
         </div>
 
         <h1
-          className="relative uppercase text-3xl md:text-6xl lg:text-7xl font-bold text-center z-0 font-[BrigendsExpanded]"
+          className="relative uppercase text-3xl md:text-6xl lg:text-7xl font-bold text-center z-0 font-[GreaterTheory]"
           style={{
             background:
               "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)",
