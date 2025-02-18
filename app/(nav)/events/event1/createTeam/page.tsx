@@ -30,10 +30,30 @@ export default function page() {
     setIsLoading(true); // Show loader when creating a team
 
     try {
-      const response = await axios.post("/api/event1/createTeam", {
-        teamName: teamName,
-      });
+    //   const response = await fetch("/api/event1/createTeam",{
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({teamName}),
+    //   });
 
+    //   if(response.status===200){
+    //     setIsLoading(false);
+    //     toast.success("Team has been created");
+    //     router.push(
+    //       "/events/event1/leaderDashboard"
+    //     );
+    //   }else if(response.status===405){
+    //     setIsLoading(false);
+    //     toast.error("User is already a part of team");
+    //   }
+    // }catch(err){
+    //   console.log(err);
+    // }finally{
+    //   setIsLoading(false);
+    // }
+      const response = await axios.post("/api/event1/createTeam", {teamName:teamName});
       if (response.data.success === true) {
         toast.success(response.data.message);
         await update({
