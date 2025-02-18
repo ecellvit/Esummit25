@@ -32,7 +32,8 @@ const Event = ({ event, userDetails }) => {
       <div>
         {loader}
         <div className="">
-          <h1 className="uppercase text-2xl pb-2 pt-2 md:text-3xl lg:text-5xl font-bold bg-gradient-to-br bg-white bg-clip-text text-transparent font-[GreaterTheory]">
+        <h1 className="uppercase text-2xl pb-2 pt-2 md:text-3xl lg:text-5xl font-bold text-black font-[GreaterTheory]">
+
             {event.eventName}
           </h1>
           <div className="uppercase flex gap-2 pt-2 items-center font-[PoppinsRegular]">
@@ -58,7 +59,7 @@ const Event = ({ event, userDetails }) => {
         <div className="flex flex-col md:flex-row gap-4">
           {(event.id === 1) && (
            <button
-           className="text-black font-[GreaterTheory] hover:scale-105 transition-all bg-gradient-to-br  p-3 rounded-lg hover:bg-opacity-80 bg-white"
+  className="text-white font-[GreaterTheory] hover:scale-105 transition-all bg-gradient-to-br p-3 rounded-lg hover:bg-opacity-80 bg-black"
            
            onClick={() => {
              if ((event.id === 1 && team1)) {
