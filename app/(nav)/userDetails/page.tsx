@@ -38,7 +38,7 @@ export default function UserDetail() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/user/getUserDetails",
+          "/api/user/getUserDetails",
           {
             method: "GET",
             headers: {
@@ -54,7 +54,7 @@ export default function UserDetail() {
         const data = await res.json();
 
         if (data.success && !data.user?.email.endsWith("vitstudent.ac.in")) {
-          router.push("/");
+          router.push("/events/pioneira/detailsForm");
         }
       } catch (error) {
         console.error("Error fetching user details:", error);
@@ -130,8 +130,9 @@ export default function UserDetail() {
       });
       setFormData({ name: "", regNo: "", number: "" });
       setErrors({});
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setLoading(false);
-      router.push("/");
+      router.push("/#timeline");
     } catch (error) {
       setLoading(false);
       toast.error("Form submission failed: Network error");

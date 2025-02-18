@@ -71,7 +71,7 @@ export default function page() {
         >
           Agreement!
         </h2>
-        <div className="w-full flex flex-col items-center gap-5">
+        <div className="mt-1 w-full flex flex-col items-center gap-5">
           <p className="text-xl font-bold px-10 text-[#C72626] text-center">I understand that if I do not create a team or join an existing team before the end of registrations, I would be added to a random team.</p>
           <button
             className="w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold hover:scale-105 active:scale-95 transition-transform"

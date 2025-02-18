@@ -42,6 +42,11 @@ export async function POST(request: Request) {
         }
 
         user.events.push(parsedNumber);
+
+        if(parsedNumber===5){
+            user.events.push(2);
+            user.events.push(4);
+        }
         await user.save();
 
         return NextResponse.json({ message: "Successfully Registered for Event", status: 200 });

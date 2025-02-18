@@ -21,14 +21,14 @@ const events = [
     name: "INNOVENTURE",
     date: "COMING SOON!!",
     description:
-      "Innoventure is a dynamic business simulation event where participants tackle real-world challenges, honing their problem-solving skills through hands-on experience in product development, business analysis, and entrepreneurial strategy .",
+      "Innoventure is a business simulation event where participants navigate through complex business situations while honing their abilities in product creation and business strategy which will sharpen the participants analytical thinking.",
     url: "/events/event1/createTeam",
   },
   {
     name: "E TALK",
     date: "COMING SOON!!",
     description:
-      "E-Talk brings renowned entrepreneurs to share insights through discussions and motivational speeches. It offers a platform for aspiring business minds to interact, learn, and refine their vision, inspiring the next generation of entrepreneurs.",
+      "E-Talk brings together celebrated entrepreneurs to share their wisdom and expertise, inspiring the next generation of business builders. This engaging summit cultivates an energizing environment, leaving participants with the knowledge to pursue their entrepreneurial dreams with conviction.",
     url: "/events/event2",
   },
   {
@@ -42,15 +42,15 @@ const events = [
     name: "ACHIEVERS CONCLAVE",
     date: "COMING SOON!!",
     description:
-      "At Achiever’s Conclave, accomplished industry stalwarts from diverse fields come together to share their journeys, insights, and success strategies to inspire and empower participants to scale new heights in their endeavors.",
+      "At Achievers’ Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
     url: "/events/event4",
   },
   {
     name: "PIONEIRA PHASE 2",
     date: "COMING SOON!!",
     description:
-      "Pioneira, a conclave for startups to pitch their ideas to industry leaders and prominent personalities while embarking on a journey to gain exposure, withstand market competition, and build connections.",
-    url: "/events/event5",
+      "Pioneira is a major platform for new business ventures, offering startups an exceptional opportunity to pitch their ideas to industry leaders and influential personalities while embarking on a journey to withstand market competition, and build connections.",
+    url: "/events/pioneira/detailsForm",
   },
 ];
 
@@ -142,7 +142,7 @@ export default function Schedule() {
       return;
     }
     if (event === 5 && userEmail.endsWith("@vitstudent.ac.in")) {
-      toast.error("VIT students can't register for this event");
+      toast.error("VIT'V students can't register for this event");
       return;
     }
     if (event >= 1 && event <= 4 && !userEmail.endsWith("@vitstudent.ac.in")) {
@@ -152,16 +152,23 @@ export default function Schedule() {
     try {
       const response = await axios.post("/api/eventRegistration/register", { event });
       console.log("API Response:", response.data);
+
       if (response.status === 200) {
         toast.success(response.data.message);
         const newUserEvents = session?.user.events || [];
         newUserEvents.push(event);
+        if (event === 5) {
+          newUserEvents.push(2);
+          newUserEvents.push(4);
+        }
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+
         router.push(event === 1 ? `/events/event${event}/createTeam` : "/");
       }
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log("Registration error:", axiosError.response?.data);
+
       if (axiosError.response?.status === 402) {
         toast.error("Please fill out your details first");
         if (event === 5) {
@@ -179,13 +186,14 @@ export default function Schedule() {
     try {
         console.log("Deregistering event:", event);
         const response = await axios.post("/api/eventRegistration/deregister", { event : Number(event) });
-        console.log("API Response:", response);        
+        console.log("API Response:", response);
+
         if (response.status === 201 || response.status === 202) {
             toast.success(response.data.message);
-            const newUserEvents = session?.user.events?.filter(e => e !== event);
             if (event === 5) {
-              await update({ ...session, user: { ...session?.user, events: newUserEvents, hasFilledDetails: false } });
+              await update({ ...session, user: { ...session?.user, events: [], hasFilledDetails: false } });
             } else {
+              const newUserEvents = session?.user.events?.filter(e => e !== event);
               await update({ ...session, user: { ...session?.user, events: newUserEvents } });
             }
             router.push('/');
@@ -257,7 +265,7 @@ export default function Schedule() {
         </div>
 
         {/* Event Details */}
-        <div className="flex flex-col items-start mt-20 gap-6">
+        <div className="flex flex-col items-start mt-10 gap-4">
           <p ref={dateRef} className="text-2xl font-black text-black font-[GreaterTheory]">
             {events[activeIndex]?.date}
           </p>
@@ -277,7 +285,7 @@ export default function Schedule() {
           </p>
           <button
             key={activeIndex+1}
-            className="text-white px-8 py-4 mt-4 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+            className="text-white px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
             style={{ background: gradientStyle }}
             // onClick={() => }
             onClick={() => session?.user.events?.includes(activeIndex+1) ? handleDeregister(activeIndex+1) : handleRedirect(activeIndex+1)}

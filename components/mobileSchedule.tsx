@@ -24,14 +24,14 @@ const events = [
     name: "INNOVENTURE",
     date: "COMING SOON!!",
     description:
-      "Innoventure is a dynamic business simulation event where participants tackle real-world challenges, honing their problem-solving skills through hands-on experience in product development, business analysis, and entrepreneurial strategy .",
+      "Innoventure is a business simulation event where participants navigate through complex business situations while honing their abilities in product creation and business strategy which will sharpen the participants analytical thinking.",
     url: "/events/event1/createTeam",
   },
   {
     name: "E TALK",
     date: "COMING SOON!!",
     description:
-      "E-Talk brings together renowned entrepreneurs to offer valuable lessons and inspiration through engaging discussions and influential motivational speeches for emerging entrepreneurs.",
+      "E-Talk brings together celebrated entrepreneurs to share their wisdom and expertise, inspiring the next generation of business builders. This engaging summit cultivates an energizing environment, leaving participants with the knowledge to pursue their entrepreneurial dreams with conviction.",
     url: "/events/event2",
   },
   {
@@ -45,14 +45,14 @@ const events = [
     name: "ACHIEVERS CONCLAVE",
     date: "COMING SOON!!",
     description:
-      "At Achiever’s Conclave, accomplished industry stalwarts from diverse fields come together to share their journeys, insights, and success strategies to inspire and empower participants to scale new heights in their endeavors.",
+      "At Achievers’ Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
     url: "/events/event4",
   },
   {
     name: "PIONEIRA PHASE 2",
     date: "COMING SOON!!",
     description:
-      "Pioneira, a conclave for startups to pitch their ideas to industry leaders and prominent personalities while embarking on a journey to gain exposure, withstand market competition, and build connections.",
+      "Pioneira is a major platform for new business ventures, offering startups an exceptional opportunity to pitch their ideas to industry leaders and influential personalities while embarking on a journey to withstand market competition, and build connections.",
     url: "/events/event5",
   },
 ];
@@ -77,17 +77,28 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
     }
     try {
       const response = await axios.post("/api/eventRegistration/register", { event });
+
       if (response.status === 200) {
         toast.success(response.data.message);
         const newUserEvents = session?.user.events || [];
         newUserEvents.push(event);
+        if (event === 5) {
+          newUserEvents.push(2);
+          newUserEvents.push(4);
+        }
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+
         router.push(event === 1 ? `/events/event${event}/createTeam` : "/");
       }
     } catch (error) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 402) {
         toast.error("Please fill out your details first");
+        if (event === 5) {
+          router.push('/events/pioneira/detailsForm');
+          return;
+        }
+        router.push('/userDetails');
         return;
       }
       toast.error("An error occurred while registering.");
@@ -97,11 +108,18 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
   const handleDeregister = async (event: number): Promise<void> => {
     try {
       const response = await axios.post("/api/eventRegistration/deregister", { event: Number(event) });
+
       if (response.status === 201 || response.status === 202) {
         toast.success(response.data.message);
-        const newUserEvents = session?.user.events?.filter(e => e !== event);
-        await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+        if (event === 5) {
+          await update({ ...session, user: { ...session?.user, events: [], hasFilledDetails: false } });
+        } else {
+          const newUserEvents = session?.user.events?.filter(e => e !== event);
+          await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+        }
         router.push('/');
+      } else {
+        throw new Error("Error processing event deregistration");
       }
     } catch (error) {
       const axiosError = error as AxiosError;

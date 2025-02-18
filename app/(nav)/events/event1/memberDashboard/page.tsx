@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
-import Loader from "@/components/loader"
+import Loader from "@/components/loader";
 import Navbar from "@/components/navbar";
 import background from "/assets/bg.png";
 import background1 from "/assets/divbg.png";
@@ -20,7 +20,6 @@ type TeamMember = {
 };
 
 export default function MemberDashboard() {
-
   const router = useRouter();
   const { data: session, update } = useSession();
   const [teamName, setTeamName] = useState<string | null>(null);
@@ -57,7 +56,7 @@ export default function MemberDashboard() {
     },
   ]);
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [session?.user?.event1TeamRole]);
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
@@ -65,28 +64,39 @@ export default function MemberDashboard() {
     setLoading(true);
     try {
       const userDataRes = await axios.get("/api/event1/getTeamDetails");
-
+      console.log(userDataRes);
       if (userDataRes.status === 202) {
         toast.error("You have become the leader of this team.");
-        await update({ ...session, user: { ...session?.user, event1TeamRole: 0 } });
+        await update({
+          ...session,
+          user: { ...session?.user, event1TeamRole: 0 },
+        });
         router.push("/events/event1/leaderDashboard");
-      }
+      } else if (userDataRes.status === 404) {
+        toast.error("You are not a part of this team.");
+
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds
+        router.push("/events/event1/createTeam"); // Navigate after the toast is shown
+      }else if(userDataRes.status===200){
+        
       const userData = userDataRes.data;
       setTeamName(userData?.teamName);
       setTeamMembers(userData?.teamMembersData);
+      }
 
       setLoading(false);
     } catch (error) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 409) {
         try {
-          await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
+          await update({
+            ...session,
+            user: { ...session?.user, event1TeamRole: null },
+          });
           router.push("/events/event1/createTeam");
 
           toast.error("You have been removed from this team.");
-        } catch (error) {
-
-        }
+        } catch (error) {}
       }
       setLoading(false);
     }
@@ -101,7 +111,10 @@ export default function MemberDashboard() {
 
       if (response.status === 200) {
         toast.success("You have left the team.");
-        await update({ ...session, user: { ...session?.user, event1TeamRole: null } });
+        await update({
+          ...session,
+          user: { ...session?.user, event1TeamRole: null },
+        });
         router.push("/events/event1/createTeam");
       } else {
         toast.error("Error leaving the team. Please try again later.");
@@ -109,9 +122,8 @@ export default function MemberDashboard() {
     } catch (error) {
       console.error("Error leaving team:", error);
       toast.error("An error occurred while leaving the team.");
-    }
-    finally {
-      setIsLeaving(false);  
+    } finally {
+      setIsLeaving(false);
     }
   };
 
@@ -124,7 +136,8 @@ export default function MemberDashboard() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-coverbg-white opacity-100 bg-center p-4 rounded-lg "
+        <div
+          className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-coverbg-white opacity-100 bg-center p-4 rounded-lg "
           // style={{
           //   backgroundImage: `url(${background1.src})`,
           //   backgroundSize: "cover",
@@ -147,19 +160,28 @@ export default function MemberDashboard() {
                   <img
                     src={picture.src}
                     alt={`${member.name}'s profile`}
-                    style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
+                    }}
                     className="opacity-100"
                   />
                 </div>
                 <div className="relative z-10 flex-1 p-4 text-left right-8">
-                  <h2 className="text-l font-bold mb-1 text-white font-[FontSpring]">
+                  <h2 className="text-l font-bold mb-1 text-white font-[PoppinsRegular]">
                     {member?.name}
                   </h2>
-                  <h2 className="text-l font-bold mb-1 text-white font-[FontSpring]">
-                    Team Role: {member?.event1TeamRole === 0 ? "Leader" : "Member"}
+                  <h2 className="text-l font-bold mb-1 text-white font-[PoppinsRegular]">
+                    Team Role:{" "}
+                    {member?.event1TeamRole === 0 ? "Leader" : "Member"}
                   </h2>
-                  <p className="text-xs mb-1 text-white">Reg. No.: {member?.regNo}</p>
-                  <p className="text-xs text-white">Mobile No.: {member?.mobNo}</p>
+                  <p className="text-xs mb-1 text-white">
+                    Reg. No.: {member?.regNo}
+                  </p>
+                  <p className="text-xs text-white">
+                    Mobile No.: {member?.mobNo}
+                  </p>
                 </div>
               </div>
             ))}
@@ -168,7 +190,7 @@ export default function MemberDashboard() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
             <button
               onClick={handleShowConfirmation}
-              className="btn-secondary bg-red-500 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase hover:scale-105 transition-transform-secondary bottom-5"
+              className="btn-secondary bg-red-500 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase hover:scale-105 transition-transform-secondary bottom-5"
             >
               Leave Team
             </button>
@@ -176,16 +198,16 @@ export default function MemberDashboard() {
             {showConfirmation && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                 <div className="bg-white p-4 rounded-lg flex flex-col items-center justify-center font-bold mt-[-75px]">
-                  <p className="mb-4 text-lg sm:text-xl text-center whitespace-nowrap font-[FontSpring]">
+                  <p className="mb-4 text-lg sm:text-xl text-center whitespace-nowrap font-[PoppinsRegular]">
                     Do you want to leave this team?
                   </p>
                   <div className="flex items-center justify-center">
                     <button
                       onClick={handleLeave}
                       disabled={isLeaving}
-                      className="bg-green-500 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase"
+                      className="bg-green-500 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase"
                     >
-                      {isLeaving ? ( 
+                      {isLeaving ? (
                         <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin"></div>
                       ) : (
                         "Yes"
@@ -194,7 +216,7 @@ export default function MemberDashboard() {
                     <button
                       onClick={handleShowConfirmation}
                       disabled={isLeaving}
-                      className="bg-red-500 text-white px-4 py-2 rounded-md ml-4 font-[FontSpring] uppercase"
+                      className="bg-red-500 text-white px-4 py-2 rounded-md ml-4 font-[PoppinsRegular] uppercase"
                     >
                       No
                     </button>

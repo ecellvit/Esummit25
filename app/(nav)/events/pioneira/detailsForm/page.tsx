@@ -208,7 +208,9 @@ export default function Page() {
 
       localStorage.removeItem("pioneiraFormData"); // Clear local storage on success
       toast.success(response.data.message || "Registration successful!");
-      setTimeout(() => router.push("/"), 2000);
+      setTimeout(() => router.push("/"), 1000);
+      localStorage.removeItem("savedStep");
+      localStorage.removeItem("pioneiraFormData");
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
@@ -217,7 +219,6 @@ export default function Page() {
   };
 
     return (
-
       <div
         className="border-box flex items-center justify-center bg-cover bg-center min-h-screen lg:pt-[0.75vh] px-4 sm:px-8"
         style={{
@@ -228,7 +229,7 @@ export default function Page() {
       >
         {loading && (
           <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-            <Loader/>
+            <Loader />
           </div>
         )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 sm:p-8 w-full max-w-6xl">
@@ -290,8 +291,13 @@ export default function Page() {
                 {step === 2 && (
                   <div>
                     <h3 className="font-bold text-lg">Stage of Startup</h3>
-                    <div className="flex flex-col gap-2">
-                      {["Idea", "MVP", "Early Revenue", "Growth"].map((stage) => (
+                    <div className="flex flex-col gap-2 text-justify">
+                      {[
+                        "Idea: You are refining your concept and have no working product.",
+                        "MVP: You have a minimal product ready for testing with users.",
+                        "Early Revenue: You have paying customers but are pre-scale.",
+                        "Growth: You are scaling your operations and revenue",
+                      ].map((stage) => (
                         <label key={stage} className="flex items-center gap-2">
                           <input
                             type="radio"
@@ -335,7 +341,54 @@ export default function Page() {
                 )}
                 {step === 3 && (
                   <div>
-                    <h3 className="font-bold text-lg">Upload Portfolio Link</h3>
+                    <h3 className="font-bold text-lg">
+                      Upload a Drive Link with your Portfolio{" "}
+                      <span className="text-red-600">*Required</span>
+                    </h3>
+                    <div className="text-md">
+                      <p>
+                        Open{" "}
+                        <a
+                          href="https://drive.google.com/file/d/17Z4OfK0FrrgAzOVL2iL8ibRykKYPOU0Z/view"
+                          target="_blank"
+                          className="text-blue-600 underline"
+                        >
+                          PORTFOLIO_REFERENCE
+                        </a>{" "}
+                        to understand the submission guidelines.
+                      </p>
+                      <p>
+                        Open{" "}
+                        <a
+                          href="https://drive.google.com/file/d/1LWNAkJficEQFg6mOHmdxgdTAJ2_6oWBe/view"
+                          target="_blank"
+                          className="text-blue-600 underline"
+                        >
+                          PORTFOLIO_TEMPLATE
+                        </a>{" "}
+                        with{" "}
+                        <a
+                          href="https://www.canva.com/pdf-editor/"
+                          target="_blank"
+                          className="text-blue-600 underline"
+                        >
+                          CANVA_PDF-editor
+                        </a>{" "}
+                      </p>
+                      <p>
+                        Edit the template based on the instructions in{" "}
+                        <strong>PORTFOLIO_REFERENCE</strong>, ensuring all
+                        sections are completed.
+                      </p>
+                      <p className="font-bold text-red-600">
+                        NOTE: Existing completed portfolios are welcome! You may
+                        submit it directly without further modifications.
+                      </p>
+                      <p>
+                        Ensure that you provide access to the drive link for
+                        viewing the portfolio.
+                      </p>
+                    </div>
                     <input
                       type="text"
                       name="portfolioLink"
