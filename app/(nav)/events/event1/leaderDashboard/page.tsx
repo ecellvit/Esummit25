@@ -364,7 +364,7 @@ export default function Page() {
                 
                 Add Member
               </button> */}
-              <button
+              {teamMembers.length<4 && <button
                 className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
                 onClick={async () => {
                   setIsLoading(true);
@@ -378,7 +378,7 @@ export default function Page() {
                 ) : (
                   "Add Member"
                 )}
-              </button>
+              </button>}
 
 
               {teamMembers.length === 1 ? (
