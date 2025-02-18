@@ -417,7 +417,7 @@ const Navbar: React.FC = () => {
             <Link href="/" onClick={toggleMenu}>
               HOME
             </Link>
-            <Link href="/#Esummit" onClick={toggleMenu}>
+            <Link href="/#ESummit" onClick={toggleMenu}>
               ABOUT
             </Link>
             <Link href="/MySchedule" onClick={toggleMenu}>
@@ -427,7 +427,7 @@ const Navbar: React.FC = () => {
               OUR PATRONS
             </Link>
             {/* ✅ Fix for "CONTACT US" - Smooth scrolling */}
-            <Link href="/#footer" onClick={toggleMenu}>
+            <Link href="/#faq" onClick={toggleMenu}>
               CONTACT US
             </Link>
           </div>
