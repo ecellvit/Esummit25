@@ -291,7 +291,7 @@ export default function Page() {
                             placeholder={
                               key.includes("Contact")
                                 ? "Enter 10-digit number"
-                                : ""
+                                : key.includes("website")?"https://www.example.com":""
                             }
                           />
                         </div>

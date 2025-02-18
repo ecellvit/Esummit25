@@ -1,14 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import {
-  FaFacebook,
-  FaXTwitter,
-  FaLinkedin,
-  FaYoutube,
-  FaInstagram,
-} from "react-icons/fa6";
+import { FaFacebook, FaXTwitter, FaLinkedin, FaInstagram } from "react-icons/fa6";
 import Clock from "react-clock";
 import "react-clock/dist/Clock.css";
 import Link from "next/link";
+import bg1 from "@/assets/footer2.svg";
+import bg2 from "@/assets/footer1.svg";
+import Image from "next/image";
 
 export default function Footer() {
   const sectionRef = useRef(null);
@@ -19,97 +16,83 @@ export default function Footer() {
   }, []);
 
   return (
-
-      <div className="relative w-full bg-gradient-to-t from-[#1C0000] to-[#6F0F0F] shadow-md bottom-0  flex flex-col justify-between p-10 pb-0 mb-0" >
-        {/* Background text section */}
-        <div className="flex-grow flex items-end justify-center mb-4 ">
-          <div className="flex flex-col leading-[0.65] p-0 m-0">
-            <h1 className="text-[8vw] md:text-[6vw] text-[rgba(17,17,17,0.13)] font-[GreaterTheory] font-bold tracking-widest p-0 m-2 leading-[0.74]">
-              E-SUMMIT'25
-            </h1>
-            <h1 className="text-[8vw] md:text-[6vw] text-[rgba(17,17,17,0.3)] font-[GreaterTheory] font-bold tracking-widest p-0 m-2 leading-[0.74]">
-              E-SUMMIT'25
-            </h1>
-            <h1 className="text-[8vw] md:text-[6vw] text-[rgba(32,7,7,1)] font-[GreaterTheory] font-bold tracking-widest p-0 m-2 leading-[0.74]">
-              E-SUMMIT'25
-            </h1>
-            <h1 className=" text-[8vw] md:text-[6vw] text-[rgba(32,7,7,1)] font-[GreaterTheory] text-center font-bold tracking-widest p-0 m-2 leading-[0.74]">
-              E-SUMMIT'25
-            </h1>
-            <div className=" text-[8vw] md:h-[1px] w-full mt-8 bg-white"></div>
+      <div className="relative w-full bg-gradient-to-t from-[#1C0000] to-[#6F0F0F] shadow-md bottom-0 flex flex-col justify-between p-0 mb-0 min-h-[40vh] md:min-h-[80vh] rounded-t-3xl md:round-t-none">
+        <Image src={bg1} alt="bg1" className="hidden md:block absolute bottom-0 left-0 w-full h-full" />
+        <Image src={bg2} alt="bg1" className="block md:hidden absolute bottom-0 left-0 w-full h-full" />
+        <div className="relative px-5 text-white pt-20 flex-row hidden md:flex justify-evenly">
+          <div className="text-center pointer-events-auto mr-96">
+            <h1 className="text-4xl md:text-5xl font-bold mb-2">E-CELL</h1>
+            <p className="text-md md:text-lg mb-4">#WeBreedBusiness</p>
+            <a href="tel:+918777793331" className="text-sm md:text-md block mb-4">+91 87777 93331</a>
+            <a href="mailto:ecell@vit.ac.in" className="text-sm md:text-md block mb-4">ecell@vit.ac.in</a>
+          </div>
+          <div className="text-center pointer-events-auto text-sm md:text-md lg:ml-80">
+            <p className="mb-4">
+              <a href="https://www.instagram.com/ecell_vit" className="hover:text-gray-500 flex items-center gap-2">
+                <FaInstagram size={20} />
+                Instagram
+              </a>
+            </p>
+            <p className="mb-4">
+              <a href="https://www.linkedin.com/company/ecellvitvellore" className="hover:text-gray-500 flex items-center gap-2">
+                <FaLinkedin size={20} />
+                LinkedIn
+              </a>
+            </p>
+            <p className="mb-4">
+              <a href="https://twitter.com/ecell_vit" className="hover:text-gray-500 flex items-center gap-2">
+                <FaXTwitter size={20} />
+                X (Twitter)
+              </a>
+            </p>
+            <p className="mb-4">
+              <a href="https://www.facebook.com/ecellvit" className="hover:text-gray-500 flex items-center gap-2">
+                <FaFacebook size={20} />
+                Facebook
+              </a>
+            </p>
+          </div>
+          <div className="pointer-events-auto text-sm md:text-md">
+            <p className="mb-4"><a href="">HOME</a></p>
+            <p className="mb-4"><a href="">ABOUT US</a></p>
+            <p className="mb-4"><a href="">SCHEDULE</a></p>
+            <p className="mb-4"><a href="">FAQ</a></p>
           </div>
         </div>
-
-        {/* Main content section */}
-
-
-
-        {/* E-CELL Section (Left-Aligned) */}
-        <div className="absolute  top-[0]  pt-5 text-left text-white pointer-events-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2">E-CELL</h1>
-          <p className="text-lg md:text-xl mb-2">#WeBreedBusiness</p>
-          <a href="tel:+918005911799" className="text-lg md:text-xl block mb-2">+91 800591199</a>
-          <a href="mailto:ecell@vit.ac.in" className="text-md md:text-lg block mb-4">ecell@vit.ac.in</a>
-          <button className="border border-white rounded-full px-4 py-2 text-sm bg-black">
-            Contact Us
-          </button>
-        </div>
-
-        {/* Navigation Links (Right-Aligned) */}
-        <div className="absolute right-[0] m-10 text-white pointer-events-auto">
-          <nav className="flex flex-col items-start space-y-2">
-            <Link href="/" className="hover:text-gray-300">HOME</Link>
-            <Link href="/" className="hover:text-gray-300">ABOUT US</Link>
-            <Link href="/#timeline" className="hover:text-gray-300">EVENTS</Link>
-            {/* <Link href="/activities" className="hover:text-gray-300">ACTIVITIES</Link> */}
-          </nav>
-        </div>
-
-        {/* Social Media Links (Below Navigation) */}
-        <div className="absolute right-[20vw] m-2 text-white pointer-events-auto hidden md:block">
-
-          <h2 className="font-semibold">COMMUNITY</h2>
-          <div className="flex flex-col space-y-2">
-            <a href="https://www.instagram.com/ecell_vit" className="hover:text-gray-300 flex items-center space-x-2">
-              <FaInstagram size={20} />
-              <span>Instagram</span>
-            </a>
-            <a href="https://twitter.com/ecell_vit" className="hover:text-gray-300 flex items-center space-x-2">
-              <FaXTwitter size={20} />
-              <span>Twitter</span>
-            </a>
-            <a href="https://www.linkedin.com/company/ecellvitvellore" className="hover:text-gray-300 flex items-center space-x-2">
-              <FaLinkedin size={20} />
-              <span>LinkedIn</span>
-            </a>
-            <a href="https://www.facebook.com/ecellvit" className="hover:text-gray-300 flex items-center space-x-2">
-              <FaFacebook size={20} />
-              <span>Facebook</span>
-            </a>
+        <div className="relative px-5 text-white pt-8 flex-col flex md:hidden">
+          <div className="text-center pointer-events-auto mb-8">
+            <h1 className="text-6xl font-bold mb-1">E-CELL</h1>
+            <p className="text-xl mb-2">#WeBreedBusiness</p>
+            <a href="tel:+918777793331" className="text-lg block mb-1">+91 87777 93331</a>
+            <a href="mailto:ecell@vit.ac.in" className="text-lg mb-2">ecell@vit.ac.in</a>
+          </div>
+          <div className="items-center mb-4 px-2 pointer-events-auto flex flex-wrap justify-center gap-x-16 gap-y-4 text-sm">
+            <p>
+              <a href="https://www.instagram.com/ecell_vit" className="hover:text-gray-500 flex items-center gap-2">
+                <FaInstagram size={20} />
+                Instagram
+              </a>
+            </p>
+            <p>
+              <a href="https://www.linkedin.com/company/ecellvitvellore" className="hover:text-gray-500 flex items-center gap-2">
+                <FaLinkedin size={20} />
+                LinkedIn
+              </a>
+            </p>
+            <p>
+              <a href="https://www.twitter.com/ecell_vit" className="hover:text-gray-500 flex items-center gap-2">
+                <FaXTwitter size={20} />
+                Twitter
+              </a>
+            </p>
+            <p>
+              <a href="https://www.facebook.com/ecellvit" className="hover:text-gray-500 flex items-center gap-2">
+                <FaFacebook size={20} />
+                Facebook
+              </a>
+            </p>
           </div>
         </div>
-
-
-
-        {/* Mobile Section */}
-        <div className="text-center bg-transparent text-gray-400 pb-4 font-bold md:hidden w-full">
-          <div className="flex justify-center space-x-4 mt-2">
-            <a href="https://www.linkedin.com/company/ecellvitvellore" className="hover:text-gray-500">
-              <FaLinkedin size={20} />
-            </a>
-            <a href="https://www.instagram.com/ecell_vit" className="hover:text-gray-500">
-              <FaInstagram size={20} />
-            </a>
-            <a href="https://twitter.com/ecell_vit" className="hover:text-gray-500">
-              <FaXTwitter size={20} />
-            </a>
-            <a href="https://www.facebook.com/ecellvit" className="hover:text-gray-500">
-              <FaFacebook size={20} />
-            </a>
-          </div>
-          &copy; 2025, <span className="font-bold">Entrepreneurship Cell VIT</span>
-        </div>
-
       </div>
   );
 }
