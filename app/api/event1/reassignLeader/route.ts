@@ -10,7 +10,6 @@ export async function PATCH( request: Request ): Promise<NextResponse<ApiRespons
   await dbConnect();
 
   try {
-    console.log('hhhhhhhhhh');
     const session = await getServerSession(authOptions);
     const sessionUser = session?.user;
 
@@ -19,6 +18,8 @@ export async function PATCH( request: Request ): Promise<NextResponse<ApiRespons
     }
 
     const { newLeaderIndex } = await request.json();
+
+    console.log(newLeaderIndex);
 
     // Find the current user (current leader)
     const currentLeader = await Users.findOne({ email: sessionUser.email });
@@ -66,40 +67,39 @@ export async function PATCH( request: Request ): Promise<NextResponse<ApiRespons
       );
     }
 
-    // Ensure the new leader is unique in the team
-    if (
-      team.teamMembers.filter(
-        (memberId) => memberId.toString() === newLeaderId.toString()
-      ).length !== 1
-    ) {
-      return NextResponse.json(
-        { success: false, message: "New leader ID is not unique in the team" },
-        { status: 400 }
-      );
-    }
+    const updatedMembers = team.teamMembers
+    .filter(
+      (member) => member.toString() !== currentLeader._id.toString() && member.toString() !== newLeaderId.toString()
+    )
 
-    // Reassign the leader role
-    newLeader.event1TeamRole = 0; // Leader role
-    newLeader.event1TeamId = team._id; // Associate with the team
-    await newLeader.save();
+    updatedMembers.unshift(newLeaderId);
 
-    // Update the team's leader details
-    team.teamLeaderId = newLeader._id;
-    team.teamLeaderName = newLeader.name;
-    team.teamLeaderEmail = newLeader.email;
+    console.log(updatedMembers)
 
-    // Remove the current leader's association with the team
-    currentLeader.event1TeamRole = null;
-    currentLeader.event1TeamId = null;
-    await currentLeader.save();
-
-    // Remove the current leader from the teamMembers array
-    team.teamMembers = team.teamMembers.filter(
-      (memberId) => memberId.toString() !== currentLeader._id.toString()
+    await TeamModel.findByIdAndUpdate(
+      team._id,
+      {
+        $set: {
+          teamLeaderId: newLeader._id,
+          teamLeaderName: newLeader.name,
+          teamLeaderEmail: newLeader.email,
+          teamMembers: updatedMembers,
+        },
+      }
     );
 
-    // Save the team changes
-    await team.save();
+    await Users.findByIdAndUpdate(currentLeader._id, {
+      $set: { event1TeamId: null, event1TeamRole: null},
+    });
+
+    await Users.findByIdAndUpdate(newLeaderId, {
+      $set: { event1TeamRole: 0 },
+    })
+
+    await Users.updateMany(
+      { _id: { $in: updatedMembers } },
+      { $set: { event1TeamId: team._id } }
+    );
 
     return NextResponse.json(
       { success: true, message: "Team leader reassigned successfully" },
