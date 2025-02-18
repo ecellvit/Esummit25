@@ -62,8 +62,8 @@ export async function POST(request: Request) {
 
         // Handling deregistration for events 3, 4, and 5
         if (user.events.includes(parsedNumber)) {
-            user.events = user.events.filter((e: number) => e !== parsedNumber);
             if (parsedNumber === 5) {
+                user.events = [];
                 const pionieraUser = await PionieraUsers.findOne({ email: sessionUser.email });
                 if (pionieraUser) {
                     pionieraUser.hasFilledDetails = false;
@@ -72,6 +72,8 @@ export async function POST(request: Request) {
                 } else {
                     console.error("Pioniera user not found for:", sessionUser.name);
                 }
+            } else {
+                user.events = user.events.filter((e: number) => e !== parsedNumber);
             }
             await user.save();
             return NextResponse.json({ message: "Successfully deregistered for the event." }, { status: 202 });
