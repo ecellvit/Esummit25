@@ -137,7 +137,7 @@ export default function MemberDashboard() {
         <Loader />
       ) : (
         <div
-          className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-coverbg-white opacity-100 bg-center p-4 rounded-lg "
+          className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center p-4 rounded-lg "
           // style={{
           //   backgroundImage: `url(${background1.src})`,
           //   backgroundSize: "cover",
