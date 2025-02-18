@@ -287,7 +287,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, } from "next/navigation";
 import logo from "/assets/whiteLogo.png";
-import hamburgerIcon from "/assets/hamburger.jpg";
+import hamburgerIcon from "/assets/hamburger.svg";
 import closeIcon from "/assets/close.jpg";
 import SignInBtn from "./signinButton";
 
@@ -409,7 +409,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-black opacity-90 backdrop-blur-lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
+        <div className="fixed inset-0 bg-black opacity-90 backdrop-blur-3xl -lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
           <button onClick={toggleMenu} className="text-3xl mb-8">
             &times;
           </button>
