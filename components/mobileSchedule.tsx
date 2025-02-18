@@ -77,17 +77,28 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
     }
     try {
       const response = await axios.post("/api/eventRegistration/register", { event });
+
       if (response.status === 200) {
         toast.success(response.data.message);
         const newUserEvents = session?.user.events || [];
         newUserEvents.push(event);
+        if (event === 5) {
+          newUserEvents.push(2);
+          newUserEvents.push(4);
+        }
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+
         router.push(event === 1 ? `/events/event${event}/createTeam` : "/");
       }
     } catch (error) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 402) {
         toast.error("Please fill out your details first");
+        if (event === 5) {
+          router.push('/events/pioneira/detailsForm');
+          return;
+        }
+        router.push('/userDetails');
         return;
       }
       toast.error("An error occurred while registering.");
@@ -97,11 +108,18 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
   const handleDeregister = async (event: number): Promise<void> => {
     try {
       const response = await axios.post("/api/eventRegistration/deregister", { event: Number(event) });
+
       if (response.status === 201 || response.status === 202) {
         toast.success(response.data.message);
-        const newUserEvents = session?.user.events?.filter(e => e !== event);
-        await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+        if (event === 5) {
+          await update({ ...session, user: { ...session?.user, events: [], hasFilledDetails: false } });
+        } else {
+          const newUserEvents = session?.user.events?.filter(e => e !== event);
+          await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+        }
         router.push('/');
+      } else {
+        throw new Error("Error processing event deregistration");
       }
     } catch (error) {
       const axiosError = error as AxiosError;

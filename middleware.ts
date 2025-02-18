@@ -35,10 +35,17 @@ export async function middleware(request: NextRequest) {
 
   //? Check if user is trying to fill user details again
   //? If yes, redirect to root route
-  if (user && user.hasFilledDetails && path.startsWith('/userDetails')) {
+  if (user && user.hasFilledDetails && (
+    path.startsWith('/userDetails') || 
+    path.startsWith('/events/pioneira/detailsForm')
+  )) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
+  if (user && !user.hasFilledDetails && !user.email.endsWith("@vitstudent.ac.in") && path.startsWith('/userDetails')) {
+    return NextResponse.redirect(new URL('/events/pioneira/detailsForm', request.url))
+  }
+  
   if (user) {
     const match = path.match(/\/events\/event(\d+)\b/);
     if (match) {

@@ -43,6 +43,10 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         toast.success(response.data.message);
         const newUserEvents = session?.user.events || [];
         newUserEvents.push(event);
+        if (event === 5) {
+          newUserEvents.push(2);
+          newUserEvents.push(4);
+        }
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
 
         router.push(event === 1 ? `/events/event${event}/createTeam` : "/");
@@ -71,13 +75,12 @@ const RegistrationButtons: React.FC<RegistrationButtonsProps> = ({ eventUrls }) 
         const response = await axios.post("/api/eventRegistration/deregister", { event : Number(event) });
         console.log("API Response:", response);
         
-        
         if (response.status === 201 || response.status === 202) {
             toast.success(response.data.message);
-            const newUserEvents = session?.user.events?.filter(e => e !== event);
             if (event === 5) {
-              await update({ ...session, user: { ...session?.user, events: newUserEvents, hasFilledDetails: false } });
+              await update({ ...session, user: { ...session?.user, events: [], hasFilledDetails: false } });
             } else {
+              const newUserEvents = session?.user.events?.filter(e => e !== event);
               await update({ ...session, user: { ...session?.user, events: newUserEvents } });
             }
             router.push('/');
