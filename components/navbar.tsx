@@ -152,16 +152,6 @@
 
 // export default Navbar;
 
-"use client";
-import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import logo from "/assets/whiteLogo.png";
-import hamburgerIcon from "/assets/hamburger.jpg";
-import closeIcon from "/assets/close.jpg";
-import SignInBtn from "./signinButton";
-
 // const Navbar: React.FC = () => {
 //   const router = useRouter();
 //   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -291,26 +281,35 @@ import SignInBtn from "./signinButton";
 // export default Navbar;
 
 
-const Navbar = () => {
+"use client";
+import React, { useState, useEffect, useRef, } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter, usePathname, } from "next/navigation";
+import logo from "/assets/whiteLogo.png";
+import hamburgerIcon from "/assets/hamburger.jpg";
+import closeIcon from "/assets/close.jpg";
+import SignInBtn from "./signinButton";
 
+const Navbar: React.FC = () => {
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const lastScrollY = useRef(0);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [visible, setVisible] = useState<boolean>(true);
+  const lastScrollY = useRef<number>(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > lastScrollY.current) {
-        setVisible(false);
-      } else {
-        setVisible(true);
-      }
-      lastScrollY.current = window.scrollY;
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (window.scrollY > lastScrollY.current) {
+  //       setVisible(false);
+  //     } else {
+  //       setVisible(true);
+  //     }
+  //     lastScrollY.current = window.scrollY;
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
@@ -323,46 +322,60 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const pathname = usePathname(); // Get the current page
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, id: string) => {
+    e.preventDefault();
+  
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+  
+    // If not on home page, navigate to home first
+    router.push(`/#${id}`);
+  };
+  useEffect(() => {
+    const hash = window.location.hash.substring(1); // Get the section ID from URL
+    if (hash) {
+      const target = document.getElementById(hash);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 300); // Delay ensures the section is rendered first
+      }
+    }
+  }, [pathname]);
+
   return (
     <>
       <nav
-        style={{
-          fontFamily: "AllRoundGothic, sans-serif",
-        }}
+        style={{ fontFamily: "AllRoundGothic, sans-serif" }}
         className={`
-          fixed top-3 left-[50%] 
+          fixed top-0 left-[50%] 
           w-[100vw] sm:w-[85vw] md:w-[80vw] lg:w-[65vw] h-[8vh]
           rounded-xl border border-red-800 shadow-xl z-10 p-3 
           flex items-center justify-between 
           transition-transform duration-300 transform -translate-x-1/2 
-          bg-transparent md:bg-black   lg:bg-black opacity-80
+          bg-transparent md:bg-black lg:bg-black opacity-80
+          ${visible ? "translate-y-0" : "-translate-y-full"}
         `}
       >
         {/* Logo (Hidden on Small Screens) */}
         <Link href="/" className="hidden md:block">
-          <Image
-            src={logo}
-            alt="WhiteLogo"
-            width={30}
-            height={30}
-            className="cursor-pointer"
-          />
+          <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
         </Link>
 
         {/* Mobile: Hamburger + Sign-In Button */}
         <div className="md:hidden flex justify-between items-center relative w-full">
-          {/* Hamburger Button */}
-          <button
-            onClick={toggleMenu}
-            className="focus:outline-none bg-transparent "
-          >
+          <button onClick={toggleMenu} className="focus:outline-none bg-transparent">
             {!isMenuOpen ? (
               <Image src={hamburgerIcon} alt="Menu" width={40} height={40} />
             ) : (
               <Image src={closeIcon} alt="Close" width={40} height={40} />
             )}
           </button>
-          {/* Sign-In Button (fixed at right) */}
           <div className="absolute right-0 top-0">
             <SignInBtn className="text-white border-none bg-transparent" />
           </div>
@@ -373,7 +386,7 @@ const Navbar = () => {
           <Link href="/" className="text-white hover:text-red-400">
             HOME
           </Link>
-          <Link href="/#ESummit" className="text-white hover:text-red-400">
+          <Link href="/#ESummit" scroll={false} onClick={(e) => handleScroll(e, "ESummit")} className="text-white hover:text-red-400">
             ABOUT
           </Link>
           <Link href="/MySchedule" className="text-white hover:text-red-400">
@@ -382,7 +395,8 @@ const Navbar = () => {
           <Link href="/patrons" className="text-white hover:text-red-400">
             OUR PATRONS
           </Link>
-          <Link href="/#faq" className="text-white hover:text-red-400">
+          {/* ✅ Fix for "CONTACT US" - Uses smooth scroll */}
+          <Link href="/#faq" scroll={false} onClick={(e) => handleScroll(e, "faq")} className="text-white hover:text-red-400">
             CONTACT US
           </Link>
         </div>
@@ -396,11 +410,9 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="fixed inset-0 bg-black opacity-90 backdrop-blur-lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
-          {/* Close Button */}
           <button onClick={toggleMenu} className="text-3xl mb-8">
             &times;
           </button>
-          {/* Links */}
           <div className="flex flex-col items-center justify-center space-y-6 font-[FontSpring]">
             <Link href="/" onClick={toggleMenu}>
               HOME
@@ -414,6 +426,7 @@ const Navbar = () => {
             <Link href="/patrons" onClick={toggleMenu}>
               OUR PATRONS
             </Link>
+            {/* ✅ Fix for "CONTACT US" - Smooth scrolling */}
             <Link href="/#footer" onClick={toggleMenu}>
               CONTACT US
             </Link>
