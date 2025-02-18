@@ -24,6 +24,8 @@ const TeamSchema: Schema<Team> = new Schema(
       unique: true,
       sparse: true,
       trim: true,
+      required: false,
+      default: null
     },
     teamCode: {
       type: String,
