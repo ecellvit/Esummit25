@@ -165,7 +165,7 @@ export default function Schedule() {
         }
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
 
-        router.push(event === 1 ? `/events/event${event}/createTeam` : "/#timeline");
+        router.push(event === 1 ? `/events/event${event}/createTeam` : "/MySchedule");
       }
     } catch (error) {
       const axiosError = error as AxiosError;
