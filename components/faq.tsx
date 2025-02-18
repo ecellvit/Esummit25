@@ -8,18 +8,18 @@ if (typeof window !== "undefined") {
 
 const FaqContent = () => {
   const faqs = [
-    { id: 1, q: "Is individual participation allowed in Innoventure?", ans: "Yes, individual participation is allowed, if you do not have a team you will be allotted one." },
-    { id: 2, q: "Is registration mandatory to attend the events?", ans: "Yes, you will have to register for all the events individually." },
+    { id: 1, q: "Is individual registration allowed in Innoventure?", ans: "Yes, individual registration is allowed. If you do not have a team, you will be provided with one." },
+    { id: 2, q: "Is registration mandatory to attend the events?", ans: " Yes, you will have to register for all the events individually." },
     { id: 3, q: "Is there a registration fee to participate?", ans: "No, the event is free of cost." },
-    { id: 4, q: "Is there a cap on the number of participants for E-Talk?", ans: "There will be a limit of 1500 students for E-Talk, so grab your seats quickly." },
-    { id: 5, q: "What is the duration of the event?", ans: "There are a total of 5 events in a span of 4 days. Each event will have different durations." },
-    { id: 6, q: "Will OD’s be provided for the events?", ans: "Yes OD’s will be provided for the duration of the particular event." },
-    { id: 7 , q: "Are there any cash prizes for Innoventure winners?", ans:"Yes, Innoventure will have cash prizes. Stay tuned to our Social media to find out."}, 
+    { id: 4, q: "What is the duration of the event?", ans: "There are a total of 5 events in a span of 4 days. Each event will have different durations." },
+    { id: 5, q: "Will OD’s be provided for the events?", ans: "Yes OD’s will be provided for the duration of the particular event." },
+    { id: 6, q: "Is there a prize pool for Innoventure winners?", ans: "Yes, Innoventure will feature a prize pool. Stay tuned to our Social media to find out." },
+    { id: 7 , q: "What is the maximum limit for a team in Innoventure?", ans:"A team can consist of a maximum of 4 participants."}, 
     {
-      id: 8, q: "What is the maximum limit for a team in Innoventure?", ans: "A team can consist of a maximum of 4 participants."
+      id: 8, q: "Which events can VIT students be a part of?", ans: " All VIT Vellore students are eligible to participate in Innoventure, E-Talk, Marketing Workshop, and Achievers’ Conclave."
     }, 
     {
-      id: 9 , q: "Who is eligible to participate?", ans: "All students are eligible to participate in any of the events."
+      id: 9 , q: "Which events can external students be a part of?", ans: " External participants are eligible to take part in Pioneira, E-Talk, and Achievers’ Conclave."
     },
 
     { 
