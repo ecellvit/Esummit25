@@ -68,7 +68,7 @@ const Event = ({ event, userDetails }) => {
              }
            }}
          >
-           Dashboard
+           {team1?"Create Team":"Dashboard"}
          </button>
          
           )}

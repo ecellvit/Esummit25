@@ -38,7 +38,7 @@ export default function UserDetail() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXTAUTH_URL}/api/user/getUserDetails`,
+          "/api/user/getUserDetails",
           {
             method: "GET",
             headers: {

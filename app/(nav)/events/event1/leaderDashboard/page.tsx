@@ -109,12 +109,13 @@ export default function Page() {
       try {
         const response = await axios.delete("/api/event1/deleteTeam");
         if (response.status === 200) {
-          toast.success("Team deleted successfully");
           await update({
             ...session,
             user: { ...session?.user, event1TeamRole: null },
           });
+          toast.success("Team deleted successfully");
           setTeamMembers([]);
+          handleCloseModal();
           router.push("/");
           setLoading(false);
         } else {
@@ -207,6 +208,7 @@ export default function Page() {
     try {
       await navigator.clipboard.writeText(teamCode);
       toast.success("Team code copied to clipboard!");
+      handleCloseModal();
     } catch (error) {
       toast.error("Failed to copy team code.");
     }
@@ -274,7 +276,7 @@ export default function Page() {
             </h1>
 
 
-            <button className="btn-primary btn-secondary font-[FontSpring] uppercase  bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2" onClick={handleChangeTeamName} >
+            <button className="btn-primary btn-secondary font-[PoppinsRegular] uppercase  bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2" onClick={handleChangeTeamName} >
               Edit Team Name
             </button>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl px-8 py-10">
@@ -287,7 +289,7 @@ export default function Page() {
                   >
                     {/* Left Section - Member Details */}
                     <div className="relative z-10 flex-1 p-4 text-left">
-                      <h2 className="text-xl font-bold font-[FontSpring] mb-1 text-white">
+                      <h2 className="text-xl font-bold font-[PoppinsRegular] mb-1 text-white">
                         {member.name}
                       </h2>
                       <p className="text-xs mb-1 text-white ">
@@ -296,7 +298,7 @@ export default function Page() {
                       <p className="text-xs mb-2 text-white ">
                         Mobile No: {member.mobNo}
                       </p>
-                      <h1 className="text-lg font-bold mb-1 font-[FontSpring] text-white">
+                      <h1 className="text-lg font-bold mb-1 font-[PoppinsRegular] text-white">
                         {member.event1TeamRole === 0 ? "LEADER" : "MEMBER"}
                       </h1>
                       {member.event1TeamRole !== 0 && (
@@ -363,7 +365,7 @@ export default function Page() {
                 Add Member
               </button> */}
               <button
-                className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[FontSpring] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
+                className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
                 onClick={async () => {
                   setIsLoading(true);
                   await handleViewTeamCode();
@@ -381,7 +383,7 @@ export default function Page() {
 
               {teamMembers.length === 1 ? (
                 <button
-                  className="btn-secondary bg-red-700 text-white px-4 py-2 font-[FontSpring] uppercase rounded-md hover:scale-105 transition-transform"
+                  className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
                   onClick={() => handleShowModal(null, "delete")}
                 >
                   Delete Team
@@ -401,20 +403,20 @@ export default function Page() {
               modalType === "remove" &&
               modalMemberIndex !== null && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                  <div className="bg-white p-5 rounded-md font-[FontSpring] text-center">
+                  <div className="bg-white p-5 rounded-md font-[PoppinsRegular] text-center">
                     <p className="mb-4">
                       Are you sure you want to remove this member?
                     </p>
                     <div className="flex justify-around">
                       <button
                         onClick={handleRemove}
-                        className="bg-green-700 text-white font-[FontSpring] uppercase px-4 py-2 rounded-md"
+                        className="bg-green-700 text-white font-[PoppinsRegular] uppercase px-4 py-2 rounded-md"
                       >
                         Yes
                       </button>
                       <button
                         onClick={handleCloseModal}
-                        className="bg-red-700 text-white font-[FontSpring] uppercase px-4 py-2 rounded-md"
+                        className="bg-red-700 text-white font-[PoppinsRegular] uppercase px-4 py-2 rounded-md"
                       >
                         No
                       </button>
@@ -445,13 +447,13 @@ export default function Page() {
               modalMemberIndex === null && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                   <div className="bg-white p-5 rounded-md text-center">
-                    <p className="mb-4 font-[FontSpring] ">
+                    <p className="mb-4 font-[PoppinsRegular] ">
                       Are you sure you want to leave the team?
                     </p>
                     <div className="flex justify-around">
                       <button
                         onClick={() => setModalType("chooseLeader")} // Open leader selection modal
-                        className="bg-green-700 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase"
+                        className="bg-green-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase"
                       >
                         Yes
                       </button>
@@ -477,10 +479,10 @@ export default function Page() {
                     onChange={(e) => setNewTeamName(e.target.value)}
                   />
                   <div className="flex justify-around mt-4">
-                    <button className="bg-green-700 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase" onClick={handleConfirmChangeTeamName}>
+                    <button className="bg-green-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase" onClick={handleConfirmChangeTeamName}>
                       Confirm
                     </button>
-                    <button className="bg-red-700 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase" onClick={() => setShowModal(false)}>
+                    <button className="bg-red-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase" onClick={() => setShowModal(false)}>
                       Cancel
                     </button>
                   </div>
@@ -492,13 +494,13 @@ export default function Page() {
               <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white p-4 rounded-lg shadow-lg text-center">
                   <h2 className="text-xl font-bold mb-4 font-[GreaterTheory]">Confirm Team Name Change</h2>
-                  <p className="font-[FontSpring]">Are you sure you want to change the team name to
+                  <p className="font-[PoppinsRegular]">Are you sure you want to change the team name to
                     <span className="font-[GreaterTheory]">"{newTeamName}"</span>?</p>
                   <div className="flex justify-around mt-4">
-                    <button className="bg-green-700 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase" onClick={handleSubmitTeamNameChange}>
+                    <button className="bg-green-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase" onClick={handleSubmitTeamNameChange}>
                       Yes
                     </button>
-                    <button className="bg-red-700 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase" onClick={() => setShowConfirmModal(false)}>
+                    <button className="bg-red-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase" onClick={() => setShowConfirmModal(false)}>
                       No
                     </button>
                   </div>
@@ -544,20 +546,20 @@ export default function Page() {
               modalType === "delete" &&
               modalMemberIndex === null && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                  <div className="bg-white p-5 rounded-md text-center font-[FontSpring]">
+                  <div className="bg-white p-5 rounded-md text-center font-[PoppinsRegular]">
                     <p className="mb-4">
                       Are you sure you want to delete this team?
                     </p>
                     <div className="flex justify-around">
                       <button
                         onClick={handleDeleteTeam}
-                        className="bg-green-700 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase"
+                        className="bg-green-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase"
                       >
                         Yes
                       </button>
                       <button
                         onClick={handleCloseModal}
-                        className="bg-red-700 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase"
+                        className="bg-red-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase"
                       >
                         No
                       </button>
@@ -577,14 +579,14 @@ export default function Page() {
                     <p className="text-xl font-bold">{teamCode}</p>
                     <button
                       onClick={handleCopyTeamCode}
-                      className="bg-blue-700 text-white px-4 py-2 rounded-md font-[FontSpring] uppercase hover:bg-blue-600 transition-colors"
+                      className="bg-blue-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase hover:bg-blue-600 transition-colors"
                     >
                       Copy
                     </button>
                   </div>
                   <div className="flex justify-center">
                     <button
-                      className="bg-red-700 text-white  font-[FontSpring] uppercase px-4 py-2 rounded-md"
+                      className="bg-red-700 text-white  font-[PoppinsRegular] uppercase px-4 py-2 rounded-md"
                       onClick={handleCloseModal}
                     >
                       Close
