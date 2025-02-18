@@ -15,7 +15,6 @@ import Link from "next/link";
 const Event = ({ event, userDetails }) => {
   const [loader, setLoader] = useState(false);
   const [team1,setTeam1]=useState(false);
-  const [team2,setTeam2]=useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const { data: session, status } = useSession();
   useEffect(() => {
@@ -27,14 +26,6 @@ const Event = ({ event, userDetails }) => {
         setTeam1(true);
       }
     }
-    if (event.id == 2) {
-      if (!session?.user?.event2TeamId) {
-        setShowWarning(true);
-      }
-      else{
-        setTeam2(true);
-      }
-    }
   }, []);
   return (
     <div>
@@ -44,33 +35,33 @@ const Event = ({ event, userDetails }) => {
           <h1 className="uppercase text-2xl pb-2 pt-2 md:text-3xl lg:text-5xl font-bold bg-gradient-to-br bg-white bg-clip-text text-transparent font-[GreaterTheory]">
             {event.eventName}
           </h1>
-          <div className="uppercase flex gap-2 pt-2 items-center font-[FontSpring]">
+          <div className="uppercase flex gap-2 pt-2 items-center font-[PoppinsRegular]">
             <span>
               <FaCalendarAlt />
             </span>
             {event.date}
           </div>
-          <div className="uppercase flex gap-2 items-center font-[FontSpring]">
+          <div className="uppercase flex gap-2 items-center font-[PoppinsRegular]">
             <span>
               <FaRegClock />
             </span>
             {event.time}
           </div>
-          <div className="uppercase flex gap-2 items-center font-[FontSpring] pb-1">
+          <div className="uppercase flex gap-2 items-center font-[PoppinsRegular] pb-1">
             <span>
               <FaLocationDot />
             </span>
             {event.venue}
           </div>
         </div>
-        <p className="font-poppins py-3 font-[FontSpring]">{event.description}</p>
+        <p className="font-poppins py-3 font-[PoppinsRegular]">{event.description}</p>
         <div className="flex flex-col md:flex-row gap-4">
-          {(event.id === 1 || event.id === 2) && (
+          {(event.id === 1) && (
            <button
            className="text-black font-[GreaterTheory] hover:scale-105 transition-all bg-gradient-to-br  p-3 rounded-lg hover:bg-opacity-80 bg-white"
            
            onClick={() => {
-             if ((event.id === 1 && team1) || (event.id === 2 && team2)) {
+             if ((event.id === 1 && team1)) {
                window.location.href = `/events/event${event.id}/memberDashboard`;
              } else {
                window.location.href = `/events/event${event.id}/createTeam`;
