@@ -17,10 +17,9 @@ import barathi from "@/public/assets/patrons/barathi.jpg";
 const Page: React.FC = () => {
   return (
     <section className="bg-[#0E0E0E] pt-20 px-16 min-h-screen font-poppins p-0 m-0 box-border">
-      <h1 className="uppercase mt-10 mb-5 text-4xl md:text-5xl lg:text-7xl text-center font-bold bg-gradient-to-br  bg-clip-text text-transparent" 
+      <h1 className="uppercase mt-10 mb-5 text-4xl md:text-5xl lg:text-7xl text-center font-bold bg-gradient-to-br  bg-clip-text text-transparent bg-white" 
      style={{
-      background:
-        "linear-gradient(90deg, #8A0407 3.01%, #FF6261 18.13%, #DE2726 31.78%, #9C2929 55.42%, #FB4C4B 68.04%, #AC0605 93.31%)",
+     
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
     }}
@@ -28,19 +27,12 @@ const Page: React.FC = () => {
         <span className="text-white">our</span> patrons
       </h1>
       <div className="flex flex-col items-center pt-6">
-        <div className=" h-[22rem] w-64 m-4 bg-gradient-to-br from-[#DCA64E] via-[#FEFAB7] to-[#D6993F] rounded-lg " style={{background:"white"}}>
-          <div className="overflow-hidden h-2/3 rounded-lg">
-            <Image className="h-full w-full" src={chancellor} alt="Chancellor" />
-          </div>
-          <div className="text-black h-1/3 flex flex-col justify-center">
-            <h1 className="text-center text-2xl font-bold leading-tight">
-              Dr. G Vishwanathan
-            </h1>
-            <h1 className="text-center text-xl font-semibold leading-tight">
-              Honorable Chancellor
-            </h1>
-          </div>
-        </div>
+    
+        <Card
+          name={"Dr. G Vishwanathan"}
+          image={chancellor}
+          pos={"Honorable Chancellor"}
+        />
         <Card
           name={"Dr. V.S. Kanchana Bhaaskaran"}
           image={kanchana}
@@ -83,14 +75,13 @@ const Page: React.FC = () => {
           image={ramesh}
           pos={"Director, IST"}
         />
-      </div>
-      <div className="flex flex-wrap justify-center pt-6">
         <Card
           name={"Dr. PRADHEEP T	"}
           image={pradheep}
           pos={"Faculty Coordinator, E-Cell VIT"}
         />
       </div>
+     
     </section>
   );
 };
