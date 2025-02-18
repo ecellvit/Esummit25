@@ -42,11 +42,11 @@ const events = [
     name: "ACHIEVERS CONCLAVE",
     date: "COMING SOON!!",
     description:
-      "At Achievers’ Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
+      "At Achievers' Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
     url: "/events/event4",
   },
   {
-    name: "PIONEIRA PHASE 2",
+    name: "PIONEIRA",
     date: "COMING SOON!!",
     description:
       "Pioneira is a major platform for new business ventures, offering startups an exceptional opportunity to pitch their ideas to industry leaders and influential personalities while embarking on a journey to withstand market competition, and build connections.",

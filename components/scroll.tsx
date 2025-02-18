@@ -15,18 +15,21 @@ const Animation: React.FC = () => {
 
   useEffect(() => {
     const section = sectionRef.current;
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top bottom",
-      end: "bottom bottom",
-      anticipatePin: 1,
-      onLeave: () => {
-        window.scrollTo({
-          top: document.getElementById("timeline")?.offsetTop,
-          behavior: "smooth",
-        });
-      },
-    });
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    if (mediaQuery.matches) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top bottom",
+        end: "bottom bottom",
+        anticipatePin: 1,
+        onLeave: () => {
+          window.scrollTo({
+            top: document.getElementById("timeline")?.offsetTop,
+            behavior: "smooth",
+          });
+        },
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -45,7 +48,7 @@ const Animation: React.FC = () => {
         },
       });
     }, 1500);
-
+    
     return () => clearInterval(interval);
   }, []);
 
