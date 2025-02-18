@@ -68,7 +68,7 @@ const Event = ({ event, userDetails }) => {
              }
            }}
          >
-           {team1?"Create Team":"Dashboard"}
+           {!team1?"Create Team":"Dashboard"}
          </button>
          
           )}
