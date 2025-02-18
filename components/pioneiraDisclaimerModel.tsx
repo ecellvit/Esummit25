@@ -34,17 +34,18 @@ const PioneiraDisclaimerModel: React.FC<PioneiraDisclaimerModelProps> = ({
         </h2>
 
         <p className="text-gray-700 text-center mt-2">
-          You have successfully registered for Pioneira. In addition, you are
-          also eligible to attend the following complementary events:
+        You have registered successfully!<br></br>
+        Along with Pioneira, your team will be provided with exclusive access to E-Talk and Achievers’ Conclave.
+
         </p>
 
-        {/* Events List */}
+        {/* Events List
         <div className="mt-4 space-y-2 text-center">
           <div className=" p-2 rounded-lg">
             1. Achiever's Conclave
           </div>
           <div className=" p-2 rounded-lg">2. E-Talk</div>
-        </div>
+        </div> */}
 
         {/* Close Button */}
         <button
