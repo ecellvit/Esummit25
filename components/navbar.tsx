@@ -239,7 +239,7 @@ const Navbar: React.FC = () => {
           <Link href="/" className="text-white hover:text-red-400">
             HOME
           </Link>
-          <Link href="/#timeline" className="text-white hover:text-red-400">
+          <Link href="/#Esummit" className="text-white hover:text-red-400">
             ABOUT
           </Link>
           <Link href="/MySchedule" className="text-white hover:text-red-400">
@@ -258,7 +258,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-transparent backdrop-blur-lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
+        <div className="fixed inset-0 bg-black opacity-90 backdrop-blur-lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
           {/* Close Button */}
           <button onClick={toggleMenu} className="text-3xl mb-8">
             &times;
@@ -268,7 +268,7 @@ const Navbar: React.FC = () => {
             <Link href="/" onClick={toggleMenu}>
               HOME
             </Link>
-            <Link href="/#timeline" onClick={toggleMenu}>
+            <Link href="/#Esummit" onClick={toggleMenu}>
               ABOUT
             </Link>
             <Link href="/MySchedule" onClick={toggleMenu}>
