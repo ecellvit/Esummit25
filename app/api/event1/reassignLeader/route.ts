@@ -96,11 +96,6 @@ export async function PATCH( request: Request ): Promise<NextResponse<ApiRespons
       $set: { event1TeamRole: 0 },
     })
 
-    await Users.updateMany(
-      { _id: { $in: updatedMembers } },
-      { $set: { event1TeamId: team._id } }
-    );
-
     return NextResponse.json(
       { success: true, message: "Team leader reassigned successfully" },
       { status: 200 }
