@@ -61,7 +61,7 @@ export default function about() {
                     </div>
 
                     {/* Right Side: Text Content */}
-                    <div className="md:w-3/4 w-full text-black text-md md:text-lg leading-relaxed flex items-center md:px-20 mt-5 md:mt-0">
+                    <div className="md:w-3/4 w-full text-black text-md md:text-xl  leading-relaxed flex items-center md:px-20 mt-5 md:mt-0">
                         <p>
                             E-Summit is a journey into the world of entrepreneurship, featuring five exhilarating events over a span of four days. It is a platform where ideas spark, fire ignites, and ambition meets opportunity. From high energy pitch battles to game changing workshops, every moment is built to challenge, inspire, and open doors. The biggest names, boldest minds, and brightest opportunities are all here, if you’re ready to push boundaries and make things happen, this is where it starts.
                             <br /><br />

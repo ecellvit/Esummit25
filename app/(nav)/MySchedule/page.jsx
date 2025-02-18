@@ -63,7 +63,7 @@ const MySchedule = () => {
 
   return (
     <section
-      className="bg-cover bg-center items-center-20 text-white min-h-screen bg-[#0E0E0E] font-poppins px-10 sm:px-16 md:px-20"
+      className="bg-cover bg-center items-center text-white min-h-screen bg-[#0E0E0E] font-poppins px-10 sm:px-16 md:px-20"
       style={{ backgroundImage: `url(${background.src})` }}
     >
       {loader ? (
