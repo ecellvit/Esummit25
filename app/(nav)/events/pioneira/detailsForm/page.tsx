@@ -9,6 +9,7 @@ import Image from "next/image";
 import background from "@/assets/bg.png";
 import logo from "@/assets/pioneira.svg";
 import Loader from "@/components/loader";
+import PioneiraDisclaimerModel from "@/components/pioneiraDisclaimerModel";
 
 interface FormData {
   founderName: string;
@@ -40,11 +41,13 @@ export default function Page() {
     portfolioLink: "",
   });
   const [loading, setLoading] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   // Regular Expressions for Validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\d{10}$/;
   const urlRegex = /^(https?:\/\/)?([\w\d-]+\.)+[\w\d]+(\/.*)?$/;
+
 
   // UseEffect for managing form data and session state
   useEffect(() => {
@@ -170,6 +173,12 @@ export default function Page() {
     }
   };
 
+  const handleDisclaimerClose = () => {
+    setShowDisclaimer(false);
+    setTimeout(() => {
+      router.push("/");
+    }, 500);
+  };
   // Handle form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -206,9 +215,9 @@ export default function Page() {
         user: { ...session?.user, hasFilledDetails: true },
       });
 
-      localStorage.removeItem("pioneiraFormData"); // Clear local storage on success
+      localStorage.removeItem("pioneiraFormData");
       toast.success(response.data.message || "Registration successful!");
-      setTimeout(() => router.push("/"), 1000);
+      setShowDisclaimer(true);
       localStorage.removeItem("savedStep");
       localStorage.removeItem("pioneiraFormData");
     } catch (error: any) {
@@ -231,6 +240,9 @@ export default function Page() {
           <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
             <Loader />
           </div>
+        )}
+        {showDisclaimer && (
+          <PioneiraDisclaimerModel onClose={() => router.push("/")} />
         )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 sm:p-8 w-full max-w-6xl">
           <div className="rounded-2xl flex flex-col justify-center items-center shadow-lg bg-white opacity-90 p-5 sm:p-8">
@@ -257,7 +269,12 @@ export default function Page() {
                       .map(([key, value]) => (
                         <div key={key} className="mb-4 sm:mb-5">
                           <label className="block text-gray-700 text-sm sm:text-base capitalize">
-                            {key.replace(/([A-Z])/g, " $1").trim()}
+                            {key.replace(/([A-Z])/g, " $1").trim()}{" "}
+                            {key !== "website" && (
+                              <span className="text-red-600 text-xs sm:text-sm font-bold">
+                                Required*
+                              </span>
+                            )}
                           </label>
                           <input
                             type={key.includes("Contact") ? "tel" : "text"}
@@ -288,9 +305,15 @@ export default function Page() {
                     </button>
                   </div>
                 )}
+
                 {step === 2 && (
                   <div>
-                    <h3 className="font-bold text-lg">Stage of Startup</h3>
+                    <h3 className="font-bold text-lg inline">
+                      Stage of Startup
+                    </h3>
+                    <span className="pl-2 text-red-600 inline font-bold">
+                      Required*
+                    </span>
                     <div className="flex flex-col gap-2 text-justify">
                       {[
                         "Idea: You are refining your concept and have no working product.",
@@ -310,7 +333,10 @@ export default function Page() {
                         </label>
                       ))}
                     </div>
-                    <h3 className="font-bold text-lg mt-5">TRL Level</h3>
+                    <h3 className="font-bold text-lg mt-5 inline">TRL Level</h3>
+                    <span className="pl-2 text-red-600 inline font-bold">
+                      Required*
+                    </span>
                     <select
                       name="trlLevel"
                       value={formData.trlLevel}
