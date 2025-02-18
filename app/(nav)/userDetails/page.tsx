@@ -54,7 +54,7 @@ export default function UserDetail() {
         const data = await res.json();
 
         if (data.success && !data.user?.email.endsWith("vitstudent.ac.in")) {
-          router.push("/");
+          router.push("/events/pioneira/detailsForm");
         }
       } catch (error) {
         console.error("Error fetching user details:", error);
