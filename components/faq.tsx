@@ -72,7 +72,7 @@ const FaqContent = () => {
                 className="bg-[#981B1B] font-bold h-15 w-30 rounded-lg shadow-md border border-transparent hover:border-white transition-all duration-3300"
               >
                 <button
-                  className="w-full flex justify-between items-center py-2 px-6 text-left text-lg font-semibold text-white"
+                  className="w-full flex justify-between items-center py-2 px-6 text-left text-lg font-[PoppinsRegular] text-white"
                   onClick={() => toggleDropdown(faq.id)}
                 >
                   {faq.q}
