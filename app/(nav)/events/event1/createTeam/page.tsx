@@ -53,7 +53,7 @@ export default function page() {
     // }finally{
     //   setIsLoading(false);
     // }
-      const response = await axios.post("/api/event1/createTeam", teamName);
+      const  response = await axios.post("/api/event1/createTeam", teamName);
       if (response.data.success === true) {
         toast.success(response.data.message);
         await update({
