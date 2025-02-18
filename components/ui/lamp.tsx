@@ -404,8 +404,11 @@ export const LampContainer = ({
       </div>
 
       {/* Register Button */}
-      <div className="flex justify-center items-center absolute bottom-[15vh] w-full sm:bottom-[8vh] md:bottom-[20vh]">
+      <div className="flex flex-col justify-center items-center absolute bottom-[15vh] w-full sm:bottom-[8vh] md:bottom-[20vh]">
         <RegisterBtn />
+        <p className="text-red-600 text-center text-xs font-thin isolate pb-6 sm:mt-4 sm:p-0 md:mt-0">
+          VITV students please log in with your VIT email ID*
+        </p>
       </div>
 
       {/* Countdown Timer */}
@@ -495,8 +498,11 @@ export const LampContainer = ({
         </div>
 
         {/* Register Button */}
-        <div className="flex justify-center items-center absolute bottom-[20vh] w-full sm:bottom-[20vh] md:bottom-[20vh]">
+        <div className="flex flex-col justify-center items-center absolute bottom-[15vh] w-full sm:bottom-[8vh] md:bottom-[20vh]">
           <RegisterBtn />
+          <p className="text-red-600 text-center text-xs font-thin isolate pb-6 sm:mt-4 sm:p-0 md:mt-0">
+            VITV students please log in with your VIT email ID*
+          </p>
         </div>
 
         {/* Countdown Timer */}
