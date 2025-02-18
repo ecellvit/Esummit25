@@ -64,15 +64,8 @@ const MySchedule = () => {
   });
 
   return (
-<<<<<<< HEAD
-    <section
-      className="bg-cover bg-center items-center text-white min-h-screen bg-[#0E0E0E] font-poppins"
-      style={{ backgroundImage: `url(${background.src})` }}
-    >
-=======
     <section className="bg-cover bg-center items-center text-black min-h-screen bg-[#0E0E0E] font-poppins px-10 sm:px-16 md:px-20" style={{ backgroundImage: `url(${bg.src})` }}>
 
->>>>>>> refs/remotes/origin/main
       {loader ? (
         <Loader></Loader>
       ) : userDetails?.events.length === 0 || status === "unauthenticated" ? (
