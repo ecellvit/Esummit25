@@ -172,7 +172,7 @@ export default function page() {
           Authorization: `Bearer ${session?.accessTokenBackend}`,
         },
       });
-      await update({...session, user: {...session?.user, hasFilledDetails: true,events:[2,4]}})
+      await update({...session, user: {...session?.user, hasFilledDetails: true}})
       toast.success(response.data.message || "Registration successful!");
       setTimeout(() => router.push("/"), 2000);
     } catch (error: any) {

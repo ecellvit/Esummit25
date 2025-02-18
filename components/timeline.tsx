@@ -152,16 +152,23 @@ export default function Schedule() {
     try {
       const response = await axios.post("/api/eventRegistration/register", { event });
       console.log("API Response:", response.data);
+
       if (response.status === 200) {
         toast.success(response.data.message);
         const newUserEvents = session?.user.events || [];
         newUserEvents.push(event);
+        if (event === 5) {
+          newUserEvents.push(2);
+          newUserEvents.push(4);
+        }
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
-        router.push(event === 1 ? `/events/event${event}/createTeam` : (event===5?"/events/pioneira/detailsForm":"/#timeline"));
+
+        router.push(event === 1 ? `/events/event${event}/createTeam` : "/");
       }
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log("Registration error:", axiosError.response?.data);
+
       if (axiosError.response?.status === 402) {
         toast.error("Please fill out your details first");
         if (event === 5) {
@@ -179,13 +186,14 @@ export default function Schedule() {
     try {
         console.log("Deregistering event:", event);
         const response = await axios.post("/api/eventRegistration/deregister", { event : Number(event) });
-        console.log("API Response:", response);        
+        console.log("API Response:", response);
+
         if (response.status === 201 || response.status === 202) {
             toast.success(response.data.message);
-            const newUserEvents = session?.user.events?.filter(e => e !== event);
             if (event === 5) {
-              await update({ ...session, user: { ...session?.user, events: newUserEvents, hasFilledDetails: false } });
+              await update({ ...session, user: { ...session?.user, events: [], hasFilledDetails: false } });
             } else {
+              const newUserEvents = session?.user.events?.filter(e => e !== event);
               await update({ ...session, user: { ...session?.user, events: newUserEvents } });
             }
             router.push('/');
