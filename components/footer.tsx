@@ -4,19 +4,44 @@ import Clock from "react-clock";
 import "react-clock/dist/Clock.css";
 import Link from "next/link";
 import bg1 from "@/assets/footer2.svg";
+import { useRouter, usePathname } from "next/navigation";
 import bg2 from "@/assets/footer1.svg";
 import Image from "next/image";
 
 export default function Footer() {
+  const router = useRouter();
   const sectionRef = useRef(null);
   const [value, setValue] = useState(new Date());
   useEffect(() => {
     const interval = setInterval(() => setValue(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
-
+  const pathname = usePathname();
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, id: string) => {
+    e.preventDefault();
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    router.push(`/#${id}`);
+  };
+  useEffect(() => {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        const target = document.getElementById(hash);
+        if (target) {
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 300);
+        }
+      }
+    }, [pathname]);
   return (
-      <div className="relative w-full bg-gradient-to-t from-[#1C0000] to-[#6F0F0F] shadow-md bottom-0 flex flex-col justify-between p-0 mb-0 min-h-[40vh] md:min-h-[80vh] rounded-t-3xl md:round-t-none">
+      <div
+        id="foot"
+        className="relative w-full bg-gradient-to-t from-[#1C0000] to-[#6F0F0F] shadow-md bottom-0 flex flex-col justify-between p-0 mb-0 min-h-[40vh] md:min-h-[80vh] rounded-t-3xl md:round-t-none"
+      >
         <Image src={bg1} alt="bg1" className="hidden md:block absolute bottom-0 left-0 w-full h-full" />
         <Image src={bg2} alt="bg1" className="block md:hidden absolute bottom-0 left-0 w-full h-full" />
         <div className="relative px-5 text-white pt-20 flex-row hidden md:flex justify-evenly">
@@ -53,10 +78,18 @@ export default function Footer() {
             </p>
           </div>
           <div className="pointer-events-auto text-sm md:text-md">
-            <p className="mb-4"><a href="">HOME</a></p>
-            <p className="mb-4"><a href="">ABOUT US</a></p>
-            <p className="mb-4"><a href="">SCHEDULE</a></p>
-            <p className="mb-4"><a href="">FAQ</a></p>
+            <p className="mb-4"><Link href="/#home" scroll={false} onClick={(e) => handleScroll(e, "home")} className="hover:text-gray-500 text white mb-4">
+              HOME
+            </Link></p>
+            <p className="mb-4"><Link href="/#ESummit" scroll={false} onClick={(e) => handleScroll(e, "ESummit")} className="hover:text-gray-500 text white mb-4">
+              ABOUT US
+            </Link></p>
+            <p className="mb-4"><Link href="/#timeline" scroll={false} onClick={(e) => handleScroll(e, "timeline")} className="hover:text-gray-500 text white mb-4">
+              SCHEDULE
+            </Link></p>
+            <p className="mb-4"><Link href="/#faq" scroll={false} onClick={(e) => handleScroll(e, "faq")} className="hover:text-gray-500 text white mb-4">
+              FAQ
+            </Link></p>
           </div>
         </div>
         <div className="relative px-5 text-white pt-8 flex-col flex md:hidden">
