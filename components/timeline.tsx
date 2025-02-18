@@ -19,37 +19,37 @@ import MobileSchedule from "./mobileSchedule";
 const events = [
   {
     name: "INNOVENTURE",
-    date: "COMING SOON!!",
+    date: "COMING SOON!",
     description:
-      "Innoventure is a business simulation event where participants navigate through complex business situations while honing their abilities in product creation and business strategy which will sharpen the participants analytical thinking.",
+      "Innoventure is a business simulation event where participants navigate through complex situations which will help them to hone their abilities in decision making and strategic planning, while sharpening their analytical thinking.",
     url: "/events/event1/createTeam",
   },
   {
     name: "E TALK",
-    date: "COMING SOON!!",
+    date: "COMING SOON!",
     description:
-      "E-Talk brings together celebrated entrepreneurs to share their wisdom and expertise, inspiring the next generation of business builders. This engaging summit cultivates an energizing environment, leaving participants with the knowledge to pursue their entrepreneurial dreams with conviction.",
+      "E-Talk brings together celebrated entrepreneurs to share their wisdom and expertise, inspiring the next generation of business builders. This engaging summit cultivates an energizing environment, leaving participants with the knowledge to pursue their entrepreneurial dreams with conviction. ",
     url: "/events/event2",
   },
   {
     name: "MARKETING WORKSHOP",
-    date: "COMING SOON!!",
+    date: "COMING SOON!",
     description:
       "The Marketing Workshop equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
       url: "/events/event3",
   },
   {
     name: "ACHIEVERS CONCLAVE",
-    date: "COMING SOON!!",
+    date: "COMING SOON!",
     description:
-      "At Achievers' Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
+      "At Achievers’ Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
     url: "/events/event4",
   },
   {
     name: "PIONEIRA",
-    date: "COMING SOON!!",
+    date: "COMING SOON!",
     description:
-      "Pioneira is a major platform for new business ventures, offering startups an exceptional opportunity to pitch their ideas to industry leaders and influential personalities while embarking on a journey to withstand market competition, and build connections.",
+      "Pioneira is a platform for new business ventures, offering startups an exceptional opportunity to pitch their ideas to industry leaders and influential personalities while embarking on a journey to withstand market competition and build connections.",
     url: "/events/pioneira/detailsForm",
   },
 ];
@@ -165,7 +165,7 @@ export default function Schedule() {
         }
         await update({ ...session, user: { ...session?.user, events: newUserEvents } });
 
-        router.push(event === 1 ? `/events/event${event}/createTeam` : "/");
+        router.push(event === 1 ? `/events/event${event}/createTeam` : "/#timeline");
       }
     } catch (error) {
       const axiosError = error as AxiosError;
