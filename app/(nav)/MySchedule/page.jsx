@@ -26,13 +26,10 @@ const MySchedule = () => {
 
   const getData = async () => {
     setLoader(true);
-    console.log("hii");
     try {
-      console.log("try");
       const data = await axios.get("/api/user/getUserDetails");
 
       if (data.status === 401) {
-        console.log("unauthorised");
         toast.error("Sign in first");
         router.push("/");
       } else if (data.status === 404) {
@@ -40,7 +37,6 @@ const MySchedule = () => {
         toast.error("User not found");
         router.push("/");
       } else if (data.status === 200) {
-        console.log("bcjbjhdwdkwkdhjhwkd", data?.data.user);
         setUserDeatials(data?.data.user);
         setRegEventsList(
           scheduleDetails.filter((event) =>
@@ -80,7 +76,6 @@ const MySchedule = () => {
           <button
             className="py-2 px-4 font-semibold rounded-xl font-[GreaterTheory] uppercase border-4 border-red-400 bg-transparent hover:scale-105 transition-all"
             onClick={() => {
-              console.log("fbjhwfkhwdkj", userDetails);
               if(status==="unauthenticated"){
                 signIn('google');
                 setLoader(true);
