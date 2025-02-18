@@ -25,7 +25,7 @@ const events = [
     url: "/events/event1/createTeam",
   },
   {
-    name: "E TALK",
+    name: "E-TALK",
     date: "COMING SOON!",
     description:
       "E-Talk brings together celebrated entrepreneurs to share their wisdom and expertise, inspiring the next generation of business builders. This engaging summit cultivates an energizing environment, leaving participants with the knowledge to pursue their entrepreneurial dreams with conviction. ",
@@ -39,7 +39,7 @@ const events = [
       url: "/events/event3",
   },
   {
-    name: "ACHIEVERS CONCLAVE",
+    name: "ACHIEVERS' CONCLAVE",
     date: "COMING SOON!",
     description:
       "At Achievers’ Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
