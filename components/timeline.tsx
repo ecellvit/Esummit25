@@ -136,6 +136,8 @@ export default function Schedule() {
   const router = useRouter();
   const { data: session, update } = useSession();
   const userEmail = session?.user?.email || "";
+  const hasRegisteredPioneira = session?.user?.events?.includes(5);
+
   const handleRedirect = async (event: number) => {
     if (!userEmail) {
       signIn("google");
@@ -283,6 +285,7 @@ export default function Schedule() {
           <p ref={descriptionRef} className="text-lg text-gray-700 pr-36 font-[PoppinsRegular]">
             {events[activeIndex]?.description}
           </p>
+          {!hasRegisteredPioneira ? (
           <button
             key={activeIndex+1}
             className="text-white px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
@@ -291,7 +294,17 @@ export default function Schedule() {
             onClick={() => session?.user.events?.includes(activeIndex+1) ? handleDeregister(activeIndex+1) : handleRedirect(activeIndex+1)}
           >
             {session?.user.events?.includes(activeIndex+1) ? "Deregister" : "Register"}
-          </button>
+          </button> 
+          ): (
+            <button
+              key={activeIndex+1}
+              className="text-white px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+              style={{ background: gradientStyle }}
+              onClick={() => session?.user.events?.includes(activeIndex+1) ? toast.error("You cannot register again") : handleRedirect(activeIndex+1)}
+            >
+              {session?.user.events?.includes(activeIndex+1) ? "Registered" : "Register"}
+            </button>
+          )}
         </div>
       </div>
 

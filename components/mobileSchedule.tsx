@@ -61,6 +61,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
   const router = useRouter();
   const { data: session, update } = useSession();
   const userEmail = session?.user?.email || "";
+  const hasRegisteredPioneira = session?.user?.events?.includes(5);
 
   const handleRedirect = async (event: number): Promise<void> => {
     if (!userEmail) {
@@ -173,17 +174,28 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                   <p className="text-xl font-bold mb-2">{event.date}</p>
                   <h3 className="text-3xl font-bold mb-4">{event.name}</h3>
                   <p className="text-sm mb-6">{event.description}</p>
-                  
-                  <button
-                    className="w-full bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
-                             transition-all duration-300 ease-in-out transform hover:scale-105 
-                             active:scale-110 active:shadow-lg border-2 border-red-800"
-                    onClick={() => session?.user.events?.includes(idx + 1) 
-                      ? handleDeregister(idx + 1) 
-                      : handleRedirect(idx + 1)}
-                  >
-                    {session?.user.events?.includes(idx + 1) ? "Deregister" : "Register"}
-                  </button>
+                  {!hasRegisteredPioneira ? (
+                    <button
+                      className="w-full bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                              transition-all duration-300 ease-in-out transform hover:scale-105 
+                              active:scale-110 active:shadow-lg border-2 border-red-800"
+                      onClick={() => session?.user.events?.includes(idx + 1) 
+                        ? handleDeregister(idx + 1) 
+                        : handleRedirect(idx + 1)}
+                    >
+                      {session?.user.events?.includes(idx + 1) ? "Deregister" : "Register"}
+                    </button>
+                  ): (
+                    <button
+                      key={idx+1}
+                      className="w-full bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                              transition-all duration-300 ease-in-out transform hover:scale-105 
+                              active:scale-110 active:shadow-lg border-2 border-red-800"
+                      onClick={() => session?.user.events?.includes(idx+1) ? toast.error("You cannot register again") : handleRedirect(idx+1)}
+                    >
+                      {session?.user.events?.includes(idx+1) ? "Registered" : "Register"}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
