@@ -203,24 +203,51 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                   <h3 className="text-3xl font-bold mb-4">{event.name}</h3>
                   <p className="text-sm mb-6">{event.description}</p>
                   {!hasRegisteredPioneira ? (
-                    <button
-                      className="w-full flex justify-center bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                    <div>
+                      <button
+                        className="w-full flex justify-center bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
                               transition-all duration-300 ease-in-out transform hover:scale-105 
                               active:scale-110 active:shadow-lg border-2 border-red-800"
-                      onClick={() =>
-                        session?.user.events?.includes(idx + 1)
-                          ? handleDeregister(idx + 1)
-                          : handleRedirect(idx + 1)
-                      }
-                    >
-                      {isLoading ? (
-                        <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
-                      ) : session?.user.events?.includes(idx + 1) ? (
-                        "Deregister"
-                      ) : (
-                        "Register"
+                        onClick={() =>
+                          session?.user.events?.includes(idx + 1)
+                            ? handleDeregister(idx + 1)
+                            : handleRedirect(idx + 1)
+                        }
+                      >
+                        {isLoading ? (
+                          <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
+                        ) : session?.user.events?.includes(idx + 1) ? (
+                          "Deregister"
+                        ) : (
+                          "Register"
+                        )}
+                      </button>
+
+                      {idx === 0 && session?.user.events?.includes(1) && (
+                        <button
+                          className="w-full flex justify-center bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                             transition-all duration-300 ease-in-out transform hover:scale-105 
+                             active:scale-110 active:shadow-lg border-2 border-red-800"
+                          onClick={() => {
+                            setIsLoading(true);
+
+                            session?.user.event1TeamRole === null
+                              ? router.push("/events/event1/createTeam")
+                              : session?.user.event1TeamRole === 0
+                              ? router.push("/events/event1/leaderDashboard")
+                              : router.push("/events/event1/memberDashboard");
+                          }}
+                        >
+                          {isLoading ? (
+                            <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
+                          ) : session?.user.event1TeamRole === null ? (
+                            "Create Team"
+                          ) : (
+                            "Dashboard"
+                          )}
+                        </button>
                       )}
-                    </button>
+                    </div>
                   ) : (
                     <button
                       key={idx + 1}
