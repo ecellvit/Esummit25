@@ -67,7 +67,7 @@ export default function Footer() {
             <p className="mb-4">
               <a href="https://twitter.com/ecell_vit" className="hover:text-gray-500 flex items-center gap-2">
                 <FaXTwitter size={20} />
-                X (Twitter)
+                Twitter
               </a>
             </p>
             <p className="mb-4">
