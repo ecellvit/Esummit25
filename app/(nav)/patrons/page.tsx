@@ -73,13 +73,13 @@ const Page: React.FC = () => {
           pos={[
             <span key="director">Director,</span>,
             <br key="break"/>,
-            <span key="welfare">Student's Welfare</span>]}
+            <span key="welfare">Students' Welfare</span>]}
         />
-        <Card
+        {/* <Card
           name={"Dr. Ramesh Kumar C"}
           image={ramesh}
           pos={"Director, IST"}
-        />
+        /> */}
         <Card
         name={"Dr. PRADHEEP T"}
         image={pradheep}
