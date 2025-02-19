@@ -287,11 +287,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, } from "next/navigation";
 import logo from "/assets/whiteLogo.png";
+import logored from "@/assets/logo2.svg";
 import hamburgerIcon from "/assets/hamburger.svg";
 import closeIcon from "/assets/close.jpg";
 import SignInBtn from "./signinButton";
 
-const Navbar: React.FC = () => {
+interface NavBarProps {
+  bgColor?: string;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(true);
@@ -329,14 +334,14 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav
-        style={{ fontFamily: "AllRoundGothic, sans-serif" }}
+        style={{ fontFamily: "AllRoundGothic, sans-serif", backgroundColor: bgColor }}
         className={`
           fixed top-0 left-[50%] 
           w-[100vw] sm:w-[85vw] md:w-[80vw] lg:w-[65vw] h-[8vh]
-          rounded-xl border border-red-800 shadow-xl z-10 p-3 
+          rounded-b-2xl border border-red-800 shadow-xl z-10 p-3 
           flex items-center justify-between 
           transition-transform duration-300 transform -translate-x-1/2 
-          bg-transparent md:bg-black lg:bg-black opacity-80
+          bg-white md:bg-color opacity-80
           ${visible ? "translate-y-0" : "-translate-y-full"}
         `}
       >
@@ -344,9 +349,13 @@ const Navbar: React.FC = () => {
         <Link href="/" className="hidden md:block">
           <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
         </Link>
+        {/* <Link href="/" className="md:hidden">
+          <Image src={logored} alt="redLogo" width={30} height={30} className="cursor-pointer" />
+        </Link> */}
 
         {/* Mobile: Hamburger + Sign-In Button */}
-        <div className="md:hidden flex justify-between items-center relative w-full">
+        <div className="md:hidden flex justify-stretch items-center relative w-full">
+          <div>
           <button onClick={toggleMenu} className="focus:outline-none bg-transparent">
             {!isMenuOpen ? (
               <Image src={hamburgerIcon} alt="Menu" width={40} height={40} />
@@ -354,6 +363,12 @@ const Navbar: React.FC = () => {
               <Image src={closeIcon} alt="Close" width={40} height={40} />
             )}
           </button>
+          </div>
+          <div className="pr-10">
+          <Link href="/" className="block md:hidden">
+            <Image src={logored} alt="redLogo" width={30} height={30} className="cursor-pointer" />
+          </Link>
+          </div>
           <div className="absolute right-0 top-0">
             <SignInBtn  />
           </div>
@@ -386,7 +401,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-black opacity-90 backdrop-blur-3xl -lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
+        <div className="fixed inset-0 bg-black opacity-90 backdrop-brightness-75 -lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
           <button onClick={toggleMenu} className="text-3xl mb-8">
             &times;
           </button>
@@ -414,4 +429,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
+xport default NavBar;

@@ -43,7 +43,7 @@ export default function HomePage() {
   {!ideateCompleted && <IdeateComponent onComplete={() => setIdeateCompleted(true)} />}
   {ideateCompleted && (
     <>
-        <NavBar />
+        <NavBar bgColor="black" />
         <LampDemo/>
         <About />
         <Scroll />

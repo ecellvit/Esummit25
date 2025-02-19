@@ -1,3 +1,13 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5.99527 11.9905H41.9669V15.9874H5.99527V11.9905ZM5.99527 21.9826H41.9669V25.9795H5.99527V21.9826ZM5.99527 31.9748H41.9669V35.9716H5.99527V31.9748Z" fill="white"/>
+<g id="mdi:hamburger-menu">
+<path id="Vector" d="M5.99527 11.9905H41.9669V15.9874H5.99527V11.9905ZM5.99527 21.9826H41.9669V25.9795H5.99527V21.9826ZM5.99527 31.9748H41.9669V35.9716H5.99527V31.9748Z" fill="url(#paint0_linear_781_78)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_781_78" x1="23.9811" y1="11.9905" x2="23.9811" y2="35.9716" gradientUnits="userSpaceOnUse">
+<stop offset="0.0366666" stop-color="#6F0F0F"/>
+<stop offset="0.386667" stop-color="#C72423"/>
+<stop offset="0.656667" stop-color="#981B1B"/>
+<stop offset="1" stop-color="#510D0D"/>
+</linearGradient>
+</defs>
 </svg>
