@@ -68,7 +68,7 @@ const Page: React.FC = () => {
         <Card
           name={"Dr. Naiju C.D."}
           image={naiju}
-          pos={"Director, Student's Welfare"}
+          pos={["Director,",<br/>,"Student's Welfare"]}
         />
         <Card
           name={"Dr. Ramesh Kumar C"}
