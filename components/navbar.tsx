@@ -429,4 +429,4 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
   );
 };
 
-xport default NavBar;
+export default NavBar;
