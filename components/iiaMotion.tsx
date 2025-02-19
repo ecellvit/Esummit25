@@ -52,7 +52,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import bg from "@/assets/Noise & Texture.png";
+import bg from "@/assets/loadingsvg.svg";
 
 export default function IdeateComponent({
   onComplete,

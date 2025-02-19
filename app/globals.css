@@ -88,7 +88,7 @@ main {
 
 
 /* Animation for text transition */
-@keyframes textTransition {
+/* @keyframes textTransition {
   0% {
     opacity: 0;
     transform: translateY(20px);
@@ -101,22 +101,16 @@ main {
     opacity: 0;
     transform: translateY(-20px);
   }
+} */
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.8); } /* Fade in & slight zoom */
+  25% { opacity: 1; transform: scale(1.0); } /* Fully visible */
+  75% { opacity: 1; transform: scale(1.1); } /* Stay visible */
+  100% { opacity: 0; transform: scale(1.1); } /* Fade out & zoom out */
 }
 
-/* @keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(0px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-} */
+
 
 /* Custom scrollbar */
 html::-webkit-scrollbar {
