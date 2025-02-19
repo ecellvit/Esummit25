@@ -301,7 +301,7 @@ export function LampDemo() {
           }}
           className="bg-white bg-clip-text text-center font-medium tracking-tight text-transparent"
         >
-          <div className="justify-items-center p-5 pb-10 "><Image src={logo} alt="esummit logo"/></div>
+        <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-32"><Image src={logo} alt="esummit logo"/></div>
           <Image src={text} alt="esummit text" className="pb-20" />
         </motion.h1>
         </div>
@@ -434,7 +434,7 @@ export const LampContainer = ({
                 backgroundImage:
                   "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
               }}
-              className="absolute right-[49.9999%] bottom-[65vh] h-[120vh] w-[10vw] -scale-y-150 
+              className="absolute right-[49.9999%] bottom-[65vh] h-[120vh] w-[10vw] -scale-y-125 
             bg-gradient-conic from-red-600 via-transparent to-transparent text-white 
             [--conic-position:from_70deg_at_center_top] bg-to-red from to 
             sm:w-[20vw] sm:h-[80vh] sm:bottom-[60vh] 
@@ -460,7 +460,7 @@ export const LampContainer = ({
                 backgroundImage:
                   "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
               }}
-              className="absolute left-[50%] bottom-[65vh] h-[120vh] w-[10vw] -scale-y-150 
+              className="absolute left-[50%] bottom-[65vh] h-[120vh] w-[10vw] -scale-y-125 
             bg-gradient-conic from-transparent via-transparent to-red-600 text-white 
             [--conic-position:from_290deg_at_center_top] 
             sm:w-[20vw] sm:h-[80vh] sm:bottom-[60vh] 
