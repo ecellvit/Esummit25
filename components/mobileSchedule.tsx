@@ -68,14 +68,17 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
     setIsLoading(true);
     if (!userEmail) {
       signIn("google");
+      setIsLoading(false);
       return;
     }
     if (event === 5 && userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("VIT students can't register for this event");
+      setIsLoading(false);
       return;
     }
     if (event >= 1 && event <= 4 && !userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("Use your college email ID (@vitstudent.ac.in) to register");
+      setIsLoading(false);
       return;
     }
     try {
