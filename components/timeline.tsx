@@ -6,13 +6,11 @@ import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
-import img0 from "/assets/image (1).svg";
 import img1 from "/assets/image (1).svg";
 import img2 from "/assets/image (2).svg";
 import img3 from "/assets/image (3).svg";
 import img4 from "/assets/image (4).svg";
 import img5 from "/assets/image (5).svg";
-import img6 from "/assets/image (6).svg";
 import mob1 from "/assets/mobile (1).svg";
 import mob2 from "/assets/mobile (2).svg";
 import mob3 from "/assets/mobile (3).svg";
@@ -28,6 +26,7 @@ const events = [
     description:
       "Innoventure is a business simulation event where participants navigate through complex situations which will help them to hone their abilities in decision making and strategic planning, while sharpening their analytical thinking.",
     url: "/events/event1/createTeam",
+    img: "/assets/image (1).svg",
   },
   {
     name: "E-TALK",
@@ -35,6 +34,7 @@ const events = [
     description:
       "E-Talk brings together celebrated entrepreneurs to share their wisdom and expertise, inspiring the next generation of business builders. This engaging summit cultivates an energizing environment, leaving participants with the knowledge to pursue their entrepreneurial dreams with conviction. ",
     url: "/events/event2",
+    img: "/assets/image (2).svg",
   },
   {
     name: "MARKETING WORKSHOP",
@@ -42,13 +42,15 @@ const events = [
     description:
       "The Marketing Workshop equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
     url: "/events/event3",
+    img: "/assets/image (3).svg",
   },
   {
     name: "ACHIEVERS' CONCLAVE",
     date: "COMING SOON!",
     description:
-      "At Achievers’ Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
+      "At Achievers' Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
     url: "/events/event4",
+    img: "/assets/image (4).svg",
   },
   {
     name: "PIONEIRA",
@@ -56,17 +58,18 @@ const events = [
     description:
       "Pioneira is a platform for new business ventures, offering startups an exceptional opportunity to pitch their ideas to industry leaders and influential personalities while embarking on a journey to withstand market competition and build connections.",
     url: "/events/pioneira/detailsForm",
+    img: "/assets/image (5).svg",
   },
 ];
 
-const images = [img0, img1, img2, img3, img4, img5, img6];
+const images = [img1, img2, img3, img4, img5, img5];
 const mobile = [mob1, mob2, mob3, mob4, mob5];
 
 export default function Schedule() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollDelta, setScrollDelta] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const scrollThreshold = 100;
+  const scrollThreshold = 200;
   const containerRef = useRef(null);
   const dateRef = useRef(null);
   const nameRef = useRef(null);
@@ -272,6 +275,11 @@ export default function Schedule() {
     <div id="timeline">
       <MobileSchedule images={mobile} />
       <div className="hidden md:block">
+          <Image 
+            src={logo} 
+            alt="logo" 
+            className="absolute h-full opacity-50 z-0"
+          />
         <div className=" flex h-screen bg-white" ref={mainRef}>
           {/* Left Section */}
           <div className="w-2/3 flex flex-col pl-10 pr-4 py-auto relative">
@@ -288,7 +296,7 @@ export default function Schedule() {
                 SCHEDULE
               </h2>
               <div className="absolute left-1 bottom-2 w-2 bg-gray-300 h-[52%]"></div>
-              <ul className="space-y-1 relative font-[PoppinsRegular]">
+              <ul className="space-y-1 relative font-[PoppinsRegular] z-10">
                 {events.map((event, idx) => (
                   <li
                     key={idx}
@@ -302,11 +310,10 @@ export default function Schedule() {
                       ></div>
                     )}
                     <span
-                      className={`pl-8 ${
-                        activeIndex === idx
+                      className={`pl-8 ${activeIndex === idx
                           ? "text-black font-bold"
                           : "text-gray-400 hover:text-black"
-                      }`}
+                        }`}
                       onClick={() => setActiveIndex(idx)}
                     >
                       {event.name}
@@ -317,7 +324,7 @@ export default function Schedule() {
             </div>
 
             {/* Event Details */}
-            <div className="flex flex-col items-start mt-10 gap-4">
+            <div className="flex flex-col items-start mt-10 gap-4 z-10">
               <p
                 ref={dateRef}
                 className="text-2xl font-black text-black font-[GreaterTheory]"
@@ -343,53 +350,52 @@ export default function Schedule() {
               </p>
               {!hasRegisteredPioneira ? (
                 <div className="flex flex-row gap-2">
-                <button
-                  key={activeIndex + 1}
-                  className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
-                  style={{ background: gradientStyle }}
-                  // onClick={() => }
-                  onClick={() =>
-                    session?.user.events?.includes(activeIndex + 1)
-                      ? handleDeregister(activeIndex + 1)
-                      : handleRedirect(activeIndex + 1)
-                  }
-                >
-                  {isLoading ? (
-                    <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
-
-                  ) : session?.user.events?.includes(activeIndex + 1) ? (
-                    "Deregister"
-                  ) : (
-                    "Register"
-                  )}
-                </button>
-                
-                {activeIndex===0 && session?.user.events?.includes(1) && (
                   <button
-                  key={activeIndex}
-                  className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
-                  style={{ background: gradientStyle }}
-                  // onClick={() => }
-                  onClick={() =>{
-                    setIsLoading(true);
-                    
-                    session?.user.event1TeamRole===null ? router.push('/events/event1/createTeam'):(
-                      session?.user.event1TeamRole===0 ? router.push('/events/event1/leaderDashboard'):
-                      router.push('/events/event1/memberDashboard'))
-                  }
-                    
-                  }
-                >
-                  {isLoading ? (
-                    <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+                    key={activeIndex + 1}
+                    className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+                    style={{ background: gradientStyle }}
+                    // onClick={() => }
+                    onClick={() =>
+                      session?.user.events?.includes(activeIndex + 1)
+                        ? handleDeregister(activeIndex + 1)
+                        : handleRedirect(activeIndex + 1)
+                    }
+                  >
+                    {isLoading ? (
+                      <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
 
-                  ) : session?.user.event1TeamRole===null ? (
-                    "Create Team"
-                  ) : (
-                    "Dashboard"
+                    ) : session?.user.events?.includes(activeIndex + 1) ? (
+                      "Deregister"
+                    ) : (
+                      "Register"
+                    )}
+                  </button>
+
+                  {activeIndex === 0 && session?.user.events?.includes(1) && (
+                    <button
+                      key={activeIndex}
+                      className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+                      style={{ background: gradientStyle }}
+                      // onClick={() => }
+                      onClick={() => {
+                        setIsLoading(true);
+                        session?.user.event1TeamRole === null ? router.push('/events/event1/createTeam') : (
+                          session?.user.event1TeamRole === 0 ? router.push('/events/event1/leaderDashboard') :
+                            router.push('/events/event1/memberDashboard'))
+                      }
+
+                      }
+                    >
+                      {isLoading ? (
+                        <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+
+                      ) : session?.user.event1TeamRole === null ? (
+                        "Create Team"
+                      ) : (
+                        "Dashboard"
+                      )}
+                    </button>
                   )}
-                </button>
-                ) }
                 </div>
               ) : (
                 <button
@@ -415,27 +421,24 @@ export default function Schedule() {
           </div>
 
           {/* Right Section */}
-          <div className="w-1/3 relative overflow-hidden mr-16 h-full">
+          <div className="w-1/3 relative overflow-hidden mr-16 h-full z-5">
             <div
               ref={containerRef}
-              className="absolute top-0 left-0 w-full h-[300%]  transition-transform duration-500"
+              className="absolute top-0 left-0 w-full h-[300%] transition-transform duration-500"
             >
               {images.map((image, idx) => {
                 const imagePosition = idx - activeIndex;
-                let opacity = 0.6;
+                let opacity = 1;
                 let scale = 1;
                 let zIndex = 0;
-
-                if (imagePosition === 0) {
+                if (imagePosition <= 2) {
                   opacity = 1;
-                  scale = 1.05;
-                  zIndex = 1;
-                } else if (Math.abs(imagePosition) === 1) {
-                  opacity = 0.8;
                   scale = 1;
+                  zIndex = 1;
                 } else if (Math.abs(imagePosition) > 2) {
                   return null;
                 }
+
                 return (
                   <div
                     key={idx}
@@ -458,14 +461,14 @@ export default function Schedule() {
                         src={image}
                         alt={`Event ${idx + 1}`}
                         layout="fill"
-                        objectFit="cover"
+                        objectFit="fit"
                         style={{ transition: "opacity 0.3s" }}
                       />
                       <Image
                         src={image}
                         alt={`Event ${idx + 1}`}
                         layout="fill"
-                        objectFit="cover"
+                        objectFit="fit"
                         style={{ transition: "opacity 0.3s" }}
                       />
                     </div>
