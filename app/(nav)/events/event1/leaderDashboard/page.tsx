@@ -284,7 +284,7 @@ export default function Page() {
                 teamMembers.map((member, index) => (
                   <div
                     key={member.id || index}
-                    className="  rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4 opacity-100"
+                    className=" md:-[400px] w-[300px] rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex  items-center justify-between space-x-4 opacity-100"
                     style={{ backgroundImage: `url(${background.src})` }}
                   >
                     {/* Left Section - Member Details */}
@@ -311,7 +311,7 @@ export default function Page() {
                       )}
                     </div>
                     {/* Right Section - Member Image */}
-                    <div className="absolute right-0 top-0 w-1/2 h-full">
+                    <div className="absolute right-0 top-0 w-[35%] h-full">
                       <Image
                         src={picture}
                         alt={`${member.name}'s profile`}
@@ -322,37 +322,12 @@ export default function Page() {
                     </div>
                   </div>
 
-                  // <div
-                  //   key={member.id || index}
-                  //   className="bg-[#141B2B] opacity-85 rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-col items-center justify-between"
-                  //   style={{ backgroundImage: `url(${background.src})` }}
-                  // >
-                  //   <h2 className="text-lg font-bold mb-1 text-white">{member.name}</h2>
-                  //   <h2 className="text-lg font-bold mb-1 text-white"
-                  //   >
-                  //     Role: {member.event1TeamRole === 0 ? "Leader" : "Member"}
-                  //   </h2>
-                  //   <p className="text-xs mb-1 text-white">Reg. No.: {member.regNo}</p>
-                  //   <p className="text-xs text-white">Mobile No.: {member.mobNo}</p>
-
-                  //   <button
-                  //     className="mb-7 sm:landscape:w-[15vw] rounded-3xl bg-gradient-to-r from-purple-700 to-blue-700 text-center w-[50vw] h-[5vh] hover:scale-110 active:scale-95 transition-transform ease-in-out duration-300"
-                  //     onClick={() => {
-                  //       handleShowModal(index, member.event1TeamRole === 0 ? "leave" : "remove");
-                  //     }}
-                  //   >
-                  //     {member.event1TeamRole === 0 ? "Leave" : "Remove"}
-                  //   </button>
-                  // </div>
                 ))
               ) : (
                 <p className="text-white">No team members found.</p>
               )}
             </div>
 
-            {/* <button className="btn-primary mt-4" onClick={handleViewTeamCode}>
-              Add Member
-            </button> */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
               {/* Add Member Button */}
               {/* <button
