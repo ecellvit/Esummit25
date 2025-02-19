@@ -152,19 +152,20 @@ export default function Page() {
   const router = useRouter();
   const [teamName, setTeamName] = useState<string>("");
   const { data: session, update } = useSession();
-  const [loadingButton, setLoadingButton] = useState<string | null>(null);
+  const [loadingButton, setLoadingButton] = useState<Boolean>(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeamName(event.target.value);
   };
 
   const createTeam = async () => {
+    setLoadingButton(true);
     if (!teamName.trim()) {
       toast.error("Team name is required");
+      setLoadingButton(false);
       return;
     }
 
-    setLoadingButton("create");
 
     try {
       const response = await axios.post("/api/event1/createTeam", { teamName });
@@ -182,22 +183,24 @@ export default function Page() {
         axiosError.response?.data.message || "Error in creating the team"
       );
     } finally {
-      setLoadingButton(null);
+      setLoadingButton(false);
     }
   };
 
   const joinTeam = () => {
-    setLoadingButton("join");
+    setLoadingButton(true);
     router.push("joinTeam");
+    setLoadingButton(false);
   };
 
   const userConsent = () => {
-    setLoadingButton("consent");
+    setLoadingButton(true);
     router.push("userConsent");
+    setLoadingButton(false);
   };
 
   useEffect(() => {
-    setLoadingButton(null);
+    setLoadingButton(false);
   }, []);
 
   return (
@@ -205,6 +208,8 @@ export default function Page() {
       className="bg-cover bg-center bg-no-repeat flex items-center justify-center opacity-100"
       style={{ backgroundImage: `url(${bg.src})`, backgroundSize: "cover" }}
     >
+      
+      {loadingButton && <Loader/>}
       <div className="bg-white p-4 rounded-3xl flex flex-col items-center justify-center shadow-lg w-4/5 lg:w-3/5 lg:h-[90vh] opacity-100">
         <h2
           className="text-3xl lg:text-4xl font-bold text-center mb-12"
@@ -226,7 +231,6 @@ export default function Page() {
             style={{ boxShadow: "inset 0 4px 8px rgba(0, 0, 0, 0.2)" }}
             value={teamName}
             onChange={handleChange}
-            disabled={loadingButton === "create"}
           />
           <button
             className="w-4/5 md:w-3/5 lg:w-2/5 p-3 rounded-xl text-white text-lg font-semibold hover:scale-105 transition-transform flex items-center justify-center"
@@ -234,9 +238,8 @@ export default function Page() {
               background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
             }}
             onClick={createTeam}
-            disabled={loadingButton === "create"}
           >
-            {loadingButton === "create" ? <Loader /> : "Create your Own Team"}
+            Create your Own Team
           </button>
         </div>
 
@@ -256,9 +259,8 @@ export default function Page() {
             background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
           }}
           onClick={joinTeam}
-          disabled={loadingButton === "join"}
         >
-          {loadingButton === "join" ? <Loader /> : "Find Team with Code"}
+          Find Team with Code
         </button>
 
         <button
@@ -266,10 +268,12 @@ export default function Page() {
           style={{
             background: "linear-gradient(90deg, #611212 0%, #C72626 100%)",
           }}
-          onClick={userConsent}
-          disabled={loadingButton === "consent"}
+          onClick={()=>{
+            setLoadingButton(true);
+            userConsent();
+          }}
         >
-          {loadingButton === "consent" ? <Loader /> : "Don't Have a Team"}
+          Don't Have a Team
         </button>
       </div>
       <Toaster />

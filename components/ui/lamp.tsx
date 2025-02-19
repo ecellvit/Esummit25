@@ -279,7 +279,7 @@ export function LampDemo() {
         <div className="hidden md:block">       
           <motion.h1
           initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 0.8, y: -20 }}
+          whileInView={{ opacity: 0.8, y: -10 }}
           transition={{
             delay: 0.8,
             duration: 2,
@@ -301,8 +301,8 @@ export function LampDemo() {
           }}
           className="bg-white bg-clip-text text-center font-medium tracking-tight text-transparent"
         >
-          <div className="justify-items-center p-5 "><Image src={logo} alt="esummit logo"/></div>
-          <Image src={text} alt="esummit text"  />
+          <div className="justify-items-center p-5 pb-10 "><Image src={logo} alt="esummit logo"/></div>
+          <Image src={text} alt="esummit text" className="pb-20" />
         </motion.h1>
         </div>
       </LampContainer>

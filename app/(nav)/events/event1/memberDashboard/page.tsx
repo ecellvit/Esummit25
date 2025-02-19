@@ -338,7 +338,7 @@ export default function MemberDashboard() {
       {loading || isLeaving ? (
         <Loader />
       ) : (
-        <div className="w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center p-4 rounded-lg">
+        <div className="border w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center p-4 rounded-lg">
           <h1 className="text-2xl sm:text-3xl font-bold text-center drop-shadow-lg text-red-500">
             {teamName}
           </h1>
