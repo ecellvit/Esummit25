@@ -336,6 +336,7 @@ export default function Schedule() {
                 {events[activeIndex]?.description}
               </p>
               {!hasRegisteredPioneira ? (
+                <div className="flex flex-row gap-2">
                 <button
                   key={activeIndex + 1}
                   className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
@@ -356,6 +357,34 @@ export default function Schedule() {
                     "Register"
                   )}
                 </button>
+                
+                {activeIndex===0 && session?.user.events?.includes(1) && (
+                  <button
+                  key={activeIndex}
+                  className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+                  style={{ background: gradientStyle }}
+                  // onClick={() => }
+                  onClick={() =>{
+                    setIsLoading(true);
+                    
+                    session?.user.event1TeamRole===null ? router.push('/events/event1/createTeam'):(
+                      session?.user.event1TeamRole===0 ? router.push('/events/event1/leaderDashboard'):
+                      router.push('/events/event1/memberDashboard'))
+                  }
+                    
+                  }
+                >
+                  {isLoading ? (
+                    <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+
+                  ) : session?.user.event1TeamRole===null ? (
+                    "Create Team"
+                  ) : (
+                    "Dashboard"
+                  )}
+                </button>
+                ) }
+                </div>
               ) : (
                 <button
                   key={activeIndex + 1}
