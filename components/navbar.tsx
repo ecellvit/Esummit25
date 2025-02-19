@@ -287,7 +287,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, } from "next/navigation";
 import logo from "/assets/whiteLogo.svg";
-import logored from "@/assets/logo2.svg";
+import ecellwhite from "@/assets/Ecellwhitenavbar.svg";
 import hamburgerIcon from "/assets/hamburger.svg";
 import closeIcon from "/assets/close.jpg";
 import SignInBtn from "./signinButton";
@@ -298,6 +298,7 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
   const router = useRouter();
+  const lastScrollY = useRef(0);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(true);
   useEffect(() => {
@@ -331,32 +332,45 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
       }
     }
   }, [pathname]);
+  useEffect(() => {
+        const handleScroll = () => {
+          if (window.scrollY > lastScrollY.current) {
+            setVisible(false);
+          } else {
+            setVisible(true);
+          }
+          lastScrollY.current = window.scrollY;
+        };
+    
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+      }, []);
   return (
     <>
       <nav
         style={{ fontFamily: "AllRoundGothic, sans-serif", backgroundColor: bgColor }}
         className={`
-          fixed top-0 left-[50%] 
+          fixed top-0 md:top-4 left-[50%] 
           w-[100vw] sm:w-[85vw] md:w-[80vw] lg:w-[65vw] h-[8vh]
-          rounded-b-2xl border border-red-800 shadow-xl z-10 p-3 
+          rounded-b-lg md:rounded-2xl border border-red-800 shadow-xl z-50 p-3 
           flex items-center justify-between  
           transition-transform duration-300 transform -translate-x-1/2 
           bg-white md:bg-color opacity-80
-          ${visible ? "translate-y-0" : "-translate-y-full"}
+          ${visible ? "translate-y-0" : "-translate-y-44"}
         `}
       >
         {/* Logo (Hidden on Small Screens) */}
         <Link href="/" className="hidden md:block">
-          <Image src={logo} alt="WhiteLogo" width={115} height={115} className="cursor-pointer pl-2" />
+          <Image src={logo} alt="WhiteLogo" width={115} height={115} className="cursor-pointer pl-2 " />
         </Link>
         {/* <Link href="/" className="md:hidden">
           <Image src={logored} alt="redLogo" width={30} height={30} className="cursor-pointer" />
         </Link> */}
 
         {/* Mobile: Hamburger + Sign-In Button */}
-        <div className="md:hidden flex justify-stretch items-center relative w-full">
+        <div className="md:hidden flex justify-stretch items-center relative w-full ">
           <div>
-          <button onClick={toggleMenu} className="focus:outline-none bg-transparent">
+          <button onClick={toggleMenu} className="focus:outline-none bg-transparent pt-1">
             {!isMenuOpen ? (
               <Image src={hamburgerIcon} alt="Menu" width={40} height={40} />
             ) : (
@@ -366,10 +380,10 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
           </div>
           <div className="absolute left-1/2 transform -translate-x-1/2">
           <Link href="/" className="relative block md:hidden flex-grow justify-center">
-            <Image src={logored} alt="redLogo" width={30} height={30} className="cursor-pointer " />
+            <Image src={ecellwhite} alt="ecell whiteLogo" width={77} height={77} className="cursor-pointer pr-1 pb-1" />
           </Link>
           </div>
-          <div className="absolute right-0 top-0">
+          <div className="absolute right-0 ">
             <SignInBtn  />
           </div>
         </div>
@@ -401,7 +415,7 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-black opacity-90 backdrop-brightness-75 -lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
+        <div className="fixed inset-0 bg-black opacity-90 backdrop-brightness-75 -lg z-[20] flex flex-col items-center justify-center space-y-12 text-white text-lg">
           <button onClick={toggleMenu} className="text-3xl mb-8">
             &times;
           </button>

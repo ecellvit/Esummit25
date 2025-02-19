@@ -9,7 +9,7 @@ if (typeof window !== "undefined") {
 const FaqContent = () => {
   const faqs = [
     { id: 1, q: "Is individual registration allowed in Innoventure?", ans: "Yes, individual registration is allowed. If you do not have a team, you will be provided with one." },
-    { id: 2, q: "Is registration mandatory to attend the events?", ans: " Yes, you will have to register for all the events individually." },
+    { id: 2, q: "Is registration mandatory to attend the events?", ans: " Yes, It is mandatory to register for all the events individually on VTOP." },
     { id: 3, q: "Is there a registration fee to participate?", ans: "No, the event is free of cost." },
     { id: 4, q: "What is the duration of the event?", ans: "There are a total of 5 events in a span of 4 days. Each event will have different durations." },
     { id: 5, q: "Will OD’s be provided for the events?", ans: "Yes OD’s will be provided for the duration of the particular event." },
