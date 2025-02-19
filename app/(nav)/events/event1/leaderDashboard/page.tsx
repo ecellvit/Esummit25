@@ -279,7 +279,7 @@ export default function Page() {
             <button className="btn-primary btn-secondary font-[PoppinsRegular] uppercase  bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2" onClick={handleChangeTeamName} >
               Edit Team Name
             </button>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl px-8 py-10">
+            <div className="flex flex-grow flex-wrap flex-col items-center overflow-scroll md:overflow-hidden rounded-lg mt-4 p-4">
               {teamMembers.length > 0 ? (
                 teamMembers.map((member, index) => (
                   <div
@@ -374,7 +374,7 @@ export default function Page() {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+                  <span className="w-5 h-5 border-4 border-t-4 border-white border-t-transparent rounded-full animate-spin"></span>
                 ) : (
                   "Add Member"
                 )}
@@ -390,7 +390,7 @@ export default function Page() {
                 </button>
               ) : (
                 <button
-                  className="btn-secondary bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
+                  className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
                   onClick={() => handleShowModal(null, "leave")}
                 >
                   Leave Team
