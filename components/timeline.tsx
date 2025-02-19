@@ -13,6 +13,11 @@ import img3 from "/assets/image (3).jpg";
 import img4 from "/assets/image (4).jpg";
 import img5 from "/assets/image (5).jpg";
 import img6 from "/assets/image (6).jpg";
+import mob1 from "/assets/mobile (1).svg";
+import mob2 from "/assets/mobile (2).svg";
+import mob3 from "/assets/mobile (3).svg";
+import mob4 from "/assets/mobile (4).svg";
+import mob5 from "/assets/mobile (5).svg";
 import logo from "/assets/fpback.svg";
 import MobileSchedule from "./mobileSchedule";
 
@@ -55,6 +60,7 @@ const events = [
 ];
 
 const images = [img0, img1, img2, img3, img4, img5, img6];
+const mobile = [mob1, mob2, mob3, mob4, mob5];
 
 export default function Schedule() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -264,7 +270,7 @@ export default function Schedule() {
     "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
   return (
     <div id="timeline">
-      <MobileSchedule images={images} />
+      <MobileSchedule images={mobile} />
       <div className="hidden md:block">
         <div className=" flex h-screen bg-white" ref={mainRef}>
           {/* Left Section */}
