@@ -9,4 +9,5 @@ export const AuthProvider=({children}: {children: ReactNode})=>{
         {children}
       </SessionProvider>
     )
+    
 }
