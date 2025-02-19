@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "E-Summit'25",
   description: "Entrepreneurship: Turning The Impossible Into The Inevitable.",
   icons: {
-    icon: logo.src, // using the imported logo's src
+    icon: "/favicon.ico", // using the imported logo's src
   },
 };
 

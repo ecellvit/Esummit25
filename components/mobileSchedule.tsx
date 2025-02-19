@@ -62,22 +62,29 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
   const { data: session, update } = useSession();
   const userEmail = session?.user?.email || "";
   const hasRegisteredPioneira = session?.user?.events?.includes(5);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const handleRedirect = async (event: number): Promise<void> => {
+    setIsLoading(true);
     if (!userEmail) {
       signIn("google");
+      setIsLoading(false);
       return;
     }
     if (event === 5 && userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("VIT students can't register for this event");
+      setIsLoading(false);
       return;
     }
     if (event >= 1 && event <= 4 && !userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("Use your college email ID (@vitstudent.ac.in) to register");
+      setIsLoading(false);
       return;
     }
     try {
-      const response = await axios.post("/api/eventRegistration/register", { event });
+      const response = await axios.post("/api/eventRegistration/register", {
+        event,
+      });
 
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -87,38 +94,56 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
           newUserEvents.push(2);
           newUserEvents.push(4);
         }
-        await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+        await update({
+          ...session,
+          user: { ...session?.user, events: newUserEvents },
+        });
 
-        router.push(event === 1 ? `/events/event${event}/createTeam` : "/MySchedule");
+        router.push(
+          event === 1 ? `/events/event${event}/createTeam` : "/#timeline"
+        );
       }
     } catch (error) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 402) {
         toast.error("Please fill out your details first");
         if (event === 5) {
-          router.push('/events/pioneira/detailsForm');
+          router.push("/events/pioneira/detailsForm");
           return;
         }
-        router.push('/userDetails');
+        router.push("/userDetails");
         return;
       }
       toast.error("An error occurred while registering.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDeregister = async (event: number): Promise<void> => {
+    setIsLoading(true);
     try {
-      const response = await axios.post("/api/eventRegistration/deregister", { event: Number(event) });
+      const response = await axios.post("/api/eventRegistration/deregister", {
+        event: Number(event),
+      });
 
       if (response.status === 201 || response.status === 202) {
         toast.success(response.data.message);
         if (event === 5) {
-          await update({ ...session, user: { ...session?.user, events: [], hasFilledDetails: false } });
+          await update({
+            ...session,
+            user: { ...session?.user, events: [], hasFilledDetails: false },
+          });
         } else {
-          const newUserEvents = session?.user.events?.filter(e => e !== event);
-          await update({ ...session, user: { ...session?.user, events: newUserEvents } });
+          const newUserEvents = session?.user.events?.filter(
+            (e) => e !== event
+          );
+          await update({
+            ...session,
+            user: { ...session?.user, events: newUserEvents },
+          });
         }
-        router.push('/');
+        router.push("/#timeline");
       } else {
         throw new Error("Error processing event deregistration");
       }
@@ -128,32 +153,30 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
         toast.error("Please leave your team before deregistering.");
       } else if (axiosError.response?.status === 401) {
         toast.error("Please fill out your details first");
-        router.push('/userDetails');
+        router.push("/userDetails");
       } else {
         toast.error("An error occurred while deregistering.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const gradientStyle = "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
+  const gradientStyle =
+    "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
 
   return (
     <div className="md:hidden bg-white w-full">
       <div className="px-4 py-6 w-full">
         <h2
           className="text-4xl font-bold mb-6"
-          style={{
-            background: gradientStyle,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
         >
           SCHEDULE
         </h2>
-        
+
         <div className="space-y-6 bg-white w-full">
           {events.map((event, idx) => (
-            <div 
+            <div
               key={idx}
               className="relative rounded-lg w-full overflow-hidden min-h-[400px] bg-white"
             >
@@ -164,36 +187,81 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                   alt={event.name}
                   layout="fill"
                   objectFit="cover"
-                  className="filter blur-sm brightness-50"
+                  className="filter brightness-75"
                 />
               </div>
-              
+
               {/* Content */}
               <div className="relative z-10 p-6">
                 <div className="text-white">
-                  <p className="text-xl font-bold mb-2">{event.date}</p>
+                  <p className="text-lg font-bold mb-2">{event.date}</p>
                   <h3 className="text-3xl font-bold mb-4">{event.name}</h3>
-                  <p className="text-sm mb-6">{event.description}</p>
+                  <p className="text-sm mb-6 text-justify">{event.description}</p>
                   {!hasRegisteredPioneira ? (
-                    <button
-                      className="w-full bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                    <div>
+                      <button
+                        className="w-full flex justify-center bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
                               transition-all duration-300 ease-in-out transform hover:scale-105 
                               active:scale-110 active:shadow-lg border-2 border-red-800"
-                      onClick={() => session?.user.events?.includes(idx + 1) 
-                        ? handleDeregister(idx + 1) 
-                        : handleRedirect(idx + 1)}
-                    >
-                      {session?.user.events?.includes(idx + 1) ? "Deregister" : "Register"}
-                    </button>
-                  ): (
+                        onClick={() =>
+                          session?.user.events?.includes(idx + 1)
+                            ? handleDeregister(idx + 1)
+                            : handleRedirect(idx + 1)
+                        }
+                      >
+                        {isLoading ? (
+                          <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
+                        ) : session?.user.events?.includes(idx + 1) ? (
+                          "Deregister"
+                        ) : (
+                          "Register"
+                        )}
+                      </button>
+
+                      {idx === 0 && session?.user.events?.includes(1) && (
+                        <button
+                          className="w-full flex justify-center bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                             transition-all duration-300 ease-in-out transform hover:scale-105 
+                             active:scale-110 active:shadow-lg border-2 border-red-800"
+                          onClick={() => {
+                            setIsLoading(true);
+
+                            session?.user.event1TeamRole === null
+                              ? router.push("/events/event1/createTeam")
+                              : session?.user.event1TeamRole === 0
+                              ? router.push("/events/event1/leaderDashboard")
+                              : router.push("/events/event1/memberDashboard");
+                          }}
+                        >
+                          {isLoading ? (
+                            <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
+                          ) : session?.user.event1TeamRole === null ? (
+                            "Create Team"
+                          ) : (
+                            "Dashboard"
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  ) : (
                     <button
-                      key={idx+1}
-                      className="w-full bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                      key={idx + 1}
+                      className="w-full flex justify-center bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
                               transition-all duration-300 ease-in-out transform hover:scale-105 
                               active:scale-110 active:shadow-lg border-2 border-red-800"
-                      onClick={() => session?.user.events?.includes(idx+1) ? toast.error("You cannot register again") : handleRedirect(idx+1)}
+                      onClick={() =>
+                        session?.user.events?.includes(idx + 1)
+                          ? toast.error("You cannot register again")
+                          : handleRedirect(idx + 1)
+                      }
                     >
-                      {session?.user.events?.includes(idx+1) ? "Registered" : "Register"}
+                      {isLoading ? (
+                        <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
+                      ) : session?.user.events?.includes(idx + 1) ? (
+                        "Registered"
+                      ) : (
+                        "Register"
+                      )}
                     </button>
                   )}
                 </div>

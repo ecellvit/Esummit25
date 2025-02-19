@@ -268,8 +268,9 @@ import CountdownTimer from "../counter";
 import RegisterBtn from "@/components/registernowButton";
 import EsummitHeroText from "../Esummitherotext";
 import text from "@/assets/maintext.svg";
-import text1 from "@/assets/Variant3.svg"
+import text1 from "@/assets/FINAL.svg"
 import logo from "@/assets/herosectionlogo.svg";
+import GodRays from "../gif";
 
 export function LampDemo() {
   return (
@@ -336,8 +337,8 @@ export const LampContainer = ({
               backgroundImage:
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
-            className="absolute right-[50%] bottom-[50%] h-[120vh] w-[10vw] -scale-y-150 
-            bg-gradient-conic from-red-600 via-transparent to-transparent text-white 
+            className="absolute right-[50%] bottom-[65vh] h-[120vh] w-[10vw] -scale-y-150 
+            bg-gradient-conic from-red-700 via-transparent to-transparent text-white 
             [--conic-position:from_70deg_at_center_top] 
             sm:w-[20vw] sm:h-[80vh] sm:bottom-[60vh] 
             md:w-[25rem] md:h-[70vh] md:bottom-[50vh]"
@@ -363,7 +364,7 @@ export const LampContainer = ({
                 "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
             }}
             className="absolute left-1/2 bottom-[65vh] h-[120vh] w-[10vw] -scale-y-150 
-            bg-gradient-conic from-transparent via-transparent to-red-600 text-white t
+            bg-gradient-conic from-transparent via-transparent to-red-700 opacity-80 text-white t
             [--conic-position:from_290deg_at_center_top] 
             sm:w-[20vw] sm:h-[80vh] sm:bottom-[60vh] 
             md:w-[25rem] md:h-[70vh] md:bottom-[50vh]"
@@ -380,18 +381,21 @@ export const LampContainer = ({
           </motion.div>
 
           {/* Red blurred circle in center */}
-          <div
-            className="absolute z-50 h-10 w-[20vw] -translate-y-1/2 rounded-full bg-red-600 opacity-50 blur-3xl scale-y-[2] 
-            sm:w-[15vw] sm:h-[5vh] md:w-[20rem] md:h-[8rem]"
+          <motion.div
+          initial={{ width: "10vw" }}
+          whileInView={{ width: "30vw" }}
+          transition={{ delay: 0.3, duration: 1, ease: "easeInOut" }}
+            className="absolute z-50 h-[10vh] w-[40vw]  translate-y-1/3 rounded-full bg-gradient-to-t from-[#FF2222] via-[#C22524] to-red-600 
+            scale-x-[2] opacity-80 blur-3xl  sm:w-[15vw] sm:h-[5vh] md:w-[20rem] md:h-[10rem] lg:w-[24rem] lg:h-[9rem]"
           />
 
-          {/* Cyan blur */}
+          {/* Cyan blur */} 
           <motion.div
             initial={{ width: "10vw" }}
             whileInView={{ width: "20vw" }}
             transition={{ delay: 0.3, duration: 1, ease: "easeInOut" }}
             className="absolute z-30 h-[10vh] w-[10vw] top-[10vh] translate-y-[30vh]  
-            bg-gradient-to-t  blur-xl scale-y-[4] scale-x-[4] opacity-70
+            bg-gradient-conic blur-xl scale-y-[2] scale-x-[3] opacity-30
             sm:w-[15vw] sm:h-[5vh] sm:top-[15vh] 
             md:w-[15vw] md:h-[6rem]"
           />
@@ -406,8 +410,8 @@ export const LampContainer = ({
       {/* Register Button */}
       <div className="flex flex-col justify-center items-center absolute bottom-[15vh] w-full sm:bottom-[8vh] md:bottom-[20vh]">
         <RegisterBtn />
-        <p className="text-red-600 text-center text-xs font-thin isolate pb-6 sm:mt-4 sm:p-0 md:mt-0">
-          VITV students please log in with your VIT email ID*
+        <p className="text-red-600 flex justify-center md:text-center md:text-xs font-[PoppinsSemiBold] isolate pb-6 sm:mt-4 sm:p-0 md:mt-0">
+          VIT'V students please log in with your VIT email ID*
         </p>
       </div>
 
@@ -498,7 +502,7 @@ export const LampContainer = ({
         </div>
 
         {/* Register Button */}
-        <div className="flex flex-col justify-center items-center absolute bottom-[15vh] w-full sm:bottom-[8vh] md:bottom-[20vh]">
+        <div className="flex flex-col justify-center items-center absolute bottom-[18vh] w-full sm:bottom-[5vh] md:bottom-[20vh]">
           <RegisterBtn />
           <p className="text-red-600 text-center text-xs font-thin isolate pb-6 sm:mt-4 sm:p-0 md:mt-0">
             VITV students please log in with your VIT email ID*

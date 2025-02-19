@@ -250,7 +250,7 @@ export default function Page() {
 
   return (
     <div
-      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black opacity-100"
+      className="relative flex flex-col items-center bg-cover h-full  w-full bg-center text-black opacity-100 overflow-auto min-h-screen"
       style={{ backgroundImage: `url(${background.src})` }}
     >
       <Navbar />
@@ -263,7 +263,7 @@ export default function Page() {
       ) : (
         <>
           <div
-            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center p-4 rounded-lg "
+            className=" w-full  sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center rounded-lg "
           // style={{
           //   backgroundImage: `url(${background1.src})`,
           //   backgroundSize: "cover",
@@ -271,7 +271,7 @@ export default function Page() {
           //   backgroundColor: "rgba(255, 255, 255, 0.5)",
           // }}
           >
-            <h1 className="text-2xl sm:text-4xl  font-[GreaterTheory] mb-4 text-center drop-shadow-lg text-red-700">
+            <h1 className="text-2xl sm:text-4xl  font-[GreaterTheory] mb-4 pt-[10vh] text-center drop-shadow-lg text-red-700">
               {teamName || "Team Name Not Found"}
             </h1>
 
@@ -349,7 +349,7 @@ export default function Page() {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+                  <span className="w-5 h-5 border-4 border-t-4 border-white border-t-transparent rounded-full animate-spin"></span>
                 ) : (
                   "Add Member"
                 )}
@@ -365,7 +365,7 @@ export default function Page() {
                 </button>
               ) : (
                 <button
-                  className="btn-secondary bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
+                  className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
                   onClick={() => handleShowModal(null, "leave")}
                 >
                   Leave Team
