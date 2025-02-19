@@ -170,11 +170,6 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
       <div className="px-4 py-6 w-full">
         <h2
           className="text-4xl font-bold mb-6"
-          style={{
-            background: gradientStyle,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
         >
           SCHEDULE
         </h2>
@@ -192,16 +187,16 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                   alt={event.name}
                   layout="fill"
                   objectFit="cover"
-                  className="filter blur-sm brightness-50"
+                  className="filter brightness-75"
                 />
               </div>
 
               {/* Content */}
               <div className="relative z-10 p-6">
                 <div className="text-white">
-                  <p className="text-xl font-bold mb-2">{event.date}</p>
+                  <p className="text-lg font-bold mb-2">{event.date}</p>
                   <h3 className="text-3xl font-bold mb-4">{event.name}</h3>
-                  <p className="text-sm mb-6">{event.description}</p>
+                  <p className="text-sm mb-6 text-justify">{event.description}</p>
                   {!hasRegisteredPioneira ? (
                     <div>
                       <button

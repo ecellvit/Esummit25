@@ -40,7 +40,7 @@ const Page: React.FC = () => {
         />
       </div>
       <div className="flex flex-wrap justify-center pt-6">
-        <Card name={"Dr. G.V. Selvam"} image={selvam} pos={"Vice Chancellor"} />
+        <Card name={"Dr. G.V. Selvam"} image={selvam} pos={"Vice President"} />
         <Card
           name={"Dr. Sekar Viswanathan"}
           image={sekar}
@@ -61,14 +61,17 @@ const Page: React.FC = () => {
         <Card
           name={"Dr. Partha Sharathi Mallick"}
           image={partha}
-          pos={"Pro Vice Chancellor"}
+          pos={"Pro-Vice Chancellor"}
         />
       </div>
       <div className="flex flex-wrap justify-center pt-6">
         <Card
           name={"Dr. Naiju C.D."}
           image={naiju}
-          pos={"Director of Student Welfare"}
+          pos={[
+            <span key="director">Director,</span>,
+            <br key="break"/>,
+            <span key="welfare">Student's Welfare</span>]}
         />
         <Card
           name={"Dr. Ramesh Kumar C"}
@@ -76,10 +79,16 @@ const Page: React.FC = () => {
           pos={"Director, IST"}
         />
         <Card
-          name={"Dr. PRADHEEP T	"}
-          image={pradheep}
-          pos={"Faculty Coordinator, E-Cell VIT"}
-        />
+        name={"Dr. PRADHEEP T"}
+        image={pradheep}
+        pos={[
+        <span key="faculty">Faculty Coordinator,</span>,
+         <br key="break-p" />,
+         <span key="ecell">E-Cell VIT</span>,
+  ]}
+/>
+
+
       </div>
      
     </section>
