@@ -11,20 +11,22 @@ import sekar from "@/public/assets/patrons/sekar.png";
 import selvam from "@/public/assets/patrons/selvam.png";
 import pradheep from "@/public/assets/patrons/pradheep.png";
 import barathi from "@/public/assets/patrons/barathi.jpg";
+import bg from "/assets/scrollBg.svg";
 
 
 
 const Page: React.FC = () => {
   return (
-    <section className="bg-[#0E0E0E] pt-20 px-16 min-h-screen font-poppins p-0 m-0 box-border">
-      <h1 className="uppercase mt-10 mb-5 text-4xl md:text-5xl lg:text-7xl text-center font-bold bg-gradient-to-br  bg-clip-text text-transparent bg-white" 
+    <section className="bg-[#0E0E0E] pt-20 px-16 min-h-screen font-poppins p-0 m-0  bg-cover bg-center" 
+    style={{ backgroundImage: `url(${bg.src})` }}>
+      <h1 className="uppercase mt-10 mb-5 text-4xl md:text-5xl lg:text-7xl text-center font-bold bg-gradient-to-br  bg-clip-text text-transparent bg-black" 
      style={{
      
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
     }}
       >
-        <span className="text-white">our</span> patrons
+        <span className="text-black">our</span> patrons
       </h1>
       <div className="flex flex-col items-center pt-6">
     
