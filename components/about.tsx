@@ -24,13 +24,13 @@ export default function about() {
             ref={sectionRef}
             className="relative w-full h-[140vh] bg-[#0f0000]"
         >
-            <div className="sticky top-0 left-0 w-full h-[50vh] flex flex-col items-center justify-center z-0 bg-gradient-to-b from-[#1E1B1A] to-[#0f0000]">
+            <div className="sticky top-0 left-0 w-full h-[40vh] flex flex-col items-center justify-center z-0 bg-gradient-to-b from-[#1E1B1A] to-[#0f0000]">
                 <div className="absolute inset-0 flex items-center overflow-hidden whitespace-nowrap">
                     <div className="flex w-max animate-speakersMarquee">
                         {[...Array(2)].map((_, i) => (
                             <h1
                                 key={i}
-                                className="uppercase text-[8rem] md:text-[10rem] lg:text-[12rem] font-[GreaterTheory] tracking-wide leading-none text-center pb-6 mx-10"
+                                className="uppercase text-[8rem] md:text-[10rem] lg:text-[12rem] font-[GreaterTheory] tracking-wide leading-none text-center mx-10"
                                 style={{
                                     color: "transparent",
                                     WebkitTextStroke: "2px rgba(255, 255, 255, 0.28)",
@@ -45,14 +45,14 @@ export default function about() {
                 <h1
                     className="relative uppercase text-3xl md:text-6xl lg:text-7xl font-[GreaterTheory] text-center z-0 text-white px-5"
                 >
-                    ABOUT E-SUMMIT'25
+                    ABOUT E-SUMMIT
                 </h1>
             </div>
 
             {/* Coming Soon Section */}
             <div
                 ref={comingSoonRef}
-                className="absolute top-[40vh] md:top-[50vh] h-[92vh] md:h-[80vh] w-full flex md:items-center justify-center rounded-t-3xl bg-white z-1"
+                className="absolute top-[40vh] md:top-[50vh] h-[92vh] md:h-[80vh] w-full flex md:items-center justify-center rounded-t-3xl bg-white z-10"
             >
                 <div className="flex flex-col md:flex-row w-full px-10 pt-12 md:pt-0">
                     {/* Left Side: Logo */}
