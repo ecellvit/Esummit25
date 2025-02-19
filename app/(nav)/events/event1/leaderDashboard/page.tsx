@@ -374,7 +374,7 @@ export default function Page() {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <span className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></span>
+                  <span className="w-5 h-5 border-4 border-t-4 border-white border-t-transparent rounded-full animate-spin"></span>
                 ) : (
                   "Add Member"
                 )}
@@ -390,7 +390,7 @@ export default function Page() {
                 </button>
               ) : (
                 <button
-                  className="btn-secondary bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
+                  className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
                   onClick={() => handleShowModal(null, "leave")}
                 >
                   Leave Team
