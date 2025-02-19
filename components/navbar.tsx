@@ -286,7 +286,7 @@ import React, { useState, useEffect, useRef, } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, } from "next/navigation";
-import logo from "/assets/whiteLogo.png";
+import logo from "/assets/whiteLogo.svg";
 import logored from "@/assets/logo2.svg";
 import hamburgerIcon from "/assets/hamburger.svg";
 import closeIcon from "/assets/close.jpg";
@@ -339,7 +339,7 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
           fixed top-0 left-[50%] 
           w-[100vw] sm:w-[85vw] md:w-[80vw] lg:w-[65vw] h-[8vh]
           rounded-b-2xl border border-red-800 shadow-xl z-10 p-3 
-          flex items-center justify-between 
+          flex items-center justify-between  
           transition-transform duration-300 transform -translate-x-1/2 
           bg-white md:bg-color opacity-80
           ${visible ? "translate-y-0" : "-translate-y-full"}
@@ -347,7 +347,7 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
       >
         {/* Logo (Hidden on Small Screens) */}
         <Link href="/" className="hidden md:block">
-          <Image src={logo} alt="WhiteLogo" width={30} height={30} className="cursor-pointer" />
+          <Image src={logo} alt="WhiteLogo" width={115} height={115} className="cursor-pointer pl-2" />
         </Link>
         {/* <Link href="/" className="md:hidden">
           <Image src={logored} alt="redLogo" width={30} height={30} className="cursor-pointer" />
@@ -364,9 +364,9 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
             )}
           </button>
           </div>
-          <div className="pr-10">
-          <Link href="/" className="block md:hidden">
-            <Image src={logored} alt="redLogo" width={30} height={30} className="cursor-pointer" />
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Link href="/" className="relative block md:hidden flex-grow justify-center">
+            <Image src={logored} alt="redLogo" width={30} height={30} className="cursor-pointer " />
           </Link>
           </div>
           <div className="absolute right-0 top-0">
