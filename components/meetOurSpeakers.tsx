@@ -62,7 +62,7 @@ const MeetOurSpeakers: React.FC = () => {
       {/* Coming Soon Section */}
       <div
         ref={comingSoonRef}
-        className="absolute top-[50vh] h-[100vh] w-full flex items-center justify-center rounded-t-3xl bg-gradient-to-b from-[#510D0D] to-[#C72423] z-1 "
+        className="absolute top-[50vh] h-[100vh] w-full flex items-center justify-center rounded-t-3xl bg-gradient-to-b from-[#510D0D] to-[#C72423] z-10"
       >
         <h1
           className="uppercase text-5xl md:text-6xl lg:text-7xl text-center text-white font-[GreaterTheory]"

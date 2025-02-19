@@ -6,13 +6,18 @@ import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
-import img0 from "/assets/image (1).jpg";
-import img1 from "/assets/image (1).jpg";
-import img2 from "/assets/image (2).jpg";
-import img3 from "/assets/image (3).jpg";
-import img4 from "/assets/image (4).jpg";
-import img5 from "/assets/image (5).jpg";
-import img6 from "/assets/image (6).jpg";
+import img0 from "/assets/image (1).svg";
+import img1 from "/assets/image (1).svg";
+import img2 from "/assets/image (2).svg";
+import img3 from "/assets/image (3).svg";
+import img4 from "/assets/image (4).svg";
+import img5 from "/assets/image (5).svg";
+import img6 from "/assets/image (6).svg";
+import mob1 from "/assets/mobile (1).svg";
+import mob2 from "/assets/mobile (2).svg";
+import mob3 from "/assets/mobile (3).svg";
+import mob4 from "/assets/mobile (4).svg";
+import mob5 from "/assets/mobile (5).svg";
 import logo from "/assets/fpback.svg";
 import MobileSchedule from "./mobileSchedule";
 
@@ -25,7 +30,7 @@ const events = [
     url: "/events/event1/createTeam",
   },
   {
-    name: "E TALK",
+    name: "E-TALK",
     date: "COMING SOON!",
     description:
       "E-Talk brings together celebrated entrepreneurs to share their wisdom and expertise, inspiring the next generation of business builders. This engaging summit cultivates an energizing environment, leaving participants with the knowledge to pursue their entrepreneurial dreams with conviction. ",
@@ -39,7 +44,7 @@ const events = [
     url: "/events/event3",
   },
   {
-    name: "ACHIEVERS CONCLAVE",
+    name: "ACHIEVERS' CONCLAVE",
     date: "COMING SOON!",
     description:
       "At Achievers’ Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
@@ -55,6 +60,7 @@ const events = [
 ];
 
 const images = [img0, img1, img2, img3, img4, img5, img6];
+const mobile = [mob1, mob2, mob3, mob4, mob5];
 
 export default function Schedule() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -159,14 +165,17 @@ export default function Schedule() {
     setIsLoading(true);
     if (!userEmail) {
       signIn("google");
+      setIsLoading(false);
       return;
     }
     if (event === 5 && userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("VIT'V students can't register for this event");
+      setIsLoading(false);
       return;
     }
     if (event >= 1 && event <= 4 && !userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("Use your college email ID (@vitstudent.ac.in) to register");
+      setIsLoading(false);
       return;
     }
     try {
@@ -261,7 +270,7 @@ export default function Schedule() {
     "linear-gradient(180deg, #6F0F0F 3.67%, #C72423 38.67%, #981B1B 65.67%, #510D0D 100%)";
   return (
     <div id="timeline">
-      <MobileSchedule images={images} />
+      <MobileSchedule images={mobile} />
       <div className="hidden md:block">
         <div className=" flex h-screen bg-white" ref={mainRef}>
           {/* Left Section */}
@@ -333,6 +342,7 @@ export default function Schedule() {
                 {events[activeIndex]?.description}
               </p>
               {!hasRegisteredPioneira ? (
+                <div className="flex flex-row gap-2">
                 <button
                   key={activeIndex + 1}
                   className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
@@ -353,6 +363,34 @@ export default function Schedule() {
                     "Register"
                   )}
                 </button>
+                
+                {activeIndex===0 && session?.user.events?.includes(1) && (
+                  <button
+                  key={activeIndex}
+                  className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+                  style={{ background: gradientStyle }}
+                  // onClick={() => }
+                  onClick={() =>{
+                    setIsLoading(true);
+                    
+                    session?.user.event1TeamRole===null ? router.push('/events/event1/createTeam'):(
+                      session?.user.event1TeamRole===0 ? router.push('/events/event1/leaderDashboard'):
+                      router.push('/events/event1/memberDashboard'))
+                  }
+                    
+                  }
+                >
+                  {isLoading ? (
+                    <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+
+                  ) : session?.user.event1TeamRole===null ? (
+                    "Create Team"
+                  ) : (
+                    "Dashboard"
+                  )}
+                </button>
+                ) }
+                </div>
               ) : (
                 <button
                   key={activeIndex + 1}

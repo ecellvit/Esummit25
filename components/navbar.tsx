@@ -300,22 +300,6 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(true);
-  const lastScrollY = useRef<number>(0);
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (window.scrollY > lastScrollY.current) {
-  //       setVisible(false);
-  //     } else {
-  //       setVisible(true);
-  //     }
-  //     lastScrollY.current = window.scrollY;
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, []);
-
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
     return () => {
@@ -326,33 +310,27 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  const pathname = usePathname(); // Get the current page
-
+  const pathname = usePathname();
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, id: string) => {
     e.preventDefault();
-  
     const target = document.getElementById(id);
     if (target) {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
-  
-    // If not on home page, navigate to home first
     router.push(`/#${id}`);
   };
   useEffect(() => {
-    const hash = window.location.hash.substring(1); // Get the section ID from URL
+    const hash = window.location.hash.substring(1);
     if (hash) {
       const target = document.getElementById(hash);
       if (target) {
         setTimeout(() => {
           target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 300); // Delay ensures the section is rendered first
+        }, 300);
       }
     }
   }, [pathname]);
-
   return (
     <>
       <nav
@@ -410,10 +388,9 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
           <Link href="/patrons" className="text-white hover:text-red-400">
             OUR PATRONS
           </Link>
-          {/* ✅ Fix for "CONTACT US" - Uses smooth scroll */}
-          <Link href="/#faq" scroll={false} onClick={(e) => handleScroll(e, "faq")} className="text-white hover:text-red-400">
+          {/* <Link href="/#foot" scroll={false} onClick={(e) => handleScroll(e, "foot")} className="text-white hover:text-red-400">
             CONTACT US
-          </Link>
+          </Link> */}
         </div>
 
         {/* Desktop Sign-In Button */}
@@ -442,7 +419,7 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = "black" }) => {
               OUR PATRONS
             </Link>
             {/* ✅ Fix for "CONTACT US" - Smooth scrolling */}
-            <Link href="/#faq" onClick={toggleMenu}>
+            <Link href="/#foot" onClick={toggleMenu}>
               CONTACT US
             </Link>
           </div>
