@@ -118,7 +118,7 @@ const MySchedule = () => {
                 }
               }}
             >
-              Register further events
+              Register for further events
             </button>
           )}
           </div>
