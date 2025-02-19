@@ -250,7 +250,7 @@ export default function Page() {
 
   return (
     <div
-      className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center p-4 text-black opacity-100"
+      className="relative flex flex-col items-center bg-cover h-full  w-full bg-center text-black opacity-100 overflow-auto min-h-screen"
       style={{ backgroundImage: `url(${background.src})` }}
     >
       <Navbar />
@@ -263,7 +263,7 @@ export default function Page() {
       ) : (
         <>
           <div
-            className=" w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center p-4 rounded-lg "
+            className=" w-full  sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center rounded-lg "
           // style={{
           //   backgroundImage: `url(${background1.src})`,
           //   backgroundSize: "cover",
@@ -271,7 +271,7 @@ export default function Page() {
           //   backgroundColor: "rgba(255, 255, 255, 0.5)",
           // }}
           >
-            <h1 className="text-2xl sm:text-4xl  font-[GreaterTheory] mb-4 text-center drop-shadow-lg text-red-700">
+            <h1 className="text-2xl sm:text-4xl  font-[GreaterTheory] mb-4 pt-[10vh] text-center drop-shadow-lg text-red-700">
               {teamName || "Team Name Not Found"}
             </h1>
 
@@ -353,7 +353,7 @@ export default function Page() {
             {/* <button className="btn-primary mt-4" onClick={handleViewTeamCode}>
               Add Member
             </button> */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 pb-[7vh]">
               {/* Add Member Button */}
               {/* <button
                 className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"

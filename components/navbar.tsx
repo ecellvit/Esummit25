@@ -409,7 +409,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-black opacity-90 backdrop-blur-3xl -lg z-[9999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
+        <div className="fixed inset-0 bg-black opacity-90 backdrop-blur-3xl -lg z-[999] flex flex-col items-center justify-center space-y-12 text-white text-lg">
           <button onClick={toggleMenu} className="text-3xl mb-8">
             &times;
           </button>
