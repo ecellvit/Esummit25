@@ -45,7 +45,7 @@ const Sponsors: React.FC = () => {
       {/* Coming Soon Section */}
       <div
         ref={comingSoonRef}
-        className="absolute top-[50vh] h-[100vh] w-full flex items-center justify-center rounded-t-3xl bg-white z-1"
+        className="absolute top-[50vh] h-[100vh] w-full flex items-center justify-center rounded-t-3xl bg-white z-10"
       >
         <h1
           className="uppercase text-5xl md:text-6xl lg:text-7xl font-bold text-center font-[GreaterTheory]"

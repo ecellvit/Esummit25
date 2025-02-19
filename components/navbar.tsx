@@ -373,9 +373,9 @@ const Navbar: React.FC = () => {
           <Link href="/patrons" className="text-white hover:text-red-400">
             OUR PATRONS
           </Link>
-          <Link href="/#foot" scroll={false} onClick={(e) => handleScroll(e, "foot")} className="text-white hover:text-red-400">
+          {/* <Link href="/#foot" scroll={false} onClick={(e) => handleScroll(e, "foot")} className="text-white hover:text-red-400">
             CONTACT US
-          </Link>
+          </Link> */}
         </div>
 
         {/* Desktop Sign-In Button */}
@@ -404,7 +404,7 @@ const Navbar: React.FC = () => {
               OUR PATRONS
             </Link>
             {/* ✅ Fix for "CONTACT US" - Smooth scrolling */}
-            <Link href="/#faq" onClick={toggleMenu}>
+            <Link href="/#foot" onClick={toggleMenu}>
               CONTACT US
             </Link>
           </div>

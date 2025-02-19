@@ -44,14 +44,14 @@ export default function Footer() {
       >
         <Image src={bg1} alt="bg1" className="hidden md:block absolute bottom-0 left-0 w-full h-full" />
         <Image src={bg2} alt="bg1" className="block md:hidden absolute bottom-0 left-0 w-full h-full" />
-        <div className="relative px-5 text-white pt-20 flex-row hidden md:flex justify-evenly">
-          <div className="text-center pointer-events-auto mr-96">
+        <div className="relative px-5 text-white pt-20 flex-row hidden md:flex justify-between">
+          <div className="text-center pointer-events-auto ml-10">
             <h1 className="text-4xl md:text-5xl font-bold mb-2">E-CELL</h1>
             <p className="text-md md:text-lg mb-4">#WeBreedBusiness</p>
             <a href="tel:+918777793331" className="text-sm md:text-md block mb-4">+91 87777 93331</a>
             <a href="mailto:ecell@vit.ac.in" className="text-sm md:text-md block mb-4">ecell@vit.ac.in</a>
           </div>
-          <div className="text-center pointer-events-auto text-sm md:text-md lg:ml-80">
+          <div className="text-center pointer-events-auto text-sm md:text-md mr-10">
             <p className="mb-4">
               <a href="https://www.instagram.com/ecell_vit" className="hover:text-gray-500 flex items-center gap-2">
                 <FaInstagram size={20} />
@@ -77,7 +77,7 @@ export default function Footer() {
               </a>
             </p>
           </div>
-          <div className="pointer-events-auto text-sm md:text-md">
+          {/* <div className="pointer-events-auto text-sm md:text-md">
             <p className="mb-4"><Link href="/#home" scroll={false} onClick={(e) => handleScroll(e, "home")} className="hover:text-gray-500 text white mb-4">
               HOME
             </Link></p>
@@ -90,7 +90,7 @@ export default function Footer() {
             <p className="mb-4"><Link href="/#faq" scroll={false} onClick={(e) => handleScroll(e, "faq")} className="hover:text-gray-500 text white mb-4">
               FAQ
             </Link></p>
-          </div>
+          </div> */}
         </div>
         <div className="relative px-5 text-white pt-8 flex-col flex md:hidden">
           <div className="text-center pointer-events-auto mb-8">
