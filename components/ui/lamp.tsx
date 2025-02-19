@@ -406,8 +406,8 @@ export const LampContainer = ({
       {/* Register Button */}
       <div className="flex flex-col justify-center items-center absolute bottom-[15vh] w-full sm:bottom-[8vh] md:bottom-[20vh]">
         <RegisterBtn />
-        <p className="text-red-600 text-center text-xs font-thin isolate pb-6 sm:mt-4 sm:p-0 md:mt-0">
-          VITV students please log in with your VIT email ID*
+        <p className="text-red-600 flex justify-center md:text-center md:text-xs font-[PoppinsSemiBold] isolate pb-6 sm:mt-4 sm:p-0 md:mt-0">
+          VIT'V students please log in with your VIT email ID*
         </p>
       </div>
 
