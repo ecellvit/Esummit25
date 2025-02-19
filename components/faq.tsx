@@ -63,7 +63,7 @@ const FaqContent = () => {
         FREQUENTLY ASKED QUESTIONS
       </h2>
 
-      <div className="mt-10 flex flex-col lg:flex-row lg:justify-between gap-4">
+      <div className="mt-10 flex flex-col lg:flex-row lg:justify-between gap-2">
         {[faqs.slice(0, Math.ceil(faqs.length / 2)), faqs.slice(Math.ceil(faqs.length / 2))].map((faqGroup, index) => (
           <div key={index} className="flex flex-col gap-3 w-full lg:w-[48%] ">
             {faqGroup.map((faq) => (
@@ -72,7 +72,7 @@ const FaqContent = () => {
                 className="bg-[#981B1B] font-bold h-15 w-30 rounded-lg shadow-md border border-transparent hover:border-white transition-all duration-3300"
               >
                 <button
-                  className="w-full flex justify-between items-center py-2 px-6 text-left text-lg font-semibold text-white"
+                  className="w-full flex justify-between items-center py-2 px-6 text-left text-sm font-semibold text-white"
                   onClick={() => toggleDropdown(faq.id)}
                 >
                   {faq.q}
