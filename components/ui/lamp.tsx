@@ -302,7 +302,7 @@ export function LampDemo() {
           className="bg-white bg-clip-text text-center font-medium tracking-tight text-transparent"
         >
         <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-32"><Image src={logo} alt="esummit logo"/></div>
-          <Image src={text} alt="esummit text" className="pb-20" />
+          <Image src={text} alt="esummit text" className="pb-20 " />
         </motion.h1>
         </div>
       </LampContainer>
@@ -502,15 +502,15 @@ export const LampContainer = ({
         </div>
 
         {/* Register Button */}
-        <div className="flex flex-col justify-center items-center absolute bottom-[18vh] w-full sm:bottom-[5vh] md:bottom-[20vh]">
+        <div className="flex flex-col justify-center items-center absolute bottom-[33vh] w-full sm:bottom-[5vh] md:bottom-[20vh]">
           <RegisterBtn />
-          <p className="text-red-600 text-center text-xs font-thin isolate pb-6 sm:mt-4 sm:p-0 md:mt-0">
+          <p className="text-red-600 text-center text-sm font-[PoppinsRegular] isolate pb-6 pt-3 sm:mt-4 sm:p-0 md:mt-0">
             VITV students please log in with your VIT email ID*
           </p>
         </div>
 
         {/* Countdown Timer */}
-        <div className="flex w-full justify-center absolute bottom-[5vh] items-center sm:bottom-[3vh] md:bottom-[5vh]">
+        <div className="flex w-full justify-center absolute bottom-[20vh] items-center sm:bottom-[3vh] md:bottom-[5vh]">
           <CountdownTimer targetDate="2025-03-04T00:00:00" />
         </div>
       </div>
