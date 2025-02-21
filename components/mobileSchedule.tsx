@@ -195,8 +195,8 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
               <div className="relative z-10 p-6">
                 <div className="text-white">
                   <p className="text-lg font-bold mb-2">{event.date}</p>
-                  <h3 className="text-2xl font-bold font-[GreaterTheory] mb-4">{event.name}</h3>
-                  <p className="text-sm font-[PoppinsRegular] mb-6 text-justify">{event.description}</p>
+                  <h3 className="text-2xl font-bold font-[GreaterTheory] mb-6">{event.name}</h3>
+                  <p className="text-sm font-[PoppinsRegular] mb-9 text-justify">{event.description}</p>
                   {!hasRegisteredPioneira ? (
                     <div>
                       <button
