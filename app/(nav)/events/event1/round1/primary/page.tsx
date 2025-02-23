@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import bg from "/assets/scrollBg.svg";
 import resourceData from "@/constant/round1/element.json";
+import { CloudCog } from "lucide-react";
 
 interface Resource {
     id: number;
@@ -38,16 +39,39 @@ export default function Testing() {
         setResources(resourceData);
     }, []);
 
-    const handleConfirmPurchase = () => {
+    const handleConfirmPurchase = async () => {
         if (selectedResource) {
-            console.log("Purchase confirmed:", {
-                resource: selectedResource.name,
-                cost: selectedResource.cost,
-                rate: selectedResource.rate
-            });
-            setSelectedResource(null);
+            try {
+                const response = await fetch("/api/event1/round1/primaryelement", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        elementId: selectedResource.id,
+                        elementRate: selectedResource.rate
+                    }),
+                });
+    
+                const result = await response.json();
+                console.log("sdfghjkl",response.status);
+    
+                if (response.ok) {
+                    console.log("Purchase successful:", result);
+                    alert("Purchase successful!");
+                } else {
+                    console.error("Purchase failed:", result.message);
+                    alert(`Purchase failed: ${result.message}`);
+                }
+    
+                setSelectedResource(null);
+            } catch (error) {
+                console.error("Error during purchase:", error);
+                alert("Something went wrong. Please try again.");
+            }
         }
     };
+    
     
     return (
         <div className="relative w-full h-full min-h-screen bg-gray-100">
