@@ -4,6 +4,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/user.model";
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model"; // Adjust the import path as needed
+import MarketModel from "@/models/event1/CommonInfo.model";
+import resourceData from '@/constant/round1/element.json'
+import calculateMarketPrice from "@/utils/calculateMarketPrice";
 
 export async function POST(request: Request): Promise<NextResponse> {
     await dbConnect();
@@ -55,6 +58,20 @@ export async function POST(request: Request): Promise<NextResponse> {
         team.primaryElement = id;
         team.primaryRate = rate;
         await team.save();
+
+        const marketData = await MarketModel.findOne({ elementId: id });
+        if (!marketData) {
+            await MarketModel.create({
+                elementId: id,
+                currentTeams: 1,
+                basePrice: resourceData[id].base,
+                marketPrice: calculateMarketPrice(resourceData[id].base, 1),
+            })
+        } else {
+            marketData.currentTeams++;
+            marketData.marketPrice = calculateMarketPrice(marketData.basePrice, marketData.currentTeams);
+            await marketData.save();
+        }
 
         return NextResponse.json(
             { success: true, message: "Element purchased successfully" },

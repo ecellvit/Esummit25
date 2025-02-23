@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import "chart.js/auto";
 import resourceData from "@/constant/round1/element.json";
 import SellButton from "@/components/events/round1/SellButton";
+import { socket } from "@/socket";
 
 // Dynamically import Chart.js Line component
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
@@ -16,6 +17,7 @@ interface ElementData {
     name: string;
     basePrice: number;
     teamsBought: number;
+    marketPrice: number;
 }
 
 const elements = ["Li", "Be", "B", "C", "N"];
@@ -47,12 +49,51 @@ const sellResources = async () => {
 const Dashboard: React.FC = () => {
     const [marketData, setMarketData] = useState<ElementData[]>([]);
 
+    // Socket helper functions
+    
+    const onMarketPrice = (data: {elementId: number, marketPrice: number}) => {
+        const updatedMarketData = marketData.map((item, index) =>
+            index === data.elementId
+                ? {...item, marketPrice: data.marketPrice }
+                : item
+        );
+        setMarketData(updatedMarketData);
+        console.log(updatedMarketData);
+    };
+
+    // Connect to socket server
+    
     useEffect(() => {
         const getData = async () => {
             const data = await fetchMarketData();
             setMarketData(data);
         };
         getData();
+        
+        if (socket.connected) {
+            console.log("hello");
+            onConnect();
+        }
+    
+        function onConnect() {
+            socket.io.engine.on("upgrade", (transport) => {
+                console.log("upgrade ::", transport);
+            });
+        }
+
+        function onDisconnect() {
+            console.log("User Disconnected");
+        }
+
+        socket.on("connect", onConnect);
+        socket.on("marketPrice", onMarketPrice);
+        socket.on("disconnect", onDisconnect);
+
+        return () => {
+        socket.off("connect", onConnect);
+        socket.off("marketPrice", onMarketPrice);
+        socket.off("disconnect", onDisconnect);
+        };
     }, []);
 
     return (
@@ -83,7 +124,7 @@ const Dashboard: React.FC = () => {
                             <h1 className="flex flex-row justify-evenly mb-9 text-3xl font-bold">MARKET PRICE</h1>
                             <div className=" w-full h-full space-y-5 bg-white rounded-xl">
                                 {marketData.map((element, index) => {
-                                    const marketPrice = calculateMarketPrice(element.basePrice, element.teamsBought);
+                                    const marketPrice = element.marketPrice;
                                     const chartData = {
                                         labels: ["Jan", "Feb", "Mar", "Apr", "May"],
                                         datasets: [
