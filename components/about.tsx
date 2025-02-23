@@ -63,7 +63,7 @@ export default function about() {
                     {/* Right Side: Text Content */}
                     <div className="md:w-3/4 w-full text-black text-md md:text-lg leading-relaxed flex items-center md:px-20 mt-10 md:mt-0">
                         <p className="hidden md:block text-justify">
-                            E-Summit is a journey into the world of entrepreneurship, featuring six exhilarating events over a span of four days. It is a platform where ideas spark, fire ignites, and ambition meets opportunity. From high energy pitch battles to game changing workshops, every moment is built to challenge, inspire, and open doors. The biggest names, boldest minds, and brightest opportunities are all here, if you're ready to push boundaries and make things happen, this is where it starts.
+                            E-Summit is a journey into the world of entrepreneurship, featuring five exhilarating events over a span of four days. It is a platform where ideas spark, fire ignites, and ambition meets opportunity. From high energy pitch battles to game changing workshops, every moment is built to challenge, inspire, and open doors. The biggest names, boldest minds, and brightest opportunities are all here, if you're ready to push boundaries and make things happen, this is where it starts.
                             <br /><br />
                             The energy is electric, the competition is fierce, and the future is written for those who show up. E-Summit'25 isn't just another event, it's a movement where real change begins. Whether you're a founder, or a dreamer with a vision, this is your chance to connect, grow, and leave your mark. The momentum is building, will you be part of it?
                         </p>
