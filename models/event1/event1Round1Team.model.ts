@@ -19,6 +19,8 @@ export interface round1Qualified extends Document {
     lease2StartTime: Date;
     wallet: number;
     portfolio: number[];
+    page: number;
+    startTime: Date;
 }
 
 const TeamSchema: Schema<round1Qualified> = new Schema(
@@ -86,7 +88,16 @@ const TeamSchema: Schema<round1Qualified> = new Schema(
     {
         type: [Number],
         required: [true, "Portfolio is required"],
-    }
+    },
+    page:
+    {
+        type: Number,
+        required: [true, "Page is required"],
+    },
+    startTime: {
+        type: Date,
+        default: Date.now,
+    },
 },
     { collection: "TeamsEvent1Round1" }
 );
