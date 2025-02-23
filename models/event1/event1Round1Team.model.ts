@@ -1,7 +1,9 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
 export interface round1Qualified extends Document {
-    teamId: ObjectId;
+    teamLeaderId: ObjectId;
+    teamLeaderName: string;
+    teamLeaderEmail: string;
     teamName: string;
     primaryElement: number;
     secondaryElement: number;
@@ -21,10 +23,19 @@ export interface round1Qualified extends Document {
 
 const TeamSchema: Schema<round1Qualified> = new Schema(
 {
-    teamId: {
+    teamLeaderId: {
         type: Schema.Types.ObjectId,
-        ref: "TeamsEvent1",
-        required: [true, "Team name is required"],
+        ref: "Users",
+        required: [true, "Team leader is required"],
+    },
+    teamLeaderName: {
+        type: String,
+        required: [true, "Team leader name is required"],
+    },
+    teamLeaderEmail: {
+        type: String,
+        required: [true, "Team leader email is required"],
+        unique: true,
     },
     teamName:{
         type: String,

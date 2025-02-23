@@ -5,16 +5,46 @@ export default function SellButton(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSellClick = () => {
     setIsModalOpen(true);
   };
 
-  const handleConfirm = () => {
-    alert(`Selling: ${selectedItem}, Quantity: ${quantity}`);
-    setIsModalOpen(false);
-    setSelectedItem("");
-    setQuantity("");
+  const handleConfirm = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/event1/round1/sellingElement", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          teamId: "your-team-id", // Replace with the actual team ID
+          elements: [
+            {
+              elementIndex: selectedItem, // Replace with the actual element index
+              amount: Number(quantity),
+            },
+          ],
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(`Success: ${data.message}`);
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error selling resources:", error);
+      alert("An error occurred while selling resources.");
+    } finally {
+      setLoading(false);
+      setIsModalOpen(false);
+      setSelectedItem("");
+      setQuantity("");
+    }
   };
 
   const handleCancel = () => {
@@ -53,11 +83,11 @@ export default function SellButton(): JSX.Element {
               className="w-full p-2 border rounded-lg mb-4"
             >
               <option value="" disabled>Select an item</option>
-              <option value="Item A">Item A</option>
-              <option value="Item B">Item B</option>
-              <option value="Item C">Item C</option>
-              <option value="Item D">Item D</option>
-              <option value="Item E">Item E</option>
+              <option value="0">Item A</option>
+              <option value="1">Item B</option>
+              <option value="2">Item C</option>
+              <option value="3">Item D</option>
+              <option value="4">Item E</option>
             </select>
 
             {/* Quantity Input */}
