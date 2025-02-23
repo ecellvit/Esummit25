@@ -5,7 +5,7 @@ import bg from "/assets/scrollBg.svg";
 import dynamic from "next/dynamic";
 import "chart.js/auto";
 import resourceData from "@/constant/round1/element.json";
-import SellButton from "@/components/events/Round1/SellButton";
+import SellButton from "@/components/events/round1/SellButton";
 
 // Dynamically import Chart.js Line component
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
