@@ -44,6 +44,10 @@ export async function POST(request: Request): Promise<NextResponse> {
         const rate = body?.elementRate;
         console.log('dfads',rate);
         // const {elementId,elementRate} = await request.json();
+
+        if (team.primaryElement !== null || team.primaryRate !== null){
+            return NextResponse.json({message: "Cannot purchase again"}, {status: 410});
+        }
         if (isNaN(id) || !rate) {
             return NextResponse.json({ message: "id and rate are required" }, { status: 400 });
         }

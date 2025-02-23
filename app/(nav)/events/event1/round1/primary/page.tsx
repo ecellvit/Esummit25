@@ -4,6 +4,7 @@ import Image from "next/image";
 import bg from "/assets/scrollBg.svg";
 import resourceData from "@/constant/round1/element.json";
 import { CloudCog } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Resource {
     id: number;
@@ -58,16 +59,16 @@ export default function Testing() {
     
                 if (response.ok) {
                     console.log("Purchase successful:", result);
-                    alert("Purchase successful!");
+                    toast.success("Purchase Successfully");
                 } else {
-                    console.error("Purchase failed:", result.message);
-                    alert(`Purchase failed: ${result.message}`);
+                    console.log("Purchase failed:", result.message);
+                    toast.error(` ${result.message}`)
                 }
     
                 setSelectedResource(null);
             } catch (error) {
-                console.error("Error during purchase:", error);
-                alert("Something went wrong. Please try again.");
+                console.log("Error during purchase:", error);
+                toast.error("Something went wrong. Please try again.");
             }
         }
     };
@@ -138,6 +139,7 @@ export default function Testing() {
                     </div>
                 </div>
             )}
+            <Toaster/>
         </div>
     );
 }
