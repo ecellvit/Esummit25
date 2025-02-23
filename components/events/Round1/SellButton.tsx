@@ -32,9 +32,9 @@ export default function SellButton(): JSX.Element {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-full bg-transparent">
+    <div className="flex justify-center items-center bg-transparent">
       <button
-        className="transition duration-300 ease-in-out bg-red-600 text-white px-6 py-4 rounded-xl hover:scale-110 active:scale-95 text-base md:text-lg"
+        className="transition duration-300 ease-in-out bg-white text-red-800 px-20 py-2 font-bold rounded-xl hover:text-white hover:bg-red-700 hover:scale-110 active:scale-95 text-base md:text-lg"
         onClick={handleSellClick}
       >
         Sell
