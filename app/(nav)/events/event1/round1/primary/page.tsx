@@ -4,6 +4,7 @@ import Image from "next/image";
 import bg from "/assets/scrollBg.svg";
 import resourceData from "@/constant/round1/element.json";
 import { CloudCog } from "lucide-react";
+import { socket } from "@/socket";
 import toast, { Toaster } from "react-hot-toast";
 
 interface Resource {
@@ -35,6 +36,33 @@ export default function Testing() {
     const [resources, setResources] = useState<Resource[]>([]);
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
 
+    // Connect to socket server
+    
+    useEffect(() => {
+        if (socket.connected) {
+            onConnect();
+        }
+    
+        function onConnect() {
+            socket.io.engine.on("upgrade", (transport) => {
+                console.log("upgrade ::", transport);
+            });
+        }
+
+        function onDisconnect() {
+            console.log("User Disconnected");
+        }
+
+        socket.on("connect", onConnect);
+        socket.on("disconnect", onDisconnect);
+
+        return () => {
+        socket.off("connect", onConnect);
+        socket.off("disconnect", onDisconnect);
+        };
+    }, []);
+
+
     // Load JSON data directly
     useEffect(() => {
         setResources(resourceData);
@@ -59,7 +87,8 @@ export default function Testing() {
     
                 if (response.ok) {
                     console.log("Purchase successful:", result);
-                    toast.success("Purchase Successfully");
+                    toast.success("Purchase Successfully"); //socket.emit("purchase", element) // Get MV on the socket server, emit it back
+                    socket.emit("purchase", selectedResource.id);
                 } else {
                     console.log("Purchase failed:", result.message);
                     toast.error(` ${result.message}`)
