@@ -5,6 +5,7 @@ import bg from "/assets/scrollBg.svg";
 import dynamic from "next/dynamic";
 import "chart.js/auto";
 import resourceData from "@/constant/round1/element.json";
+import SellButton from "@/components/events/Round1/SellButton";
 
 // Dynamically import Chart.js Line component
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
@@ -28,6 +29,19 @@ const fetchMarketData = async () => {
 
 const calculateMarketPrice = (basePrice: number, teamsBought: number) => {
     return basePrice + ((16 - teamsBought) / 40) * 1.75;
+};
+
+const sellResources = async () => {
+    const response = await fetch("/api/sell", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify([
+            { elementIndex: 0, amount: 10 },
+            { elementIndex: 1, amount: 5 },
+        ]),
+    });
+    const result = await response.json();
+    console.log(result);
 };
 
 const Dashboard: React.FC = () => {
@@ -55,17 +69,17 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Dashboard Layout */}
-            <div className="relative z-10 flex flex-col w-full h-full min-h-screen">
+            <div className="relative z-10 flex flex-col w-full h-full min-h-screen space-y-1">
                 {/* Upper Half - Two Sections */}
-                <h1 className="text-4xl font-extrabold mt-36 text-center ml-24 text-black drop-shadow-md">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500">
-                        Dashboard
+                <h1 className="text-4xl font-extrabold mt-36 text-center  text-black drop-shadow-md">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-950 to-red-500">
+                        USER DASHBOARD
                     </span>
-                </h1>
-                <div className="flex flex-1 p-11 space-x-28">
+                </h1>
+                <div className="flex flex-1 p-8 space-x-28">
                     {/* Left Side - Two Stacked Divs */}
                     <div className="w-2/3 rounded-xl">
-                        <div className="h-full flex flex-col pt-9 p-12  bg-red-800 rounded-xl text-white">
+                        <div className="h-full flex flex-col pt-9 p-12  bg-red-950 rounded-xl text-white">
                             <h1 className="flex flex-row justify-evenly mb-9 text-3xl font-bold">MARKET PRICE</h1>
                             <div className=" w-full h-full space-y-5 bg-white rounded-xl">
                                 {marketData.map((element, index) => {
@@ -91,15 +105,38 @@ const Dashboard: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="w-1/3 p-12 pt-9 bg-red-800 rounded-xl flex flex-col items-center ">
+                    <div className="w-1/3 p-12 pt-9 bg-red-950 rounded-xl flex flex-col items-center ">
                         <h1 className="justify-evenly mb-9 text-white font-bold text-3xl">RESOURCES</h1>
-                        <div className="bg-white w-full h-full rounded-xl">
-
+                        <div className="bg-white w-full rounded-xl">
+                            <table className="w-full border-collapse border border-black">
+                                <thead>
+                                    <tr className="bg-black">
+                                        <th className="border border-black px-4 py-2 text-left justify-evenly text-white">RESOURCE NAME</th>
+                                        <th className="border border-black px-4 py-2 text-left justify-evenly text-white">QUANTITY</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {resourceData.map((resource, index) => (
+                                        <tr key={index} className="odd:bg-gray-100">
+                                            <td className="border border-black px-4 py-2">{resource.name}</td>
+                                            <td className="border border-black px-4 py-2">{resource.rate}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
-                        <div>
-                            <button></button>
+                        <div className="mt-5 ">
+                            {/* <button
+                             onClick={sellResources}
+                             className="px-20 py-2 bg-white text-red-950 font-bold rounded-lg hover:bg-red-800 hover:text-white">
+                                SELL
+                            </button> */}
+                            <SellButton />
                         </div>
                     </div>
+                </div>
+                <div className="flex flex-row justify-center ">
+                    <button className="bg-red-700 px-10 py-2 rounded-xl font-bold text-white hover:text-red-700 hover:bg-black">Continue</button>
                 </div>
             </div>
 
