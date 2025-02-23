@@ -4,6 +4,7 @@ import Image from "next/image";
 import bg from "/assets/scrollBg.svg";
 import dynamic from "next/dynamic";
 import "chart.js/auto";
+import resourceData from "@/constant/round1/element.json";
 
 // Dynamically import Chart.js Line component
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
@@ -56,11 +57,17 @@ const Dashboard: React.FC = () => {
             {/* Dashboard Layout */}
             <div className="relative z-10 flex flex-col w-full h-full min-h-screen">
                 {/* Upper Half - Two Sections */}
-                <div className="flex flex-1 p-11 space-x-20">
+                <h1 className="text-4xl font-extrabold mt-36 text-center ml-24 text-black drop-shadow-md">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500">
+                        Dashboard
+                    </span>
+                </h1>
+                <div className="flex flex-1 p-11 space-x-28">
                     {/* Left Side - Two Stacked Divs */}
-                    <div className="w-2/3 space-y-2 rounded-xl">
-                        <div className="h-full w-4/5 flex flex-1 p-10 bg-blue-500 rounded-xl mx-auto">
-                            <div className="flex flex-col w-full h-full space-y-5">
+                    <div className="w-2/3 rounded-xl">
+                        <div className="h-full flex flex-col pt-9 p-12  bg-red-800 rounded-xl text-white">
+                            <h1 className="flex flex-row justify-evenly mb-9 text-3xl font-bold">MARKET PRICE</h1>
+                            <div className=" w-full h-full space-y-5 bg-white rounded-xl">
                                 {marketData.map((element, index) => {
                                     const marketPrice = calculateMarketPrice(element.basePrice, element.teamsBought);
                                     const chartData = {
@@ -84,14 +91,14 @@ const Dashboard: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <div className="h-1/2 rounded-xl bg-red-700 flex items-center justify-center text-white font-bold text-2xl">
-              CASH
-            </div>
-            <div className="h-1/2 rounded-xl bg-red-900 flex items-center justify-center text-white font-bold text-2xl">
-              DONT KNOW
-            </div> */}
-                    <div className="w-1/3 p-10  bg-red-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">
-                        RESOURCES
+                    <div className="w-1/3 p-12 pt-9 bg-red-800 rounded-xl flex flex-col items-center ">
+                        <h1 className="justify-evenly mb-9 text-white font-bold text-3xl">RESOURCES</h1>
+                        <div className="bg-white w-full h-full rounded-xl">
+
+                        </div>
+                        <div>
+                            <button></button>
+                        </div>
                     </div>
                 </div>
             </div>
