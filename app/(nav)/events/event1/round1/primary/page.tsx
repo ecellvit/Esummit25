@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import bg from "/assets/scrollBg.svg";
+import bg from "/assets/round1/bg2.svg";
 import resourceData from "@/constant/round1/element.json";
 import { CloudCog } from "lucide-react";
 import { socket } from "@/socket";
@@ -32,7 +32,7 @@ function ResourceCard({ resource, onBuy }: { resource: Resource; onBuy: () => vo
         <div 
         onClick={onBuy} 
         className="flex flex-col items-center justify-between p-6 border border-red-700 rounded-xl shadow-xl bg-[#E8E8E8] hover:from-[#8A1A19] hover:to-[#510D0D] transition-all duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden w-full">
-  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#BB2121] to-[#E8E8E8] blur-xl rotate-45 translate-x-8 -translate-y-8 opacity-70"></div>
+  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#BB2121] to-[#E8E8E8] blur-xl rotate-45 translate-x-8 -translate-y-8 opacity-80"></div>
 
   <p className="text-xl font-bold uppercase text-[#BB2121] tracking-wider">
     {resource.name}
@@ -112,10 +112,12 @@ export default function Testing() {
                 console.log("sdfghjkl",response.status);
     
                 if (response.ok) {
+                    setSelectedResource(null);
                     console.log("Purchase successful:", result);
                     toast.success("Purchase Successfully"); //socket.emit("purchase", element) // Get MV on the socket server, emit it back
                     socket.emit("purchase", selectedResource.id);
                 } else {
+                    setSelectedResource(null);
                     console.log("Purchase failed:", result.message);
                     toast.error(` ${result.message}`)
                 }
@@ -136,14 +138,14 @@ export default function Testing() {
                 <Image 
                     src={bg} 
                     alt="bg" 
-                    className="absolute inset-0 w-full h-full object-cover opacity-40 z-0 transform scale-110" 
+                    className="absolute inset-0 w-full h-full object-cover z-0 transform scale-110" 
                     priority
                 />
-                <div className="absolute inset-0 opacity-25 bg-gradient-to-b from-gray-900/10 to-gray-900/30 z-1"></div>
+                <div className="absolute inset-0 opacity-100 bg-gradient-to-b from-gray-900/10 to-gray-900/20 z-1"></div>
             </div>
             
             {/* Main Content */}
-            <div className={`container mx-auto p-10 text-center relative z-10 transition-all duration-300 ${selectedResource ? 'blur-md pointer-events-none scale-99' : ''}`}>
+            <div className={`mt-10 container w-[90%] p-10 text-center relative z-10 bg-white mx-auto transition-all duration-300 ${selectedResource ? 'blur-md pointer-events-none scale-99' : ''}`}>
                 <h1 className="text-4xl font-extrabold mb-8 mt-24 text-black drop-shadow-md">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500" style={{ fontFamily: 'GreaterTheory' }}>
                         Primary Element

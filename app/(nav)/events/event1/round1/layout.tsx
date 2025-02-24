@@ -1,11 +1,12 @@
 "use client";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Round1Navbar from "@/components/events/Round1/navbar";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Round1Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const checkTeamStatus = async () => {
@@ -31,7 +32,7 @@ export default function Round1Layout({ children }: { children: React.ReactNode }
   return (
     <>
       <Toaster position="top-center" />
-      <Round1Navbar />
+      {!pathname.startsWith("/events/event1/round1/start") && <Round1Navbar />}
       {children}
     </>
   );

@@ -52,10 +52,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className="fixed left-[50%] w-full lg:w-full h-[10vh]
+      className="fixed left-[50%] w-[90%] lg:w-[90%] h-[10vh]
         rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-20
         transition-transform duration-300 transform -translate-x-1/2 
-         bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg"
+         bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg mt-10"
     >
       <div className="flex items-center justify-between h-full px-4 lg:px-8">
         <div className="h-full flex items-center">
