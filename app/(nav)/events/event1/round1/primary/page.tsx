@@ -40,10 +40,10 @@ function ResourceCard({ resource, onBuy }: { resource: Resource; onBuy: () => vo
 
   <div className="w-full h-1 bg-[#BB2121] my-3 "></div>
 
-  <p className="text-md text-black font-medium font-bold">
+  <p className="text-md text-black font-medium">
     Cost: <span className="font-bold text-black">{resource.cost.toLocaleString()}</span>
   </p>
-  <p className="text-md text-black font-medium font-bold">
+  <p className="text-md text-black font-medium">
     Rate: <span className="font-bold">{resource.rate}</span> ton/min
   </p>
 

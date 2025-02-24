@@ -92,6 +92,8 @@
 //     }
 // }
 
+//TODO: (1) handle the change in wallet amount
+
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
