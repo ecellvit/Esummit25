@@ -5,8 +5,9 @@ import bg from "/assets/scrollBg.svg";
 import dynamic from "next/dynamic";
 import "chart.js/auto";
 import resourceData from "@/constant/round1/element.json";
-import SellButton from "@/components/events/round1/SellButton";
+import SellButton from "@/components/events/Round1/SellButton";
 import { socket } from "@/socket";
+import calculateMarketPrice from "@/utils/calculateMarketPrice";
 
 // Dynamically import Chart.js Line component
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
@@ -14,6 +15,7 @@ const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
 });
 
 interface ElementData {
+    id: number;
     name: string;
     basePrice: number;
     teamsBought: number;
@@ -24,13 +26,16 @@ const elements = ["Li", "Be", "B", "C", "N"];
 
 const fetchMarketData = async () => {
     // Replace with actual API endpoint
-    const response = await fetch("/api/market-prices");
-    const data: ElementData[] = await response.json();
+    // const response = await fetch("/api/market-prices");
+    // const data: ElementData[] = await response.json();
+    const data: ElementData[] = resourceData.map((data, index) => ({
+        id: index, 
+        name: data.name, 
+        basePrice: data.base, 
+        teamsBought: 0, 
+        marketPrice: calculateMarketPrice(data.base, 0)
+    }));
     return data;
-};
-
-const calculateMarketPrice = (basePrice: number, teamsBought: number) => {
-    return basePrice + ((16 - teamsBought) / 40) * 1.75;
 };
 
 const sellResources = async () => {
@@ -52,32 +57,31 @@ const Dashboard: React.FC = () => {
     // Socket helper functions
     
     const onMarketPrice = (data: {elementId: number, marketPrice: number}) => {
-        const updatedMarketData = marketData.map((item, index) =>
-            index === data.elementId
-                ? {...item, marketPrice: data.marketPrice }
-                : item
+        console.log(data);
+        setMarketData(prevMarketData =>
+            prevMarketData.map((item, index) =>
+                index === data.elementId ? { ...item, marketPrice: data.marketPrice } : item
+            )
         );
-        setMarketData(updatedMarketData);
-        console.log(updatedMarketData);
     };
 
     // Connect to socket server
     
     useEffect(() => {
-        const getData = async () => {
-            const data = await fetchMarketData();
-            setMarketData(data);
-        };
-        getData();
+        // Initial connection status check
+        console.log("Socket connection status:", socket.connected);
         
         if (socket.connected) {
-            console.log("hello");
             onConnect();
+        }
+
+        if (!socket.connected) {
+            socket.connect();
         }
     
         function onConnect() {
             socket.io.engine.on("upgrade", (transport) => {
-                console.log("upgrade ::", transport);
+                console.log("upgrade ::", transport.name);
             });
         }
 
@@ -94,7 +98,7 @@ const Dashboard: React.FC = () => {
         socket.off("marketPrice", onMarketPrice);
         socket.off("disconnect", onDisconnect);
         };
-    }, []);
+    }, [socket.connected]);
 
     return (
         <div className="relative w-full h-full min-h-screen">
@@ -177,7 +181,7 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex flex-row justify-center ">
-                    <button className="bg-red-700 px-10 py-2 rounded-xl font-bold text-white hover:text-red-700 hover:bg-black">Continue</button>
+                    <button className="bg-red-700 px-10 py-2 rounded-xl font-bold text-white hover:text-red-700 hover:bg-black" onClick={()=> console.log(marketData)}>Continue</button>
                 </div>
             </div>
 
