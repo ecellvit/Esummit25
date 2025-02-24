@@ -86,10 +86,12 @@ export default function Testing() {
                 console.log("sdfghjkl",response.status);
     
                 if (response.ok) {
+                    setSelectedResource(null);
                     console.log("Purchase successful:", result);
                     toast.success("Purchase Successfully"); //socket.emit("purchase", element) // Get MV on the socket server, emit it back
                     socket.emit("purchase", selectedResource.id);
                 } else {
+                    setSelectedResource(null);
                     console.log("Purchase failed:", result.message);
                     toast.error(` ${result.message}`)
                 }

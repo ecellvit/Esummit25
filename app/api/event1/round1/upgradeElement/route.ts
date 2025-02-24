@@ -34,7 +34,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         console.log("User found:", user);
 
         // Get team details
-        const team = await TeamModelRound1.findById(user.event1TeamId);
+        const team = await TeamModelRound1.findOne({teamLeaderEmail: user.email});
         if (!team) {
             return NextResponse.json({ message: "Team not found" }, { status: 404 });
         }

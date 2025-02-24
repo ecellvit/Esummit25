@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import bg from "/assets/scrollBg.svg";
 import resourceData from "@/constant/round1/element.json";
+import toast from "react-hot-toast";
+import {socket} from "@/socket"
 
 interface Resource {
     id: number;
@@ -38,14 +40,37 @@ export default function Testing() {
         setResources(resourceData);
     }, []);
 
-    const handleConfirmPurchase = () => {
+    const handleConfirmPurchase = async () => {
         if (selectedResource) {
-            console.log("Purchase confirmed:", {
-                resource: selectedResource.name,
-                cost: selectedResource.cost,
-                rate: selectedResource.rate
-            });
-            setSelectedResource(null);
+            try {
+                const response = await fetch("/api/event1/round1/secondaryElement", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        elementId: selectedResource.id,
+                        elementRate: selectedResource.rate
+                    }),
+                });
+    
+                const result = await response.json();
+                console.log("sdfghjkl",response.status);
+    
+                if (response.ok) {
+                    console.log("Purchase successful:", result);
+                    toast.success("Purchase Successfully"); //socket.emit("purchase", element) // Get MV on the socket server, emit it back
+                    socket.emit("purchase", selectedResource.id);
+                } else {
+                    console.log("Purchase failed:", result.message);
+                    toast.error(` ${result.message}`)
+                }
+    
+                setSelectedResource(null);
+            } catch (error) {
+                console.log("Error during purchase:", error);
+                toast.error("Something went wrong. Please try again.");
+            }
         }
     };
     
