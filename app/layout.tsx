@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "E-Summit'25",
   description: "Entrepreneurship: Turning The Impossible Into The Inevitable.",
   icons: {
-    icon: "/favicon.ico", // using the imported logo's src
+    icon: "./favicon.ico", // using the imported logo's src
   },
 };
 
@@ -32,11 +32,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href={logo.src} type="image/png" />
+        <meta
+          name="google-site-verification"
+          content="4e1Clm5pF9WGr8ezG7KAOgaOHaquJ8--iusbli3Z3pQ"
+        />
+        <link rel="icon" href={"./favicon.ico"} />
       </head>
       <AuthProvider>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-         
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
           {children}
         </body>
       </AuthProvider>

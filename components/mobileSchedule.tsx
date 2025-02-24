@@ -169,7 +169,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
     <div className="md:hidden bg-white w-full">
       <div className="px-4 py-6 w-full">
         <h2
-          className="text-4xl font-bold mb-6"
+          className="text-4xl font-[BrigendsExpanded] mb-6"
         >
           SCHEDULE
         </h2>
@@ -195,12 +195,12 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
               <div className="relative z-10 p-6">
                 <div className="text-white">
                   <p className="text-lg font-bold mb-2">{event.date}</p>
-                  <h3 className="text-3xl font-bold mb-4">{event.name}</h3>
-                  <p className="text-sm mb-6 text-justify">{event.description}</p>
+                  <h3 className="text-2xl font-bold font-[GreaterTheory] mb-6">{event.name}</h3>
+                  <p className="text-sm font-[PoppinsRegular] mb-9 text-justify">{event.description}</p>
                   {!hasRegisteredPioneira ? (
                     <div>
                       <button
-                        className="w-full flex justify-center bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                        className="w-full flex justify-center font-[GreaterTheory] bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
                               transition-all duration-300 ease-in-out transform hover:scale-105 
                               active:scale-110 active:shadow-lg border-2 border-red-800"
                         onClick={() =>
