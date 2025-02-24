@@ -8,7 +8,7 @@ import { set } from 'mongoose';
 
 const Navbar = () => {
   const [timeLeft, setTimeLeft] = useState(600);
-  const [walletBalance, setWalletBalance] = useState(50000);
+  const [walletBalance, setWalletBalance] = useState(0);
   const [teamName, setTeamName] = useState("Loading...");
   const [error, setError] = useState<string | null>(null);
 
