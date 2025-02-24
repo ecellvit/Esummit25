@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Round1Navbar from "@/components/events/round1/navbar";
+import Round1Navbar from "@/components/events/Round1/navbar";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Round1Layout({ children }: { children: React.ReactNode }) {

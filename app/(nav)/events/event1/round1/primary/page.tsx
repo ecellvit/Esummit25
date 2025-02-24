@@ -16,19 +16,45 @@ interface Resource {
 
 function ResourceCard({ resource, onBuy }: { resource: Resource; onBuy: () => void }) {
     return (
+        // <div 
+        //     onClick={onBuy} 
+        //     className="flex flex-col items-center justify-between p-6 border border-red-700 rounded-xl shadow-xl bg-[#E8E8E8] hover:from-[#8A1A19]  hover:to-[#510D0D]  transition-all duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden w-full"
+        // >
+        //     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#BB2121] to-[#E8E8E8] blur-xl rotate-45 translate-x-8 -translate-y-8 opacity-70"></div>
+        //     <p className="text-xl text-bold uppercase text-[#BB2121] tracking-wider">{resource.name}</p>
+        //     <div className="w-full h-px bg-gradient-to-r from-transparent via-red-300 to-transparent my-2"></div>
+        //     <p className="text-md text-black font-medium">Cost: <span className="font-bold">₹ {resource.cost.toLocaleString()}</span></p>
+        //     <p className="text-md text-black font-medium">Rate: <span className="font-bold">{resource.rate}</span> ton/min</p>
+        //     <button className="mt-4 px-6 py-2 bg-[#B82121] text-white-800 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:shadow-md active:scale-95"style={{ fontFamily: 'FontSpring' }} >
+        //         BUY
+        //     </button>
+        // </div>
         <div 
-            onClick={onBuy} 
-            className="flex flex-col items-center justify-between p-6 border border-red-700 rounded-xl shadow-xl bg-gradient-to-br from-[#C72423] to-[#8A1A19] hover:from-[#8A1A19] hover:to-[#510D0D] text-white transition-all duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden w-full"
-        >
-            <div className="absolute top-0 right-0 w-16 h-16 bg-red-800 rotate-45 translate-x-8 -translate-y-8 opacity-50"></div>
-            <p className="text-xl font-bold uppercase tracking-wider">{resource.name}</p>
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-red-300 to-transparent my-2"></div>
-            <p className="text-md font-medium">Cost: <span className="font-bold">₹ {resource.cost.toLocaleString()}</span></p>
-            <p className="text-md font-medium">Rate: <span className="font-bold">{resource.rate}</span> ton/min</p>
-            <button className="mt-4 px-6 py-2 bg-white text-red-800 font-bold rounded-lg transition-all duration-300 hover:bg-gray-100 hover:shadow-md active:scale-95">
-                Buy
-            </button>
-        </div>
+        onClick={onBuy} 
+        className="flex flex-col items-center justify-between p-6 border border-red-700 rounded-xl shadow-xl bg-[#E8E8E8] hover:from-[#8A1A19] hover:to-[#510D0D] transition-all duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden w-full">
+  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#BB2121] to-[#E8E8E8] blur-xl rotate-45 translate-x-8 -translate-y-8 opacity-70"></div>
+
+  <p className="text-xl font-bold uppercase text-[#BB2121] tracking-wider">
+    {resource.name}
+  </p>
+
+  <div className="w-full h-1 bg-[#BB2121] my-3 "></div>
+
+  <p className="text-md text-black font-medium font-bold">
+    Cost: <span className="font-bold text-black">{resource.cost.toLocaleString()}</span>
+  </p>
+  <p className="text-md text-black font-medium font-bold">
+    Rate: <span className="font-bold">{resource.rate}</span> ton/min
+  </p>
+
+  <button
+    className="mt-4 px-6 py-2 bg-[#B82121] text-white rounded-lg transition-all duration-300 hover:bg-gray-100 hover:text-black hover:shadow-md active:scale-95"
+    style={{ fontFamily: 'FontSpring' }}
+  >
+    BUY
+  </button>
+</div>
+
     );
 }
 
@@ -119,11 +145,11 @@ export default function Testing() {
             {/* Main Content */}
             <div className={`container mx-auto p-10 text-center relative z-10 transition-all duration-300 ${selectedResource ? 'blur-md pointer-events-none scale-99' : ''}`}>
                 <h1 className="text-4xl font-extrabold mb-8 mt-24 text-black drop-shadow-md">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500">
-                        Choose Primary Element
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500" style={{ fontFamily: 'GreaterTheory' }}>
+                        Primary Element
                     </span>
                 </h1>
-                <h6 className="text-lg font-medium text-gray-800 mb-8">
+                <h6 className="text-lg font-medium text-gray-800 mb-8"style={{ fontFamily: 'FontSpring' }} >
                     Choose wisely, as this will be your primary element for the entire Round 1.
                 </h6>
                 
