@@ -4,11 +4,31 @@ import { Timer, Home, Wallet } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from "/assets/whiteLogo.svg";
+import { set } from 'mongoose';
 
 const Navbar = () => {
   const [timeLeft, setTimeLeft] = useState(600);
-  const [walletBalance, setWalletBalance] = useState(50000);
-  const [teamName, setTeamName] = useState("Alpha");
+  const [walletBalance, setWalletBalance] = useState(0);
+  const [teamName, setTeamName] = useState("Loading...");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTeamName = async () => {
+      try {
+        const response = await fetch('/api/event1/round1/navbar');
+        const data = await response.json();
+        if (response.ok) {
+          setTeamName("Team " + data.teamDetails.teamName);
+          setWalletBalance(data.teamDetails.wallet);
+        } else
+          setError(data.message);
+      } catch (error) {
+        console.error("Error Fetching :", error);
+        setError("Server Error");
+      }
+    };
+    fetchTeamName();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -49,7 +69,7 @@ const Navbar = () => {
           <span className="font-bold">{formatTime(timeLeft)}</span>
         </div>
         <div className="text-white hover:text-red-300 font-bold px-4 py-2 rounded-lg">
-          Team {teamName}
+          {teamName}
         </div>
         <div className="flex items-center gap-2 text-white hover:text-red-300 px-4 py-2 rounded-lg">
           <Wallet className="w-5 h-5" />

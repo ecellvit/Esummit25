@@ -2,25 +2,30 @@ import mongoose, { Document, Schema } from "mongoose";
  // Import basePrice from JSON
 
 export interface MarketData extends Document {
-    currentTeams: number[];
-    marketPrice: number[];
-    basePrice: number[];
+    elementId: number;
+    currentTeams: number;
+    marketPrice: number;
+    basePrice: number;
 }
 
 const MarketSchema: Schema<MarketData> = new Schema(
     {
-        currentTeams: {
-            type: [Number],
+        elementId: {
+            type: Number,
             required: true,
         },
-        marketPrice: {
-            type: [Number],
+        currentTeams: {
+            type: Number,
             required: true,
         },
         basePrice: {
-            type: [Number],
+            type: Number,
             // default: basePriceData, // Set basePrice from JSON file
             immutable: true, // Prevent modifications
+        },
+        marketPrice: {
+            type: Number,
+            required: true,
         },
     },
     { collection: "MarketData" }

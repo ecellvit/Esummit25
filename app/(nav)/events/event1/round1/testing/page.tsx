@@ -51,7 +51,8 @@ export default function Home() {
     console.log("No arguments received");
   }
 
-  function handleTimer(data: { timestamp: number }) {
+  function handleTimer(data: { message: string, timestamp: number }) {
+    console.log(data.message);
     console.log(`Last timer event: ${new Date(data.timestamp)} ago`);
   }
 
