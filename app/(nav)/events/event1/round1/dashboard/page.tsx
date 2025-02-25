@@ -5,7 +5,7 @@ import bg from "/assets/scrollBg.svg";
 import dynamic from "next/dynamic";
 import "chart.js/auto";
 import resourceData from "@/constant/round1/element.json";
-import SellButton from "@/components/events/Round1/SellButton";
+import SellButton from "@/components/events/round1/SellButton";
 import { socket } from "@/socket";
 import calculateMarketPrice from "@/utils/calculateMarketPrice";
 
@@ -99,6 +99,14 @@ const Dashboard: React.FC = () => {
         socket.off("disconnect", onDisconnect);
         };
     }, [socket.connected]);
+
+    useEffect(()=>{
+        const getData = async () => {
+            const data = await fetchMarketData();
+            setMarketData(data);
+        };
+        getData();
+    }, [])
 
     return (
         <div className="relative w-full h-full min-h-screen">
