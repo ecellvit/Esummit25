@@ -37,7 +37,7 @@ const events = [
     img: "/assets/image (2).svg",
   },
   {
-    name: "The MARKETING Edge",
+    name: "The MARKETING EDGE",
     date: "March 6, 2025",
     description:
       "The Marketing Edge equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
