@@ -54,7 +54,7 @@ const Navbar = () => {
   return (
     <nav
       className="fixed left-[50%] w-[90%] lg:w-[90%] h-[10vh]
-        rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-50
+        rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-20
         transition-transform duration-300 transform -translate-x-1/2 
          bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg mt-10"
     >

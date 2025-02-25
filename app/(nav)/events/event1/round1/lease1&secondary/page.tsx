@@ -51,7 +51,7 @@ export default function Testing() {
                     <h2 
                         className="text-3xl font-bold text-center" 
                         style={{ 
-                            fontFamily: 'FontSpring', 
+                            fontFamily: 'Poppins', 
                             color: lease1Expired ? '#888888' : '#BB2121' 
                         }}
                     >
@@ -77,7 +77,7 @@ export default function Testing() {
                         <div 
                             className="bg-white px-6 py-2 rounded-md font-bold text-xl" 
                             style={{ 
-                                fontFamily: 'FontSpring',
+                                fontFamily: 'Poppins',
                                 color: lease1Expired ? '#888888' : '#BB2121' 
                             }}
                         >
