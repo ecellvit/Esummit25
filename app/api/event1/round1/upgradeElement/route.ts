@@ -78,21 +78,21 @@ export async function POST(request: Request): Promise<NextResponse> {
             return NextResponse.json({ message: "Invalid primary element" }, { status: 400 });
         }
 
-        // const selectedUpgrade = upgrades.find((upgrade) => upgrade.id === upgradeLevel);
-        // if (!selectedUpgrade) {
-        //     return NextResponse.json({ message: "Invalid upgrade selected" });
-        // }
-
         // Get increment value based on upgradeLevel
         const increment = incrementMap[primaryElement][upgradeLevel - 1];
-        // const cost = selectedUpgrade.cost;
+
+        const selectedUpgrade = upgrades.find((upgrade) => upgrade.id === upgradeLevel);
+        if (!selectedUpgrade) {
+            return NextResponse.json({ message: "Invalid upgrade selected" });
+        }
+        const cost = selectedUpgrade.cost;
         // if (team.wallet << cost) {
         //     return NextResponse.json({ message: "Insufficient funds" })
         // }
 
         // Update primaryRate
         team.primaryRate += increment;
-        // team.wallet -= cost;
+        team.wallet = team.wallet-cost;
         team.hasUpgraded = true; 
         await team.save();
 
