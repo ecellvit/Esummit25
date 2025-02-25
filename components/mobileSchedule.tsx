@@ -35,10 +35,10 @@ const events = [
     url: "/events/event2",
   },
   {
-    name: "MARKETING WORKSHOP",
+    name: "The MARKETING Edge",
     date: "March 6, 2025",
     description:
-      "The Marketing Workshop equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
+      "The Marketing Edge equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
     url: "/events/event3",
   },
   {
