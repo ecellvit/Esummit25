@@ -100,6 +100,14 @@ const Dashboard: React.FC = () => {
         };
     }, [socket.connected]);
 
+    useEffect(()=>{
+        const getData = async () => {
+            const data = await fetchMarketData();
+            setMarketData(data);
+        };
+        getData();
+    }, [])
+
     return (
         <div className="relative w-full h-full min-h-screen">
             {/* Background Image */}
