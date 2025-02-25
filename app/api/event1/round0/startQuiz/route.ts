@@ -3,25 +3,35 @@ import { dbConnect } from "@/lib/dbConnect";
 import { Round0 } from "@/models/event1/round0.model";
 import TeamModel from '@/models/event1/Team.model';
 import { Users } from "@/models/user.model";
-import { getTokenDetails } from "@/utils/cn";
 import { getToken } from "next-auth/jwt";
 import { NextResponse, NextRequest } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
 
   await dbConnect();
   console.log('inside route');
   
-  const token = await getToken({ req });
-  const auth = token
-    ? token.accessTokenFromBackend as string
-    : req.headers.get("Authorization")?.split(" ")[1] || "";
-    
-  let userId = await getTokenDetails(auth);
+  const session = await getServerSession(authOptions);
+  const sessionUser = session?.user;
+  
+  if (!session || !sessionUser) {
+    return NextResponse.json({success: false, message: "User not authenticated"}, {status: 401});
+  }
+  const email = sessionUser.email;
+  
+  if (!email) {
+    return NextResponse.json({ success: false, message: "Invalid request" }, { status: 400 });
+  }
+  const user = await Users.findOne({ email: email });
+  if (!user) {
+    return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+  }
 
   try {
     // Fetch the team based on the leader's userId
-    const qualTeam = await TeamModel.findOne({ teamLeaderId: userId });
+    const qualTeam = await TeamModel.findOne({ teamLeaderId: user._id });
 
     if (!qualTeam) {
       return NextResponse.json({ message: "team not found" }, { status: 404 });
@@ -30,7 +40,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // Fetch the Round0 document associated with this team
     const round0Data = await Round0.findOne({ teamId: qualTeam._id });
 
-    const quizStartTime = new Date("October 2, 2024 23:37:00");
+    const quizStartTime = new Date("February 25, 2025 22:35:00");
     const currentTime = new Date();
     console.log('Current Time:', currentTime);
     console.log('Quiz Start Time:', quizStartTime);
