@@ -45,7 +45,7 @@ const events = [
     name: "ACHIEVERS CONCLAVE",
     date: "March 6, 2025",
     description:
-      "At Achievers’ Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
+      "At Achievers' Conclave, distinguished leaders and achievers from various fields reflect on the challenges they tackled and the invaluable lessons learnt. The event instills a sense of determination in participants to surpass their limits and achieve exceptional success.",
     url: "/events/event4",
   },
   {
@@ -62,23 +62,26 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
   const { data: session, update } = useSession();
   const userEmail = session?.user?.email || "";
   const hasRegisteredPioneira = session?.user?.events?.includes(5);
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  
+  // Changed from single boolean to track loading for each event separately
+  const [loadingEventId, setLoadingEventId] = useState<number | null>(null);
+  const [dashboardLoading, setDashboardLoading] = useState<boolean>(false);
 
   const handleRedirect = async (event: number): Promise<void> => {
-    setIsLoading(true);
+    setLoadingEventId(event);
     if (!userEmail) {
       signIn("google");
-      setIsLoading(false);
+      setLoadingEventId(null);
       return;
     }
     if (event === 5 && userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("VIT students can't register for this event");
-      setIsLoading(false);
+      setLoadingEventId(null);
       return;
     }
     if (event >= 1 && event <= 4 && !userEmail.endsWith("@vitstudent.ac.in")) {
       toast.error("Use your college email ID (@vitstudent.ac.in) to register");
-      setIsLoading(false);
+      setLoadingEventId(null);
       return;
     }
     try {
@@ -116,12 +119,12 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
       }
       toast.error("An error occurred while registering.");
     } finally {
-      setIsLoading(false);
+      setLoadingEventId(null);
     }
   };
 
   const handleDeregister = async (event: number): Promise<void> => {
-    setIsLoading(true);
+    setLoadingEventId(event);
     try {
       const response = await axios.post("/api/eventRegistration/deregister", {
         event: Number(event),
@@ -158,7 +161,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
         toast.error("An error occurred while deregistering.");
       }
     } finally {
-      setIsLoading(false);
+      setLoadingEventId(null);
     }
   };
 
@@ -209,7 +212,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                             : handleRedirect(idx + 1)
                         }
                       >
-                        {isLoading ? (
+                        {loadingEventId === idx + 1 ? (
                           <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
                         ) : session?.user.events?.includes(idx + 1) ? (
                           "Deregister"
@@ -224,7 +227,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                              transition-all duration-300 ease-in-out transform hover:scale-105 
                              active:scale-110 active:shadow-lg border-2 border-red-800"
                           onClick={() => {
-                            setIsLoading(true);
+                            setDashboardLoading(true);
 
                             session?.user.event1TeamRole === null
                               ? router.push("/events/event1/createTeam")
@@ -233,7 +236,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                               : router.push("/events/event1/memberDashboard");
                           }}
                         >
-                          {isLoading ? (
+                          {dashboardLoading ? (
                             <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
                           ) : session?.user.event1TeamRole === null ? (
                             "Create Team"
@@ -255,7 +258,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                           : handleRedirect(idx + 1)
                       }
                     >
-                      {isLoading ? (
+                      {loadingEventId === idx + 1 ? (
                         <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
                       ) : session?.user.events?.includes(idx + 1) ? (
                         "Registered"
