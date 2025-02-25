@@ -161,7 +161,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         team.primaryElement = id;
         team.primaryRate = rate;
-        team.wallet -=
 
         console.log("Updating team data:", team);
 
