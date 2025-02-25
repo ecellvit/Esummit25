@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Timer, Home, Wallet } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import logo from "/assets/whiteLogo.svg";
+import logo from "/assets/round1/logo.svg";
+import home from "/assets/round1/home.svg";
 import { set } from 'mongoose';
 
 
@@ -53,7 +54,7 @@ const Navbar = () => {
   return (
     <nav
       className="fixed left-[50%] w-[90%] lg:w-[90%] h-[10vh]
-        rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-20
+        rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-50
         transition-transform duration-300 transform -translate-x-1/2 
          bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg mt-10"
     >
@@ -65,26 +66,29 @@ const Navbar = () => {
             className="h-6 lg:h-8 w-auto object-contain"
           />
         </div>
-        <div className="flex items-center gap-2 text-white hover:text-red-300 px-4 py-2 rounded-lg">
+        <div className="flex items-center gap-2 text-white px-4 py-2 rounded-lg">
           <Timer className="w-5 h-5" />
           <span style={{ fontFamily: 'GreaterTheory' }} >{formatTime(timeLeft)}</span>
         </div>
-        <div className="text-white hover:text-red-300 px-4 py-2 rounded-lg" style={{ fontFamily: 'GreaterTheory' }}>
+        <div className="text-white px-4 py-2 rounded-lg" style={{ fontFamily: 'GreaterTheory' }}>
           {teamName}
         </div>
         <div className=" bg-gradient-to-br from-[#FFFFFF] to-[#DDDDDDDD] border-2 border-white rounded-lg px-3 py-1 flex items-center gap-3 shadow-lg ">
         <Wallet className="w-5 h-5 text-[#B82121]" />
-        <span className="text-[#B82121] hover:text-red-300 " style={{ fontFamily: 'GreaterTheory' }}>
+        <span className="text-[#B82121]" style={{ fontFamily: 'GreaterTheory' }}>
         {walletBalance.toLocaleString()}
         </span>
         </div>
 
         <Link 
           href="./dashboard" 
-          className="flex items-center gap-3 text-white hover:text-red-300 transition-colors duration-300"
+          className="h-full flex items-center"
         >
-          <Home className="w-6 h-6" />
-          <span className="font-medium"></span>
+          <Image
+            src={home}
+            alt="Logo"
+            className="h-6 lg:h-8 w-auto object-contain"
+          />
         </Link>
       </div>
     </nav>
