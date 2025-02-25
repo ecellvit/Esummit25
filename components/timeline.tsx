@@ -37,10 +37,10 @@ const events = [
     img: "/assets/image (2).svg",
   },
   {
-    name: "The MARKETING EDGE",
+    name: "THE MARKETING EDGE",
     date: "March 6, 2025",
     description:
-      "The Marketing Edge equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
+      "The Marketing Workshop equips participants with essential skills in branding, consumer behavior, and digital trends while providing practical insights to create impactful campaigns and optimize marketing effectiveness.",
     url: "/events/event3",
     img: "/assets/image (3).svg",
   },
@@ -64,17 +64,23 @@ const events = [
 
 const images = [img1, img2, img3, img4, img5, img5];
 const mobile = [mob1, mob2, mob3, mob4, mob5];
+const limit = [Infinity, 11, 5, 600, Infinity];
 
 export default function Schedule() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollDelta, setScrollDelta] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userCounts, setUserCounts] = useState<[number]>();
   const scrollThreshold = 200;
   const containerRef = useRef(null);
   const dateRef = useRef(null);
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const mainRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    userCount();
+  }, []);
 
   useEffect(() => {
     if (mainRef.current) {
@@ -163,6 +169,22 @@ export default function Schedule() {
   const { data: session, update } = useSession();
   const userEmail = session?.user?.email || "";
   const hasRegisteredPioneira = session?.user?.events?.includes(5);
+
+  const userCount = async()=>{
+    setIsLoading(true);
+    try {
+      const response = await axios.get("/api/eventRegistration/userCount");
+      console.log("API Response:", response.data);
+      if (response.status === 200) {
+        setUserCounts(response.data.data);
+        console.log("User count fetched successfully",response.data.data);
+      }
+    } catch (error) {
+      console.log("Error fetching user count:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const handleRedirect = async (event: number) => {
     setIsLoading(true);
@@ -350,6 +372,29 @@ export default function Schedule() {
               </p>
               {!hasRegisteredPioneira ? (
                 <div className="flex flex-row gap-2">
+                    { activeIndex!=0 &&
+                userCounts && userCounts[activeIndex] >= limit[activeIndex] ? (
+                  session?.user?.events?.includes(activeIndex + 1) ? (
+                    // it should be the deregister route
+                    <button
+                      key={activeIndex + 1}
+                      className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+                      style={{ background: gradientStyle }}
+                      onClick={() => handleDeregister(activeIndex + 1)}
+                    >
+                      Deregister
+                    </button>
+                  ) : (
+                    <button
+                      key={activeIndex + 1}
+                      className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
+                      style={{ background: gradientStyle }}
+                      onClick={() => toast.error("Registration limit reached")}
+                    >
+                      Registration Closed
+                    </button>
+                  )
+                ) : (
                   <button
                     key={activeIndex + 1}
                     className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
@@ -370,6 +415,8 @@ export default function Schedule() {
                       "Register"
                     )}
                   </button>
+                )}
+                  
 
                   {activeIndex === 0 && session?.user.events?.includes(1) && (
                     <button
