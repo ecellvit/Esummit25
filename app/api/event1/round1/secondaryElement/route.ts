@@ -53,16 +53,30 @@ export async function POST(request: Request): Promise<NextResponse> {
         if (team.secondaryElement || team.secondaryRate ){
             return NextResponse.json({message: "Cannot purchase again"}, {status: 410});
         }
+        
         if (isNaN(id) || !rate) {
             return NextResponse.json({ message: "id and rate are required" }, { status: 400 });
         }
         console.log("jhcjhgdcghdgcjdc",id,team.primaryElement)
+
+        const element = resourceData.find(el => el.id === id);
+        if (!element) {
+            console.log("Element not found in data");
+            return NextResponse.json({ message: "Element not found" }, { status: 404 });
+        }
+        if (team.wallet < element.cost) {
+            console.log("Insufficient funds");
+            return NextResponse.json({ message: "Insufficient funds" }, { status: 402 });
+        }
+
         if (id === team.primaryElement){
             return NextResponse.json({ message: "Already purchased as primary element" }, {status: 406})
         }
+        
 
         team.secondaryElement = id;
         team.secondaryRate = rate;
+        team.wallet -= element.cost;
         await team.save();
 
         const marketData = await MarketModel.findOne({ elementId: id });
