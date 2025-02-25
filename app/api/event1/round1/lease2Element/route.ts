@@ -63,8 +63,24 @@ export async function POST(request: Request): Promise<NextResponse> {
             return NextResponse.json({ message: "id and rate are required" }, { status: 400 });
         }
 
+        if (team.lease2Element === team.primaryElement || team.lease2Element === team.secondaryElement){
+            console.log("Element is already purchased previously")
+            return NextResponse.json({ message: "Element is already purchased"}, {status: 406})
+        }
+
+        const element = resourceData.find(el => el.id === id);
+        if (!element) {
+            console.log("Element not found in data");
+            return NextResponse.json({ message: "Element not found" }, { status: 404 });
+        }
+        if (team.wallet < element.cost) {
+            console.log("Insufficient funds");
+            return NextResponse.json({ message: "Insufficient funds" }, { status: 402 });
+        }
+
         team.lease2Element = id;
         team.lease2Rate  = rate;
+        team.wallet -= element.cost;
 
         console.log("Updating team data:", team);
 
