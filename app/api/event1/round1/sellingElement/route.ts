@@ -34,7 +34,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    let totalValue = 0;
+    // let totalValue = 0;
     const { elements } = await request.json();
     for (const { elementIndex, amount } of elements) {
       // Validate elementIndex
@@ -48,15 +48,15 @@ export async function POST(request: Request): Promise<NextResponse> {
       }
 
       // Calculate the total value of the resources being sold
-      const marketPrice = marketData.basePrice[elementIndex] + ((0.4 - (marketData.currentTeams[elementIndex] / 40)) * 175);
+      // const marketPrice = marketData.basePrice[elementIndex] + ((0.4 - (marketData.currentTeams[elementIndex] / 40)) * 175);
 
-      totalValue += amount * marketPrice;
+      // totalValue += amount * marketPrice;
 
       // Update team's portfolio
       team.portfolio[elementIndex] -= amount;
     }
     // Update team's wallet
-    team.wallet += totalValue;
+    // team.wallet += totalValue;
     await team.save();
 
     return NextResponse.json({
