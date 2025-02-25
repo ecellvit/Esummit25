@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import bg from "/assets/round1/bg2.svg";
 import { useRouter, usePathname } from "next/navigation";
-import Round1Navbar from "@/components/events/round1/navbar";
+import Round1Navbar from "@/components/events/Round1/navbar";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Round1Layout({ children }: { children: React.ReactNode }) {
