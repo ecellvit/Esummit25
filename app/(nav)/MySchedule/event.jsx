@@ -14,15 +14,14 @@ import Link from "next/link";
 
 const Event = ({ event, userDetails }) => {
   const [loader, setLoader] = useState(false);
-  const [team1,setTeam1]=useState(false);
+  const [team1, setTeam1] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const { data: session, status } = useSession();
   useEffect(() => {
     if (event.id == 1) {
       if (!session?.user?.event1TeamId) {
         setShowWarning(true);
-      }
-      else{
+      } else {
         setTeam1(true);
       }
     }
@@ -32,8 +31,7 @@ const Event = ({ event, userDetails }) => {
       <div>
         {loader}
         <div className="">
-        <h1 className="uppercase text-2xl pb-2 pt-2 md:text-3xl lg:text-5xl font-bold text-black font-[GreaterTheory]">
-
+          <h1 className="uppercase text-2xl pb-2 pt-2 md:text-3xl lg:text-5xl font-bold text-black font-[GreaterTheory]">
             {event.eventName}
           </h1>
           <div className="uppercase flex gap-2 pt-2 items-center font-[PoppinsRegular]">
@@ -55,23 +53,27 @@ const Event = ({ event, userDetails }) => {
             {event.venue}
           </div>
         </div>
-        <p className="font-poppins py-3 font-[PoppinsRegular]">{event.description}</p>
+        <p className="font-poppins py-3 font-[PoppinsRegular]">
+          {event.description}
+        </p>
         <div className="flex flex-col md:flex-row gap-4">
-          {(event.id === 1) && (
-           <button
-  className="text-white font-[GreaterTheory] hover:scale-105 transition-all bg-gradient-to-br p-3 rounded-lg hover:bg-opacity-80 bg-black"
-           
-           onClick={() => {
-             if ((event.id === 1 && team1)) {
-               window.location.href = `/events/event${event.id}/memberDashboard`;
-             } else {
-               window.location.href = `/events/event${event.id}/createTeam`;
-             }
-           }}
-         >
-           {!team1?"Create Team":"Dashboard"}
-         </button>
-         
+          {event.id === 1 && (
+            <button
+              className="text-white font-[GreaterTheory] hover:scale-105 transition-all bg-gradient-to-br p-3 rounded-lg hover:bg-opacity-80 bg-black"
+              onClick={() => {
+                if (event.id === 1 && userDetails.event1TeamId) {
+                  if (userDetails.event1TeamRole === 1) {
+                    window.location.href = `/events/event1/memberDashboard`;
+                  } else {
+                    window.location.href = `/events/event1/leaderDashboard`;
+                  }
+                } else {
+                  window.location.href = `/events/event1/createTeam`;
+                }
+              }}
+            >
+              {userDetails.event1TeamId ? "Dashboard" : "Create Team"}
+            </button>
           )}
           {event.loc && (
             <Link
