@@ -2,6 +2,7 @@
 //TODO: (2) set withCredentials: true
 
 import { io } from "socket.io-client";
+import { getSessionUser } from "./utils/getSessionUser";
 
 export const socket = io(process.env.NEXT_PUBLIC_BACKEND_URI, {
   transports: ['polling', 'websocket'],
@@ -14,6 +15,13 @@ export const socket = io(process.env.NEXT_PUBLIC_BACKEND_URI, {
   // withCredentials: true,
   // Add error handling
   forceNew: true
+});
+
+getSessionUser().then((user) => {
+  if (user) {
+    socket.auth = { user };
+    socket.connect(); // Connect after setting auth
+  }
 });
 
 // Add global error handlers
