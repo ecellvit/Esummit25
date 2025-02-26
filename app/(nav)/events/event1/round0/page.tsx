@@ -88,9 +88,9 @@ export default function Qualifier() {
       .then((data) => {
         const user = data.user;
         if (user?.hasFilledDetails) {
-          if (!user?.teamId) {
+          if (!(user?.event1TeamId)) {
             router.push("/");
-          } else if (user?.teamRole !== 0) {
+          } else if (user?.event1TeamRole !== 0) {
             toast.error("Only leaders can access the quiz");
             router.push("/");
           }
@@ -218,7 +218,7 @@ export default function Qualifier() {
           {questionCategory !== "instruction" &&
             questionCategory !== "waiting" && (
               <div className="text-white">
-                <QualifierTimer teamName={teamName} autoSubmit={autoSubmit} />
+                <QualifierTimer teamName={teamName} autoSubmit={autoSubmit} duration={10 * 60 * 1000}/>
                 <QuestionForQualifier
                   questionCategory={questionCategory as "easy" | "medium" | "hard" | "caseStudy" | "instruction" | "waiting"}
                   questionNumber={questionNumber}

@@ -28,6 +28,8 @@ export async function GET(): Promise<NextResponse<ApiResponse>> {
       mobNo: user?.mobNo,
       hasFilledDetails: user?.hasFilledDetails,
       events: user?.events,
+      event1TeamId:user?.event1TeamId,
+      event1TeamRole:user?.event1TeamRole,
     }
 
     return NextResponse.json({ success: true, message: "Fetched user details", user: userDetails }, { status: 200 });
