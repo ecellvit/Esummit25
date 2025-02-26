@@ -5,12 +5,12 @@ import '@/app/globals.css';
 
 interface QualifierTimerProps {
   teamName: string;
-  duration?: number;
+  duration: number;
   autoSubmit: () => void;
 }
 
-const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit }) => {
-  const [endTime, setEndTime] = useState<number>(Date.now());
+const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit,duration }) => {
+  const [endTime, setEndTime] = useState<number>(Date.now()+duration);
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -32,7 +32,6 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit })
           }
         })
         .then((data) => {
-          console.log(data);
           console.log("TIME----", data.endTime);
           setEndTime(data.endTime);
         })
@@ -40,7 +39,7 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit })
           console.log(err);
         });
     }
-  }, [status, session, router]);
+  }, [status,session, router]);
 
   // const LoadFont = () => (
   //   <style>
