@@ -5,7 +5,7 @@ import '@/app/globals.css';
 
 interface QualifierTimerProps {
   teamName: string;
-  duration: number;
+  duration?: number;
   autoSubmit: () => void;
 }
 
@@ -18,7 +18,7 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit })
     if (status === "unauthenticated") {
       router.push("/");
     } else if (status === "authenticated") {
-      fetch("/api/round0/getTime", {
+      fetch("/api/event1/round0/getTime", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -42,18 +42,18 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit })
     }
   }, [status, session, router]);
 
-  const LoadFont = () => (
-    <style>
-      {`
-        @font-face {
-          font-family: ${"GothamBlack"};
-          src: url(${"../public/fonts/Gotham-Black.ttf"}) format(${"truetype"});
-          font-weight: bold;
-          font-style: normal;
-        }
-      `}
-    </style>
-  );
+  // const LoadFont = () => (
+  //   <style>
+  //     {`
+  //       @font-face {
+  //         font-family: ${"GothamBlack"};
+  //         src: url(${"../public/fonts/Gotham-Black.ttf"}) format(${"truetype"});
+  //         font-weight: bold;
+  //         font-style: normal;
+  //       }
+  //     `}
+  //   </style>
+  // );
 
   const calculateTimeRemaining = () => {
     const now = new Date().getTime();
@@ -90,14 +90,14 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit })
   return (
     <div 
       style={{
-        fontFamily: "'GothamBlack', sans-serif",
+        // fontFamily: "'GothamBlack', sans-serif",
         background: "black",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
       }}
       className="w-full flex justify-center items-center h-full"
     >
-      <LoadFont />
+      {/* <LoadFont /> */}
       <div className="flex flex-col justify-center items-center h-full w-fit text-black">
         <div className="text-2xl">
           Team Name : {teamName}
