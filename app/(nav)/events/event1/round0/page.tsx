@@ -6,35 +6,20 @@ import QuestionForQualifier from "@/components/round0/Question";
 import QuizEnd from "@/components/round0/quizend";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import LoadingIcons from "react-loading-icons";
-import Loader from "@/components/round0/loader";
-import bgWebsite from "@/assets/bg.png";
-
-interface QuestionData {
-  category: string;
-  questionNumber: number;
-  chronoNumber: number;
-  teamName: string;
-}
-
-interface UserData {
-  hasFilledDetails: boolean;
-  teamId: string | null;
-  teamRole: number;
-}
 
 export default function Qualifier() {
-  const [questionCategory, setQuestionCategory] =
-    useState<string>("instruction");
-  const [questionNumber, setQuestionNumber] = useState<number>(0);
-  const [chronoNumber, setChronoNumber] = useState<number>(0);
-  const [teamName, setTeamName] = useState<string>("");
-  const [finalAnswer, setFinalAnswer] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [questionCategory, setQuestionCategory] = useState("instruction");
+  const [questionNumber, setQuestionNumber] = useState(0);
+  const [chronoNumber, setChronoNumber] = useState(0);
+  const [teamName, setTeamName] = useState("");
+  const [finalAnswer, setFinalAnswer] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [test, setTest] = useState("");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -44,7 +29,28 @@ export default function Qualifier() {
       getUserData();
       getQuestionData();
     }
-  }, [status]);
+  }, [status, test]);
+
+  const checkRound = () => {
+    setIsLoading(true);
+    fetch(`/api/checkRound`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: session?.accessTokenBackend
+          ? `Bearer ${session.accessTokenBackend}`
+          : "",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.level !== 0) {
+          router.push("/");
+        }
+      })
+      .finally(() => setIsLoading(false));
+  };
 
   const autoSubmit = () => {
     setIsLoading(true);
@@ -52,7 +58,9 @@ export default function Qualifier() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessTokenBackend}`,
+        Authorization: session?.accessTokenBackend
+          ? `Bearer ${session.accessTokenBackend}`
+          : "",
         "Access-Control-Allow-Origin": "*",
       },
     })
@@ -66,25 +74,28 @@ export default function Qualifier() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessTokenBackend}`,
+        Authorization: session?.accessTokenBackend
+          ? `Bearer ${session.accessTokenBackend}`
+          : "",
         "Access-Control-Allow-Origin": "*",
       },
     })
       .then((res) => res.json())
-      .then((data: { user: UserData }) => {
+      .then((data) => {
         const user = data.user;
-        if (!user?.hasFilledDetails) {
-          toast.error("Please register first");
+        if (user?.hasFilledDetails) {
+          if (!user?.teamId) {
+            router.push("/");
+          } else if (user?.teamRole !== 0) {
+            toast.error("Only leaders can access the quiz");
+            router.push("/");
+          }
+        } else {
+          toast.error("Please register for the event first");
           router.push("/");
-          return;
-        }
-        if (user?.teamId == null || user?.teamRole !== 0) {
-          toast.error("Only team leaders can access the quiz");
-          router.push("/");
-          return;
         }
       })
-      .catch((err) => console.error("User fetch error:", err))
+      .catch(() => toast.error("Error fetching user data"))
       .finally(() => setIsLoading(false));
   };
 
@@ -95,18 +106,22 @@ export default function Qualifier() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessTokenBackend}`,
+          Authorization: session?.accessTokenBackend
+            ? `Bearer ${session.accessTokenBackend}`
+            : "",
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({ answer: finalAnswer }),
       });
+
       if (response.ok) {
         setFinalAnswer([]);
         getQuestionData();
+        setTest(await response.json());
       } else {
-        console.log("error");
+        toast.error("Error submitting answer");
       }
-    } catch (error) {
+    } catch {
       toast.error("Server Error");
     } finally {
       setIsLoading(false);
@@ -119,34 +134,26 @@ export default function Qualifier() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessTokenBackend}`,
+        Authorization: session?.accessTokenBackend
+          ? `Bearer ${session.accessTokenBackend}`
+          : "",
         "Access-Control-Allow-Origin": "*",
       },
     })
       .then((res) => res.json())
-      .then((data: QuestionData) => {
-        setQuestionCategory(data.category);
-        setQuestionNumber(data.questionNumber);
-        setChronoNumber(data.chronoNumber);
-        setTeamName(data.teamName);
+      .then((data) => {
+        if (data && data.category) {
+          setQuestionCategory(data.category);
+          setQuestionNumber(data.questionNumber);
+          setChronoNumber(data.chronoNumber);
+          setTeamName(data.teamName);
+        } else {
+          toast.error("Invalid question data received");
+        }
       })
-      .catch((err) => console.error("Error fetching question:", err))
+      .catch(() => toast.error("Error fetching question data"))
       .finally(() => setIsLoading(false));
   };
-
-  const submitButton = useMemo(
-    () => (
-      <button
-        type="submit"
-        disabled={isLoading}
-        onClick={handleSubmit}
-        className="px-4 py-2 text-white rounded-full cursor-pointer bg-gradient-to-r from-purple-500 to-blue-500 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all flex items-center justify-center font-bold"
-      >
-        {isLoading ? <LoadingIcons.Oval color="black" height="20px" /> : "Next"}
-      </button>
-    ),
-    [isLoading]
-  );
 
   return (
     <main
@@ -160,31 +167,106 @@ export default function Qualifier() {
     >
       {isLoading && <Loader />}
       <section>
-        {questionCategory === "instruction" && <Instructions />}
-        {questionCategory !== "instruction" &&
-          questionCategory !== "waiting" && (
-            <div className="text-black">
-              {teamName && (
+        <div className="flex justify-between items-start w-full h-fit md:w-full">
+          {/* ECELL and FP Logos - Left */}
+          <div className="flex items-center px-5 space-x-6">
+            <Image
+              src={ecellLogo}
+              alt="ECELL Logo"
+              width={150}
+              height={50}
+              className="cursor-pointer pl-2"
+              onClick={() => router.push("/")}
+            />
+            {/* FP Logo - Just after ECELL Logo */}
+            <Image
+              src={fpLogo}
+              alt="FP Logo"
+              width={50}
+              height={50}
+              className="cursor-pointer"
+            />
+          </div>
+
+          {/* VIT and SW Logos - Right */}
+          <div className="flex flex-col items-start ml-auto pr-8 space-y-1">
+            {" "}
+            {/* Added pr-8 to shift VIT logo left */}
+            <Image
+              src={vitLogo}
+              alt="VIT Logo"
+              width={150}
+              height={100}
+              className="pl-2"
+            />
+            <Image
+              src={swLogo}
+              alt="Student Welfare Logo"
+              width={150}
+              height={250}
+            />
+          </div>
+        </div>
+
+        {/* {isLoading && <Loader />} */}
+        <div className="gap-2 z=1">
+          {questionCategory === "instruction" && <Instructions />}
+          {questionCategory !== "instruction" &&
+            questionCategory !== "waiting" && (
+              <div className="text-black">
                 <QualifierTimer teamName={teamName} autoSubmit={autoSubmit} />
-              )}
-              <QuestionForQualifier
-                questionCategory={questionCategory}
-                questionNumber={questionNumber}
-                chronoNumber={chronoNumber}
-              />
-              <AnswerForQualifier
-                // questionCategory={questionCategory}
-                questionNumber={questionNumber}
-                chronoNumber={chronoNumber}
-                finalAnswer={finalAnswer}
-                setFinalAnswer={setFinalAnswer}
-              />
-              <div className="w-full flex justify-center items-center">
-                {submitButton}
+                <QuestionForQualifier
+                  questionCategory={questionCategory}
+                  questionNumber={questionNumber}
+                  chronoNumber={chronoNumber}
+                  setChronoNumber={setChronoNumber}
+                  setQuestionNumber={setQuestionNumber}
+                  className=""
+                />
+                <AnswerForQualifier
+                  questionCategory={questionCategory}
+                  questionNumber={questionNumber}
+                  chronoNumber={chronoNumber}
+                  finalAnswer={finalAnswer}
+                  setChronoNumber={setChronoNumber}
+                  setQuestionNumber={setQuestionNumber}
+                  setFinalAnswer={setFinalAnswer}
+                />
+                <div className="w-full flex  justify-center items-center">
+                  {questionCategory === "hard" && chronoNumber === 4 ? (
+                    <button
+                      id="nextButton"
+                      type="submit"
+                      disabled={isLoading}
+                      onClick={handleSubmit}
+                      className="px-4 py-2  text-white rounded-full cursor-pointer bg-gradient-to-r from-purple-500 to-blue-500 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all flex items-center justify-center font-bold"
+                    >
+                      {isLoading ? (
+                        <LoadingIcons.Oval color="black" height="20px" />
+                      ) : (
+                        "Submit"
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      id="submitButton"
+                      type="submit"
+                      disabled={isLoading}
+                      onClick={handleSubmit}
+                      className="px-4 py-2 text-white rounded-full cursor-pointer bg-gradient-to-r from-purple-500 to-blue-500 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all flex items-center justify-center font-bold"
+                    >
+                      {isLoading ? (
+                        <LoadingIcons.Oval color="black" height="20px" />
+                      ) : (
+                        "Next"
+                      )}
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-        {questionCategory === "waiting" && <QuizEnd />}
+            )}
+          {questionCategory === "waiting" && <QuizEnd />}
+        </div>
       </section>
     </main>
   );
