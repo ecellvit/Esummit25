@@ -47,7 +47,7 @@ const sellResources = async () => {
 
 const Dashboard: React.FC = () => {
     const [marketData, setMarketData] = useState<ElementData[]>([]);
-    const [portfolio, setPortfolio] = useState<number[]>([]);
+    const [portfolio, setPortfolio] = useState<number[]>([0, 0, 0, 0, 0]);
     const [selectedGraph, setSelectedGraph] = useState<number | null>(null);
 
     // Socket helper functions
