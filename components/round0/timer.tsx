@@ -5,6 +5,7 @@ import '@/app/globals.css';
 
 interface QualifierTimerProps {
   teamName: string;
+  duration: number;
   autoSubmit: () => void;
 }
 
