@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type ElementOption = "Element A" | "Element B" | "Element C" | "Element D";
 type DestinationOption = "Destination X" | "Destination Y" | "Destination Z" | "Destination W";
-type TransportMode = "Air" | "Land";
+type TransportMode = "Air" | "Water";
 
 interface FormEntry {
   id: number;
@@ -25,7 +25,7 @@ export default function Round2Form() {
       {
         id: entries.length + 1,
         element: "Element A",
-        quantity: 1,
+        quantity: 0,
         destination: "Destination X",
         transport: "Air",
       },
@@ -67,7 +67,7 @@ export default function Round2Form() {
             className="w-full p-2 border rounded"
             value={entry.quantity}
             onChange={(e) => updateEntry(index, "quantity", Number(e.target.value))}
-            min={1}
+            min={0}
           />
 
           <label className="block mt-3 mb-2">Destination:</label>
@@ -89,7 +89,7 @@ export default function Round2Form() {
             onChange={(e) => updateEntry(index, "transport", e.target.value as TransportMode)}
           >
             <option>Air</option>
-            <option>Land</option>
+            <option>Water</option>
           </select>
         </div>
       ))}
