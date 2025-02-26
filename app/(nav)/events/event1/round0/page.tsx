@@ -9,17 +9,21 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import LoadingIcons from "react-loading-icons";
+import bgWebsite from "@/assets/bg.png";
+import Loader from "@/components/loader";
 
 export default function Qualifier() {
-  const [questionCategory, setQuestionCategory] = useState("instruction");
+  const [questionCategory, setQuestionCategory] = useState<"easy" | "medium" | "hard" | "caseStudy" | "instruction" | "waiting">("instruction");
   const [questionNumber, setQuestionNumber] = useState(0);
   const [chronoNumber, setChronoNumber] = useState(0);
   const [teamName, setTeamName] = useState("");
-  const [finalAnswer, setFinalAnswer] = useState([]);
+  const [finalAnswer, setFinalAnswer] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
   const [test, setTest] = useState("");
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -54,7 +58,7 @@ export default function Qualifier() {
 
   const autoSubmit = () => {
     setIsLoading(true);
-    fetch(`/api/round0/autoSubmit`, {
+    fetch(`/api/event1/round0/autoSubmit`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +74,7 @@ export default function Qualifier() {
 
   const getUserData = () => {
     setIsLoading(true);
-    fetch(`/api/userInfo`, {
+    fetch(`/api/user/getUserDetails`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +106,7 @@ export default function Qualifier() {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/round0/submitAnswer", {
+      const response = await fetch("/api/event1/round0/submitAnswer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -130,7 +134,7 @@ export default function Qualifier() {
 
   const getQuestionData = () => {
     setIsLoading(true);
-    fetch(`/api/round0/getQuestion`, {
+    fetch(`/api/event1/round0/getQuestion`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -170,29 +174,29 @@ export default function Qualifier() {
         <div className="flex justify-between items-start w-full h-fit md:w-full">
           {/* ECELL and FP Logos - Left */}
           <div className="flex items-center px-5 space-x-6">
-            <Image
+            {/* <Image
               src={ecellLogo}
               alt="ECELL Logo"
               width={150}
               height={50}
               className="cursor-pointer pl-2"
               onClick={() => router.push("/")}
-            />
+            /> */}
             {/* FP Logo - Just after ECELL Logo */}
-            <Image
+            {/* <Image
               src={fpLogo}
               alt="FP Logo"
               width={50}
               height={50}
               className="cursor-pointer"
-            />
+            /> */}
           </div>
 
           {/* VIT and SW Logos - Right */}
           <div className="flex flex-col items-start ml-auto pr-8 space-y-1">
             {" "}
             {/* Added pr-8 to shift VIT logo left */}
-            <Image
+            {/* <Image
               src={vitLogo}
               alt="VIT Logo"
               width={150}
@@ -204,7 +208,7 @@ export default function Qualifier() {
               alt="Student Welfare Logo"
               width={150}
               height={250}
-            />
+            /> */}
           </div>
         </div>
 
@@ -213,15 +217,14 @@ export default function Qualifier() {
           {questionCategory === "instruction" && <Instructions />}
           {questionCategory !== "instruction" &&
             questionCategory !== "waiting" && (
-              <div className="text-black">
+              <div className="text-white">
                 <QualifierTimer teamName={teamName} autoSubmit={autoSubmit} />
                 <QuestionForQualifier
-                  questionCategory={questionCategory}
+                  questionCategory={questionCategory as "easy" | "medium" | "hard" | "caseStudy" | "instruction" | "waiting"}
                   questionNumber={questionNumber}
                   chronoNumber={chronoNumber}
                   setChronoNumber={setChronoNumber}
                   setQuestionNumber={setQuestionNumber}
-                  className=""
                 />
                 <AnswerForQualifier
                   questionCategory={questionCategory}
@@ -231,6 +234,9 @@ export default function Qualifier() {
                   setChronoNumber={setChronoNumber}
                   setQuestionNumber={setQuestionNumber}
                   setFinalAnswer={setFinalAnswer}
+                  selectedOptions={selectedOptions}         // <-- Add this line
+                  setSelectedOptions={setSelectedOptions}   // <-- Add this line
+                
                 />
                 <div className="w-full flex  justify-center items-center">
                   {questionCategory === "hard" && chronoNumber === 4 ? (

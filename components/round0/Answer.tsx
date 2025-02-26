@@ -6,7 +6,6 @@ import questions from "@/constant/round0/questions.json";
 interface Question {
   q: {
     questionType: "single" | "multiple";
-    // other properties...
   };
   ans: {
     optionsType: "text" | "image";
@@ -16,19 +15,16 @@ interface Question {
   };
 }
 
-interface QuestionSet {
-  easy: Question[];
-  medium: Question[];
-  hard: Question[];
-  caseStudy: Question[];
-}
-
 interface Props {
   questionCategory: "easy" | "medium" | "hard" | "caseStudy";
   questionNumber: number;
+  chronoNumber: number;
+  setChronoNumber: (value: number) => void;
+  setQuestionNumber: (value: number) => void;
   setFinalAnswer: (answer: string[]) => void;
   finalAnswer: string[];
-  changeOption: boolean;
+  selectedOptions: string[];
+  setSelectedOptions: (options: string[]) => void;
 }
 
 const AnswerForQualifier: React.FC<Props> = ({
@@ -36,74 +32,50 @@ const AnswerForQualifier: React.FC<Props> = ({
   questionNumber,
   setFinalAnswer,
   finalAnswer,
-  changeOption,
+  selectedOptions,
+  setSelectedOptions,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<{
-    [key: number]: string[];
-  }>({});
-
   // Reset selections when question changes
   useEffect(() => {
-    setSelectedOptions({});
+    setSelectedOptions([]);
     setFinalAnswer([]);
-  }, [questionNumber, changeOption, setFinalAnswer]);
+  }, [questionNumber, setSelectedOptions, setFinalAnswer]);
 
-  // Update final answer based on question type
-  const updateFinalAnswer = (option: string) => {
+  // Handle option changes
+  const handleOptionChange = (option: string) => {
     const questionData =
       questions[questionCategory as keyof typeof questions]?.[questionNumber];
     if (!questionData) return;
 
-    const questionType = questionData.q.questionType as "single" | "multiple";
+    const questionType = questionData.q.questionType;
 
     if (questionType === "single") {
+      // Single choice - only one option can be selected
+      setSelectedOptions([option]);
       setFinalAnswer([option]);
     } else {
-      // For multiple choice questions - fixing the error here
-      const newAnswer = finalAnswer.includes(option)
-        ? finalAnswer.filter((item) => item !== option) // Remove if already selected
-        : [...finalAnswer, option]; // Add if not selected
+      // Multiple choice - allow multiple selections
+      const updatedOptions = selectedOptions.includes(option)
+        ? selectedOptions.filter((opt) => opt !== option)
+        : [...selectedOptions, option];
 
-      setFinalAnswer(newAnswer);
+      setSelectedOptions(updatedOptions);
+      setFinalAnswer(updatedOptions);
     }
   };
 
-  const handleOptionChange = (questionId: number, option: string) => {
-    const questionData =
-      questions[questionCategory as keyof typeof questions]?.[questionId];
-    if (!questionData) return;
-
-    const questionType = questionData.q.questionType as "single" | "multiple";
-    const isSelected = selectedOptions[questionId]?.includes(option);
-
-    setSelectedOptions((prevOptions) => ({
-      ...prevOptions,
-      [questionId]:
-        questionType === "single"
-          ? [option]
-          : isSelected
-          ? (prevOptions[questionId] || []).filter(
-              (selectedOption) => selectedOption !== option
-            )
-          : [...(prevOptions[questionId] || []), option],
-    }));
-
-    // Update the final answer
-    updateFinalAnswer(option);
-  };
-
+  // Render the options dynamically
   const renderOptions = () => {
     const questionData =
       questions[questionCategory as keyof typeof questions]?.[questionNumber];
     if (!questionData) return null;
 
-    const questionType = questionData.q.questionType as "single" | "multiple";
+    const questionType = questionData.q.questionType;
 
     return Object.entries(questionData.ans.optionsContent).map(
       ([key, value], index) => {
         const inputId = `option-${questionNumber}-${key}`;
-        const isSelected =
-          selectedOptions[questionNumber]?.includes(key) || false;
+        const isSelected = selectedOptions.includes(key);
 
         return (
           <div
@@ -119,9 +91,7 @@ const AnswerForQualifier: React.FC<Props> = ({
                   id={inputId}
                   type="radio"
                   name={`question-${questionNumber}`}
-                  onChange={() => {
-                    handleOptionChange(questionNumber, key);
-                  }}
+                  onChange={() => handleOptionChange(key)}
                   checked={isSelected}
                   className="mr-2 mt-1"
                 />
@@ -129,9 +99,7 @@ const AnswerForQualifier: React.FC<Props> = ({
                 <input
                   id={inputId}
                   type="checkbox"
-                  onChange={() => {
-                    handleOptionChange(questionNumber, key);
-                  }}
+                  onChange={() => handleOptionChange(key)}
                   checked={isSelected}
                   className="mr-2 mt-1"
                 />

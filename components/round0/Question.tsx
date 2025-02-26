@@ -7,6 +7,8 @@ type QuestionForQualifierProps = {
   questionCategory: "easy" | "medium" | "hard" | "caseStudy"|"instruction"|"waiting";
   questionNumber: number;
   chronoNumber: number;
+  setChronoNumber?: React.Dispatch<React.SetStateAction<number>>;
+  setQuestionNumber?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export default function QuestionForQualifier(props: QuestionForQualifierProps) {

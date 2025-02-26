@@ -20,7 +20,7 @@ const Qualifier: React.FC = () => {
   }, [status]);
 
   const getUserData = () => {
-    fetch(`/api/userInfo`, {
+    fetch(`/api/user/getUserDetails`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
