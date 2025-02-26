@@ -1,6 +1,6 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
-import '@/app/globals.css';
+import "@/app/globals.css";
 
 interface CountdownTimerProps {
   targetDate: string;
@@ -15,36 +15,50 @@ interface TimeLeft {
 export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
   const calculateTimeLeft = (): TimeLeft => {
     const difference = +new Date(targetDate) - +new Date();
-    let timeLeft: TimeLeft;
 
-    if (difference > 0) {
-      timeLeft = {
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    } else {
-      timeLeft = { hours: 0, minutes: 0, seconds: 0 };
+    if (difference <= 0) {
+      return { hours: 0, minutes: 0, seconds: 0 }; // Ensure it stays at zero
     }
 
-    return timeLeft;
+    return {
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+    };
   };
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
 
   useEffect(() => {
+    if (
+      timeLeft.hours === 0 &&
+      timeLeft.minutes === 0 &&
+      timeLeft.seconds === 0
+    ) {
+      return; // Stop the effect if time is up
+    }
+
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
+      const newTimeLeft = calculateTimeLeft();
+      setTimeLeft(newTimeLeft);
+
+      if (
+        newTimeLeft.hours === 0 &&
+        newTimeLeft.minutes === 0 &&
+        newTimeLeft.seconds === 0
+      ) {
+        clearInterval(timer); // Stop updating when countdown reaches 0
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [timeLeft]); // Re-run effect only when timeLeft changes
 
-  const formatNumber = (number: number) => String(number).padStart(2, '0');
+  const formatNumber = (number: number) => String(number).padStart(2, "0");
 
   return (
     <div className="flex flex-col items-center space-y-3 pb-4">
-      <div className="text-md w-full  font-bold text-black sm:text-sm md:text-xl">
+      <div className="text-md w-full font-bold text-black sm:text-sm md:text-xl">
         Time Remaining:
       </div>
 
