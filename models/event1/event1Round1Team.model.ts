@@ -23,7 +23,6 @@ export interface round1Qualified extends Document {
     page: number;
     startTime: Date;
     totalQuantity: number;
-    islandElement: number[][];
     elementBatch1: number[];
     elementBatch2: number[];
     elementBatch3: number[];
@@ -110,9 +109,26 @@ const TeamSchema: Schema<round1Qualified> = new Schema(
         type: Date,
         default: Date.now,
     },
-    totalQuantity: {
+    totalQuantity: 
+    {
         type: Number,
     },
+    elementBatch1: 
+    {
+        type: [Number],
+    },
+    elementBatch2: 
+    {
+        type: [Number],
+    },
+    elementBatch3: 
+    {
+        type: [Number],
+    },
+    insuranceType: 
+    {
+        type: [Number],
+    }
     
 },
     { collection: "TeamsEvent1Round1" }
