@@ -1,3 +1,5 @@
+// Registration close logic have to apply on the mobile timeline also.
+
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
