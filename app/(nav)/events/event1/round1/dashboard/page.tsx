@@ -47,6 +47,7 @@ const sellResources = async () => {
 
 const Dashboard: React.FC = () => {
     const [marketData, setMarketData] = useState<ElementData[]>([]);
+    const [portfolio, setPortfolio] = useState<number[]>([]);
     const [selectedGraph, setSelectedGraph] = useState<number | null>(null);
 
     // Socket helper functions
@@ -58,6 +59,11 @@ const Dashboard: React.FC = () => {
                     : item
             )
         );
+    };
+
+    const onPortfolioUpdate = (data: { portfolio: number[] }) => {
+        console.log(data);
+        setPortfolio(data.portfolio);
     };
 
 
@@ -86,11 +92,13 @@ const Dashboard: React.FC = () => {
 
         socket.on("connect", onConnect);
         socket.on("marketPrice", onMarketPrice);
+        socket.on("portfolioUpdate", onPortfolioUpdate);
         socket.on("disconnect", onDisconnect);
 
         return () => {
         socket.off("connect", onConnect);
         socket.off("marketPrice", onMarketPrice);
+        socket.off("portfolioUpdate", onPortfolioUpdate);
         socket.off("disconnect", onDisconnect);
         };
     }, [socket.connected]);
@@ -199,7 +207,7 @@ const Dashboard: React.FC = () => {
                                 {resourceData.map((resource, index) => (
                                     <tr key={index} className="bg-white">
                                         <td className="border-2 border-[#BB2121] px-4 py-2">{resource.name}</td>
-                                        <td className="border-2 border-[#BB2121] px-4 py-2">{resource.rate}</td>
+                                        <td className="border-2 border-[#BB2121] px-4 py-2">{portfolio[index]}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -218,7 +226,7 @@ const Dashboard: React.FC = () => {
                 </div>
 
                 {/* <div className="flex flex-row justify-center ">
-                    <button className="bg-red-700 px-10 py-2 rounded-xl font-bold text-white hover:text-red-700 hover:bg-black" onClick={()=> console.log(marketData)}>Continue</button>
+                    <button className="bg-red-700 px-10 py-2 rounded-xl font-bold text-white hover:text-red-700 hover:bg-black" onClick={()=> console.log(portfolio)}>Continue</button>
                 </div> */}
 
             </div>
