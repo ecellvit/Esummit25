@@ -9,12 +9,12 @@ const Instructions: React.FC = () => {
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { data: session } = useSession();
-  const targetDate: string = new Date(2024, 9, 3, 21, 0, 0).toISOString();
+  const targetDate: string = new Date(2025, 26, 2, 12, 41, 0).toISOString();
 
   const startQuiz = async (): Promise<void> => {
     try {
       setLoading(true);
-      const res = await fetch("/api/round0/startQuiz", {
+      const res = await fetch("/api/event1/round0/startQuiz", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -25,12 +25,16 @@ const Instructions: React.FC = () => {
         },
       });
 
-      if (res.status === 200) {
+      const data = await res.json();
+      console.log("Data:", res?.status);
+      if (res?.status === 200) {
         toast.success("Quiz is starting now!");
         location.reload();
       } else if (res.status === 403) {
         toast.error("Quiz has not started yet.");
       } else {
+        console.log('hhhhhhhhhhhhhhhhhh',data)
+        console.log('data message',data.message)
         toast.error("Too late to start.");
       }
     } catch (error) {
