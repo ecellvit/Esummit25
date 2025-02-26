@@ -1,6 +1,4 @@
-// Registration close logic have to apply on the mobile timeline also.
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
@@ -59,15 +57,30 @@ const events = [
   },
 ];
 
+const limit = [Infinity, 1400, 600, 600, Infinity];
+
 const MobileSchedule = ({ images }: { images: any[] }) => {
   const router = useRouter();
   const { data: session, update } = useSession();
   const userEmail = session?.user?.email || "";
   const hasRegisteredPioneira = session?.user?.events?.includes(5);
-  
-  // Changed from single boolean to track loading for each event separately
+
+  const [userCounts, setUserCounts] = useState<number[]>([]);
   const [loadingEventId, setLoadingEventId] = useState<number | null>(null);
   const [dashboardLoading, setDashboardLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    userCount();
+  }, []);
+
+  const userCount = async () => {
+    try {
+      const response = await axios.get("/api/eventRegistration/userCount");
+      setUserCounts(response.data);
+    } catch (error) {
+      console.error("Error fetching user counts", error);
+    }
+  };
 
   const handleRedirect = async (event: number): Promise<void> => {
     setLoadingEventId(event);
@@ -173,11 +186,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
   return (
     <div className="md:hidden bg-white w-full">
       <div className="px-4 py-6 w-full">
-        <h2
-          className="text-4xl font-[BrigendsExpanded] mb-6"
-        >
-          SCHEDULE
-        </h2>
+        <h2 className="text-4xl font-[BrigendsExpanded] mb-6">SCHEDULE</h2>
 
         <div className="space-y-6 bg-white w-full">
           {events.map((event, idx) => (
@@ -200,34 +209,66 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
               <div className="relative z-10 p-6">
                 <div className="text-white">
                   <p className="text-lg font-bold mb-2">{event.date}</p>
-                  <h3 className="text-2xl font-bold font-[GreaterTheory] mb-6">{event.name}</h3>
-                  <p className="text-sm font-[PoppinsRegular] mb-9 text-justify">{event.description}</p>
+                  <h3 className="text-2xl font-bold font-[GreaterTheory] mb-6">
+                    {event.name}
+                  </h3>
+                  <p className="text-sm font-[PoppinsRegular] mb-9 text-justify">
+                    {event.description}
+                  </p>
                   {!hasRegisteredPioneira ? (
                     <div>
-                      <button
-                        className="w-full flex justify-center font-[GreaterTheory] bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                      {userCounts && userCounts[idx] >= limit[idx] ? (
+                        session?.user?.events?.includes(idx + 1) ? (
+                          <button
+                            key={idx + 1}
+                            className="w-full flex justify-center font-[GreaterTheory] bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                          transition-all duration-300 ease-in-out transform hover:scale-105 
+                          active:scale-110 active:shadow-lg border-2 border-red-800"
+                            style={{ background: gradientStyle }}
+                            onClick={() => handleDeregister(idx + 1)}
+                          >
+                            Deregister
+                          </button>
+                        ) : (
+                          <button
+                            key={idx + 1}
+                            className="w-full flex justify-center font-[GreaterTheory] bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
                               transition-all duration-300 ease-in-out transform hover:scale-105 
                               active:scale-110 active:shadow-lg border-2 border-red-800"
-                        onClick={() =>
-                          session?.user.events?.includes(idx + 1)
-                            ? handleDeregister(idx + 1)
-                            : handleRedirect(idx + 1)
-                        }
-                      >
-                        {loadingEventId === idx + 1 ? (
-                          <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
-                        ) : session?.user.events?.includes(idx + 1) ? (
-                          "Deregister"
-                        ) : (
-                          "Register"
-                        )}
-                      </button>
+                            style={{ background: gradientStyle }}
+                            onClick={() =>
+                              toast.error("Registration limit reached")
+                            }
+                          >
+                            Registration Closed
+                          </button>
+                        )
+                      ) : (
+                        <button
+                          className="w-full flex justify-center font-[GreaterTheory] bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
+                              transition-all duration-300 ease-in-out transform hover:scale-105 
+                              active:scale-110 active:shadow-lg border-2 border-red-800"
+                          onClick={() =>
+                            session?.user.events?.includes(idx + 1)
+                              ? handleDeregister(idx + 1)
+                              : handleRedirect(idx + 1)
+                          }
+                        >
+                          {loadingEventId === idx + 1 ? (
+                            <span className="w-6 h-6 border-4 border-red-800 border-t-white rounded-full animate-spin"></span>
+                          ) : session?.user.events?.includes(idx + 1) ? (
+                            "Deregister"
+                          ) : (
+                            "Register"
+                          )}
+                        </button>
+                      )}
 
                       {idx === 0 && session?.user.events?.includes(1) && (
                         <button
                           className="w-full flex justify-center bg-white text-red-800 px-6 py-3 rounded-md text-lg font-bold 
-                             transition-all duration-300 ease-in-out transform hover:scale-105 
-                             active:scale-110 active:shadow-lg border-2 border-red-800"
+                              transition-all duration-300 ease-in-out transform hover:scale-105 
+                              active:scale-110 active:shadow-lg border-2 border-red-800"
                           onClick={() => {
                             setDashboardLoading(true);
 

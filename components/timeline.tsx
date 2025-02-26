@@ -375,7 +375,6 @@ export default function Schedule() {
                     { activeIndex!=0 &&
                 userCounts && userCounts[activeIndex] >= limit[activeIndex] ? (
                   session?.user?.events?.includes(activeIndex + 1) ? (
-                    // it should be the deregister route
                     <button
                       key={activeIndex + 1}
                       className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
