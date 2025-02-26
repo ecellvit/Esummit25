@@ -1,5 +1,5 @@
 "use client";
-import Loader from "@/components/LoadingScreen";
+import Loader from "@/components/round0/loader";
 import QualifierTimer from "@/components/round0/timer";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
