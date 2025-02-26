@@ -11,6 +11,7 @@ interface QualifierTimerProps {
 
 const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit,duration }) => {
   const [endTime, setEndTime] = useState<number>(Date.now()+duration);
+  const [timeRemaining, setTimeRemaining] = useState({ minutes: "00", seconds: "00" });
   const { data: session, status } = useSession();
   const router = useRouter();
 

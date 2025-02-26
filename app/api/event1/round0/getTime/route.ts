@@ -35,8 +35,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const startTime = new Date().getTime();
     const endTime = startTime + 1000 * 60 * time.round0; // Add quiz duration
 
-    console.log("User ID:", userId); // Debugging log
-    console.log("User ID Type:", typeof userId);
 
     // Use findOne to directly query for the user's team by teamLeaderId
     const team = await TeamModel.findOne({ teamLeaderId: userId });
@@ -48,7 +46,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const teamId = team._id;  // Extract team ID
     const teamData = await Round0.findOne({ teamId: teamId });
-    console.log('hhhhhhhhhhhhhhhhhh', teamData)
 
     if (!teamData?.startTime) {
       // If startTime is not set, update the document with startTime and endTime
