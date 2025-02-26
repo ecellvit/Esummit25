@@ -35,26 +35,26 @@ export default function Qualifier() {
     }
   }, [status, test]);
 
-  const checkRound = () => {
-    setIsLoading(true);
-    fetch(`/api/checkRound`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: session?.accessTokenBackend
-          ? `Bearer ${session.accessTokenBackend}`
-          : "",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.level !== 0) {
-          router.push("/");
-        }
-      })
-      .finally(() => setIsLoading(false));
-  };
+  // const checkRound = () => {
+  //   setIsLoading(true);
+  //   fetch(`/api/checkRound`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: session?.accessTokenBackend
+  //         ? `Bearer ${session.accessTokenBackend}`
+  //         : "",
+  //       "Access-Control-Allow-Origin": "*",
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.level !== 0) {
+  //         router.push("/");
+  //       }
+  //     })
+  //     .finally(() => setIsLoading(false));
+  // };
 
   const autoSubmit = () => {
     setIsLoading(true);

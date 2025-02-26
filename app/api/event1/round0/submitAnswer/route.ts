@@ -39,10 +39,11 @@ interface Round0Data {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  console.log('conneting')
   await dbConnect();
+  console.log('hee;;')
   try {
     const session = await getServerSession(authOptions);
-    console.log("Session obtained:", session);
 
     const sessionUser = session?.user;
     if (!session || !sessionUser) {
@@ -51,7 +52,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const email = sessionUser.email;
-    console.log("User email:", email);
 
     if (!email) {
       console.log("Invalid request: Email not found");
@@ -59,7 +59,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const user = await Users.findOne({ email: email });
-    console.log("User found:", user);
 
     if (!user) {
       console.log("User not found in database");
@@ -67,10 +66,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const userId = user._id;
-    console.log("User ID:", userId);
 
     const teamData: TeamData | null = await TeamModel.findOne({ teamLeaderId: userId });
-    console.log("Team Data:", teamData);
+
 
     if (!teamData) {
       console.log("Team not found for user ID:", userId);
@@ -79,25 +77,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     // Extract answer from request body
     const { answer }: RequestBody = await req.json();
-    console.log("Answer Data:", answer);
 
-    const {
-      questionPointer,
-      easyOrder,
-      mediumOrder,
-      hardOrder,
-      easyAnswers,
-      mediumAnswers,
-      hardAnswers,
-      caseStudyAnswers,
-      endTime
-    } = teamData;
+    const check = await Round0.findOne({ teamId: teamData._id });
+    console.log("check:", check);
+    
 
-    // Get current question category
-    let questionCategory = teamData.questionCategory;
+    let easyAnswers = check?.easyAnswers;
+    let mediumAnswers = check?.mediumAnswers;
+    let hardAnswers = check?.hardAnswers;
+    let easyOrder = check?.easyOrder;
+    let mediumOrder = check?.mediumOrder;
+    let hardOrder = check?.hardOrder;
+    let endTime = check?.endTime;
 
+    let questionCategory = check?.questionCategory;
+    console.log('endTime', endTime);
     // Check if time is up
-    if (endTime < Date.now()) {
+    if (endTime && new Date(endTime).getTime() < Date.now()) {
       // Update the Round0 model with new values
       await Round0.findOneAndUpdate(
         { teamLeaderId: userId },
@@ -110,18 +106,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 }
       );
     }
-
+    let questionPointer = check?.questionPointer;
     let newQuestionPointer = questionPointer;
+    console.log('Question Pointer:', questionPointer);
 
     // Update answers based on category
-    if (questionCategory === "easy") {
-      easyAnswers[easyOrder[questionPointer]] = answer;
-    } else if (questionCategory === "medium") {
-      mediumAnswers[mediumOrder[questionPointer]] = answer;
-    } else if (questionCategory === "hard") {
-      hardAnswers[hardOrder[questionPointer]] = answer;
-    } else if (questionCategory === "caseStudy") {
-      caseStudyAnswers[questionPointer] = answer;
+    if (questionCategory === "easy" && easyAnswers && easyOrder) {
+      if (questionPointer !== undefined) {
+        easyAnswers[easyOrder[questionPointer]] = answer;
+      }
+    } else if (questionCategory === "medium" && mediumAnswers && mediumOrder) {
+      if (questionPointer !== undefined) {
+        mediumAnswers[mediumOrder[questionPointer]] = answer;
+      }
+    } else if (questionCategory === "hard" && hardAnswers && hardOrder) {
+      if (questionPointer !== undefined) {
+        hardAnswers[hardOrder[questionPointer]] = answer;
+      }
     }
 
     // Logic for moving to the next question or category
@@ -141,7 +142,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 }
       );
     } else {
-      newQuestionPointer = questionPointer + 1;
+      newQuestionPointer = questionPointer !== undefined ? questionPointer + 1 : 0;
     }
 
     // Update the Round0 model with new values
@@ -153,7 +154,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         easyAnswers: easyAnswers,
         mediumAnswers: mediumAnswers,
         hardAnswers: hardAnswers,
-        caseStudyAnswers: caseStudyAnswers,
       }
     );
 
