@@ -7,6 +7,8 @@ import "chart.js/auto";
 import SellButton from "@/components/events/Round1/SellButton";
 import { socket } from "@/socket";
 import calculateMarketPrice from "@/utils/calculateMarketPrice";
+import axios, { AxiosError } from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
 
 // Dynamically import Chart.js Line component
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
@@ -30,6 +32,28 @@ const fetchMarketData = async () => {
         marketPrice: calculateMarketPrice(data.base, 0),
     }));
     return data;
+};
+
+const fetchPortfolioData = async (): Promise<number[] | null> => {
+    try {
+        const response = await axios.get('/api/event1/round1/getPortfolio');
+    
+        if (response.status === 200) {
+            return response.data.portfolio;
+        }
+    } catch (error) {
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        if (axiosError) {
+            const errorData = axiosError.response?.data as ApiResponse;
+            toast.error(
+                errorData.message || "Error in leasing the resource"
+            );
+        } else {
+            toast.error("An error occurred while leasing the resource.");
+        }
+    }
+    return null;
 };
 
 const sellResources = async () => {
@@ -59,6 +83,7 @@ const Dashboard: React.FC = () => {
                     : item
             )
         );
+        console.log(data);
     };
 
     const onPortfolioUpdate = (data: { portfolio: number[] }) => {
@@ -66,6 +91,21 @@ const Dashboard: React.FC = () => {
         setPortfolio(data.portfolio);
     };
 
+    // Get initial data
+
+    useEffect(() => {
+        const getData = async () => {
+            const marketData = await fetchMarketData();
+            setMarketData(marketData);
+
+            const portfolioData = await fetchPortfolioData();
+            console.log(portfolioData);
+            if (portfolioData) {
+                setPortfolio(portfolioData);
+            }
+        };
+        getData();
+    }, []);
 
     // Connect to socket server
     
@@ -102,14 +142,6 @@ const Dashboard: React.FC = () => {
         socket.off("disconnect", onDisconnect);
         };
     }, [socket.connected]);
-
-    useEffect(() => {
-        const getData = async () => {
-            const data = await fetchMarketData();
-            setMarketData(data);
-        };
-        getData();
-    }, []);
 
     const openGraph = (index: number) => {
         setSelectedGraph(index);
