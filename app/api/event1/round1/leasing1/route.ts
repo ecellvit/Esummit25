@@ -29,7 +29,7 @@ export async function PUT(req: Request): Promise<NextResponse<ApiResponse>> {
 
     const team = await TeamModelRound1.findOne({ teamLeaderEmail: sessionUser.email });
     if (!team) {
-      return NextResponse.json({ success: false, message: "User is not a team leader" }, { status: 403 });
+      return NextResponse.json({ success: false, message: "You are not qualified for this event" }, { status: 403 });
     }
 
     const { leaseElement, leaseRate, cost } = await req.json();
