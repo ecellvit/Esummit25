@@ -1,0 +1,34 @@
+[
+    {
+        "id": 0,
+        "type": "Platinum Plan",
+        "resources_covered": 0.8,
+        "cash_covered": 0.2,
+        "cost_per_batch": 60000
+    },
+    {
+        "id": 1,
+        "type": "Premium Plan",
+        "resources_covered": 0.6,
+        "cash_covered": 0.2,
+        "cost_per_batch": 30000
+    },
+    {
+        "id": 2,
+        "type": "Basic Plan",
+        "resources_covered": 0.4,
+        "cash_covered": 0.4,
+        "cost_per_batch": 10000
+    },
+    {
+        "id": 3,
+        "type": "Self-Insurance",
+        "resources_covered": 0,
+        "cash_covered": 0,
+        "cost_per_batch": 0
+    }
+
+]
+
+
+   

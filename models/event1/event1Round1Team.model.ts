@@ -22,6 +22,18 @@ export interface round1Qualified extends Document {
     portfolio: number[];
     page: number;
     startTime: Date;
+    totalQuantity: number;
+    elementBatch1: number[];
+    elementBatch2: number[];
+    elementBatch3: number[];
+    airBatch1: number[];
+    waterBatch1: number[];
+    airBatch2: number[];
+    waterBatch2: number[];
+    airBatch3: number[];
+    waterBatch3: number[];
+    insuranceType: number[];
+
 }
 
 const TeamSchema: Schema<round1Qualified> = new Schema(
