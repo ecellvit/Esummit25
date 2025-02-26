@@ -15,112 +15,100 @@ interface FormEntry {
 
 export default function Round2Form() {
   const [entries, setEntries] = useState<FormEntry[]>([]);
-  
-  // Calculate total quantity
-  const totalQuantity = entries.reduce((sum, entry) => sum + entry.quantity, 0);
-  const isMaxReached = totalQuantity >= 200; // Disable button if total quantity reaches 200
+  const [totalQuantity, setTotalQuantity] = useState<number>(0);
 
-  // Function to update a field in a specific entry
-  const updateEntry = <K extends keyof FormEntry>(index: number, key: K, value: FormEntry[K]) => {
-    setEntries((prevEntries) => {
-      const updatedEntries = [...prevEntries];
-      updatedEntries[index] = { ...updatedEntries[index], [key]: value };
-      return updatedEntries;
-    });
+  const addEntry = () => {
+    if (totalQuantity >= 200) return; // Prevent adding more
+
+    const newEntries: FormEntry[] = [
+      ...entries,
+      {
+        id: entries.length + 1,
+        element: "Element A",
+        quantity: 1,
+        destination: "Destination X",
+        transport: "Air",
+      },
+    ];
+
+    setEntries(newEntries);
+    setTotalQuantity(newEntries.reduce((sum, entry) => sum + entry.quantity, 0));
   };
 
-  // Function to add a new entry
-  const addEntry = () => {
-    if (!isMaxReached) {
-      setEntries((prevEntries) => [
-        ...prevEntries,
-        {
-          id: prevEntries.length + 1,
-          element: "Element A",
-          quantity: 1,
-          destination: "Destination X",
-          transport: "Air",
-        },
-      ]);
-    }
+  const updateEntry = (index: number, key: keyof FormEntry, value: any) => {
+    const updatedEntries = [...entries];
+    updatedEntries[index] = { ...updatedEntries[index], [key]: value };
+
+    setEntries(updatedEntries);
+    setTotalQuantity(updatedEntries.reduce((sum, entry) => sum + entry.quantity, 0));
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 border rounded-lg shadow-lg bg-white">
-      <h2 className="text-xl font-bold text-center mb-4 text-gray-800">Round 2 Form</h2>
+    <div className="p-6 max-w-lg mx-auto border rounded-lg shadow-lg bg-white">
+      <h2 className="text-xl font-bold mb-4 text-center">Round 2 Form</h2>
 
       {entries.map((entry, index) => (
-        <div key={entry.id} className="mb-6 p-4 border rounded-lg bg-gray-50 shadow">
-          {/* Element Selection */}
-          <div className="mb-3">
-            <label className="block font-semibold text-gray-700">Element:</label>
-            <select
-              className="w-full p-2 border rounded"
-              value={entry.element}
-              onChange={(e) => updateEntry(index, "element", e.target.value as ElementOption)}
-            >
-              <option>Element A</option>
-              <option>Element B</option>
-              <option>Element C</option>
-              <option>Element D</option>
-            </select>
-          </div>
+        <div key={entry.id} className="mb-4 p-4 border rounded-lg bg-gray-100">
+          <label className="block mb-2">Element:</label>
+          <select
+            className="w-full p-2 border rounded"
+            value={entry.element}
+            onChange={(e) => updateEntry(index, "element", e.target.value as ElementOption)}
+          >
+            <option>Element A</option>
+            <option>Element B</option>
+            <option>Element C</option>
+            <option>Element D</option>
+          </select>
 
-          {/* Quantity Input */}
-          <div className="mb-3">
-            <label className="block font-semibold text-gray-700">Quantity:</label>
-            <input
-              type="number"
-              className="w-full p-2 border rounded"
-              value={entry.quantity}
-              min="1"
-              max="200"
-              onChange={(e) => updateEntry(index, "quantity", Math.min(200, Number(e.target.value)))}
-            />
-          </div>
+          <label className="block mt-3 mb-2">Quantity:</label>
+          <input
+            type="number"
+            className="w-full p-2 border rounded"
+            value={entry.quantity}
+            onChange={(e) => updateEntry(index, "quantity", Number(e.target.value))}
+            min={1}
+          />
 
-          {/* Destination Selection */}
-          <div className="mb-3">
-            <label className="block font-semibold text-gray-700">Destination:</label>
-            <select
-              className="w-full p-2 border rounded"
-              value={entry.destination}
-              onChange={(e) => updateEntry(index, "destination", e.target.value as DestinationOption)}
-            >
-              <option>Destination X</option>
-              <option>Destination Y</option>
-              <option>Destination Z</option>
-              <option>Destination W</option>
-            </select>
-          </div>
+          <label className="block mt-3 mb-2">Destination:</label>
+          <select
+            className="w-full p-2 border rounded"
+            value={entry.destination}
+            onChange={(e) => updateEntry(index, "destination", e.target.value as DestinationOption)}
+          >
+            <option>Destination X</option>
+            <option>Destination Y</option>
+            <option>Destination Z</option>
+            <option>Destination W</option>
+          </select>
 
-          {/* Transport Mode Selection */}
-          <div className="mb-3">
-            <label className="block font-semibold text-gray-700">Transport Mode:</label>
-            <select
-              className="w-full p-2 border rounded"
-              value={entry.transport}
-              onChange={(e) => updateEntry(index, "transport", e.target.value as TransportMode)}
-            >
-              <option>Air</option>
-              <option>Land</option>
-            </select>
-          </div>
+          <label className="block mt-3 mb-2">Transport Mode:</label>
+          <select
+            className="w-full p-2 border rounded"
+            value={entry.transport}
+            onChange={(e) => updateEntry(index, "transport", e.target.value as TransportMode)}
+          >
+            <option>Air</option>
+            <option>Land</option>
+          </select>
         </div>
       ))}
 
-      {/* Total Quantity Display */}
-      <p className="text-center text-gray-700 font-semibold">Total Quantity: {totalQuantity}/200</p>
+      <p className="text-lg font-semibold text-gray-700">Total Quantity: {totalQuantity}</p>
 
-      {/* Add Button - Disabled when total reaches 200 */}
       <button
         onClick={addEntry}
-        disabled={isMaxReached}
-        className={`w-full p-2 mt-2 rounded-lg transition ${
-          isMaxReached ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white"
-        }`}
+        className={`w-full mt-4 p-2 text-white font-bold rounded ${totalQuantity >= 200 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+        disabled={totalQuantity >= 200}
       >
-        + Add Entry
+        Add
+      </button>
+
+      <button
+        className={`w-full mt-2 p-2 text-white font-bold rounded ${entries.length === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"}`}
+        disabled={entries.length === 0}
+      >
+        Submit
       </button>
     </div>
   );
