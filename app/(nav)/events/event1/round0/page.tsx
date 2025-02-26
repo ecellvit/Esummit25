@@ -218,7 +218,7 @@ export default function Qualifier() {
           {questionCategory !== "instruction" &&
             questionCategory !== "waiting" && (
               <div className="text-white">
-                <QualifierTimer teamName={teamName} autoSubmit={autoSubmit} duration={10 * 60 * 1000}/>
+                <QualifierTimer teamName={teamName} autoSubmit={autoSubmit} duration={0.5 * 60 * 1000}/>
                 <QuestionForQualifier
                   questionCategory={questionCategory as "easy" | "medium" | "hard" | "caseStudy" | "instruction" | "waiting"}
                   questionNumber={questionNumber}

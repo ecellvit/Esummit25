@@ -15,6 +15,13 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit,du
   const { data: session, status } = useSession();
   const router = useRouter();
 
+  const [endTime, setEndTime] = useState<number | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState({
+    minutes: "00",
+    seconds: "00",
+  });
+
+  // Fetch endTime from the backend
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/");
@@ -31,12 +38,20 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit,du
           res.ok ? res.json() : Promise.reject("Failed to fetch")
         )
         .then((data) => {
-          console.log("TIME----", data.endTime);
-          setEndTime(data.endTime);
+          console.log("TIME RECEIVED:", data.endTime);
+          if (data.endTime && !isNaN(data.endTime)) {
+            setEndTime(data.endTime);
+          } else {
+            console.error("Invalid endTime received:", data.endTime);
+            setEndTime(Date.now() + duration); // Fallback if API fails
+          }
         })
-        .catch((err) => console.error("Fetch error:", err));
+        .catch((err) => {
+          console.error("Fetch error:", err);
+          setEndTime(Date.now() + duration); // Fallback in case of error
+        });
     }
-  }, [status,session, router]);
+  }, [status, session, router, duration]);
 
   // Function to calculate remaining time
   const calculateTimeRemaining = useCallback(() => {
@@ -58,7 +73,7 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit,du
     };
   }, [endTime, autoSubmit]);
 
-  // Update the timer display
+  // Update the timer display every second
   useEffect(() => {
     if (!endTime || isNaN(endTime)) return;
 
@@ -69,17 +84,10 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit,du
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [endTime, calculateTimeRemaining]);
+  }, [endTime]); // Removed `calculateTimeRemaining` dependency to avoid infinite re-renders
 
   return (
-    <div
-      style={{
-        background: "black",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-      }}
-      className="w-full flex justify-center items-center h-full"
-    >
+    <div className="w-full flex justify-center items-center h-full">
       <div className="flex flex-col justify-center items-center h-full w-fit text-black">
         <div className="text-2xl">Team Name: {teamName}</div>
         <div className="flex justify-evenly h-full w-full text-xl py-3">
