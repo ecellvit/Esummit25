@@ -63,10 +63,11 @@ export async function POST(request: Request): Promise<NextResponse> {
             return NextResponse.json({ message: "id and rate are required" }, { status: 400 });
         }
 
-        if (team.lease2Element === team.primaryElement || team.lease2Element === team.secondaryElement){
+        if (id === team.primaryElement || id === team.secondaryElement){
             console.log("Element is already purchased previously")
             return NextResponse.json({ message: "Element is already purchased"}, {status: 406})
         }
+
 
         const element = resourceData.find(el => el.id === id);
         if (!element) {
