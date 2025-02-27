@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 type ElementOption = string;
 type TransportMode = "Air" | "Water";
 
-
-
 interface FormEntry {
   id: number;
   element: ElementOption;
@@ -13,7 +11,7 @@ interface FormEntry {
   transport: TransportMode;
 }
 
-export default function Round2Form({ islandId, teamId }: { islandId: string; teamId: string }) {
+export default function Round2Form({ islandId }: { islandId: string}) {
   const [entries, setEntries] = useState<FormEntry[]>([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
@@ -22,12 +20,19 @@ export default function Round2Form({ islandId, teamId }: { islandId: string; tea
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/round2/getIslandData?islandId=${islandId}&teamId=${teamId}`);
+        // Update the fetch URL to the correct API route
+        const response = await fetch(`/api/event1/round2/getFormData?islandId=${islandId}`);
         const data = await response.json();
 
         if (response.ok) {
-          setAvailableElements(data.elements); // Elements required for the island
-          setTeamPortfolio(data.teamElements); // Elements available in the team's portfolio
+          setAvailableElements(data.elements);
+          const filteredPortfolio = Object.fromEntries(
+            Object.entries(data.teamElements as Record<string, number>).filter(([_, value]) => Number(value) > 0)
+          );
+          setTeamPortfolio(filteredPortfolio);
+        
+        } else {
+          console.error("Error fetching data:", data.message);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -35,7 +40,7 @@ export default function Round2Form({ islandId, teamId }: { islandId: string; tea
     };
 
     fetchData();
-  }, [islandId, teamId]);
+  }, [islandId]);
 
   const addEntry = () => {
     if (totalQuantity >= 200) return;
@@ -89,18 +94,6 @@ export default function Round2Form({ islandId, teamId }: { islandId: string; tea
             onChange={(e) => updateEntry(index, "quantity", Number(e.target.value))}
             min={0}
           />
-
-          <label className="block mt-3 mb-2">Destination:</label>
-          {/* <select
-            className="w-full p-2 border rounded"
-            value={entry.destination}
-            onChange={(e) => updateEntry(index, "destination", e.target.value as DestinationOption)}
-          >
-            <option>Destination X</option>
-            <option>Destination Y</option>
-            <option>Destination Z</option>
-            <option>Destination W</option>
-          </select> */}
 
           <label className="block mt-3 mb-2">Transport Mode:</label>
           <select
