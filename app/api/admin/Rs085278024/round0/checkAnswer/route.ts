@@ -255,15 +255,15 @@
 //     array2.every((element) => array1.includes(element))
 //   );
 // }
-import { NextApiRequest, NextApiResponse } from "next";
+
 import answers from "@/constant/round0/answers.json";
 import gamePoints from "@/constant/round0/points.json";
 import { dbConnect } from "@/lib/dbConnect";
 import { Round0, IRound0 } from "@/models/event1/round0.model";
-import { NextResponse } from "next/server";
+import { NextRequest,NextResponse } from "next/server";
 
 export async function GET(
-  req: NextApiRequest,
+  req: NextRequest,
 ) {
   try {
     console.log("Connecting to database...");
