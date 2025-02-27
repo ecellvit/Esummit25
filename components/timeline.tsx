@@ -64,7 +64,7 @@ const events = [
 
 const images = [img1, img2, img3, img4, img5, img5];
 const mobile = [mob1, mob2, mob3, mob4, mob5];
-const limit = [Infinity, 11, 5, 600, Infinity];
+const limit = [Infinity, 1400, 600, 600, Infinity];
 
 export default function Schedule() {
   const [activeIndex, setActiveIndex] = useState(0);
