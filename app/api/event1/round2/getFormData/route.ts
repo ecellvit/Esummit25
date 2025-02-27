@@ -50,14 +50,17 @@ export async function POST(request: Request): Promise<NextResponse> {
         // Update team's portfolio
         team.portfolio[elementIndex] -= amount;
     }
-    // Update team's wallet
-    await team.save();
+    const nonZeroPortfolio = Object.entries(team.portfolio)
+    .filter(([_, value]) => value > 0)
+    .map(([key, value]) => ({ element: key, amount: value }));
 
-    return NextResponse.json({
-        message: "Resources sold successfully",
-        newWalletBalance: team.wallet,
-        remainingResources: team.portfolio,
-    }, { status: 200 });
+await team.save();
+
+return NextResponse.json({
+    message: "Resources sold successfully",
+    newWalletBalance: team.wallet,
+    remainingResources: nonZeroPortfolio,
+}, { status: 200 });
     } catch (error) {
     console.error("Error selling resources:", error);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
