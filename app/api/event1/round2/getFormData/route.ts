@@ -20,7 +20,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
     const team = await TeamModelRound1.findOne({ teamLeaderEmail: user.email });
-    const marketData = await MarketModel.findOne();
+    // const marketData = await MarketModel.findOne();
 
     if (!team) {
         return NextResponse.json({ message: "Team not found" }, { status: 404 });
@@ -31,7 +31,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    let totalValue = 0;
+    
     const { elements } = await request.json();
     for (const { elementIndex, amount } of elements) {
         // Validate elementIndex
@@ -39,26 +39,18 @@ export async function POST(request: Request): Promise<NextResponse> {
         return NextResponse.json({ message: "Invalid element index" }, { status: 400 });
         }
 
+        if (team.portfolio[amount] == 0){
+            
+        }
         // Check if the team has enough resources to sell
         if (team.portfolio[elementIndex] < amount) {
-        return NextResponse.json({ message: "Not enough resources to sell" }, { status: 400 });
+        return NextResponse.json({ message: "Not enough resources to transport" }, { status: 400 });
         }
-
-
-        const market = await MarketModel.findOne({ elementId: elementIndex });
-        if (!market) {
-        return NextResponse.json({ message: "Market data not found" }, { status: 404 });
-        }
-        // Calculate the total value of the resources being sold
-        const marketPrice = market.marketPrice;
-
-        totalValue += amount * marketPrice;
 
         // Update team's portfolio
         team.portfolio[elementIndex] -= amount;
     }
     // Update team's wallet
-    team.wallet += totalValue;
     await team.save();
 
     return NextResponse.json({
