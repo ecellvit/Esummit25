@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import resourceData from "@/constant/round1/element.json";
 import { socket } from "@/socket";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface Resource {
     id: number;
@@ -52,8 +53,48 @@ function ResourceCard({ resource, onBuy }: { resource: Resource; onBuy: () => vo
 }
 
 export default function Testing() {
+    const router = useRouter();
     const [resources, setResources] = useState<Resource[]>([]);
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
+
+    // Check if the round has started/finished
+    const getPageData = async () => {
+        const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+
+        if (response.status === 200) {
+            const { round, page, startedAt } = await response.json();
+            console.log("Round:", round);
+            console.log("Page:", page);
+            console.log("Started at:", startedAt);
+
+            // Convert startedAt (ISO format) to timestamp
+            const startTime = new Date(startedAt).getTime();
+            const currentTime = Date.now();
+
+            // Check if more than 10 minutes have passed
+            if (currentTime - startTime > 10 * 60 * 1000) {
+                console.log("More than 10 minutes have passed.");
+            } else {
+                console.log("Less than 10 minutes have passed.");
+            }
+            if (round !== 0 || page !== 2 || (currentTime - startTime > 10 * 60 * 1000)) {
+                if (round <= 0 && page > 2) {
+                    toast.error("This round is over.");
+                } else {
+                    toast.error("This round has not started yet.");
+                }
+                router.push(`/events/event1/round1/dashboard`);
+                return;
+            }
+        } else {
+            router.refresh();
+            console.log(response);
+        }
+    }
+
+    useEffect(() => {
+        getPageData();
+    }, []);
 
     // Connect to socket server
     useEffect(() => {
