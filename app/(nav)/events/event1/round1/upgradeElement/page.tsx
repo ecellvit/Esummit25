@@ -136,7 +136,6 @@
 
 "use client";
 import React, { useState, useEffect } from "react";
-import { socket } from "@/socket";
 import toast, { Toaster } from "react-hot-toast";
 
 export interface Upgrade {
