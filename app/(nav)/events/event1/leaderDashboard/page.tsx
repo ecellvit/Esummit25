@@ -310,6 +310,9 @@ export default function Page() {
                         </button>
                       )}
                     </div>
+        
+
+
                     {/* Right Section - Member Image */}
                     <div className="absolute right-0 top-0 w-[35%] h-full">
                       <Image
@@ -327,6 +330,16 @@ export default function Page() {
                 <p className="text-white">No team members found.</p>
               )}
             </div>
+            {teamMembers.length > 0 && (
+        <div className="flex justify-center mt-4 w-full">
+          <button
+            className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
+            onClick={() => router.push('/events/event1/round0/instructions')}
+          >
+            Attempt Quiz
+          </button>
+        </div>
+      )}
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
               {/* Add Member Button */}
