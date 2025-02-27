@@ -170,14 +170,18 @@ interface Question {
   };
 }
 
-interface Props {
-  questionCategory: "easy" | "medium" | "hard" | "";
-  questionNumber: number;
-  setFinalAnswer: (answer: string[]) => void;
-  finalAnswer: string[];
-  selectedOptions: string[];
-  setSelectedOptions: (options: string[]) => void;
-}
+
+  interface Props {
+    questionCategory: "easy" | "medium" | "hard" | "";
+    questionNumber: number;
+    chronoNumber: number;
+    setChronoNumber: (value: number) => void;
+    setQuestionNumber: (value: number) => void;
+    setFinalAnswer: (answer: string[]) => void;
+    finalAnswer: string[];
+    selectedOptions: string[];
+    setSelectedOptions: (options: string[]) => void;
+  }
 
 const AnswerForQualifier: React.FC<Props> = ({
   questionCategory,
