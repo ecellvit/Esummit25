@@ -11,7 +11,7 @@ interface FormEntry {
   transport: TransportMode;
 }
 
-export default function Round2Form({ islandId }: { islandId: string}) {
+export default function Round2Form() {
   const [entries, setEntries] = useState<FormEntry[]>([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
@@ -19,28 +19,33 @@ export default function Round2Form({ islandId }: { islandId: string}) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        // Update the fetch URL to the correct API route
-        const response = await fetch(`/api/event1/round2/getFormData?islandId=${islandId}`);
-        const data = await response.json();
+        try {
+            const response = await fetch(`/api/event1/round2/getFormData`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
 
-        if (response.ok) {
-          setAvailableElements(data.elements);
-          const filteredPortfolio = Object.fromEntries(
-            Object.entries(data.teamElements as Record<string, number>).filter(([_, value]) => Number(value) > 0)
-          );
-          setTeamPortfolio(filteredPortfolio);
-        
-        } else {
-          console.error("Error fetching data:", data.message);
+            if (response.ok) {
+                // Filter available elements to include only those with non-zero quantities
+                const nonZeroElements = Object.entries(data.teamElements)
+                    .filter(([_, value]) => value > 0) 
+                    .map(([key]) => key); // Get the keys (element names)
+
+                setAvailableElements(nonZeroElements); // Set the filtered elements
+                setTeamPortfolio(data.teamElements); // Set the full portfolio
+            } else {
+                console.log("Error fetching data:", data.message);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
     };
 
     fetchData();
-  }, [islandId]);
+}, []);
 
   const addEntry = () => {
     if (totalQuantity >= 200) return;
@@ -75,16 +80,16 @@ export default function Round2Form({ islandId }: { islandId: string}) {
         <div key={entry.id} className="mb-4 p-4 border rounded-lg bg-gray-100">
           <label className="block mb-2">Element:</label>
           <select
-            className="w-full p-2 border rounded"
-            value={entry.element}
-            onChange={(e) => updateEntry(index, "element", e.target.value)}
-          >
-            {availableElements.map((el) => (
-              <option key={el} value={el}>
-                {el} (Available: {teamPortfolio[el] || 0})
-              </option>
-            ))}
-          </select>
+    className="w-full p-2 border rounded"
+    value={entry.element}
+    onChange={(e) => updateEntry(index, "element", e.target.value)}
+>
+    {availableElements.map((el) => (
+        <option key={el} value={el}>
+            {el} (Available: {teamPortfolio[el] || 0})
+        </option>
+    ))}
+</select>
 
           <label className="block mt-3 mb-2">Quantity:</label>
           <input
