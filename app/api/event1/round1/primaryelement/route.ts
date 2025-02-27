@@ -112,30 +112,26 @@ export async function POST(request: Request): Promise<NextResponse> {
         console.log("Request received");
 
         const session = await getServerSession(authOptions);
-        console.log("Session retrieved:", session);
+        const sessionUser = session?.user;
 
-        if (!session?.user) {
-            console.log("User not authenticated");
+        if (!sessionUser) {
             return NextResponse.json({ message: "User not authenticated" }, { status: 401 });
         }
 
-        const user = await Users.findOne({ email: session.user.email });
-        console.log("User found:", user);
-
+        const user = await Users.findOne({ email: sessionUser.email });
         if (!user) {
             console.log("User not found");
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
         const team = await TeamModelRound1.findOne({ teamLeaderEmail: user.email });
-        console.log("Team found:", team);
 
         if (!team) {
             console.log("Team not found");
             return NextResponse.json({ message: "Team not found" }, { status: 404 });
         }
 
-        if (user.event1TeamRole) {
+        if (user.event1TeamRole !== 0) {
             console.log("Unauthorized access");
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
@@ -173,14 +169,9 @@ export async function POST(request: Request): Promise<NextResponse> {
         team.primaryRate = rate;
         team.wallet -= element.cost;
 
-        console.log("Updating team data:", team);
-
-        await team.save();  // This is likely where the log is happening
-
-        console.log("Team updated successfully");
+        await team.save();  // This is likely where the log
 
         const marketData = await MarketModel.findOne({ elementId: id });
-
         if (!marketData) {
             console.log("Creating new market data entry for elementId:", id);
             await MarketModel.create({
@@ -190,13 +181,10 @@ export async function POST(request: Request): Promise<NextResponse> {
                 marketPrice: calculateMarketPrice(resourceData[id].base, 1),
             });
         } else {
-            console.log("Updating market data for elementId:", id);
             marketData.currentTeams++;
             marketData.marketPrice = calculateMarketPrice(marketData.basePrice, marketData.currentTeams);
             await marketData.save();
         }
-
-        console.log("Market data updated successfully");
 
         return NextResponse.json(
             { success: true, message: "Element purchased successfully" },
@@ -205,7 +193,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     } catch (error) {
         console.log("Error processing purchase:", error);
-
         return NextResponse.json(
             { success: false, message: "Internal Server Error"},
             { status: 500 }
