@@ -11,7 +11,7 @@ interface FormEntry {
   transport: TransportMode;
 }
 
-export default function Round2Form() {
+export default function Round2Form({ islandId }: { islandId: string }) {
   const [entries, setEntries] = useState<FormEntry[]>([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
@@ -31,7 +31,7 @@ export default function Round2Form() {
             if (response.ok) {
                 // Filter available elements to include only those with non-zero quantities
                 const nonZeroElements = Object.entries(data.teamElements)
-                    .filter(([_, value]) => value > 0) 
+                    .filter(([_, value]) => (value as number) > 0) 
                     .map(([key]) => key); // Get the keys (element names)
 
                 setAvailableElements(nonZeroElements); // Set the filtered elements
@@ -45,7 +45,7 @@ export default function Round2Form() {
     };
 
     fetchData();
-}, []);
+  }, [islandId]);
 
   const addEntry = () => {
     if (totalQuantity >= 200) return;
@@ -73,7 +73,7 @@ export default function Round2Form() {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto border rounded-lg shadow-lg bg-white">
+    <div className="p-6 max-w-lg ml-auto mr-10 my-10 border rounded-lg shadow-lg bg-white">
       <h2 className="text-xl font-bold mb-4 text-center">Round 2 Form</h2>
 
       {entries.map((entry, index) => (
@@ -99,20 +99,20 @@ export default function Round2Form() {
             onChange={(e) => updateEntry(index, "quantity", Number(e.target.value))}
             min={0}
           />
-
-          <label className="block mt-3 mb-2">Transport Mode:</label>
-          <select
-            className="w-full p-2 border rounded"
-            value={entry.transport}
-            onChange={(e) => updateEntry(index, "transport", e.target.value as TransportMode)}
-          >
-            <option>Air</option>
-            <option>Water</option>
-          </select>
         </div>
       ))}
 
-      <p className="text-lg font-semibold text-gray-700">Total Quantity: {totalQuantity}</p>
+      <label className="block mt-5">Batch Transport Mode:</label>
+      <select
+        className="w-full p-2 border rounded"
+        // value={transport}
+        // onChange={(e) => updateEntry(index, "transport", e.target.value as TransportMode)}
+      >
+        <option>Air</option>
+        <option>Water</option>
+      </select>
+
+      <p className="text-lg font-semibold text-gray-700 mt-5">Total Quantity: {totalQuantity}</p>
 
       <button
         onClick={addEntry}
@@ -123,4 +123,4 @@ export default function Round2Form() {
       </button>
     </div>
   );
-}
+} 
