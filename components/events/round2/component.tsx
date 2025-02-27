@@ -1,32 +1,49 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-type ElementOption = "Element A" | "Element B" | "Element C" | "Element D";
-type DestinationOption = "Destination X" | "Destination Y" | "Destination Z" | "Destination W";
+type ElementOption = string;
 type TransportMode = "Air" | "Water";
 
 interface FormEntry {
   id: number;
   element: ElementOption;
   quantity: number;
-  destination: DestinationOption;
   transport: TransportMode;
 }
 
-export default function Round2Form() {
+export default function Round2Form({ islandId, teamId }: { islandId: string; teamId: string }) {
   const [entries, setEntries] = useState<FormEntry[]>([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
+  const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
+  const [teamPortfolio, setTeamPortfolio] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/round2/getIslandData?islandId=${islandId}&teamId=${teamId}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          setAvailableElements(data.elements); // Elements required for the island
+          setTeamPortfolio(data.teamElements); // Elements available in the team's portfolio
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [islandId, teamId]);
 
   const addEntry = () => {
-    if (totalQuantity >= 200) return; // Prevent adding more
+    if (totalQuantity >= 200) return;
 
     const newEntries: FormEntry[] = [
       ...entries,
       {
         id: entries.length + 1,
-        element: "Element A",
+        element: availableElements[0] || "Unknown",
         quantity: 0,
-        destination: "Destination X",
         transport: "Air",
       },
     ];
@@ -53,12 +70,13 @@ export default function Round2Form() {
           <select
             className="w-full p-2 border rounded"
             value={entry.element}
-            onChange={(e) => updateEntry(index, "element", e.target.value as ElementOption)}
+            onChange={(e) => updateEntry(index, "element", e.target.value)}
           >
-            <option>Element A</option>
-            <option>Element B</option>
-            <option>Element C</option>
-            <option>Element D</option>
+            {availableElements.map((el) => (
+              <option key={el} value={el}>
+                {el} (Available: {teamPortfolio[el] || 0})
+              </option>
+            ))}
           </select>
 
           <label className="block mt-3 mb-2">Quantity:</label>
@@ -71,7 +89,7 @@ export default function Round2Form() {
           />
 
           <label className="block mt-3 mb-2">Destination:</label>
-          <select
+          {/* <select
             className="w-full p-2 border rounded"
             value={entry.destination}
             onChange={(e) => updateEntry(index, "destination", e.target.value as DestinationOption)}
@@ -80,7 +98,7 @@ export default function Round2Form() {
             <option>Destination Y</option>
             <option>Destination Z</option>
             <option>Destination W</option>
-          </select>
+          </select> */}
 
           <label className="block mt-3 mb-2">Transport Mode:</label>
           <select
@@ -102,13 +120,6 @@ export default function Round2Form() {
         disabled={totalQuantity >= 200}
       >
         Add
-      </button>
-
-      <button
-        className={`w-full mt-2 p-2 text-white font-bold rounded ${entries.length === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"}`}
-        disabled={entries.length === 0}
-      >
-        Submit
       </button>
     </div>
   );
