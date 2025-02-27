@@ -7,15 +7,13 @@ import TeamModelRound1 from "@/models/event1/event1Round1Team.model"; // Adjust 
 import MarketModel from "@/models/event1/CommonInfo.model";
 import resourceData from '@/constant/round1/element.json'
 import calculateMarketPrice from "@/utils/calculateMarketPrice";
-import { IdCardIcon } from "lucide-react";
 
 export async function POST(request: Request): Promise<NextResponse> {
     await dbConnect();
 
     try {
-        
+        console.log("Request received");
 
-        console.log('Request received');
         const session = await getServerSession(authOptions);
         const sessionUser = session?.user;
 
@@ -28,16 +26,14 @@ export async function POST(request: Request): Promise<NextResponse> {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
-        console.log('User found:', user);
-
         const team = await TeamModelRound1.findOne({ teamLeaderEmail: user.email });
-        console.log('Team found:', team);
 
         if (!team) {
+            console.log("Team not found");
             return NextResponse.json({ message: "Team not found" }, { status: 404 });
         }
 
-        if (user.event1TeamRole) {
+        if (user.event1TeamRole !== 0) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
@@ -45,19 +41,19 @@ export async function POST(request: Request): Promise<NextResponse> {
         console.log('Request body:', body);
 
         const id = body?.elementId;
-        console.log('dsa',isNaN(id));
         const rate = body?.elementRate;
-        console.log('dfads',rate);
-        // const {elementId,elementRate} = await request.json();
+
+        console.log("Received elementId:", id);
+        console.log("Received elementRate:", rate);
 
         if (team.secondaryElement || team.secondaryRate ){
+            console.log("Team has already purchased an element");
             return NextResponse.json({message: "Cannot purchase again"}, {status: 410});
         }
         
         if (isNaN(id) || !rate) {
             return NextResponse.json({ message: "id and rate are required" }, { status: 400 });
         }
-        console.log("jhcjhgdcghdgcjdc",id,team.primaryElement)
 
         const element = resourceData.find(el => el.id === id);
         if (!element) {
@@ -77,6 +73,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         team.secondaryElement = id;
         team.secondaryRate = rate;
         team.wallet -= element.cost;
+        
         await team.save();
 
         const marketData = await MarketModel.findOne({ elementId: id });

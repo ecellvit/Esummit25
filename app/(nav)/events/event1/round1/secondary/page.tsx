@@ -105,7 +105,7 @@ export default function Testing() {
                 if (response.ok) {
                     console.log("Purchase successful:", result);
                     toast.success("Purchase Successfully"); //socket.emit("purchase", element) // Get MV on the socket server, emit it back
-                    socket.emit("purchase", selectedResource.id);
+                    socket.emit("secondary", selectedResource.id);
                 } else {
                     console.log("Purchase failed:", result.message);
                     toast.error(` ${result.message}`)
