@@ -4,13 +4,13 @@ import { Users } from '@/models/user.model';
 import { dbConnect } from '@/lib/dbConnect';
 import { authOptions } from '@/lib/authOptions';
 
-const eventLimits = {
-  1: { limit: Infinity, deadline: new Date('2025-03-01T12:00:00Z') },
-  2: { limit: 1400, deadline: null },
-  3: { limit: 600, deadline: null },
-  4: { limit: 600, deadline: null },
-  5: { limit: Infinity, deadline: null },
-};
+const eventLimits = [
+  { limit: Infinity, deadline: new Date('2025-03-01T12:00:00Z') },
+  { limit: 1400, deadline: null },
+  { limit: 600, deadline: null },
+  { limit: 600, deadline: null },
+  { limit: Infinity, deadline: null },
+];
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     // }
 
     const registeredUsersCount = await Users.countDocuments({ events: parsedNumber });
-    if (registeredUsersCount >= eventLimit.limit) {
+    if (registeredUsersCount >= eventLimits[parsedNumber].limit) {
       return NextResponse.json({ message: "Registration limit reached for this event." }, { status: 403 });
     }
 
