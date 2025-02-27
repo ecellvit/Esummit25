@@ -57,8 +57,14 @@ export default function Testing() {
 
     // Connect to socket server
     useEffect(() => {
+        // Initial connection status check
+        console.log("Socket connection status:", socket.connected);
         if (socket.connected) {
             onConnect();
+        }
+
+        if (!socket.connected) {
+            socket.connect();
         }
 
         function onConnect() {
@@ -78,7 +84,7 @@ export default function Testing() {
             socket.off("connect", onConnect);
             socket.off("disconnect", onDisconnect);
         };
-    }, []);
+    }, [socket.connected]);
 
 
     // Load JSON data directly
