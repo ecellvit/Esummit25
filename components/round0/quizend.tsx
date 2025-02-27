@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 const QuizEnd: FC = () => {
   return (
-    <main className="text-black flex flex-col justify-center items-center min-h-screen">
+    <main className="text-white flex flex-col justify-center items-center min-h-screen">
       <div className="m-40 border rounded-xl flex flex-col items-center">
         <h1 className="text-2xl p-6 leading-3">
           Congratulations on completing the Qualifier Quiz!
