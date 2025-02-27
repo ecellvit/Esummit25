@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import questions from "@/constant/round0/questions.json";
 
-// Improved typings for better type safety
 interface Question {
   q: {
     questionType: "single" | "multiple";
@@ -31,7 +30,6 @@ const AnswerForQualifier: React.FC<Props> = ({
   questionCategory,
   questionNumber,
   setFinalAnswer,
-  finalAnswer,
   selectedOptions,
   setSelectedOptions,
 }) => {
@@ -41,7 +39,7 @@ const AnswerForQualifier: React.FC<Props> = ({
     setFinalAnswer([]);
   }, [questionNumber, setSelectedOptions, setFinalAnswer]);
 
-  // Handle option changes
+  // Handle option selection
   const handleOptionChange = (option: string) => {
     const questionData =
       questions[questionCategory as keyof typeof questions]?.[questionNumber];
@@ -50,11 +48,9 @@ const AnswerForQualifier: React.FC<Props> = ({
     const questionType = questionData.q.questionType;
 
     if (questionType === "single") {
-      // Single choice - only one option can be selected
       setSelectedOptions([option]);
       setFinalAnswer([option]);
     } else {
-      // Multiple choice - allow multiple selections
       const updatedOptions = selectedOptions.includes(option)
         ? selectedOptions.filter((opt) => opt !== option)
         : [...selectedOptions, option];
@@ -64,57 +60,41 @@ const AnswerForQualifier: React.FC<Props> = ({
     }
   };
 
-  // Render the options dynamically
+  // Render options as selectable boxes
   const renderOptions = () => {
     const questionData =
       questions[questionCategory as keyof typeof questions]?.[questionNumber];
     if (!questionData) return null;
 
-    const questionType = questionData.q.questionType;
-
     return Object.entries(questionData.ans.optionsContent).map(
       ([key, value], index) => {
-        const inputId = `option-${questionNumber}-${key}`;
         const isSelected = selectedOptions.includes(key);
 
         return (
           <div
             key={key}
-            className="mb-3 p-2 rounded hover:bg-gray-100 transition-colors"
+            onClick={() => handleOptionChange(key)}
+            className={`p-4 border-2 rounded-xl cursor-pointer transition-all text-center flex items-center justify-center 
+              ${
+                isSelected
+                  ? "border-red-600 bg-red-100"
+                  : "border-red-800 hover:border-red-500"
+              }`}
           >
-            <label
-              htmlFor={inputId}
-              className="flex items-start cursor-pointer"
-            >
-              {questionType === "single" ? (
-                <input
-                  id={inputId}
-                  type="radio"
-                  name={`question-${questionNumber}`}
-                  onChange={() => handleOptionChange(key)}
-                  checked={isSelected}
-                  className="mr-2 mt-1"
-                />
-              ) : (
-                <input
-                  id={inputId}
-                  type="checkbox"
-                  onChange={() => handleOptionChange(key)}
-                  checked={isSelected}
-                  className="mr-2 mt-1"
-                />
-              )}
-
-              {questionData.ans.optionsType === "text" ? (
-                <span>{value}</span>
-              ) : (
-                <img
-                  src={value}
-                  className="w-full max-w-[300px] h-auto"
-                  alt={`Answer option ${index + 1}`}
-                />
-              )}
-            </label>
+            {questionData.ans.optionsType === "text" ? (
+              <span
+                className="text-lg"
+                style={{ fontFamily: "'PoppinsRegular', sans-serif" }}
+              >
+                {value}
+              </span>
+            ) : (
+              <img
+                src={value}
+                className="w-full max-w-[300px] h-auto"
+                alt={`Answer option ${index + 1}`}
+              />
+            )}
           </div>
         );
       }
