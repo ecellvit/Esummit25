@@ -6,6 +6,7 @@ import island1 from "/assets/round2/island1.svg";
 import island2 from "/assets/round2/island2.svg";
 import island3 from "/assets/round2/island3.svg";
 import island4 from "/assets/round2/island4.svg";
+import Link from "next/link";
 
 export default function Testing() {
   return (
@@ -25,30 +26,38 @@ export default function Testing() {
       />
 
       {/* Corner Islands (asymmetrical positioning) */}
-      <Image
-        src={island1}
-        alt="island1"
-        className="absolute top-16 left-20 w-auto h-48 object-cover z-10 animate-float-slow"
-        priority
-      />
-      <Image
-        src={island2}
-        alt="island2"
-        className="absolute top-28 right-48  w-auto h-48 object-cover z-10 animate-float-fast"
-        priority
-      />
-      <Image
-        src={island3}
-        alt="island3"
-        className="absolute bottom-20 left-60 w-auto h-48 object-cover z-10 animate-float-slow"
-        priority
-      />
-      <Image
-        src={island4}
-        alt="island4"
-        className="absolute bottom-12 right-44 w-auto h-48 object-cover z-10 animate-float-fast"
-        priority
-      />
+      <Link href="./island1">
+        <Image
+          src={island1}
+          alt="island1"
+          className="absolute top-16 left-20 w-auto h-48 object-cover z-10 animate-float-slow"
+          priority
+        />
+      </Link>
+      <Link href="./island2">
+        <Image
+          src={island2}
+          alt="island2"
+          className="absolute top-28 right-48  w-auto h-48 object-cover z-10 animate-float-fast"
+          priority
+        />
+      </Link>
+      <Link href="./island3">
+        <Image
+          src={island3}
+          alt="island3"
+          className="absolute bottom-20 left-60 w-auto h-48 object-cover z-10 animate-float-slow"
+          priority
+        />
+      </Link>
+      <Link href="./island4">
+        <Image
+          src={island4}
+          alt="island4"
+          className="absolute bottom-12 right-44 w-auto h-48 object-cover z-10 animate-float-fast"
+          priority
+        />
+      </Link>
 
       {/* Broken Lines (paths between islands) */}
       <svg className="absolute inset-0 w-full h-full z-0">
