@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import resourceData from "@/constant/round1/element.json";
 import { socket } from "@/socket";
 import toast, { Toaster } from "react-hot-toast";
+import { ApiResponse } from "@/types/ApiResponse";
+import axios, { AxiosError } from "axios";
 
 interface Resource {
     id: number;
@@ -60,39 +62,66 @@ export default function Testing() {
         setResources(resourceData);
     }, []);
 
+    // Connect to socket server
+    
+    useEffect(() => {
+        // Initial connection status check
+        console.log("Socket connection status:", socket.connected);
+        
+        if (socket.connected) {
+            onConnect();
+        }
+
+        if (!socket.connected) {
+            socket.connect();
+        }
+    
+        function onConnect() {
+            socket.io.engine.on("upgrade", (transport) => {
+                console.log("upgrade ::", transport.name);
+            });
+        }
+
+        function onDisconnect() {
+            console.log("User Disconnected");
+        }
+
+        socket.on("connect", onConnect);
+        socket.on("disconnect", onDisconnect);
+
+        return () => {
+        socket.off("connect", onConnect);
+        socket.off("disconnect", onDisconnect);
+        };
+    }, [socket.connected]);
+
     const handleConfirmPurchase = async () => {
         if (selectedResource) {
+            //? SEND THE AXIOS QUERY
             try {
-                const response = await fetch("/api/event1/round1/lease2Element", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        elementId: selectedResource.id,
-                        elementRate: selectedResource.rate
-                    }),
+                const response = await axios.put('/api/event1/round1/leasing2', {
+                    leaseElement: selectedResource.id,
+                    leaseRate: selectedResource.rate,
+                    cost: selectedResource.cost,
                 });
-
-                const result = await response.json();
-                console.log("sdfghjkl", response.status);
-
-                if (response.ok) {
-                    setSelectedResource(null);
-                    console.log("Purchase successful:", result);
-                    toast.success("Purchase Successfully"); //socket.emit("purchase", element) // Get MV on the socket server, emit it back
-                    socket.emit("purchase", selectedResource.id);
-                } else {
-                    setSelectedResource(null);
-                    console.log("Purchase failed:", result.message);
-                    toast.error(` ${result.message}`)
+    
+                if (response.status === 200) {
+                    socket.emit('lease2', selectedResource.id);
+                    toast.success("Resource successfully leased!");
                 }
-
-                setSelectedResource(null);
             } catch (error) {
-                console.log("Error during purchase:", error);
-                toast.error("Something went wrong. Please try again.");
+                const axiosError = error as AxiosError;
+                console.log(axiosError);
+                if (axiosError) {
+                    const errorData = axiosError.response?.data as ApiResponse;
+                    toast.error(
+                        errorData.message || "Error in leasing the resource"
+                    );
+                } else {
+                    toast.error("An error occurred while leasing the resource.");
+                }
             }
+            setSelectedResource(null);
         }
     };
     
