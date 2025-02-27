@@ -2,12 +2,53 @@
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
 export default function Testing() {
+    const router = useRouter();
     const [lease2Timer, setLease2Timer] = useState(300);
     const [upgradeTimer, setUpgradeTimer] = useState(300);
     const [lease2Expired, setLease2Expired] = useState(false);
     const [upgradeExpired, setUpgradeExpired] = useState(false);
+
+    // Check if the round has started/finished
+    const getPageData = async () => {
+        const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+
+        if (response.status === 200) {
+            const { round, page, startedAt } = await response.json();
+            console.log("Round:", round);
+            console.log("Page:", page);
+            console.log("Started at:", startedAt);
+
+            // Convert startedAt (ISO format) to timestamp
+            const startTime = new Date(startedAt).getTime();
+            const currentTime = Date.now();
+
+            // Check if more than 10 minutes (600,000 ms) have passed
+            if (currentTime - startTime > 10 * 60 * 1000) {
+                console.log("More than 10 minutes have passed.");
+            } else {
+                console.log("Less than 10 minutes have passed.");
+            }
+            if (round !== 0 || page !== 3 || (currentTime - startTime > 10 * 60 * 1000)) {
+                if (round <= 0 && page > 3) {
+                    toast.error("This round is over.");
+                } else {
+                    toast.error("This round has not started yet.");
+                }
+                router.push(`/events/event1/round1/dashboard`);
+                return;
+            }
+        } else {
+            router.refresh();
+            console.log(response);
+        }
+    }
+
+    useEffect(() => {
+        getPageData();
+    }, []);
     
     useEffect(() => {
         const lease2Interval = setInterval(() => {

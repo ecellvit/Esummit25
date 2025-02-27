@@ -135,6 +135,7 @@
 
 
 "use client";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -182,9 +183,49 @@ export default function Testing() {
         { id: 3, name: "Machinery Upgradation", cost: 4000, description: "Enhances machinery performance" }
     ];
     
+    const router = useRouter();
     const [selectedUpgrade, setSelectedUpgrade] = useState<Upgrade | null>(null);
     const [rate, setRate] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+
+    // Check if the round has started/finished
+    const getPageData = async () => {
+        const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+
+        if (response.status === 200) {
+            const { round, page, startedAt } = await response.json();
+            console.log("Round:", round);
+            console.log("Page:", page);
+            console.log("Started at:", startedAt);
+
+            // Convert startedAt (ISO format) to timestamp
+            const startTime = new Date(startedAt).getTime();
+            const currentTime = Date.now();
+
+            // Check if more than 10 minutes have passed
+            if (currentTime - startTime > 10 * 60 * 1000) {
+                console.log("More than 10 minutes have passed.");
+            } else {
+                console.log("Less than 10 minutes have passed.");
+            }
+            if (round !== 0 || page !== 3 || (currentTime - startTime > 10 * 60 * 1000)) {
+                if (round <= 0 && page > 3) {
+                    toast.error("This round is over.");
+                } else {
+                    toast.error("This round has not started yet.");
+                }
+                router.push(`/events/event1/round1/dashboard`);
+                return;
+            }
+        } else {
+            router.refresh();
+            console.log(response);
+        }
+    }
+
+    useEffect(() => {
+        getPageData();
+    }, []);
 
     useEffect(() => {
         const fetchRate = async () => {
