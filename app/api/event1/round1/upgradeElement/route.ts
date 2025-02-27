@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/user.model";
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model";
-import round1UpgradeModel from "@/models/event1/round1Upgrade.model";
 
 export async function POST(request: Request): Promise<NextResponse> {
     await dbConnect();
@@ -83,12 +82,12 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         const selectedUpgrade = upgrades.find((upgrade) => upgrade.id === upgradeLevel);
         if (!selectedUpgrade) {
-            return NextResponse.json({ message: "Invalid upgrade selected" });
+            return NextResponse.json({ message: "Invalid upgrade selected" }, { status: 400 });
         }
         const cost = selectedUpgrade.cost;
-        // if (team.wallet << cost) {
-        //     return NextResponse.json({ message: "Insufficient funds" })
-        // }
+        if (team.wallet < cost) {
+            return NextResponse.json({ message: "Insufficient funds" }, { status: 403 });
+        }
 
         // Update primaryRate
         team.primaryRate += increment;
@@ -103,6 +102,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     } catch (error) {
         console.error("Server error:", error);
-        return NextResponse.json({ message: "Server error", error }, { status: 500 });
+        return NextResponse.json({ message: "Internal Server error", error }, { status: 500 });
     }
 }
