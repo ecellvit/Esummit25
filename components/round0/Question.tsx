@@ -17,10 +17,13 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
       <section className="flex flex-col justify-center items-center px-4 pt-10 select-none">
         {props.questionCategory === "easy" && (
           <div
-           
-            className="flex flex-col text-xl w-fit h-fit p-5 border border-black text-white bg-[#991312] rounded-lg"
-            style={{ fontFamily: "'PoppinsSemibold', sans-serif" }}
-
+            style={{
+              fontFamily: "'GothamBlack', sans-serif",
+              background: "black",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+            className="flex flex-col text-xl w-fit h-fit p-5 border border-black text-black rounded-lg"
           >
             <div className="text-2xl align-top">Question {props.chronoNumber + 14}</div>
             <div className="select-none">
@@ -73,8 +76,7 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
         )}
 
         {props.questionCategory === "medium" && (
-          <div className="flex flex-col text-xl w-fit h-fit p-5 border border-black text-white bg-[#991312] rounded-lg"
-          style={{ fontFamily: "'PoppinsSemibold', sans-serif" }}>
+          <div className="flex flex-col text-xl w-fit h-fit p-5 border border-black text-black rounded-lg">
             <div className="text-4xl align-top">Question {props.chronoNumber + 1}</div>
             <div>
               {questions[props.questionCategory][props.questionNumber]?.q.content}
@@ -129,8 +131,7 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
         )}
 
         {props.questionCategory === "hard" && (
-          <div className="flex flex-col text-xl w-fit h-fit p-5 border border-black text-white bg-[#991312] rounded-lg"
-          style={{ fontFamily: "'PoppinsSemibold', sans-serif" }}>
+          <div className="flex flex-col text-xl w-fit h-fit p-5 border border-black text-black rounded-lg select-none">
             <div className="text-4xl align-top select-none">
               Question {props.chronoNumber + 19}
             </div>
