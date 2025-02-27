@@ -77,7 +77,7 @@ const AnswerForQualifier: React.FC<Props> = ({
             className={`p-4 border-2 rounded-xl cursor-pointer transition-all text-center flex items-center justify-center 
               ${
                 isSelected
-                  ? "border-red-600 bg-red-100"
+                  ? "border-red-600 bg-red-800 text-white"
                   : "border-red-800 hover:border-red-500"
               }`}
           >
@@ -101,28 +101,12 @@ const AnswerForQualifier: React.FC<Props> = ({
     );
   };
 
-  // Get category color for heading
-  const getCategoryColor = () => {
-    switch (questionCategory) {
-      case "easy":
-        return "text-green-600";
-      case "medium":
-        return "text-yellow-600";
-      case "hard":
-      default:
-        return "text-red-600";
-    }
-  };
+ 
 
   return (
     <div className="text-black">
       <section className="flex flex-col justify-center items-center text-black p-4 select-none">
         <div className="flex flex-col items-center w-full max-w-4xl">
-          <h2 className={`font-bold mb-4 text-xl ${getCategoryColor()}`}>
-            {questionCategory.charAt(0).toUpperCase() +
-              questionCategory.slice(1)}{" "}
-            Question
-          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 w-full">
             {renderOptions()}
           </div>

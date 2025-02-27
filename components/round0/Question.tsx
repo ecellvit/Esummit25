@@ -18,7 +18,7 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
       style={{fontFamily:"PoppinsSemibold"}}>
         {props.questionCategory === "easy" && (
           <div
-            className="flex flex-col text-xl w-fit h-fit p-5 border border-redk text-white rounded-lg bg-rgba(153, 19, 18, 1)"
+            className="flex flex-col text-xl w-fit h-fit p-5 border border-redk text-white rounded-lg bg-red-800"
           >
             <div className="align-top"style={{fontFamily:"PoppinsSemibold"}}>Question {props.chronoNumber + 14}</div>
             <div className="select-none">
@@ -71,8 +71,8 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
         )}
 
         {props.questionCategory === "medium" && (
-          <div className="flex flex-col text-xl w-fit h-fit p-5 border border-red text-white rounded-lg ">
-            <div className="align-top"style={{ backgroundColor: "rgba(153, 19, 18, 1)",fontFamily:"PoppinsSemibold"}}>Question {props.chronoNumber + 1}</div>
+          <div className="flex flex-col text-xl w-fit h-fit p-5 border border-red text-white rounded-lg bg-red-800 ">
+            <div className="align-top"style={{fontFamily:"PoppinsSemibold"}}>Question {props.chronoNumber + 1}</div>
             <div>
               {questions[props.questionCategory][props.questionNumber]?.q.content}
             </div>
@@ -126,8 +126,8 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
         )}
 
         {props.questionCategory === "hard" && (
-          <div className="flex flex-col text-xl w-fit h-fit p-5 border border-red text-white rounded-lg select-none bg-rgba(153, 19, 18, 1)">
-            <div className="align-top select-none"style={{ backgroundColor: "rgba(153, 19, 18, 1)",fontFamily:"PoppinsSemibold"}}>
+          <div className="flex flex-col text-xl w-fit h-fit p-5 border border-red text-white rounded-lg select-none bg-red-800">
+            <div className="align-top select-none"style={{fontFamily:"PoppinsSemibold"}}>
               Question {props.chronoNumber + 19}
             </div>
             <div>
