@@ -126,8 +126,11 @@ const Dashboard: React.FC = () => {
             });
         }
 
-        function onDisconnect() {
-            console.log("User Disconnected");
+        function onDisconnect(reason: string) {
+            console.warn("Socket disconnected:", reason);
+            if (reason === "ping timeout" || reason === "transport error") {
+              socket.connect(); // Try reconnecting manually
+            }
         }
 
         socket.on("connect", onConnect);

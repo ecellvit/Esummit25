@@ -63,7 +63,6 @@ export default function Testing() {
             onConnect();
         }
 
-
         if (!socket.connected) {
             socket.connect();
         }
@@ -74,8 +73,11 @@ export default function Testing() {
             });
         }
 
-        function onDisconnect() {
-            console.log("User Disconnected");
+        function onDisconnect(reason: string) {
+            console.warn("Socket disconnected:", reason);
+            if (reason === "ping timeout" || reason === "transport error") {
+                socket.connect(); // Try reconnecting manually
+            }
         }
 
         socket.on("connect", onConnect);
