@@ -289,7 +289,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import LoadingIcons from "react-loading-icons";
-import bgWebsite from "@/assets/bkg.png";
+import bgWebsite from "@/assets/bg.png";
 import Loader from "@/components/loader";
 
 export default function Qualifier() {
@@ -476,7 +476,7 @@ export default function Qualifier() {
                     type="submit"
                     disabled={isLoading}
                     onClick={handleSubmit}
-                    className="px-4 py-2 text-white rounded-full bg-gradient-to-r from-red-500 to-red-800 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
+                    className="px-4 py-2 text-white rounded-full bg-gradient-to-r from-purple-500 to-blue-500 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
                   >
                     {isLoading ? (
                       <LoadingIcons.Oval color="black" height="20px" />

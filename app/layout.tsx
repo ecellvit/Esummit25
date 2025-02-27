@@ -32,16 +32,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta
-          name="google-site-verification"
-          content="4e1Clm5pF9WGr8ezG7KAOgaOHaquJ8--iusbli3Z3pQ"
-        />
-        <link rel="icon" href={"./favicon.ico"} />
+        <link rel="icon" href={"./favicon.ico"}  />
       </head>
       <AuthProvider>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+         
           {children}
         </body>
       </AuthProvider>
