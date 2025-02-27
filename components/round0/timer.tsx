@@ -84,17 +84,17 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit,du
   return (
     <div className="w-full flex justify-center items-center h-full">
       <div className="flex flex-col justify-center items-center h-full w-fit text-black">
-        <div className="text-2xl">Team Name: {teamName}</div>
-        <div className="flex justify-evenly h-full w-full text-xl py-3">
+        <div className="text-2xl"style={{fontFamily:" 'GreaterTheory'"}}>Team Name: {teamName}</div>
+        <div className="flex justify-evenly h-full w-full text-xl py-3"style={{fontFamily:" 'GreaterTheory'"}}>
           <div className="flex flex-col items-center">
-            <div className="flex flex-col text-3xl">
+            <div className="flex flex-col text-3xl"style={{fontFamily:" 'GreaterTheory'"}}>
               {timeRemaining.minutes}
             </div>
             MINS
           </div>
           <span>:</span>
           <div className="flex flex-col items-center">
-            <div className="flex flex-col text-3xl">
+            <div className="flex flex-col text-3xl"style={{fontFamily:" 'GreaterTheory'"}}>
               {timeRemaining.seconds}
             </div>
             SECS
