@@ -58,7 +58,8 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
 
   return (
     <div className="flex flex-col items-center space-y-3 pb-4">
-      <div className="text-md w-full font-bold text-black sm:text-sm md:text-xl">
+      <div className="text-md w-full text-black text-center sm:text-sm md:text-xl"
+      style={{fontFamily:"GreaterTheory"}}>
         Time Remaining:
       </div>
 
@@ -68,7 +69,7 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
           <div
             className="text-5xl font-bold text-white sm:text-3xl md:text-5xl"
             style={{
-              fontFamily: "'GothamBlack', sans-serif",
+              fontFamily: "GreaterTheory",
               background: "black",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -83,7 +84,7 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
           <div
             className="text-5xl font-bold text-white sm:text-3xl md:text-5xl"
             style={{
-              fontFamily: "'GothamBlack', sans-serif",
+              fontFamily: "GreaterTheory",
               background: "black",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -98,7 +99,7 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
           <div
             className="text-5xl font-bold text-white sm:text-3xl md:text-5xl"
             style={{
-              fontFamily: "'GothamBlack', sans-serif",
+              fontFamily: "GreaterTheory",
               background: "black",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
