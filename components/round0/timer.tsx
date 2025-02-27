@@ -15,11 +15,6 @@ const QualifierTimer: React.FC<QualifierTimerProps> = ({ teamName, autoSubmit,du
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const [endTime, setEndTime] = useState<number | null>(null);
-  const [timeRemaining, setTimeRemaining] = useState({
-    minutes: "00",
-    seconds: "00",
-  });
 
   // Fetch endTime from the backend
   useEffect(() => {

@@ -4,7 +4,7 @@ import questions from "@/constant/round0/questions.json";
 import "@/app/globals.css"
 
 type QuestionForQualifierProps = {
-  questionCategory: "easy" | "medium" | "hard" | "caseStudy"|"instruction"|"waiting";
+  questionCategory: "easy" | "medium" | "hard" |"instruction"|"waiting" |"";
   questionNumber: number;
   chronoNumber: number;
   setChronoNumber?: React.Dispatch<React.SetStateAction<number>>;

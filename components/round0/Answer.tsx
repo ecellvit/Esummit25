@@ -16,7 +16,7 @@ interface Question {
 }
 
 interface Props {
-  questionCategory: "easy" | "medium" | "hard" | "caseStudy";
+  questionCategory: "easy" | "medium" | "hard" | "";
   questionNumber: number;
   chronoNumber: number;
   setChronoNumber: (value: number) => void;
@@ -129,7 +129,6 @@ const AnswerForQualifier: React.FC<Props> = ({
       case "medium":
         return "text-yellow-600";
       case "hard":
-      case "caseStudy":
       default:
         return "text-red-600";
     }
