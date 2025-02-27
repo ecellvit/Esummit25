@@ -11,7 +11,7 @@ interface FormEntry {
   transport: TransportMode;
 }
 
-export default function Round2Form({ islandId, teamId }: { islandId: string; teamId: string }) {
+export default function Round2Form({ islandId }: { islandId: string}) {
   const [entries, setEntries] = useState<FormEntry[]>([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
@@ -21,15 +21,16 @@ export default function Round2Form({ islandId, teamId }: { islandId: string; tea
     const fetchData = async () => {
       try {
         // Update the fetch URL to the correct API route
-        const response = await fetch(`/api/event1/round2/getFormData?islandId=${islandId}&teamId=${teamId}`);
+        const response = await fetch(`/api/event1/round2/getFormData?islandId=${islandId}`);
         const data = await response.json();
 
         if (response.ok) {
           setAvailableElements(data.elements);
           const filteredPortfolio = Object.fromEntries(
-            Object.entries(data.teamElements).filter(([_, value]) => value > 0)
+            Object.entries(data.teamElements as Record<string, number>).filter(([_, value]) => Number(value) > 0)
           );
           setTeamPortfolio(filteredPortfolio);
+        
         } else {
           console.error("Error fetching data:", data.message);
         }
@@ -39,7 +40,7 @@ export default function Round2Form({ islandId, teamId }: { islandId: string; tea
     };
 
     fetchData();
-  }, [islandId, teamId]);
+  }, [islandId]);
 
   const addEntry = () => {
     if (totalQuantity >= 200) return;

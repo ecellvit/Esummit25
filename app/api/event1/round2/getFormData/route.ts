@@ -7,7 +7,7 @@ import MarketModel from "@/models/event1/CommonInfo.model"; // Adjust the import
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model";
 import TeamModelRound2 from "@/models/event1/round2Island.model";
 
-export async function POST(request: Request): Promise<NextResponse> {
+export async function GET(request: Request): Promise<NextResponse> {
     await dbConnect();
     try {
     const session = await getServerSession(authOptions);
@@ -31,8 +31,8 @@ export async function POST(request: Request): Promise<NextResponse> {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    
-    const { elements } = await request.json();
+        const { elements } = await request.json();
+
     for (const { elementIndex, amount } of elements) {
         // Validate elementIndex
         if (elementIndex < 0 || elementIndex >= 5) {
@@ -40,7 +40,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         }
 
         if (team.portfolio[amount] == 0){
-            
+            return NextResponse.json({ message: "Invalid element index" }, { status: 400 });
         }
         // Check if the team has enough resources to sell
         if (team.portfolio[elementIndex] < amount) {
@@ -62,7 +62,7 @@ return NextResponse.json({
     remainingResources: nonZeroPortfolio,
 }, { status: 200 });
     } catch (error) {
-    console.error("Error selling resources:", error);
+    console.log("Error selling resources:", error);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
     }
 }
