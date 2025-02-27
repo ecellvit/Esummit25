@@ -17,18 +17,26 @@ export default function Round2Form({ islandId }: { islandId: string }) {
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
   const [teamPortfolio, setTeamPortfolio] = useState<Record<string, number>>({});
-  
+  const [isSaving, setIsSaving] = useState(false);
+
+  // ✅ Load saved data from localStorage
   useEffect(() => {
+    const savedData = localStorage.getItem(`round2form_${islandId}`);
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      setEntries(parsedData);
+      setTotalQuantity(parsedData.reduce((sum: number, entry: FormEntry) => sum + entry.quantity, 0));
+    }
+
+    // Fetch available elements from API
     const fetchData = async () => {
       try {
         const response = await fetch(`/api/event1/round2/getFormData`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         });
-        const data = await response.json();
 
+        const data = await response.json();
         if (response.ok) {
           const nonZeroElements = Object.entries(data.teamElements)
             .filter(([_, value]) => (value as number) > 0)
@@ -36,8 +44,6 @@ export default function Round2Form({ islandId }: { islandId: string }) {
 
           setAvailableElements(nonZeroElements);
           setTeamPortfolio(data.teamElements);
-        } else {
-          console.log("Error fetching data:", data.message);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -47,6 +53,7 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     fetchData();
   }, [islandId]);
 
+  // ✅ Get remaining stock dynamically
   const getRemainingStock = (element: string) => {
     const usedQuantity = entries
       .filter((entry) => entry.element === element)
@@ -54,6 +61,7 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     return (teamPortfolio[element] || 0) - usedQuantity;
   };
 
+  // ✅ Add new entry
   const addEntry = () => {
     if (totalQuantity >= 200) return;
 
@@ -64,7 +72,6 @@ export default function Round2Form({ islandId }: { islandId: string }) {
         element: availableElements[0] || "Unknown",
         quantity: 0,
         transport: "Air",
-        warning: "",
       },
     ];
 
@@ -72,22 +79,21 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     setTotalQuantity(newEntries.reduce((sum, entry) => sum + entry.quantity, 0));
   };
 
+  // ✅ Update form entry
   const updateEntry = (index: number, key: keyof FormEntry, value: any) => {
     const updatedEntries = [...entries];
 
     if (key === "quantity") {
       let numValue = Number(value.replace(/\D/g, "")); // Ensure only numbers
       const selectedElement = updatedEntries[index].element;
-      const availableAmount = getRemainingStock(selectedElement) + updatedEntries[index].quantity; // Re-add current entry's quantity
+      const availableAmount = getRemainingStock(selectedElement) + updatedEntries[index].quantity;
 
-      // Ensure the entered value does not exceed available stock
       if (numValue > availableAmount) {
         numValue = availableAmount;
       }
 
       updatedEntries[index] = { ...updatedEntries[index], [key]: numValue };
     } else if (key === "element") {
-      // Reset quantity to avoid stock issues
       updatedEntries[index] = { ...updatedEntries[index], element: value, quantity: 0 };
     } else {
       updatedEntries[index] = { ...updatedEntries[index], [key]: value };
@@ -95,6 +101,16 @@ export default function Round2Form({ islandId }: { islandId: string }) {
 
     setEntries(updatedEntries);
     setTotalQuantity(updatedEntries.reduce((sum, entry) => sum + entry.quantity, 0));
+  };
+
+  // ✅ Save form data to localStorage
+  const saveForm = () => {
+    setIsSaving(true);
+    localStorage.setItem(`round2form_${islandId}`, JSON.stringify(entries));
+    setTimeout(() => {
+      setIsSaving(false);
+      alert("Data saved successfully!");
+    }, 500);
   };
 
   return (
@@ -133,24 +149,27 @@ export default function Round2Form({ islandId }: { islandId: string }) {
       </select>
 
       <p className="text-lg font-semibold text-gray-700 mt-5">Total Quantity: {totalQuantity}</p>
-<div className="flex flex-row p-4 ">
-      <button
-        onClick={addEntry}
-        className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${
-          totalQuantity >= 200 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-700"
-        }`}
-        disabled={totalQuantity >= 200}
-      >
-        Add
-      </button>
-      <button
-        className={`w-full mt-4 p-2 ml-8 text-white font-bold rounded-lg ${
-          totalQuantity > 200 ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-700"
-        }`}
-        disabled={totalQuantity > 200}
-      >
-        Save
-      </button>
+
+      <div className="flex flex-row p-4 ">
+        <button
+          onClick={addEntry}
+          className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${
+            totalQuantity >= 200 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-700"
+          }`}
+          disabled={totalQuantity >= 200}
+        >
+          Add
+        </button>
+
+        <button
+          onClick={saveForm}
+          className={`w-full mt-4 p-2 ml-8 text-white font-bold rounded-lg ${
+            totalQuantity > 200 || isSaving ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-700"
+          }`}
+          disabled={totalQuantity > 200 || isSaving}
+        >
+          {isSaving ? "Saving..." : "Save"}
+        </button>
       </div>
     </div>
   );
