@@ -137,13 +137,18 @@ export default function Round2Form({ islandId }: { islandId: string }) {
       <button
         onClick={addEntry}
         className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${
-          totalQuantity >= 200 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+          totalQuantity >= 200 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-700"
         }`}
         disabled={totalQuantity >= 200}
       >
         Add
       </button>
-      <button className="w-full mt-4 ml-8 p-2 text-white bg-green-500 hover:bg-green-700 font-bold rounded-lg ">
+      <button
+        className={`w-full mt-4 p-2 ml-8 text-white font-bold rounded-lg ${
+          totalQuantity > 200 ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-700"
+        }`}
+        disabled={totalQuantity > 200}
+      >
         Save
       </button>
       </div>
