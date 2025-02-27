@@ -12,7 +12,7 @@ const Instructions: React.FC = () => {
   const router = useRouter(); // Missing router initialization
 
   // Fixed date format - months are 0-indexed in JavaScript Date
-  const targetDate: string = new Date(2025, 2, 27, 18, 36, 0).toISOString();
+  const targetDate: string = new Date(2025, 2, 28, 0, 25, 0).toISOString();
 
   const startQuiz = async (): Promise<void> => {
     try {
