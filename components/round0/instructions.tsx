@@ -136,7 +136,7 @@ const Instructions: React.FC = () => {
   }, [loading]);
 
   // Fixed date format - months are 0-indexed in JavaScript Date
-  const targetDate: string = new Date(2025, 2, 28, 15, 30, 0).toISOString();
+  const targetDate: string = new Date(2025, 2, 28, 18, 44, 0).toISOString();
 
   const startQuiz = async (): Promise<void> => {
     try {
@@ -185,20 +185,24 @@ const Instructions: React.FC = () => {
               <CountdownTimer targetDate={targetDate} />
             </div>
 
-            <h1 className="font-bold text-2xl md:text-3xl mb-4">
+            <h1 className="font-bold text-2xl md:text-3xl mb-4"
+            style={{fontFamily: 'PoppinsSemibold'}}>
               Welcome to the Qualifying Round of FuturePreneurs 10.0!
             </h1>
 
-            <p className="mb-4">
+            <p className="mb-4"
+            style={{fontFamily: 'PoppinsRegular'}}>
               This round evaluates your entrepreneurial knowledge and business
               understanding. Your performance in this quiz determines
               eligibility for the next round.
             </p>
 
-            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2">
+            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2"
+            style={{fontFamily: 'PoppinsSemibold'}}>
               General Instructions:
             </h2>
-            <ul className="list-disc list-inside mb-4">
+            <ul className="list-disc list-inside mb-4"
+            style={{fontFamily: 'PoppinsRegular'}}>
               <li className="mb-1">
                 All participants have 30 minutes to complete the quiz.
               </li>
@@ -210,10 +214,12 @@ const Instructions: React.FC = () => {
               <li className="mb-1">You can navigate and skip questions.</li>
             </ul>
 
-            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2">
+            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2"
+            style={{fontFamily: 'PoppinsSemibold'}}>
               Section Breakdown:
             </h2>
-            <ul className="list-disc list-inside mb-4">
+            <ul className="list-disc list-inside mb-4"
+            style={{fontFamily: 'PoppinsRegular'}}>
               <li className="mb-1">
                 Total: 25 questions across three sections.
               </li>
@@ -222,15 +228,17 @@ const Instructions: React.FC = () => {
               <li className="mb-1">Hard: 5 questions (5 marks each).</li>
             </ul>
 
-            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2">
+            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2"
+            style={{fontFamily: 'PoppinsSemibold'}}>
               Best of luck to all participants!
             </h2>
           </div>
 
           <button
-            className="px-4 py-2 rounded-full text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none m-4 w-full max-w-md h-12 flex items-center justify-center font-bold hover:opacity-80 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 rounded-full text-white bg-gradient-to-r from-red-500 to-red-800 focus:ring-4 focus:outline-none m-4 w-full max-w-md h-12 flex items-center justify-center font-bold hover:opacity-80 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={startQuiz}
             disabled={loading}
+            style={{fontFamily: 'GreaterTheory'}}
           >
             Start Quiz
           </button>
