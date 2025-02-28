@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { ApiResponse } from "@/types/ApiResponse";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/loader";
 
 interface Resource {
     id: number;
@@ -58,9 +59,12 @@ export default function Testing() {
     const router = useRouter();
     const [resources, setResources] = useState<Resource[]>([]);
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
+    const [loading, setLoading] = useState<Boolean>(true);
+    const [socketLoading, setSocketLoading] = useState<Boolean>(true);
 
     // Check if the round has started/finished
     const getPageData = async () => {
+        setLoading(true);
         const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
 
         if (response.status === 200) {
@@ -83,6 +87,7 @@ export default function Testing() {
             router.refresh();
             console.log(response);
         }
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -101,6 +106,7 @@ export default function Testing() {
         console.log("Socket connection status:", socket.connected);
         
         if (socket.connected) {
+            setSocketLoading(false);
             onConnect();
         }
 
@@ -108,8 +114,11 @@ export default function Testing() {
             const result = await initializeSocket();
             
             if (!result.success) {
+                setSocketLoading(true);
                 setupSocket();
             }
+
+            setSocketLoading(false);
         }
         
         if (!socket.connected) {
@@ -140,6 +149,7 @@ export default function Testing() {
 
     const handleConfirmPurchase = async () => {
         if (selectedResource) {
+            setLoading(true);
             //? SEND THE AXIOS QUERY
             try {
                 const response = await axios.put('/api/event1/round1/leasing2', {
@@ -165,6 +175,7 @@ export default function Testing() {
                 }
             }
             setSelectedResource(null);
+            setLoading(false);
         }
     };
     
@@ -175,6 +186,9 @@ export default function Testing() {
 
     return (
         <div className="aboslute w-full h-full min-h-screen bg-[#232323]">
+            {/* Loader */}
+            {(loading || socketLoading) && <Loader/>}
+
             <div className={`my-10 container w-[85vw] h-[85vh] py-20 px-auto text-center relative z-10 mx-auto transition-all duration-300 rounded-lg overflow-y-auto scrollbar-hide ${selectedResource ? 'blur-md pointer-events-none scale-99' : ''}`}>
                 <h1 className="text-4xl font-extrabold my-6 text-black drop-shadow-md">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500" style={{ fontFamily: 'GreaterTheory' }}>

@@ -10,6 +10,7 @@ import calculateMarketPrice from "@/utils/calculateMarketPrice";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/loader";
 
 // Dynamically import Chart.js Line component
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
@@ -75,6 +76,8 @@ const Dashboard: React.FC = () => {
     const [marketData, setMarketData] = useState<ElementData[]>([]);
     const [portfolio, setPortfolio] = useState<number[]>([0, 0, 0, 0, 0]);
     const [selectedGraph, setSelectedGraph] = useState<number | null>(null);
+    const [loading, setLoading] = useState<Boolean>(true);
+    const [socketLoading, setSocketLoading] = useState<Boolean>(true);
 
     // Socket helper functions
     const onMarketPrice = (data: { elementId: number; marketPrice: number }) => {
@@ -97,6 +100,7 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         const getData = async () => {
+            setLoading(true);
             const marketData = await fetchMarketData();
             setMarketData(marketData);
 
@@ -105,6 +109,7 @@ const Dashboard: React.FC = () => {
             if (portfolioData) {
                 setPortfolio(portfolioData);
             }
+            setLoading(false);
         };
         getData();
     }, []);
@@ -115,6 +120,7 @@ const Dashboard: React.FC = () => {
         // Initial connection status check
         console.log("Socket connection status:", socket.connected);
         if (socket.connected) {
+            setSocketLoading(false);
             onConnect();
         }
 
@@ -122,8 +128,11 @@ const Dashboard: React.FC = () => {
             const result = await initializeSocket();
             
             if (!result.success) {
-              setupSocket();
+                setSocketLoading(true);
+                setupSocket();
             }
+
+            setSocketLoading(false);
         }
         
         if (!socket.connected) {
@@ -171,6 +180,9 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="absolute w-full h-full min-h-screen bg-[#c4baba]">
+            {/* Loader */}
+            {(loading || socketLoading) && <Loader/>}
+
             {/* Main Content */}
             <div
                 className={`mt-8 mb-6 container w-[85vw] h-[85vh] px-2 py-20 px-auto text-center relative z-10 mx-auto transition-all duration-300 rounded-lg overflow-hidden ${
