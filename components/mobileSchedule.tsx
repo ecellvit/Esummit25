@@ -57,7 +57,7 @@ const events = [
   },
 ];
 
-const limit = [Infinity, 1400, 600, 600, Infinity];
+const limit = [Infinity, 1400, 800, 800, Infinity];
 
 const MobileSchedule = ({ images }: { images: any[] }) => {
   const router = useRouter();
