@@ -1,16 +1,55 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import island0 from "/assets/round2/island0.svg";
 import island1 from "/assets/round2/island1.svg";
 import island2 from "/assets/round2/island2.svg";
 import island3 from "/assets/round2/island3.svg";
 import island4 from "/assets/round2/island4.svg";
+import Round2Form from "@/components/events/round2/component";
 import Link from "next/link";
 
-export default function Testing() {
+type FormEntry = {
+  id: number;
+  element: string;
+  quantity: number;
+  transport: "Air" | "Water";
+  batch: number;
+  warning?: string;
+};
 
-  const [hii,setHii] = useState<string>("hii")
+type IslandData = {
+  [key: string]: FormEntry[];
+};
+
+const initialState: IslandData = {
+  island1: [],
+  island2: [],
+  island3: [],
+  island4: [],
+};
+
+export default function Testing() {
+  const [islandData, setIslandData] = useState<IslandData>(initialState);
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("islandData");
+    console.log('saved data',savedData)
+    if (savedData) {
+      setIslandData(JSON.parse(savedData));
+    }
+  }, []);
+
+  const updateData = (islandId: string, newData: FormEntry[]) => {
+    const savedData = localStorage.getItem("islandData");
+    const updatedData = savedData ? JSON.parse(savedData) : {};
+    updatedData[islandId] = newData;
+    localStorage.setItem("islandData", JSON.stringify(updatedData));
+    
+    // ✅ Instead of directly calling setData, let useEffect handle updates
+};
+
+
   return (
     <div
       className="relative w-full h-full min-h-screen"
@@ -19,7 +58,6 @@ export default function Testing() {
           "radial-gradient(63.7% 63.7% at 50% 50%, #35C0FB 0%, #126E9D 100%)",
       }}
     >
-      {/* Center Island (slightly off-center) */}
       <Image
         src={island0}
         alt="island0"
@@ -27,116 +65,30 @@ export default function Testing() {
         priority
       />
 
-      {/* Corner Islands (asymmetrical positioning) */}
-      <Link href="./island1">
-        <Image
-          src={island1}
-          alt="island1"
-          className="absolute top-16 left-20 w-auto h-48 object-cover z-10 animate-float-slow"
-          priority
-        />
-      </Link>
-      <Link href="./island2">
-        <Image
-          src={island2}
-          alt="island2"
-          className="absolute top-28 right-48  w-auto h-48 object-cover z-10 animate-float-fast"
-          priority
-        />
-      </Link>
-      <Link href="./island3">
-        <Image
-          src={island3}
-          alt="island3"
-          className="absolute bottom-20 left-60 w-auto h-48 object-cover z-10 animate-float-slow"
-          priority
-        />
-      </Link>
-      <Link href="./island4">
-        <Image
-          src={island4}
-          alt="island4"
-          className="absolute bottom-12 right-44 w-auto h-48 object-cover z-10 animate-float-fast"
-          priority
-        />
-      </Link>
+      {["island1", "island2", "island3", "island4"].map((island, index) => (
+        <Link key={island} href={`./${island}`}>
+          <Image
+            src={{ island1, island2, island3, island4 }[island]}
+            alt={island}
+            className={`absolute ${
+              index === 0 ? "top-16 left-20" :
+              index === 1 ? "top-28 right-48" :
+              index === 2 ? "bottom-20 left-60" : "bottom-12 right-44"
+            } w-auto h-48 object-cover z-10 animate-float`}
+            priority
+          />
+        </Link>
+      ))}
 
-      {/* Broken Lines (paths between islands) */}
-      <svg className="absolute inset-0 w-full h-full z-0">
-        <line
-          x1="50%"
-          y1="50%"
-          x2="15%"
-          y2="20%"
-          stroke="#FFFFFF"
-          strokeWidth="2"
-          strokeDasharray="5,5"
-        />
-        <line
-          x1="50%"
-          y1="50%"
-          x2="85%"
-          y2="25%"
-          stroke="#FFFFFF"
-          strokeWidth="2"
-          strokeDasharray="5,5"
-        />
-        <line
-          x1="50%"
-          y1="50%"
-          x2="20%"
-          y2="75%"
-          stroke="#FFFFFF"
-          strokeWidth="2"
-          strokeDasharray="5,5"
-        />
-        <line
-          x1="50%"
-          y1="50%"
-          x2="80%"
-          y2="85%"
-          stroke="#FFFFFF"
-          strokeWidth="2"
-          strokeDasharray="5,5"
-        />
-      </svg>
-
-      {/* Animations */}
       <style jsx>{`
         @keyframes float {
-          0% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-15px);
-          }
-          100% {
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes float-fast {
-          0% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-          100% {
-            transform: translateY(0);
-          }
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
+          100% { transform: translateY(0); }
         }
 
         .animate-float {
           animation: float 4s ease-in-out infinite;
-        }
-
-        .animate-float-slow {
-          animation: float 6s ease-in-out infinite;
-        }
-
-        .animate-float-fast {
-          animation: float-fast 3s ease-in-out infinite;
         }
       `}</style>
     </div>
