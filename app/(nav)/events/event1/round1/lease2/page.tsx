@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import resourceData from "@/constant/round1/element.json";
-import { socket } from "@/socket";
+import { initializeSocket, socket } from "@/socket";
 import toast, { Toaster } from "react-hot-toast";
 import { ApiResponse } from "@/types/ApiResponse";
 import axios, { AxiosError } from "axios";
@@ -104,8 +104,16 @@ export default function Testing() {
             onConnect();
         }
 
+        async function setupSocket() {
+            const result = await initializeSocket();
+            
+            if (!result.success) {
+                setupSocket();
+            }
+        }
+        
         if (!socket.connected) {
-            socket.connect();
+            setupSocket();
         }
     
         function onConnect() {

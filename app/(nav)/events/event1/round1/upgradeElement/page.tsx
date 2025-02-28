@@ -135,7 +135,7 @@
 
 
 "use client";
-import { socket } from "@/socket";
+import { initializeSocket, socket } from "@/socket";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -242,8 +242,16 @@ export default function Testing() {
             onConnect();
         }
 
+        async function setupSocket() {
+            const result = await initializeSocket();
+            
+            if (!result.success) {
+              setupSocket();
+            }
+        }
+        
         if (!socket.connected) {
-            socket.connect();
+            setupSocket();
         }
     
         function onConnect() {
