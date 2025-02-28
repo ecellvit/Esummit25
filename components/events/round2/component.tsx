@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 type ElementOption = string;
 type TransportMode = "Air" | "Water";
@@ -75,17 +76,12 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     setTotalQuantity(newEntries.reduce((sum, entry) => sum + entry.quantity, 0));
   };
 
-  const removeEntry = (index: number) => {
-    const updatedEntries = entries.filter((_, i) => i !== index);
-    setEntries(updatedEntries);
-    setTotalQuantity(updatedEntries.reduce((sum, entry) => sum + entry.quantity, 0));
-  };
-
   const updateEntry = (index: number, key: keyof FormEntry, value: any) => {
     const updatedEntries = [...entries];
 
     if (key === "quantity") {
       let numValue = Number(value.replace(/\D/g, ""));
+  
       const selectedElement = updatedEntries[index].element;
       const availableAmount = getRemainingStock(selectedElement) + updatedEntries[index].quantity;
 
@@ -94,12 +90,16 @@ export default function Round2Form({ islandId }: { islandId: string }) {
       }
 
       updatedEntries[index] = { ...updatedEntries[index], [key]: numValue };
-    } else if (key === "element") {
-      updatedEntries[index] = { ...updatedEntries[index], element: value, quantity: 0 };
     } else {
       updatedEntries[index] = { ...updatedEntries[index], [key]: value };
     }
 
+    setEntries(updatedEntries);
+    setTotalQuantity(updatedEntries.reduce((sum, entry) => sum + entry.quantity, 0));
+  };
+
+  const removeEntry = (index: number) => {
+    const updatedEntries = entries.filter((_, i) => i !== index);
     setEntries(updatedEntries);
     setTotalQuantity(updatedEntries.reduce((sum, entry) => sum + entry.quantity, 0));
   };
@@ -109,7 +109,7 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     localStorage.setItem(`round2form_${islandId}`, JSON.stringify(entries));
     setTimeout(() => {
       setIsSaving(false);
-      alert("Data saved successfully!");
+      toast.success("Data saved successfully!");
     }, 500);
   };
 
@@ -120,11 +120,12 @@ export default function Round2Form({ islandId }: { islandId: string }) {
       {entries.map((entry, index) => (
         <div key={entry.id} className="mb-4 p-4 border rounded-lg bg-gray-100 relative">
           <button
+            className="absolute top-2 right-2 text-red-500 hover:text-red-700"
             onClick={() => removeEntry(index)}
-            className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-lg"
           >
-            ✖
+            ✕
           </button>
+
           <label className="block mb-2">Element:</label>
           <select
             className="w-full p-2 border rounded"
@@ -177,6 +178,7 @@ export default function Round2Form({ islandId }: { islandId: string }) {
           {isSaving ? "Saving..." : "Save"}
         </button>
       </div>
+      <Toaster />
     </div>
   );
 }
