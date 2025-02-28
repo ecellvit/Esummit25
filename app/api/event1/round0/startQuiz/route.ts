@@ -41,8 +41,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // Fetch the Round0 document associated with this team
     const round0Data = await Round0.findOne({ teamId: qualTeam._id });
 
-    const quizStartTime = new Date("February 28, 2025 15:10:00");
-    const currentTime = new Date();
+    const quizStartTime = new Date("February 28, 2025 18:44:00");
+    const currentTime =  new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
     console.log('Current Time:', currentTime);
     console.log('Quiz Start Time:', quizStartTime);
 

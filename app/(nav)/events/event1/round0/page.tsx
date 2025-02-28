@@ -236,7 +236,7 @@
 //                   setFinalAnswer={setFinalAnswer}
 //                   selectedOptions={selectedOptions}         // <-- Add this line
 //                   setSelectedOptions={setSelectedOptions}   // <-- Add this line
-                
+
 //                 />
 //                 <div className="w-full flex  justify-center items-center">
 //                   {questionCategory === "hard" && chronoNumber === 4 ? (
@@ -304,16 +304,19 @@ export default function Qualifier() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  let count=0;
+
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/");
     } else if (status === "authenticated") {
+      // setIsLoading(true);
       fetchUserData();
       fetchQuestionData();
+      // setIsLoading(false);
     }
   }, [status]);
+
 
   const autoSubmit = async () => {
     setIsLoading(true);
@@ -330,7 +333,8 @@ export default function Qualifier() {
       });
 
       if (!response.ok) throw new Error("Failed to auto-submit");
-      if(response.ok){
+      if (response.ok) {
+        console.log('reload')
         location.reload();
       }
     } catch {
@@ -375,7 +379,7 @@ export default function Qualifier() {
   };
 
   const fetchQuestionData = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     try {
       const res = await fetch(`/api/event1/round0/getQuestion`, {
         method: "GET",
@@ -427,7 +431,6 @@ export default function Qualifier() {
       });
 
       if (!response.ok) throw new Error();
-      count++
       setFinalAnswer([]);
       await fetchQuestionData(); // Ensure fresh data is fetched
     } catch {
@@ -478,21 +481,41 @@ export default function Qualifier() {
                     setSelectedOptions={setSelectedOptions}
                   />
                 )}
-                {!isLoading && (
-                  <div className="w-full flex justify-center items-center">
-                    <button
-                      id="submitButton"
-                      type="submit"
-                      disabled={isLoading}
-                      onClick={handleSubmit}
-                      className="px-4 py-2 text-white rounded-full bg-gradient-to-r from-red-500 to-red-800 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
-                      style={{ fontFamily: "GreaterTheory" }}
-                    >
-                      {!isLoading &&
-                        (count === 25 ? "Submit" : "Next")}
-                    </button>
+                <div className="w-full flex  justify-center items-center">
+                    {(questionCategory === "hard" && chronoNumber === 6) ? (
+                      <button
+                        id="nextButton"
+                        type="submit"
+                        disabled={isLoading}
+                        onClick={handleSubmit}
+                        className="px-4 py-2 flex justify-center text-white rounded-full bg-gradient-to-r from-red-500 to-red-800 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
+                        style={{ fontFamily: "GreaterTheory" }}
+                      >
+                        {isLoading ? (
+                          <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+                        ) : (
+                          "Submit"
+                        )}
+                      </button>
+                    ) : (
+                      <button
+                        id="submitButton"
+                        type="submit"
+                        disabled={isLoading}
+                        onClick={handleSubmit}
+                        className="px-4 py-2 flex justify-center text-white rounded-full bg-gradient-to-r from-red-500 to-red-800 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
+                    style={{ fontFamily: "GreaterTheory" }}
+                      >
+                        {isLoading ? (
+                          <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+                        ) : (
+                          "Next"
+                        )}
+                      </button>
+                    )}
+                    
                   </div>
-                )}
+
               </div>
             )}
           {questionCategory === "waiting" && <QuizEnd />}
