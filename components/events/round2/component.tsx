@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 type ElementOption = string;
 type TransportMode = "Air" | "Water";
@@ -19,7 +20,6 @@ export default function Round2Form({ islandId }: { islandId: string }) {
   const [teamPortfolio, setTeamPortfolio] = useState<Record<string, number>>({});
   const [isSaving, setIsSaving] = useState(false);
 
-  // ✅ Load saved data from localStorage
   useEffect(() => {
     const savedData = localStorage.getItem(`round2form_${islandId}`);
     if (savedData) {
@@ -28,7 +28,6 @@ export default function Round2Form({ islandId }: { islandId: string }) {
       setTotalQuantity(parsedData.reduce((sum: number, entry: FormEntry) => sum + entry.quantity, 0));
     }
 
-    // Fetch available elements from API
     const fetchData = async () => {
       try {
         const response = await fetch(`/api/event1/round2/getFormData`, {
@@ -53,7 +52,6 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     fetchData();
   }, [islandId]);
 
-  // ✅ Get remaining stock dynamically
   const getRemainingStock = (element: string) => {
     const usedQuantity = entries
       .filter((entry) => entry.element === element)
@@ -61,7 +59,6 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     return (teamPortfolio[element] || 0) - usedQuantity;
   };
 
-  // ✅ Add new entry
   const addEntry = () => {
     if (totalQuantity >= 200) return;
 
@@ -79,12 +76,11 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     setTotalQuantity(newEntries.reduce((sum, entry) => sum + entry.quantity, 0));
   };
 
-  // ✅ Update form entry
   const updateEntry = (index: number, key: keyof FormEntry, value: any) => {
     const updatedEntries = [...entries];
 
     if (key === "quantity") {
-      let numValue = Number(value.replace(/\D/g, "")); // Ensure only numbers
+      let numValue = Number(value.replace(/\D/g, ""));
       const selectedElement = updatedEntries[index].element;
       const availableAmount = getRemainingStock(selectedElement) + updatedEntries[index].quantity;
 
@@ -93,8 +89,6 @@ export default function Round2Form({ islandId }: { islandId: string }) {
       }
 
       updatedEntries[index] = { ...updatedEntries[index], [key]: numValue };
-    } else if (key === "element") {
-      updatedEntries[index] = { ...updatedEntries[index], element: value, quantity: 0 };
     } else {
       updatedEntries[index] = { ...updatedEntries[index], [key]: value };
     }
@@ -103,13 +97,18 @@ export default function Round2Form({ islandId }: { islandId: string }) {
     setTotalQuantity(updatedEntries.reduce((sum, entry) => sum + entry.quantity, 0));
   };
 
-  // ✅ Save form data to localStorage
+  const removeEntry = (index: number) => {
+    const updatedEntries = entries.filter((_, i) => i !== index);
+    setEntries(updatedEntries);
+    setTotalQuantity(updatedEntries.reduce((sum, entry) => sum + entry.quantity, 0));
+  };
+
   const saveForm = () => {
     setIsSaving(true);
     localStorage.setItem(`round2form_${islandId}`, JSON.stringify(entries));
     setTimeout(() => {
       setIsSaving(false);
-      alert("Data saved successfully!");
+      toast.success("Data saved successfully!");
     }, 500);
   };
 
@@ -118,7 +117,14 @@ export default function Round2Form({ islandId }: { islandId: string }) {
       <h2 className="text-xl font-bold mb-4 text-center">Round 2 Form</h2>
 
       {entries.map((entry, index) => (
-        <div key={entry.id} className="mb-4 p-4 border rounded-lg bg-gray-100">
+        <div key={entry.id} className="mb-4 p-4 border rounded-lg bg-gray-100 relative">
+          <button
+            className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+            onClick={() => removeEntry(index)}
+          >
+            ✕
+          </button>
+
           <label className="block mb-2">Element:</label>
           <select
             className="w-full p-2 border rounded"
@@ -171,6 +177,7 @@ export default function Round2Form({ islandId }: { islandId: string }) {
           {isSaving ? "Saving..." : "Save"}
         </button>
       </div>
+      <Toaster />
     </div>
   );
 }
