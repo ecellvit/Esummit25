@@ -5,7 +5,7 @@ import resourceData from "@/constant/round1/element.json";
 import dynamic from "next/dynamic";
 import "chart.js/auto";
 import SellButton from "@/components/events/Round1/SellButton";
-import { socket } from "@/socket";
+import { initializeSocket, socket } from "@/socket";
 import calculateMarketPrice from "@/utils/calculateMarketPrice";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
@@ -118,8 +118,16 @@ const Dashboard: React.FC = () => {
             onConnect();
         }
 
+        async function setupSocket() {
+            const result = await initializeSocket();
+            
+            if (!result.success) {
+              setupSocket();
+            }
+        }
+        
         if (!socket.connected) {
-            socket.connect();
+            setupSocket();
         }
     
         function onConnect() {

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import resourceData from "@/constant/round1/element.json";
-import { socket } from "@/socket";
+import { initializeSocket, socket } from "@/socket";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -94,8 +94,16 @@ export default function Testing() {
             onConnect();
         }
 
+        async function setupSocket() {
+            const result = await initializeSocket();
+            
+            if (!result.success) {
+                setupSocket();
+            }
+        }
+        
         if (!socket.connected) {
-            socket.connect();
+            setupSocket();
         }
 
         function onConnect() {
@@ -146,7 +154,7 @@ export default function Testing() {
                 if (response.ok) {
                     setSelectedResource(null);
                     console.log("Purchase successful:", result);
-                    toast.success("Purchase Successfully"); //socket.emit("purchase", element) // Get MV on the socket server, emit it back
+                    toast.success("Purchase Successfully");
                     socket.emit("primary", selectedResource.id);
                 } else {
                     console.log("Purchase failed:", result.message);
