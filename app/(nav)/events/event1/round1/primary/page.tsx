@@ -72,6 +72,8 @@ export default function Testing() {
                     toast.error("This round is over.");
                 } else {
                     toast.error("This round has not started yet.");
+                    router.push(`/events/event1/round1/start`);
+                    return;
                 }
                 router.push(`/events/event1/round1/dashboard`);
                 return;
