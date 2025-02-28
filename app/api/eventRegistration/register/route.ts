@@ -54,10 +54,10 @@ export async function POST(request: Request) {
     //   return NextResponse.json({ message: "Registration deadline has passed." }, { status: 403 });
     // }
 
-    const registeredUsersCount = await Users.countDocuments({ events: parsedNumber });
-    if (registeredUsersCount >= eventLimits[parsedNumber].limit) {
-      return NextResponse.json({ message: "Registration limit reached for this event." }, { status: 403 });
-    }
+    // const registeredUsersCount = await Users.countDocuments({ events: parsedNumber });
+    // if (registeredUsersCount >= eventLimits[parsedNumber].limit) {
+    //   return NextResponse.json({ message: "Registration limit reached for this event." }, { status: 403 });
+    // }
 
     user.events.push(parsedNumber);
 
