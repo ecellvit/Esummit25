@@ -1,10 +1,47 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import bg from "/assets/round1/bg1.svg";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
 export default function Testing() {
+    const router=useRouter();
+
+    const fetchRoundData = async () => {
+        const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+
+        if (response.status === 200) {
+            const { round, page, startedAt } = await response.json();
+
+            // Convert startedAt (ISO format) to timestamp
+            const startTime = new Date(startedAt).getTime();
+            const currentTime = Date.now();
+
+            const timePassed = Math.floor((currentTime - startTime) / 1000);
+
+            if ( round === 1 ) {
+                if ( page === 1 && timePassed < 10 * 60 ) {
+                    router.push('/events/event1/round1/primary')
+                } else if ( page === 2 && timePassed < 10 * 60 ) {
+                    router.push('/events/event1/round1/lease1&secondary')
+                } else if ( page === 3 && timePassed < 5 * 60 ) {
+                    router.push('/events/event1/round1/lease2&upgrade')
+                } else {
+                    router.push('/events/event1/round1/dashboard');
+                }
+            } else {
+                router.push('/events/event1/leaderDashboard');
+            }
+        } else {
+            router.refresh();
+        }
+    }
+
+    useEffect(() => {
+        fetchRoundData();
+    }, [router]);
+    
     return (
         <div className="relative w-full h-full min-h-screen bg-gray-100">
             {/* Background */}

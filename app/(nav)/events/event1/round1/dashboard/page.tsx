@@ -175,7 +175,7 @@ const Dashboard: React.FC = () => {
 
     const handleGoBack = () => {
         console.log("Going back to previous page");
-        router.back();
+        router.replace('/events/event1/round1/waiting');
     };
 
     return (
