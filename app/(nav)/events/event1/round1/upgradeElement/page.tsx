@@ -135,6 +135,7 @@
 
 
 "use client";
+import { socket } from "@/socket";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -231,6 +232,42 @@ export default function Testing() {
         fetchRate();
     }, []);
 
+    // Connect to socket server
+    
+    useEffect(() => {
+        // Initial connection status check
+        console.log("Socket connection status:", socket.connected);
+        
+        if (socket.connected) {
+            onConnect();
+        }
+
+        if (!socket.connected) {
+            socket.connect();
+        }
+    
+        function onConnect() {
+            socket.io.engine.on("upgrade", (transport) => {
+                console.log("upgrade ::", transport.name);
+            });
+        }
+
+        function onDisconnect(reason: string) {
+            console.warn("Socket disconnected:", reason);
+            if (reason === "ping timeout" || reason === "transport error") {
+                socket.connect(); // Try reconnecting manually
+            }
+        }
+
+        socket.on("connect", onConnect);
+        socket.on("disconnect", onDisconnect);
+
+        return () => {
+        socket.off("connect", onConnect);
+        socket.off("disconnect", onDisconnect);
+        };
+    }, [socket.connected]);
+
     const handleUpgrade = async () => {
         if (!selectedUpgrade) return;
         setLoading(true);
@@ -245,6 +282,7 @@ export default function Testing() {
             if (response.ok) {
                 setSelectedUpgrade(null)
                 setRate(data.newRate);
+                socket.emit("upgrade");
                 toast.success("Upgraded successfully")
             } else {
                 setSelectedUpgrade(null);
