@@ -9,6 +9,7 @@ import { socket } from "@/socket";
 import calculateMarketPrice from "@/utils/calculateMarketPrice";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
+import { useRouter } from "next/navigation";
 
 // Dynamically import Chart.js Line component
 const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
@@ -70,6 +71,7 @@ const sellResources = async () => {
 };
 
 const Dashboard: React.FC = () => {
+    const router = useRouter()
     const [marketData, setMarketData] = useState<ElementData[]>([]);
     const [portfolio, setPortfolio] = useState<number[]>([0, 0, 0, 0, 0]);
     const [selectedGraph, setSelectedGraph] = useState<number | null>(null);
@@ -154,11 +156,16 @@ const Dashboard: React.FC = () => {
         setSelectedGraph(null);
     };
 
+    const handleGoBack = () => {
+        console.log("Going back to previous page");
+        router.back();
+    };
+
     return (
-        <div className="absolute w-full h-full min-h-screen bg-[#232323]">
+        <div className="absolute w-full h-full min-h-screen bg-[#c4baba]">
             {/* Main Content */}
             <div
-                className={`my-10 container w-[85vw] h-[85vh] px-2 py-20 px-auto text-center relative z-10 mx-auto transition-all duration-300 rounded-lg overflow-hidden ${
+                className={`mt-8 mb-6 container w-[85vw] h-[85vh] px-2 py-20 px-auto text-center relative z-10 mx-auto transition-all duration-300 rounded-lg overflow-hidden ${
                     selectedGraph !== null ? "blur-md pointer-events-none" : ""
                 }`}
             >
@@ -260,11 +267,22 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
 
+                    </div>
+                <div className="mt-0.5 flex justify-center">
+                    <button 
+                        onClick={handleGoBack}
+                        className="px-8 py-3 text-white transition-all duration-300 shadow-lg active:shadow active:translate-y-1 flex items-center bg-[#B82121] rounded-lg hover:bg-[#8a1919] hover:shadow-md hover:scale-105  font-extrabold tracking-widest"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Go Back
+                    </button>
+                </div>
                 {/* <div className="flex flex-row justify-center ">
                     <button className="bg-red-700 px-10 py-2 rounded-xl font-bold text-white hover:text-red-700 hover:bg-black" onClick={()=> console.log(portfolio)}>Continue</button>
                 </div> */}
 
-            </div>
 
             {/* Popup for expanded graph */}
             {selectedGraph !== null && marketData.length > 0 && (

@@ -259,6 +259,7 @@ export default function Testing() {
     };
     const handleGoBack = () => {
         console.log("Going back to previous page");
+        router.back();
     };
 
     return (

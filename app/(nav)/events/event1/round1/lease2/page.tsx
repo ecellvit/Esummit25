@@ -162,6 +162,7 @@ export default function Testing() {
     
     const handleGoBack = () => {
         console.log("Going back to previous page");
+        router.back();
     };
 
     return (
@@ -178,7 +179,7 @@ export default function Testing() {
 
                 {/* Unified Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto">
-                    {resources.map((res) => (
+                    {resources.map((res,index) => (
                         <ResourceCard key={res.id} resource={res} onBuy={() => setSelectedResource(res)} />
                     ))}
                 </div>
