@@ -37,7 +37,7 @@ const Invoice: React.FC = () => {
   const totalCost = invoiceItems.reduce((sum, item) => sum + item.cost, 0);
 
   return (
-    <div className="p-4 border rounded-lg shadow-lg w-1/2 mx-auto mt-10 bg-white">
+    <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
       <h2 className="text-xl font-bold mb-4">Invoice</h2>
       <table className="w-full border-collapse border border-gray-300">
         <thead>

@@ -23,9 +23,9 @@ export interface round1Qualified extends Document {
     page: number;
     startTime: Date;
     totalQuantity: number;
-    islandBatch1: number[];
-    islandBatch2: number[];
-    islandBatch3: number[];
+    islandBatch1: String[];
+    islandBatch2: string[];
+    islandBatch3: string[];
     insuranceType: number[];
 
 }
@@ -115,15 +115,15 @@ const TeamSchema: Schema<round1Qualified> = new Schema(
     },
     islandBatch1: 
     {
-        type: [Number],
+        type: [String],
     },
     islandBatch2: 
     {
-        type: [Number],
+        type: [String],
     },
     islandBatch3: 
     {
-        type: [Number],
+        type: [String],
     },
     insuranceType: 
     {

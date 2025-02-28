@@ -32,7 +32,7 @@ const TeamSchema: Schema<round2Island> = new Schema(
         },
         endTime: {
             type: Date,
-            default: Date.now,
+
         },
         modeOfTransport: {
             type: Number,
