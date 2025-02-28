@@ -63,7 +63,6 @@ const TimerPage = () => {
   return (
     <QualifierTimer
       teamName={teamName}
-      duration={duration}
       autoSubmit={autoSubmit}
     />
   );
