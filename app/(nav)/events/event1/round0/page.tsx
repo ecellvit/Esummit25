@@ -304,6 +304,7 @@ export default function Qualifier() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  let count=0;
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -405,7 +406,14 @@ export default function Qualifier() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
+
+    // Clear previous question to avoid flickering
+    setQuestionCategory("");
+    setQuestionNumber(0);
+    setChronoNumber(0);
+
     try {
+
       const response = await fetch("/api/event1/round0/submitAnswer", {
         method: "POST",
         headers: {
@@ -419,15 +427,16 @@ export default function Qualifier() {
       });
 
       if (!response.ok) throw new Error();
-
+      count++
       setFinalAnswer([]);
-      fetchQuestionData();
+      await fetchQuestionData(); // Ensure fresh data is fetched
     } catch {
       toast.error("Error submitting answer");
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <main
@@ -442,52 +451,51 @@ export default function Qualifier() {
       {isLoading && <Loader />}
       <section>
         <div className="gap-2 z=1">
-          {questionCategory === "waiting" && <QuizEnd />}
           {questionCategory === "instruction" && <Instructions />}
           {questionCategory !== "instruction" &&
             questionCategory !== "waiting" && (
               <div className="text-white">
-                <QualifierTimer
-                  teamName={teamName}
-                  autoSubmit={autoSubmit}
-                  duration={30 * 60 * 1000}
-                />
-                {!isLoading && <QuestionForQualifier
-                  questionCategory={questionCategory}
-                  questionNumber={questionNumber}
-                  chronoNumber={chronoNumber}
-                  setChronoNumber={setChronoNumber}
-                  setQuestionNumber={setQuestionNumber}
-                />}
-                {!isLoading &&<AnswerForQualifier
-                  questionCategory={questionCategory}
-                  questionNumber={questionNumber}
-                  chronoNumber={chronoNumber}
-                  finalAnswer={finalAnswer}
-                  setChronoNumber={setChronoNumber}
-                  setQuestionNumber={setQuestionNumber}
-                  setFinalAnswer={setFinalAnswer}
-                  selectedOptions={selectedOptions}
-                  setSelectedOptions={setSelectedOptions}
-                />}
-                {!isLoading &&<div className="w-full flex justify-center items-center">
-                  <button
-                    id="submitButton"
-                    type="submit"
-                    disabled={isLoading}
-                    onClick={handleSubmit}
-                    className="px-4 py-2 text-white rounded-full bg-gradient-to-r from-red-500 to-red-800 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
-                    style={{fontFamily:"GreaterTheory"}}
-                  >
-                    {isLoading ? (
-                      <LoadingIcons.Oval color="black" height="20px" />
-                    ) : (
-                      "Next"
-                    )}
-                  </button>
-                </div>}
+                <QualifierTimer teamName={teamName} autoSubmit={autoSubmit} />
+                {!isLoading && (
+                  <QuestionForQualifier
+                    questionCategory={questionCategory}
+                    questionNumber={questionNumber}
+                    chronoNumber={chronoNumber}
+                    setChronoNumber={setChronoNumber}
+                    setQuestionNumber={setQuestionNumber}
+                  />
+                )}
+                {!isLoading && (
+                  <AnswerForQualifier
+                    questionCategory={questionCategory}
+                    questionNumber={questionNumber}
+                    chronoNumber={chronoNumber}
+                    finalAnswer={finalAnswer}
+                    setChronoNumber={setChronoNumber}
+                    setQuestionNumber={setQuestionNumber}
+                    setFinalAnswer={setFinalAnswer}
+                    selectedOptions={selectedOptions}
+                    setSelectedOptions={setSelectedOptions}
+                  />
+                )}
+                {!isLoading && (
+                  <div className="w-full flex justify-center items-center">
+                    <button
+                      id="submitButton"
+                      type="submit"
+                      disabled={isLoading}
+                      onClick={handleSubmit}
+                      className="px-4 py-2 text-white rounded-full bg-gradient-to-r from-red-500 to-red-800 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
+                      style={{ fontFamily: "GreaterTheory" }}
+                    >
+                      {!isLoading &&
+                        (count === 25 ? "Submit" : "Next")}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
+          {questionCategory === "waiting" && <QuizEnd />}
         </div>
       </section>
     </main>
