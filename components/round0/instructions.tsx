@@ -185,52 +185,64 @@ const Instructions: React.FC = () => {
               <CountdownTimer targetDate={targetDate} />
             </div>
 
-            <h1 className="font-bold text-2xl md:text-3xl mb-4"
-            style={{fontFamily: 'PoppinsSemibold'}}>
-              Welcome to the Qualifying Round of FuturePreneurs 10.0!
+            <h1
+              className="font-bold text-2xl md:text-3xl mb-4"
+              style={{ fontFamily: "PoppinsSemibold" }}
+            >
+              Welcome to the Qualifying Round of Innoventure!
             </h1>
 
-            <p className="mb-4"
-            style={{fontFamily: 'PoppinsRegular'}}>
-              This round evaluates your entrepreneurial knowledge and business
-              understanding. Your performance in this quiz determines
-              eligibility for the next round.
+            <p className="mb-4" style={{ fontFamily: "PoppinsRegular" }}>
+              This qualifying round will assess your entrepreneurial expertise
+              and business acumen. Your performance on this quiz will determine
+              your eligibility to progress to the next stage.
             </p>
 
-            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2"
-            style={{fontFamily: 'PoppinsSemibold'}}>
-              General Instructions:
+            <h2
+              className="font-bold text-xl md:text-2xl mt-4 mb-2"
+              style={{ fontFamily: "PoppinsSemibold" }}
+            >
+              Quiz Instructions:
             </h2>
-            <ul className="list-disc list-inside mb-4"
-            style={{fontFamily: 'PoppinsRegular'}}>
+            <ul
+              className="list-disc list-inside mb-4 flex flex-col gap-3 text-justify"
+              style={{ fontFamily: "PoppinsRegular" }}
+            >
               <li className="mb-1">
-                All participants have 30 minutes to complete the quiz.
+                Participants can begin the quiz between 10:00 PM and 10:30 PM
+                only.
+              </li>
+              <li className="mb-1">The quiz duration is 40 minutes.</li>
+              <li className="mb-1">
+                A timer will be displayed at the top of the screen.
               </li>
               <li className="mb-1">
-                A countdown timer is displayed at the top of the screen.
+                The quiz is accessible only through the Team Leader’s dashboard
+                using their registered email ID.
               </li>
-              <li className="mb-1">The quiz auto-submits after 30 minutes.</li>
-              <li className="mb-1">No negative marking.</li>
-              <li className="mb-1">You can navigate and skip questions.</li>
+              <li className="mb-1">
+                Each team is allowed only one submission, multiple submissions
+                will result in disqualification.
+              </li>
+              <li className="mb-1">
+                The quiz must be submitted upon completion or will be
+                auto-submitted after 40 minutes.
+              </li>
+              <li className="mb-1">
+                The Quiz contains only Single Choice Correct questions.
+              </li>
+              <li className="mb-1">There is no negative marking.</li>
+              <li className="mb-1">
+                Questions can be skipped, but you cannot navigate backwards.
+              </li>
+
             </ul>
 
-            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2"
-            style={{fontFamily: 'PoppinsSemibold'}}>
-              Section Breakdown:
-            </h2>
-            <ul className="list-disc list-inside mb-4"
-            style={{fontFamily: 'PoppinsRegular'}}>
-              <li className="mb-1">
-                Total: 25 questions across three sections.
-              </li>
-              <li className="mb-1">Easy: 8 questions (3 marks each).</li>
-              <li className="mb-1">Medium: 12 questions (4 marks each).</li>
-              <li className="mb-1">Hard: 5 questions (5 marks each).</li>
-            </ul>
-
-            <h2 className="font-bold text-xl md:text-2xl mt-4 mb-2"
-            style={{fontFamily: 'PoppinsSemibold'}}>
-              Best of luck to all participants!
+            <h2
+              className="font-bold text-xl md:text-2xl mt-4 mb-2"
+              style={{ fontFamily: "PoppinsSemibold" }}
+            >
+              Wishing the best of luck to all teams!
             </h2>
           </div>
 
@@ -238,11 +250,10 @@ const Instructions: React.FC = () => {
             className="px-4 py-2 rounded-full text-white bg-gradient-to-r from-red-500 to-red-800 focus:ring-4 focus:outline-none m-4 w-full max-w-md h-12 flex items-center justify-center font-bold hover:opacity-80 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={startQuiz}
             disabled={loading}
-            style={{fontFamily: 'GreaterTheory'}}
+            style={{ fontFamily: "GreaterTheory" }}
           >
             Start Quiz
           </button>
-
         </>
       )}
     </main>
