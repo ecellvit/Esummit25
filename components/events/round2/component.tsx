@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import axios, { AxiosError } from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
+
 
 type ElementOption = string;
 type TransportMode = "Air" | "Water";
@@ -13,13 +16,14 @@ interface FormEntry {
   warning?: string;
 }
 
-export default function Round2Form({ islandId }: { islandId: string }) {
+export default function Round2Form({ islandId }: { islandId: number }) {
   const [entries, setEntries] = useState<FormEntry[]>([]);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
   const [teamPortfolio, setTeamPortfolio] = useState<Record<string, number>>({});
   const [isSaving, setIsSaving] = useState(false);
-
+  const [batch,setBatch]=useState(1);
+  
   useEffect(() => {
     const savedData = localStorage.getItem(`round2form_${islandId}`);
     if (savedData) {
@@ -112,6 +116,21 @@ export default function Round2Form({ islandId }: { islandId: string }) {
       toast.success("Data saved successfully!");
     }, 500);
   };
+  const OnSubmit=async()=>{
+    try {
+      const response = await axios.post("/api/event1/round2/setFormData", { entries,islandId,batch});
+      if (response.data.success === true) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast.error(
+        axiosError.response?.data.message || "Error in submitting"
+      );
+    } finally {
+    }
+    
+  }
 
   return (
     <div className="p-6 max-w-lg ml-auto mr-10 my-10 border rounded-lg shadow-lg bg-white">
@@ -169,7 +188,7 @@ export default function Round2Form({ islandId }: { islandId: string }) {
         </button>
 
         <button
-          onClick={saveForm}
+          onClick={OnSubmit}
           className={`w-full mt-4 p-2 ml-8 text-white font-bold rounded-lg ${
             totalQuantity > 200 || isSaving ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-700"
           }`}

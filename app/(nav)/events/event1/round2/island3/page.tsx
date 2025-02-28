@@ -32,7 +32,7 @@ export default function Testing() {
                 id="island"
             />
             <div className="relative w-full h-full overflow-auto">
-                <Round2Form islandId="island3"/>
+                <Round2Form islandId={2}/>
             </div>
             <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex justify-center">
                 <button 
