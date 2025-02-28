@@ -25,13 +25,11 @@ export default function Testing() {
             const startTime = new Date(startedAt).getTime();
             const currentTime = Date.now();
 
-            // Check if more than 10 minutes have passed
-            if (currentTime - startTime > 10 * 60 * 1000) {
-                console.log("More than 10 minutes have passed.");
-            } else {
-                console.log("Less than 10 minutes have passed.");
-            }
-            if (round !== 0 || page !== 2 || (currentTime - startTime > 10 * 60 * 1000)) {
+            const timePassed = Math.floor((currentTime - startTime) / 1000);
+            setLease1Timer(5 * 60 - timePassed);
+            setSecondaryTimer(10 * 60 - timePassed);
+
+            if (round !== 0 || page !== 2 || (timePassed > 10 * 60 * 1000)) {
                 if (round <= 0 && page > 2) {
                     toast.error("This round is over.");
                 } else {

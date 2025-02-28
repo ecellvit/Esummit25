@@ -25,12 +25,10 @@ export default function Testing() {
             const startTime = new Date(startedAt).getTime();
             const currentTime = Date.now();
 
-            // Check if more than 10 minutes (600,000 ms) have passed
-            if (currentTime - startTime > 10 * 60 * 1000) {
-                console.log("More than 10 minutes have passed.");
-            } else {
-                console.log("Less than 10 minutes have passed.");
-            }
+            const timePassed = Math.floor((currentTime - startTime) / 1000);
+            setLease2Timer(5 * 60 - timePassed);
+            setUpgradeTimer(10 * 60 - timePassed);
+
             if (round !== 0 || page !== 3 || (currentTime - startTime > 10 * 60 * 1000)) {
                 if (round <= 0 && page > 3) {
                     toast.error("This round is over.");
@@ -118,7 +116,7 @@ export default function Testing() {
                         <div 
                             className="bg-white px-6 py-2 rounded-md font-bold text-xl" 
                             style={{ 
-                                fontFamily: 'FontSpring',
+                                fontFamily: 'Poppins',
                                 color: lease2Expired ? '#888888' : '#BB2121' 
                             }}
                         >
