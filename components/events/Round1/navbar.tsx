@@ -5,15 +5,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from "/assets/round1/logo.svg";
 import home from "/assets/round1/home.svg";
-import { set } from 'mongoose';
+import { usePathname, useRouter } from 'next/navigation';
 
 
 const Navbar = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [timeLeft, setTimeLeft] = useState(600);
   const [walletBalance, setWalletBalance] = useState(0);
   const [teamName, setTeamName] = useState("Loading...");
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    fetchTime();
+  }, [router, pathname]);
+  
   useEffect(() => {
     const fetchTeamName = async () => {
       try {
@@ -31,6 +37,30 @@ const Navbar = () => {
     };
     fetchTeamName();
   }, []);
+
+  const fetchTime = async () => {
+    const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+
+    if (response.status === 200) {
+      const { round, page, startedAt } = await response.json();
+
+      // Convert startedAt (ISO format) to timestamp
+      const startTime = new Date(startedAt).getTime();
+      const currentTime = Date.now();
+
+      const timePassed = Math.floor((currentTime - startTime) / 1000);
+
+      if (pathname === '/events/event1/round1/lease1' || pathname === '/events/event1/round1/lease2') {
+        const timeLeft = 5 * 60 - timePassed;
+        setTimeLeft(timeLeft);
+      } else {
+        const timeLeft = 10 * 60 - timePassed;
+        setTimeLeft(timeLeft);
+      }
+    } else {
+      router.refresh();
+    }
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
