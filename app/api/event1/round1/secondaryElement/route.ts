@@ -76,6 +76,9 @@ export async function POST(request: Request): Promise<NextResponse> {
         
         await team.save();
 
+        // Get all market data records to update histories
+        const allMarketData = await MarketModel.find({});
+
         const marketData = await MarketModel.findOne({ elementId: id });
         if (!marketData) {
             await MarketModel.create({
@@ -83,11 +86,25 @@ export async function POST(request: Request): Promise<NextResponse> {
                 currentTeams: 1,
                 basePrice: resourceData[id].base,
                 marketPrice: calculateMarketPrice(resourceData[id].base, 1),
+                marketHistory: [resourceData[id].base, calculateMarketPrice(resourceData[id].base, 1)],
             })
         } else {
             marketData.currentTeams++;
             marketData.marketPrice = calculateMarketPrice(marketData.basePrice, marketData.currentTeams);
+            marketData.marketHistory.push(marketData.marketPrice);
             await marketData.save();
+        }
+
+        for (const market of allMarketData) {
+            if (market.elementId !== id) {
+            if (!market.marketHistory) {
+                market.marketHistory = [resourceData[market.elementId].base];
+            }
+            
+            // Append the current price to the history
+            market.marketHistory.push(market.marketPrice);
+            await market.save();
+            }
         }
 
         return NextResponse.json(
