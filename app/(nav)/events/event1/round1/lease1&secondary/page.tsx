@@ -17,9 +17,6 @@ export default function Testing() {
 
         if (response.status === 200) {
             const { round, page, startedAt } = await response.json();
-            console.log("Round:", round);
-            console.log("Page:", page);
-            console.log("Started at:", startedAt);
 
             // Convert startedAt (ISO format) to timestamp
             const startTime = new Date(startedAt).getTime();
@@ -29,8 +26,8 @@ export default function Testing() {
             setLease1Timer(5 * 60 - timePassed);
             setSecondaryTimer(10 * 60 - timePassed);
 
-            if (round !== 0 || page !== 2 || (timePassed > 10 * 60 * 1000)) {
-                if (round <= 0 && page > 2) {
+            if (round !== 1 || page !== 2 || (timePassed > 10 * 60 * 1000)) {
+                if (round <= 1 && page > 2) {
                     toast.error("This round is over.");
                 } else {
                     toast.error("This round has not started yet.");

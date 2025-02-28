@@ -194,22 +194,13 @@ export default function Testing() {
 
         if (response.status === 200) {
             const { round, page, startedAt } = await response.json();
-            console.log("Round:", round);
-            console.log("Page:", page);
-            console.log("Started at:", startedAt);
 
             // Convert startedAt (ISO format) to timestamp
             const startTime = new Date(startedAt).getTime();
             const currentTime = Date.now();
 
-            // Check if more than 10 minutes have passed
-            if (currentTime - startTime > 10 * 60 * 1000) {
-                console.log("More than 10 minutes have passed.");
-            } else {
-                console.log("Less than 10 minutes have passed.");
-            }
-            if (round !== 0 || page !== 3 || (currentTime - startTime > 10 * 60 * 1000)) {
-                if (round <= 0 && page > 3) {
+            if (round !== 1 || page !== 3 || (currentTime - startTime > 10 * 60 * 1000)) {
+                if (round <= 1 && page > 3) {
                     toast.error("This round is over.");
                 } else {
                     toast.error("This round has not started yet.");
