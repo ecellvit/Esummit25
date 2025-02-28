@@ -59,6 +59,9 @@ export async function PUT(req: Request): Promise<NextResponse<ApiResponse>> {
     team.lease2Rate = leaseRate;
     team.lease2StartTime = new Date();
     
+    // Get all market data records to update histories
+    const allMarketData = await MarketModel.find({});
+
     //? Update the market data if it exists, or create a new market data for that element
     const marketData = await MarketModel.findOne({ elementId: leaseElement });
     if (!marketData) {
@@ -67,13 +70,27 @@ export async function PUT(req: Request): Promise<NextResponse<ApiResponse>> {
         currentTeams: 1,
         basePrice: resourceData[leaseElement].base,
         marketPrice: calculateMarketPrice(resourceData[leaseElement].base, 1),
+        marketHistory: [resourceData[leaseElement].base, calculateMarketPrice(resourceData[leaseElement].base, 1)],
         })
     } else {
         marketData.currentTeams++;
         marketData.marketPrice = calculateMarketPrice(marketData.basePrice, marketData.currentTeams);
+        marketData.marketHistory.push(marketData.marketPrice);
         await marketData.save();
     }
     
+    for (const market of allMarketData) {
+        if (market.elementId !== leaseElement) {
+            if (!market.marketHistory) {
+            market.marketHistory = [resourceData[market.elementId].base];
+            }
+            
+            // Append the current price to the history
+            market.marketHistory.push(market.marketPrice);
+            await market.save();
+        }
+    }
+      
     //? Delay updating the team details until the market has been updated
     await team.save();
 
