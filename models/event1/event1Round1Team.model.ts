@@ -23,10 +23,11 @@ export interface round1Qualified extends Document {
     page: number;
     startTime: Date;
     totalQuantity: number;
-    islandBatch1: String[];
-    islandBatch2: string[];
-    islandBatch3: string[];
+    islandBatch1: ObjectId[];
+    islandBatch2: ObjectId[];
+    islandBatch3: ObjectId[];
     insuranceType: number[];
+    batch: number;
 
 }
 
@@ -113,21 +114,30 @@ const TeamSchema: Schema<round1Qualified> = new Schema(
     {
         type: Number,
     },
-    islandBatch1: 
-    {
-        type: [String],
-    },
-    islandBatch2: 
-    {
-        type: [String],
-    },
-    islandBatch3: 
-    {
-        type: [String],
-    },
+    islandBatch1: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "IslandRound2",
+        },
+      ],
+      islandBatch2: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "IslandRound2",
+        },
+      ],
+      islandBatch3: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "IslandRound2",
+        },
+      ],
     insuranceType: 
     {
         type: [Number],
+    },
+    batch:{
+        type: Number,
     }
     
 },
