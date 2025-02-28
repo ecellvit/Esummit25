@@ -48,6 +48,6 @@ const TeamSchema: Schema<round2Island> = new Schema(
     { collection: "TeamsEvent1Round2" }
 );
 
-const TeamModelRound2 = (mongoose.models.TeamsEvent1Round2 as mongoose.Model<round2Island>) || (mongoose.model<round2Island>("TeamsEvent1Round2", TeamSchema));
+const IslandRound2 = (mongoose.models.TeamsEvent1Round2 as mongoose.Model<round2Island>) || (mongoose.model<round2Island>("TeamsEvent1Round2", TeamSchema));
 
-export default TeamModelRound2;
+export default IslandRound2;
