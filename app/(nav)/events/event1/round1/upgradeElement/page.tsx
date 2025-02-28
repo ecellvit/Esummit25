@@ -199,7 +199,7 @@ export default function Testing() {
             const startTime = new Date(startedAt).getTime();
             const currentTime = Date.now();
 
-            if (round !== 1 || page !== 3 || (currentTime - startTime > 10 * 60 * 1000)) {
+            if (round !== 1 || page !== 3 || (currentTime - startTime > 5 * 60 * 1000)) {
                 if (round <= 1 && page > 3) {
                     toast.error("This round is over.");
                 } else {
