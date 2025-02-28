@@ -4,6 +4,7 @@ import resourceData from "@/constant/round1/element.json";
 import { initializeSocket, socket } from "@/socket";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/loader";
 
 interface Resource {
     id: number;
@@ -56,8 +57,11 @@ export default function Testing() {
     const router = useRouter();
     const [resources, setResources] = useState<Resource[]>([]);
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
+    const [loading, setLoading] = useState<Boolean>(true);
+    const [socketLoading, setSocketLoading] = useState<Boolean>(true);
 
     const getPageData = async () => {
+        setLoading(true);
         const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
 
         if (response.status === 200) {
@@ -82,6 +86,7 @@ export default function Testing() {
             router.refresh();
             console.log(response);
         }
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -93,6 +98,7 @@ export default function Testing() {
         // Initial connection status check
         console.log("Socket connection status:", socket.connected);
         if (socket.connected) {
+            setSocketLoading(false);
             onConnect();
         }
 
@@ -100,8 +106,11 @@ export default function Testing() {
             const result = await initializeSocket();
             
             if (!result.success) {
+                setSocketLoading(true);
                 setupSocket();
             }
+            
+            setSocketLoading(false);
         }
         
         if (!socket.connected) {
@@ -138,6 +147,7 @@ export default function Testing() {
 
     const handleConfirmPurchase = async () => {
         if (selectedResource) {
+            setLoading(true);
             try {
                 const response = await fetch("/api/event1/round1/primaryelement", {
                     method: "POST",
@@ -168,12 +178,16 @@ export default function Testing() {
                 console.log("Error during purchase:", error);
                 toast.error("Something went wrong. Please try again.");
             }
+            setLoading(false);
         }
     };
 
 
     return (
         <div className="aboslute w-full h-full min-h-screen bg-[#232323]">
+            {/* Loader */}
+            {(loading || socketLoading) && <Loader/>}
+
             <div className={`my-10 container w-[85vw] h-[85vh] py-20 px-auto text-center relative z-10 mx-auto transition-all duration-300 rounded-lg overflow-y-auto scrollbar-hide ${selectedResource ? 'blur-md pointer-events-none scale-99' : ''}`}>
                 <h1 className="text-4xl font-extrabold my-6 text-black drop-shadow-md">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500" style={{ fontFamily: 'GreaterTheory' }}>
