@@ -455,6 +455,7 @@ export default function Qualifier() {
       <section>
         <div className="gap-2 z=1">
           {questionCategory === "instruction" && <Instructions />}
+          {questionCategory === "waiting" && <QuizEnd />}
           {questionCategory !== "instruction" &&
             questionCategory !== "waiting" && (
               <div className="text-white">
@@ -518,7 +519,6 @@ export default function Qualifier() {
 
               </div>
             )}
-          {questionCategory === "waiting" && <QuizEnd />}
         </div>
       </section>
     </main>
