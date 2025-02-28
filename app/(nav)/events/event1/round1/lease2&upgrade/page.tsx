@@ -24,9 +24,9 @@ export default function Testing() {
 
             const timePassed = Math.floor((currentTime - startTime) / 1000);
             setLease2Timer(5 * 60 - timePassed);
-            setUpgradeTimer(10 * 60 - timePassed);
+            setUpgradeTimer(5 * 60 - timePassed);
 
-            if (round !== 1 || page !== 3 || (currentTime - startTime > 10 * 60 * 1000)) {
+            if (round !== 1 || page !== 3 || (currentTime - startTime > 5 * 60 * 1000)) {
                 if (round <= 1 && page > 3) {
                     toast.error("This round is over.");
                 } else {

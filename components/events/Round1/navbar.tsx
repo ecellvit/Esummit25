@@ -50,7 +50,7 @@ const Navbar = () => {
 
       const timePassed = Math.floor((currentTime - startTime) / 1000);
 
-      if (pathname === '/events/event1/round1/lease1' || pathname === '/events/event1/round1/lease2') {
+      if (pathname === '/events/event1/round1/lease1' || pathname === '/events/event1/round1/lease2' || pathname === '/events/event1/round1/upgradeElement' || pathname === '/events/event1/round1/lease2&upgrade') {
         const timeLeft = 5 * 60 - timePassed;
         setTimeLeft(timeLeft);
       } else {
