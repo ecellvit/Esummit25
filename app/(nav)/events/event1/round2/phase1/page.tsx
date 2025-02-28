@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import island0 from "/assets/round2/island0.svg";
 import island1 from "/assets/round2/island1.svg";
@@ -9,6 +9,8 @@ import island4 from "/assets/round2/island4.svg";
 import Link from "next/link";
 
 export default function Testing() {
+
+  const [hii,setHii] = useState<string>("hii")
   return (
     <div
       className="relative w-full h-full min-h-screen"

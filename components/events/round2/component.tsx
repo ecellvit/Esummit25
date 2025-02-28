@@ -81,6 +81,7 @@ export default function Round2Form({ islandId }: { islandId: string }) {
 
     if (key === "quantity") {
       let numValue = Number(value.replace(/\D/g, ""));
+  
       const selectedElement = updatedEntries[index].element;
       const availableAmount = getRemainingStock(selectedElement) + updatedEntries[index].quantity;
 
