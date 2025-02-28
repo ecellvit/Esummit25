@@ -42,7 +42,7 @@ const Navbar = () => {
     const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
 
     if (response.status === 200) {
-      const { round, page, startedAt } = await response.json();
+      const { startedAt } = await response.json();
 
       // Convert startedAt (ISO format) to timestamp
       const startTime = new Date(startedAt).getTime();
@@ -52,10 +52,10 @@ const Navbar = () => {
 
       if (pathname === '/events/event1/round1/lease1' || pathname === '/events/event1/round1/lease2' || pathname === '/events/event1/round1/upgradeElement' || pathname === '/events/event1/round1/lease2&upgrade') {
         const timeLeft = 5 * 60 - timePassed;
-        setTimeLeft(timeLeft);
+        setTimeLeft(timeLeft > 0 ? timeLeft : 0);
       } else {
         const timeLeft = 10 * 60 - timePassed;
-        setTimeLeft(timeLeft);
+        setTimeLeft(timeLeft > 0 ? timeLeft : 0);
       }
     } else {
       router.refresh();

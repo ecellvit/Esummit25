@@ -209,7 +209,7 @@ export default function Testing() {
                 } else {
                     toast.error("This round has not started yet.");
                 }
-                router.push(`/events/event1/round1/dashboard`);
+                router.push(`/events/event1/round1/waiting`);
                 return;
             }
         } else {

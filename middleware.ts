@@ -105,6 +105,11 @@ export async function middleware(request: NextRequest) {
         if (user.event1TeamRole === 1 && path.startsWith('/events/event1/leaderDashboard')) {
           return NextResponse.redirect(new URL('/events/event1/memberDashboard', request.url))
         }
+
+        //? Check if a non-leader is trying to access rounds
+        if (user.event1TeamRole !== 0 && path.startsWith('/events/event1/round')) {
+          return NextResponse.redirect(new URL('/events/event1/memberDashboard', request.url))
+        }
       }
     } else {
       console.log("No event number found in the pathname.");
@@ -115,6 +120,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/userDetails',
-    // '/events/:path*'
+    '/events/:path*'
   ]
 }

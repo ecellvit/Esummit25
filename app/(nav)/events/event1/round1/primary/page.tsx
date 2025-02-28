@@ -79,7 +79,7 @@ export default function Testing() {
                     router.push(`/events/event1/round1/start`);
                     return;
                 }
-                router.push(`/events/event1/round1/dashboard`);
+                router.push(`/events/event1/round1/waiting`);
                 return;
             }
         } else {
