@@ -7,6 +7,8 @@ import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/loader";
+import lock from "@/assets/round1/lock.svg";
+import Image from "next/image";
 
 interface Resource {
   id: number;
@@ -18,24 +20,40 @@ interface Resource {
 function ResourceCard({
   resource,
   onBuy,
+  isPrimary = false,
+  isSecondary = false,
 }: {
   resource: Resource;
   onBuy: () => void;
+  isPrimary?: boolean;
+  isSecondary?: boolean;
 }) {
   return (
     <div
-      onClick={onBuy}
-      className="flex flex-col items-center justify-between p-6 rounded-xl transition-all duration-300 transform hover:scale-105 cursor-pointer relative overflow-hidden w-full"
+      onClick={(isPrimary || isSecondary) ? undefined : onBuy}
+      className={`flex flex-col items-center justify-between p-6 rounded-xl transition-all duration-300 ${isPrimary || isSecondary ? "opacity-90" : "transform hover:scale-105 cursor-pointer"
+        } relative overflow-hidden w-full`}
       style={{
         border: "4.662px solid #FFF",
-        background:
-          "linear-gradient(114deg, rgba(232, 232, 232, 0.10) 15.11%, rgba(187, 33, 33, 0.08) 81.96%)",
+        background: (isPrimary || isSecondary)
+          ? "linear-gradient(114deg, rgba(82, 82, 82, 0.20) 15.11%, rgba(106, 83, 83, 0.20) 66.74%)"
+          : "linear-gradient(114deg, rgba(232, 232, 232, 0.10) 15.11%, rgba(187, 33, 33, 0.08) 81.96%)",
         boxShadow:
           "0px 9.324px 18.649px 0px rgba(0, 0, 0, 0.20), 0px 5.328px 0px 0px rgba(0, 0, 0, 0.20)",
         fontFamily: "Poppins",
       }}
     >
-      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#BB2121] to-[#E8E8E8] blur-xl rotate-45 translate-x-8 -translate-y-8 opacity-80"></div>
+      {(isPrimary || isSecondary) && (
+        <div className="absolute inset-0 flex items-center justify-center opacity-80 bg-black bg-opacity-25 z-10">
+          <Image src={lock} alt="Locked" className="w-16 h-16" />
+        </div>
+      )}
+      <div
+        className={`absolute top-0 right-0 w-16 h-16 blur-xl rotate-45 translate-x-8 -translate-y-8 opacity-80 ${(isPrimary || isSecondary)
+            ? "bg-gradient-to-br from-[#525252] to-[#6A5353]"
+            : "bg-gradient-to-br from-[#BB2121] to-[#E8E8E8]"
+          }`}
+      ></div>
 
       <p className="text-xl font-extrabold uppercase text-[#BB2121] tracking-wider">
         {resource.name}
@@ -53,14 +71,25 @@ function ResourceCard({
         Rate: <span className="font-bold">{resource.rate}</span> ton/min
       </p>
 
-      <button
-        className="mt-4 px-6 py-2 bg-[#B82121] text-white rounded-lg transition-all duration-300 hover:bg-[#8a1919] hover:shadow-md hover:scale-105  font-extrabold tracking-widest"
-        style={{
-          fontFamily: "FontSpring",
-        }}
-      >
+      {!(isPrimary || isSecondary) ? (
+        <button
+          className="mt-4 px-6 py-2 bg-[#B82121] text-white rounded-lg transition-all duration-300 hover:bg-[#8a1919] hover:shadow-md hover:scale-105 font-extrabold tracking-widest"
+          style={{
+            fontFamily: "FontSpring",
+          }}
+        >
         LEASE
       </button>
+      ) : (
+        <div
+          className="mt-4 px-6 py-2 bg-[#756262] text-white rounded-lg font-extrabold tracking-widest"
+          style={{
+            fontFamily: "FontSpring",
+          }}
+        >
+          BOUGHT
+        </div>
+      )}
     </div>
   );
 }
@@ -230,7 +259,9 @@ export default function Testing() {
 
   const handleGoBack = () => {
     console.log("Going back to previous page");
-    router.back();
+    setTimeout(() => {
+        window.history.back();
+    }, 500);
   };
 
   return (
@@ -239,9 +270,8 @@ export default function Testing() {
       {(loading || socketLoading) && <Loader />}
 
       <div
-        className={`my-10 container w-[85vw] h-[85vh] py-20 px-auto text-center relative z-10 mx-auto transition-all duration-300 rounded-lg overflow-y-auto scrollbar-hide ${
-          selectedResource ? "blur-md pointer-events-none scale-99" : ""
-        }`}
+        className={`my-10 container w-[85vw] h-[85vh] py-20 px-auto text-center relative z-10 mx-auto transition-all duration-300 rounded-lg overflow-y-auto scrollbar-hide ${selectedResource ? "blur-md pointer-events-none scale-99" : ""
+          }`}
       >
         <h1 className="text-4xl font-extrabold my-6 text-black drop-shadow-md">
           <span
@@ -262,15 +292,20 @@ export default function Testing() {
         {/* Unified Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto">
           {resources.map((res, index) => {
+            const isPrimary = index === primaryElement;
+            const isSecondary = index === secondaryElement;
             return (
-              primaryElement != index &&
-              secondaryElement != index && (
-                <ResourceCard
-                  key={res.id}
-                  resource={res}
-                  onBuy={() => setSelectedResource(res)}
-                />
-              )
+              <ResourceCard
+                key={res.id}
+                resource={res}
+                onBuy={() => {
+                  if (!isPrimary && !isSecondary) {
+                    setSelectedResource(res);
+                  }
+                }}
+                isPrimary={isPrimary}
+                isSecondary={isSecondary}
+              />
             );
           })}
         </div>
