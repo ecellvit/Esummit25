@@ -111,6 +111,23 @@ const Dashboard: React.FC = () => {
     const [selectedGraph, setSelectedGraph] = useState<number | null>(null);
     const [loading, setLoading] = useState<Boolean>(true);
     const [socketLoading, setSocketLoading] = useState<Boolean>(true);
+    const [showSell, setShowSell] = useState<Boolean>(false);
+
+    const fetchRoundData = async () => {
+        const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+
+        if (response.status === 200) {
+            const { sellingStarted } = await response.json();
+
+            if (sellingStarted) {
+                setShowSell(true);
+            }
+        } else {
+            router.refresh();
+        }
+
+        console.log(showSell);
+    }
 
     // Socket helper functions
     const onMarketPrice = (data: { elementId: number; marketPrice: number }) => {
@@ -159,6 +176,8 @@ const Dashboard: React.FC = () => {
             if (portfolioData) {
                 setPortfolio(portfolioData);
             }
+
+            await fetchRoundData();
             setLoading(false);
         };
         getData();
@@ -348,7 +367,7 @@ const Dashboard: React.FC = () => {
                              className="px-20 py-2 bg-white text-red-950 font-bold rounded-lg hover:bg-red-800 hover:text-white">
                                 SELL
                             </button> */}
-                            <SellButton />
+                            {showSell && <SellButton />}
                         </div>
                     </div>
                 </div>
