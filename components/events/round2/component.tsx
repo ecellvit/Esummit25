@@ -215,6 +215,8 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   const [teamPortfolio, setTeamPortfolio] = useState<Record<string, number>>({});
   const [isSaving, setIsSaving] = useState(false);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
+  const [available,setAvailable] = useState<number>(0);
+  var num = 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -259,6 +261,8 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
 
   const getRemainingStock = (element: string) => {
     const globalStock = calculateGlobalStock();
+    num = teamPortfolio[element]
+    // setAvailable(teamPortfolio[element]);
     return Math.max((teamPortfolio[element]) - (globalStock[element] || 0), 0);
   };
   
@@ -374,7 +378,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
             type="text"
             className="w-full p-2 border rounded"
             value={entry.quantity}
-            onChange={(e) => updateEntry(index, "quantity", e.target.value)}
+            onChange={(e) => {console.log('value:',entry.quantity);updateEntry(index, "quantity", e.target.value)}}
           />
         </div>
       ))}
@@ -382,9 +386,12 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
 
       <button
         onClick={addEntry}
-        className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${totalQuantity >= 200 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-700"
-          }`}
-        disabled={totalQuantity >= 200}
+        className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${
+          totalQuantity >= 200 || entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-700"
+        }`}
+        disabled={totalQuantity >= 200 || entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))}
       >
         Add Entry
       </button>
