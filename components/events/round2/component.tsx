@@ -190,7 +190,6 @@ import React from "react";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 
-
 type ElementOption = string;
 type TransportMode = "Air" | "Water";
 
@@ -249,6 +248,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       setTotalQuantity(parseInt(savedTotal, 10) || 0);
     }
   }, []);
+
   useEffect(() => {
     if (totalQuantity > 0) {
       localStorage.setItem("totalQuantity", totalQuantity.toString());
@@ -257,7 +257,9 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
 
   useEffect(() => {
     const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
-    setEntries(allData[islandId] ?? []);
+    const islandEntries = allData[islandId] ?? [];
+    setEntries(islandEntries);
+    setTotalQuantity(islandEntries.reduce((sum: number, entry: FormEntry) => sum + entry.quantity, 0)); // Recalculate total quantity when a new island is chosen
   }, [islandId]);
 
   useEffect(() => {
@@ -293,8 +295,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
 
   const getRemainingStock = (element: string) => {
     const globalStock = calculateGlobalStock();
-    num = teamPortfolio[element]
-    // setAvailable(teamPortfolio[element]);
+    num = teamPortfolio[element];
     return Math.max((teamPortfolio[element]) - (globalStock[element] || 0), 0);
   };
 
@@ -355,7 +356,6 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
     });
   };
 
-
   const addEntry = () => {
     setEntries((prevEntries) => {
       const newEntries: FormEntry[] = [
@@ -372,6 +372,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       allData[islandId] = newEntries;
       localStorage.setItem("islandData", JSON.stringify(allData));
       updateData(islandId, newEntries);
+      setTotalQuantity(newEntries.reduce((sum, entry) => sum + entry.quantity, 0)); // Set total quantity to the total quantity of elements being sent to that island
       calculateTotalGlobalQuantity();
       return newEntries;
     });
@@ -384,7 +385,6 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       toast.success("Data saved successfully!");
     }, 500);
   };
-
 
   return (
     <div className="p-6 max-w-lg ml-auto mr-10 my-10 border rounded-lg shadow-lg bg-white">
@@ -420,7 +420,6 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       ))}
       <p className="text-lg font-semibold text-gray-700 mt-5">Total Quantity: {totalQuantity}</p>
       <p className="text-lg font-semibold text-gray-700">Global Total Quantity: {globalTotalQuantity}/200</p>
-
 
       <button
         onClick={addEntry}
