@@ -419,6 +419,7 @@ export default function Testing() {
                   background:
                     "linear-gradient(180deg, #BB2121 0%, #550F0F 100%)",
                 }}
+                disabled={loading ? true : false}
               >
               {loading ?<span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>:"Confirm"}
               </button>

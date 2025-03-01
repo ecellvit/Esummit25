@@ -412,6 +412,7 @@ export default function Testing() {
                                 onClick={handleUpgrade}
                                 className="px-8 py-4 text-white flex justify-center font-bold rounded-md"
                                 style={{ background: "linear-gradient(180deg, #BB2121 0%, #550F0F 100%)" }}
+                                disabled={loading ? true : false}
                             >
                                  {loading ?<span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>:"Confirm"}
                             </button>
