@@ -27,7 +27,7 @@ export default function Testing() {
                     router.push('/events/event1/round1/lease1&secondary')
                 } else if ( page === 3 && timePassed < 5 * 60 ) {
                     router.push('/events/event1/round1/lease2&upgrade')
-                } else {
+                } else if ( page !== 0 ) {
                     router.push('/events/event1/round1/dashboard');
                 }
             } else {
