@@ -41,8 +41,20 @@ export default function Testing() {
         }
     }
 
+    const fetchRate = async () => {
+        try {
+            const response = await fetch("/api/event1/round1/getPrimaryRate");
+            if (response.status === 414) {
+                setUpgradeExpired(true);
+            }
+        } catch (error) {
+            console.log("Error fetching rate:", error);
+        }
+    };
+
     useEffect(() => {
         getPageData();
+        fetchRate();
     }, []);
     
     useEffect(() => {
