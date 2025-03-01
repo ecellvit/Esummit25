@@ -4,9 +4,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/user.model";
 import MarketModel from "@/models/event1/CommonInfo.model"; // Adjust the import path as needed
-import TeamModelRound1 from "@/models/event1/event1Round1Team.model";
-import IslandRound2 from "@/models/event1/round2Island.model";
-import { Types } from "mongoose";
+import TeamModelRound1,{round1Qualified} from "@/models/event1/event1Round1Team.model";
+import IslandRound2,{round2Island} from "@/models/event1/round2Island.model";
+import mongoose, { Types } from "mongoose";
 
 
 
@@ -34,7 +34,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         const {islandData,insurance}= await request.json();
         console.log(islandData,insurance);
         const islands = ['island1','island2','island3','island4'];
-
+        const batchArray: (mongoose.Schema.Types.ObjectId | null)[] = Array(4).fill(null);
         const indexes = Object.keys(islandData).map(island => islands.indexOf(island));
 
         console.log(indexes);
@@ -53,11 +53,7 @@ export async function POST(request: Request): Promise<NextResponse> {
                     trans = 1;
                 }
             }
-            console.log('island')
-            console.log('element array',elementQuantity);
-            console.log('total quantity',totalQuantity);
-            console.log('transport',trans);
-            const batchData = new IslandRound2({
+            const batchData : round2Island = new IslandRound2({
                 teamLeaderId:user._id,
                 teamLeaderEmail: user.email,
                 modeOfTransport:trans,
@@ -67,13 +63,14 @@ export async function POST(request: Request): Promise<NextResponse> {
             })
             await batchData.save();
             console.log('this is the batch data',batchData);
+            let idx = indexes[i];
+            batchArray[idx] = batchData._id as mongoose.Schema.Types.ObjectId;
 
-            console.log(typeof batchData._id);
 
-            console.log('team',team);
         }
-
-        team.insuranceType = insurance;
+        team.islandBatch1 = batchArray;
+        team.insuranceType.push(insurance) ;
+        team.batch++;
         await team.save();
         // const elementQuantity=[0,0,0,0];
         // for(let i=0;i<entries.length;i++){
