@@ -6,6 +6,7 @@ import Image from 'next/image';
 import logo from "/assets/round1/logo.svg";
 import home from "/assets/round1/home.svg";
 import { usePathname, useRouter } from 'next/navigation';
+import { socket, initializeSocket } from '@/socket';
 
 
 const Navbar = () => {
@@ -36,7 +37,7 @@ const Navbar = () => {
       }
     };
     fetchTeamName();
-  }, []);
+  }, [router, pathname]);
 
   const fetchTime = async () => {
     const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
@@ -79,6 +80,56 @@ const Navbar = () => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  // Connect to socket
+  useEffect(() => {
+    // Initial connection status check
+    console.log("Socket connection status:", socket.connected);
+
+    if (socket.connected) {
+      onConnect();
+    }
+
+    async function setupSocket() {
+      const result = await initializeSocket();
+
+      if (!result.success) {
+        setupSocket();
+      }
+    }
+
+    if (!socket.connected) {
+      setupSocket();
+    }
+
+    function onConnect() {
+      socket.io.engine.on("upgrade", (transport) => {
+        console.log("upgrade ::", transport.name);
+      });
+    }
+
+    function onDisconnect(reason: string) {
+      console.warn("Socket disconnected:", reason);
+      if (reason === "ping timeout" || reason === "transport error") {
+        socket.connect(); // Try reconnecting manually
+      }
+    }
+
+    socket.on("connect", onConnect);
+    socket.on("walletUpdate", onWalletUpdate);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("walletUpdate", onWalletUpdate);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, [socket.connected]);
+
+  const onWalletUpdate = (balance: number) => {
+    console.log(walletBalance)
+    setWalletBalance(balance);
   };
 
   return (
