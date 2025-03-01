@@ -414,13 +414,13 @@ export default function Testing() {
               </button>
               <button
                 onClick={handleConfirmPurchase}
-                className="px-8 py-4 text-white font-bold rounded-md"
+                className="px-8 py-4 flex justify-center text-white font-bold rounded-md"
                 style={{
                   background:
                     "linear-gradient(180deg, #BB2121 0%, #550F0F 100%)",
                 }}
               >
-                Confirm
+                {loading ?<span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>:"Confirm"}
               </button>
             </div>
           </div>
