@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const InsuranceComponent = () => {
+const InsuranceComponent = (props:any) => {
   const insuranceOptions = [
     'No Insurance (Cost - 0)', 
     'Basic Plan (Cost - 15,000)', 
@@ -9,7 +9,7 @@ const InsuranceComponent = () => {
   ];
 
   // Initialize selectedInsurance as a number (or null)
-  const [selectedInsurance, setSelectedInsurance] = useState<number | null>(null);
+  // const [selectedInsurance, setSelectedInsurance] = useState<number | null>(null);
   const [showInsurance, setShowInsurance] = useState(true); // Assuming you have a way to toggle this
 
   const handleCloseInsurance = () => {
@@ -18,7 +18,7 @@ const InsuranceComponent = () => {
 
   const handleConfirmInsurance = () => {
     // Handle confirmation logic here
-    console.log('Selected Insurance Index:', selectedInsurance);
+    console.log('Selected Insurance Index:', props.selectedInsurance);
     setShowInsurance(false);
   };
 
@@ -35,11 +35,11 @@ const InsuranceComponent = () => {
                     type="radio"
                     name="insurance"
                     value={index} // Set the value to the index
-                    onChange={(e) => setSelectedInsurance(parseInt(e.target.value))} // Store the index
+                    onChange={(e) => props.setSelectedInsurance(parseInt(e.target.value))} // Store the index
                     className="hidden"
                   />
-                  <div className={`w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center ${selectedInsurance === index ? 'bg-blue-500 border-blue-500' : ''}`}>
-                    {selectedInsurance === index && <div className="w-3 h-3 rounded-full bg-white"></div>}
+                  <div className={`w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center ${props.selectedInsurance === index ? 'bg-blue-500 border-blue-500' : ''}`}>
+                    {props.selectedInsurance === index && <div className="w-3 h-3 rounded-full bg-white"></div>}
                   </div>
                   <span className="text-gray-700">{option}</span>
                 </label>
@@ -54,7 +54,7 @@ const InsuranceComponent = () => {
               </button>
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={handleConfirmInsurance}
+                onClick={props.handleConfirmInsurance}
               >
                 Confirm
               </button>

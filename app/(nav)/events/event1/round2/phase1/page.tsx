@@ -74,6 +74,7 @@ export default function Testing() {
   const [showInvoice, setShowInvoice] = useState(false);
   const [showConfirmDispatch, setShowConfirmDispatch] = useState(false);
   const [selectedInsurance, setSelectedInsurance] = React.useState("");
+  const [loading,setLoading] = useState<boolean>(false);
   const insuranceOptions = [
     'No Insurance (Cost - 0)', 
     'Basic Plan (Cost - 15,000)', 
@@ -111,9 +112,34 @@ export default function Testing() {
     setShowConfirmDispatch(true);
   };
 
-  const handleConfirmInsurance = () => {
+  const handleConfirmInsurance = async() => {
+    setLoading(true);
+    try{
+
+    const response = await fetch('/api/event1/round2/setFormData', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          islandData: islandData,
+          insurance: selectedInsurance
+          })
+    });
+    if(response.ok){
+      const data = await response.json();
+      console.log(data);
+    }else{
+      console.log('Error',response.status);
+    }
+  }catch(err){
+    console.log(err)
+  }finally{
+    
     setShowInsurance(false);
     setShowInvoice(true);
+    setLoading(false);
+  }
   };
 
   return (
@@ -270,7 +296,7 @@ export default function Testing() {
 {showInsurance && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
     <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center transform transition-all duration-300 scale-105">
-      <InsuranceComponent/>
+      <InsuranceComponent handleConfirmInsurance={handleConfirmInsurance} setSelectedInsurance={setSelectedInsurance} selectedInsurance={selectedInsurance}/>
     </div>
   </div>
 )}

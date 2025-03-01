@@ -118,6 +118,7 @@ const TeamSchema: Schema<round1Qualified> = new Schema(
         {
           type: Schema.Types.ObjectId,
           ref: "IslandRound2",
+          default:[],
         },
       ],
       islandBatch2: [

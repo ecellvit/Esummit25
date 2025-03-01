@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/user.model";
 import MarketModel from "@/models/event1/CommonInfo.model"; // Adjust the import path as needed
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model";
-import TeamModelRound2, { round2Island } from "@/models/event1/round2Island.model";
+import IslandRound2 from "@/models/event1/round2Island.model";
 import { Types } from "mongoose";
 
 
@@ -31,25 +31,66 @@ export async function POST(request: Request): Promise<NextResponse> {
         if (user.event1TeamRole !== 0) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
-        const {entries,islandId,batch}= await request.json();
-        console.log(entries,islandId);
+        const {islandData,insurance}= await request.json();
+        console.log(islandData,insurance);
+        const islands = ['island1','island2','island3','island4'];
 
-        const elementQuantity=[0,0,0,0];
-        for(let i=0;i<entries.length;i++){
-            elementQuantity[entries[i].element] += entries[i].quantity; // ✅ Fix indexing
+        const indexes = Object.keys(islandData).map(island => islands.indexOf(island));
 
+        console.log(indexes);
+        let trans;
+        for(let i=0;i<indexes.length;i++){
+            const island = islandData[islands[indexes[i]]];
+            console.log('island ka data',island);
+            const elementQuantity=[0,0,0,0,0];
+            var totalQuantity = 0;
+            for(let j=0;j<island.length;j++){
+                elementQuantity[j]+=island[j].quantity;
+                totalQuantity += island[j].quantity;
+                if(island[j].transport=='Air'){
+                    trans=0;
+                }else{
+                    trans = 1;
+                }
+            }
+            console.log('island')
+            console.log('element array',elementQuantity);
+            console.log('total quantity',totalQuantity);
+            console.log('transport',trans);
+            const batchData = new IslandRound2({
+                teamLeaderId:user._id,
+                teamLeaderEmail: user.email,
+                modeOfTransport:trans,
+                elementQuantity,
+                totalQuantity:totalQuantity,
+                startTime:Date.now()
+            })
+            await batchData.save();
+            console.log('this is the batch data',batchData);
+
+            console.log(typeof batchData._id);
+
+            console.log('team',team);
         }
-        let trans=2;
-        if(entries[0].transport=='Air'){
-            trans=1;
-        }
-        const batchData=new TeamModelRound2({
-            teamLeaderId:user._id,
-            teamLeaderEmail:user.email,
-            modeOfTransport:trans,
-            elementQuantity:elementQuantity
-        })
-         await batchData.save();
+
+        team.insuranceType = insurance;
+        await team.save();
+        // const elementQuantity=[0,0,0,0];
+        // for(let i=0;i<entries.length;i++){
+        //     elementQuantity[entries[i].element] += entries[i].quantity; // ✅ Fix indexing
+
+        // }
+        // let trans=2;
+        // if(entries[0].transport=='Air'){
+        //     trans=1;
+        // }
+        // const batchData=new TeamModelRound2({
+        //     teamLeaderId:user._id,
+        //     teamLeaderEmail:user.email,
+        //     modeOfTransport:trans,
+        //     elementQuantity:elementQuantity
+        // })
+        // await batchData.save();
         
         
 

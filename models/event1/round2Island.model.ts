@@ -4,6 +4,7 @@ export interface round2Island extends Document {
     teamLeaderId: ObjectId;
     teamLeaderEmail: string;
     cost: number;
+    island:number;
     startTime: Date;
     endTime: Date;
     modeOfTransport: number;
@@ -21,7 +22,9 @@ const TeamSchema: Schema<round2Island> = new Schema(
         teamLeaderEmail: {
             type: String,
             required: [true, "Team leader email is required"],
-            unique: true,
+        },
+        island:{
+            type:Number,
         },
         cost: {
             type: Number,
@@ -42,10 +45,11 @@ const TeamSchema: Schema<round2Island> = new Schema(
         },
         elementQuantity: {
             type: [Number],
+            default:[],
         },
         
     },
-    { collection: "TeamsEvent1Round2" }
+    { collection: "TeamsEvent1Round2" , timestamps:true}
 );
 
 const IslandRound2 = (mongoose.models.TeamsEvent1Round2 as mongoose.Model<round2Island>) || (mongoose.model<round2Island>("TeamsEvent1Round2", TeamSchema));
