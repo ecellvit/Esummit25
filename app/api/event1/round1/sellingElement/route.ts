@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/user.model";
 import MarketModel from "@/models/event1/CommonInfo.model"; // Adjust the import path as needed
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model"; // Adjust the import path as needed
+import calculateMarketPrice from "@/utils/calculateMarketPrice";
 
 // Sell Route Handler
 export async function POST(request: Request): Promise<NextResponse> {
@@ -59,6 +60,15 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         // Update team's portfolio
         team.portfolio[elementIndex] -= amount;
+
+        console.log('market price',marketData);
+        if(elementIndex!=team.primaryElement && elementIndex!=team.secondaryElement && team.portfolio[elementIndex]===0){
+            marketData.currentTeams--;
+            marketData.marketPrice = calculateMarketPrice(marketData.basePrice, marketData.currentTeams);
+            marketData.marketHistory.push(marketData.marketPrice);
+            await marketData.save();
+        }
+        console.log('market data',marketData);
     }
     // Update team's wallet
     team.wallet += totalValue;
