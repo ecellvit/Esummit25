@@ -6,7 +6,8 @@ import island1 from "/assets/round2/island1.svg";
 import island2 from "/assets/round2/island2.svg";
 import island3 from "/assets/round2/island3.svg";
 import island4 from "/assets/round2/island4.svg";
-import Round2Form from "@/components/events/round2/component";
+import ship from "/assets/round2/ship.svg";
+import plane from "/assets/round2/plane.svg";
 import Invoice from "@/components/events/round2/invoice";
 import Link from "next/link";
 
@@ -32,6 +33,26 @@ const initialState: IslandData = {
 
 export default function Testing() {
   const [islandData, setIslandData] = useState<IslandData>(initialState);
+  const [showPlanes, setShowPlanes] = useState({
+    island1: false,
+    island2: false,
+    island3: false,
+    island4: false
+  });
+  const [showShips, setShowShips] = useState({
+    island1: false,
+    island2: false,
+    island3: false,
+    island4: false
+  });
+  const startPlaneAnimation = (islandNumber: string) => {
+    setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
+    setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), 3000);
+  };
+  const startShipAnimation = (islandNumber: string) => {
+    setShowShips(prev => ({ ...prev, [islandNumber]: true }));
+    setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), 3000);
+  }
 
   useEffect(() => {
     const savedData = localStorage.getItem("islandData");
@@ -46,8 +67,6 @@ export default function Testing() {
     const updatedData = savedData ? JSON.parse(savedData) : {};
     updatedData[islandId] = newData;
     localStorage.setItem("islandData", JSON.stringify(updatedData));
-
-    // ✅ Instead of directly calling setData, let useEffect handle updates
   };
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showInsurance, setShowInsurance] = useState(false);
@@ -112,23 +131,101 @@ export default function Testing() {
             src={{ island1, island2, island3, island4 }[island]}
             alt={island}
             className={`absolute ${index === 0 ? "top-16 left-20" :
-                index === 1 ? "top-28 right-48" :
-                  index === 2 ? "bottom-20 left-60" : "bottom-12 right-44"
+              index === 1 ? "top-28 right-48" :
+                index === 2 ? "bottom-20 left-60" : "bottom-12 right-44"
               } w-auto h-48 object-cover z-10 animate-float`}
             priority
           />
         </Link>
       ))}
 
-      <style jsx>{`
-        @keyframes float {
-          0% { transform: translateY(0); }
-          50% { transform: translateY(-15px); }
-          100% { transform: translateY(0); }
-        }
+      {/* Planes with correct animation classes */}
+      {Object.entries(showPlanes).map(([island, show]) =>
+        show && (
+          <Image
+            key={`plane-${island}`}
+            src={plane}
+            alt={`plane-${island}`}
+            className={`absolute top-1/2 left-1/2 w-12 h-12 z-20 ${
+              island === "island1" ? "animate-fly-to-island1" :
+              island === "island2" ? "animate-fly-to-island2" :
+              island === "island3" ? "animate-fly-to-island3" :
+              "animate-fly-to-island4"
+            }`}
+          />
+        )
+      )}
 
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
+      {/* Ships with correct animation classes */}
+      {Object.entries(showShips).map(([island, show]) =>
+        show && (
+          <Image
+            key={`ship-${island}`}
+            src={ship}
+            alt={`ship-${island}`}
+            className={`absolute top-1/2 left-1/2 w-12 h-12 z-20 ${
+              island === "island1" ? "animate-fly-to-island1" :
+              island === "island2" ? "animate-fly-to-island2" :
+              island === "island3" ? "animate-fly-to-island3" :
+              "animate-fly-to-island4"
+            }`}
+          />
+        )
+      )}
+
+      {/* Dispatch Buttons */}
+      <div className="absolute bottom-28 left-72 transform translate-x-1/2 flex space-x-4">
+        {[1, 2, 3, 4].map((num) => (
+          <button
+            key={num}
+            className="bg-red-500 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+            onClick={() => startPlaneAnimation(`island${num}`)}
+          >
+            {num}
+          </button>
+        ))}
+      </div>
+      <div className="absolute bottom-28 right-72 transform -translate-x-1/2 flex space-x-4">
+        {[1, 2, 3, 4].map((num) => (
+          <button
+            key={num}
+            className="bg-green-500 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+            onClick={() => startShipAnimation(`island${num}`)}
+          >
+            {num}
+          </button>
+        ))}
+      </div>
+
+      {/* CSS for animations - make sure class names match exactly what's used above */}
+      <style jsx global>{`
+        @keyframes flyToIsland1 {
+          from { transform: translate(-160%, -40%); }
+          to { transform: translate(-1820%, -560%); }
+        }
+        @keyframes flyToIsland2 {
+          from { transform: translate(200%, -50%); }
+          to { transform: translate(600%, -300%); }
+        }
+        @keyframes flyToIsland3 {
+          from { transform: translate(-150%, 60%); }
+          to { transform: translate(-760%, 240%); }
+        }
+        @keyframes flyToIsland4 {
+          from { transform: translate(150%, 50%); }
+          to { transform: translate(780%, 280%); }
+        }
+        .animate-fly-to-island1 {
+          animation: flyToIsland1 5s linear forwards;
+        }
+        .animate-fly-to-island2 {
+          animation: flyToIsland2 3s linear forwards;
+        }
+        .animate-fly-to-island3 {
+          animation: flyToIsland3 3s linear forwards;
+        }
+        .animate-fly-to-island4 {
+          animation: flyToIsland4 3s linear forwards;
         }
       `}</style>
 
@@ -205,7 +302,6 @@ export default function Testing() {
           </div>
         </div>
       )}
-
 
       {showInvoice && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
