@@ -511,7 +511,7 @@ export const LampContainer = ({
 
         {/* Countdown Timer */}
         <div className="flex w-full justify-center absolute bottom-[20vh] items-center sm:bottom-[3vh] md:bottom-[5vh]">
-          <CountdownTimer targetDate="2025-03-02T00:00:00" />
+          <CountdownTimer targetDate="2025-03-03T00:00:00" />
         </div>
       </div>
     </div>
