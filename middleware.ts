@@ -64,18 +64,25 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url))
       }
 
+      console.log(user.event1TeamRole);
 
       //? Check if it is event1
       if (eventNumber === 1) {
         //? Check if the user has an event1TeamRole. i.e, if the user is part of a team or not
         //? If not, and the page is not joinTeam or createTeam page
         //? Redirect to createTeam page
-        if ((user.event1TeamRole === undefined || user.event1TeamRole === null) && !(
+        if (
           path.startsWith('/events/event1/createTeam') ||
           path.startsWith('/events/event1/joinTeam') ||
           path.startsWith('/events/event1/userConsent')
-        )) {
-          return NextResponse.redirect(new URL('/events/event1/createTeam', request.url))
+        ) {
+          if (user.event1TeamRole === 0) {
+            return NextResponse.redirect(new URL('/events/event1/leaderDashboard', request.url))
+          } else if (user.event1TeamRole === 1) {
+            return NextResponse.redirect(new URL('/events/event1/memberDashboard', request.url))
+          } else {
+            return NextResponse.redirect(new URL('/', request.url))
+          }
         }
 
         //? Check if the user has an event1TeamRole. i.e, if the user is part of a team or not

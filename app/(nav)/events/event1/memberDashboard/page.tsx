@@ -263,7 +263,7 @@ export default function MemberDashboard() {
 
   useEffect(() => {
     setLoading(true);
-    if(!(session?.user?.events?.includes(1))) router.push('/');
+    // if(!(session?.user?.events?.includes(1))) router.push('/');
     getData();
   }, [session?.user?.event1TeamRole]);
 
@@ -367,12 +367,12 @@ export default function MemberDashboard() {
               </div>
             ))}
           </div>
-          <button
+          {/* <button
             onClick={handleShowConfirmation}
             className="bg-red-500 text-white px-4 py-2 rounded-md uppercase hover:scale-105 transition-transform"
           >
             Leave Team
-          </button>
+          </button> */}
           {showConfirmation && (
             <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center">
               <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">

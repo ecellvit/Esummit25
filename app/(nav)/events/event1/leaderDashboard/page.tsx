@@ -39,7 +39,7 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if(!(session?.user?.events?.includes(1))) router.push('/');
+    // if(!(session?.user?.events?.includes(1))) router.push('/');
     getData();
   }, []);
 
@@ -277,9 +277,9 @@ export default function Page() {
             </h1>
 
 
-            <button className="btn-primary btn-secondary font-[PoppinsRegular] uppercase  bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2" onClick={handleChangeTeamName} >
+            {/* <button className="btn-primary btn-secondary font-[PoppinsRegular] uppercase  bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2" onClick={handleChangeTeamName} >
               Edit Team Name
-            </button>
+            </button> */}
             <div className="flex flex-grow flex-wrap flex-col items-center overflow-scroll md:overflow-hidden rounded-lg mt-4 p-4">
               {teamMembers.length > 0 ? (
                 teamMembers.map((member, index) => (
@@ -302,14 +302,14 @@ export default function Page() {
                       <h1 className="text-lg font-bold mb-1 font-[PoppinsRegular] text-white">
                         {member.event1TeamRole === 0 ? "LEADER" : "MEMBER"}
                       </h1>
-                      {member.event1TeamRole !== 0 && (
+                      {/* {member.event1TeamRole !== 0 && (
                         <button
                           className="mt-3 btn-secondary bg-red-700 text-white px-4 py-2 rounded-md  hover:scale-105 transition-transform"
                           onClick={() => handleShowModal(index, "remove")}
                         >
                           Remove
                         </button>
-                      )}
+                      )} */}
                     </div>
                     {/* Right Section - Member Image */}
                     <div className="absolute right-0 top-0 w-[35%] h-full">
@@ -340,7 +340,7 @@ export default function Page() {
                 
                 Add Member
               </button> */}
-              {teamMembers.length<4 && <button
+              {/* {teamMembers.length<4 && <button
                 className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
                 onClick={async () => {
                   setIsLoading(true);
@@ -354,10 +354,10 @@ export default function Page() {
                 ) : (
                   "Add Member"
                 )}
-              </button>}
+              </button>} */}
 
 
-              {teamMembers.length === 1 ? (
+              {/* {teamMembers.length === 1 ? (
                 <button
                   className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
                   onClick={() => handleShowModal(null, "delete")}
@@ -371,7 +371,7 @@ export default function Page() {
                 >
                   Leave Team
                 </button>
-              )}
+              )} */}
             </div>
 
             {/* Modal for Remove */}
