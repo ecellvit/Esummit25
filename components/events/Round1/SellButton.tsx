@@ -1,11 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SellButton(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [quantity, setQuantity] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    console.log('use effect');
+  },[])
 
   const handleSellClick = () => {
     setIsModalOpen(true);
