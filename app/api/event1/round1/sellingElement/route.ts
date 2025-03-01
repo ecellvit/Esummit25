@@ -63,10 +63,12 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         console.log('market price',marketData);
         if(elementIndex!=team.primaryElement && elementIndex!=team.secondaryElement && team.portfolio[elementIndex]===0){
-            marketData.currentTeams--;
-            marketData.marketPrice = calculateMarketPrice(marketData.basePrice, marketData.currentTeams);
-            marketData.marketHistory.push(marketData.marketPrice);
-            await marketData.save();
+            if ((elementIndex === team.lease1Element && team.lease1Rate === 0) || (elementIndex === team.lease2Element && team.lease2Rate === 0)) {
+                marketData.currentTeams--;
+                marketData.marketPrice = calculateMarketPrice(marketData.basePrice, marketData.currentTeams);
+                marketData.marketHistory.push(marketData.marketPrice);
+                await marketData.save();
+            }
         }
         console.log('market data',marketData);
     }
