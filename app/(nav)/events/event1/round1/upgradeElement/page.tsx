@@ -302,6 +302,7 @@ export default function Testing() {
                 setRate(data.newRate);
                 socket.emit("upgrade");
                 toast.success("Upgraded successfully")
+                router.push('/events/event1/round1/lease2&upgrade');
             } else {
                 setSelectedUpgrade(null);
                 toast.error(data.message || "Upgrade failed");

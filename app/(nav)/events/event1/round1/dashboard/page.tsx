@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
             setLoading(false);
         };
         getData();
-    }, []);
+    }, [router]);
 
     // Connect to socket server
     
