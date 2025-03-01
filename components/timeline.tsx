@@ -530,3 +530,4 @@ export default function Schedule() {
     </div>
   );
 }
+//registrations closed
