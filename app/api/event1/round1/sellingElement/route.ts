@@ -70,7 +70,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         }
         console.log('market data',marketData);
     }
-    // Update team's wallet
+    // Update team's wallet 
     team.wallet += totalValue;
     await team.save();
 
