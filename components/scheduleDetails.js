@@ -62,5 +62,5 @@ const scheduleDetails = [
   },
 ];
 
-
+//updated
 export default scheduleDetails;
