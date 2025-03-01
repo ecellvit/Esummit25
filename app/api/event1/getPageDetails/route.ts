@@ -27,7 +27,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ success: false, message: "Round details not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, message: "Found round details", round: roundDetails.round, page: roundDetails.page, startedAt: roundDetails.startedAt }, { status: 200 });
+    return NextResponse.json({ success: true, message: "Found round details", round: roundDetails.round, page: roundDetails.page, startedAt: roundDetails.startedAt, sellingStarted: roundDetails.sellingStarted }, { status: 200 });
   } catch (error) {
     console.error("Error fetching user and team data:", error);
     return NextResponse.json(
