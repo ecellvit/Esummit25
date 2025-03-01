@@ -227,9 +227,14 @@ export default function Testing() {
         const fetchRate = async () => {
             setLoading(true);
             try {
-                const response = await fetch("/api/get-rate");
+                const response = await fetch("/api/event1/round1/getPrimaryRate");
                 const data = await response.json();
-                setRate(data.primaryRate);
+                if (response.status === 200) {
+                    setRate(data.primaryRate);
+                } else if (response.status === 414) {
+                    toast.error("You have not got a primary element.");
+                    router.push('/events/event1/round1/lease2&upgrade');
+                }
             } catch (error) {
                 console.log("Error fetching rate:", error);
             }
