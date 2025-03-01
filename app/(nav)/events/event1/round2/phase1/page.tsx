@@ -129,6 +129,9 @@ export default function Testing() {
     if(response.ok){
       const data = await response.json();
       console.log(data);
+      localStorage.removeItem("islandData");
+      console.log("Local storage cleared after successful API response.");
+
     }else{
       console.log('Error',response.status);
     }

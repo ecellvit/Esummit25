@@ -68,7 +68,14 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 
         }
-        team.islandBatch1 = batchArray;
+        if (team.batch === 1) {
+            team.islandBatch1 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
+        } else if (team.batch === 2) {
+            team.islandBatch2 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
+        } else if (team.batch === 3) {
+            team.islandBatch3 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
+        }        
+
         team.insuranceType.push(insurance) ;
         team.batch++;
         await team.save();
