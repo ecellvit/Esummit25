@@ -7,7 +7,7 @@ import MarketModel from "@/models/event1/CommonInfo.model"; // Adjust the import
 import TeamModelRound1,{round1Qualified} from "@/models/event1/event1Round1Team.model";
 import IslandRound2,{round2Island} from "@/models/event1/round2Island.model";
 import mongoose, { Types } from "mongoose";
-
+import insuranceData from "@/constant/round2/insurance.json";
 
 
 export async function POST(request: Request): Promise<NextResponse> {
@@ -68,7 +68,18 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 
         }
-        team.islandBatch1 = batchArray;
+        if (team.batch === 1) {
+            team.islandBatch1 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
+        } else if (team.batch === 2) {
+            team.islandBatch2 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
+        } else if (team.batch === 3) {
+            team.islandBatch3 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
+        }        
+
+        if(team.batch >= 4){
+            return NextResponse.json ({message: "Only 3 batches are allowed"}, {status: 450})
+        }
+        
         team.insuranceType.push(insurance) ;
         team.batch++;
         await team.save();
