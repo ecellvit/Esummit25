@@ -48,7 +48,7 @@ export async function GET(req: Request) {
         return NextResponse.json({ message: "Team Not Qualified for Round 1" }, { status: 403 });
       }
   
-      return NextResponse.json({ success: true, team: team,data: round1 }, { status: 200 });
+      return NextResponse.json({ success: true, team:round1 }, { status: 200 });
     } catch (error) {
       console.error("Error Checking Round 1 Access: ", error);
       return NextResponse.json({ message: "Server Error" }, { status: 500 });
