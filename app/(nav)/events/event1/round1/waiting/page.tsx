@@ -44,10 +44,10 @@ const WaitingPage: FC = () => {
     <main className="text-white flex justify-center items-center h-screen z-10">
       <div className="border p-10 bg-red-800 rounded-xl flex flex-col items-center w-5/6 text-center">
         <h1 className="text-2xl p-6 leading-3 font-[PoppinsSemibold]">
-          Congratulations on completing this Round!
+          Congratulations on completing this Phase of First Round!
         </h1>
         <h1 className="text-2xl p-6 font-[PoppinsRegular]">
-          Please wait while the other participants complete the round
+          Please wait while the other participants complete the phase.
         </h1>
         <h1 className="text-2xl p-6 font-[PoppinsRegular]">
           Stay tuned for further updates from our anchors.
