@@ -7,10 +7,12 @@ const WaitingPage: FC = () => {
   const router=useRouter();
 
   const fetchRoundData = async () => {
-    const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+    const response1 = await fetch("/api/event1/getPageDetails", { method: "GET" });
+    const response2 = await fetch("/api/event1/userInfo", { method: "GET" });
 
-    if (response.status === 200) {
-      const { round, page, startedAt } = await response.json();
+    if (response1.status === 200 && response2.status === 200) {
+      const { round, page, startedAt } = await response1.json();
+      const { team } = await response2.json();
 
       // Convert startedAt (ISO format) to timestamp
       const startTime = new Date(startedAt).getTime();
@@ -21,11 +23,11 @@ const WaitingPage: FC = () => {
       if ( round === 1 ) {
         if ( page === 0 ) {
           router.push('/events/event1/round1/start');
-        } else if ( page === 1 && timePassed < 10 * 60 ) {
+        } else if ( page === 1 && timePassed < 10 * 60 && (team.primaryElement === undefined || team.primaryElement === null)) {
           router.push('/events/event1/round1/primary')
-        } else if ( page === 2 && timePassed < 10 * 60 ) {
+        } else if ( page === 2 && timePassed < 10 * 60 && (team.secondaryElement === undefined || team.secondaryElement === null) && (team.lease1Element === undefined || team.lease1Element === null)) {
           router.push('/events/event1/round1/lease1&secondary')
-        } else if ( page === 3 && timePassed < 5 * 60 ) {
+        } else if ( page === 3 && timePassed < 5 * 60 && (team.lease2Element === undefined || team.lease2Element === null) && !team.hasUpgraded) {
           router.push('/events/event1/round1/lease2&upgrade')
         }
       } else {

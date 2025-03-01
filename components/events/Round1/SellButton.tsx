@@ -1,4 +1,5 @@
 "use client";
+import { initializeSocket, socket } from "@/socket";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -60,7 +61,12 @@ export default function SellButton(): JSX.Element {
 
       const data = await response.json();
       if (response.ok) {
+        const updatedPortfolio = portfolio || []; // Create a copy of the array
+        updatedPortfolio[Number(selectedItem)] -= Number(quantity); // Update only the selected index
+        setPortfolio(updatedPortfolio);
+        socket.emit("sell", {elementId: Number(selectedItem), quantityLeft: updatedPortfolio[Number(selectedItem)]});
         toast.success(`Success: ${data.message}`);
+        window.location.reload();
       } else {
         toast.error(`${data.message}`);
       }
@@ -88,6 +94,54 @@ export default function SellButton(): JSX.Element {
       setQuantity(value);
     }
   };
+
+  // Connect to socket server
+  useEffect(() => {
+    // Initial connection status check
+    console.log("Socket connection status:", socket.connected);
+    if (socket.connected) {
+      onConnect();
+    }
+
+    async function setupSocket() {
+      const result = await initializeSocket();
+      
+      if (!result.success) {
+        setupSocket();
+      }
+    }
+    
+    if (!socket.connected) {
+      setupSocket();
+    }
+
+    function onConnect() {
+      socket.io.engine.on("upgrade", (transport) => {
+        console.log("upgrade ::", transport.name);
+      });
+    }
+
+    function onDisconnect(reason: string) {
+      console.warn("Socket disconnected:", reason);
+      if (reason === "ping timeout" || reason === "transport error") {
+        socket.connect(); // Try reconnecting manually
+      }
+    }
+
+    socket.on("connect", onConnect);
+    socket.on("portfolioUpdate", onPortfolioUpdate);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("portfolioUpdate", onPortfolioUpdate);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, [socket.connected]);
+
+  const onPortfolioUpdate = (data: { portfolio: number[] }) => {
+    setPortfolio(data.portfolio);
+  }
 
   return (
     <div className="flex justify-center items-center bg-transparent">

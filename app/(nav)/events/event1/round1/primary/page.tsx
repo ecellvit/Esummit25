@@ -166,8 +166,9 @@ export default function Testing() {
                 if (response.ok) {
                     setSelectedResource(null);
                     console.log("Purchase successful:", result);
-                    toast.success("Purchase Successfully");
                     socket.emit("primary", selectedResource.id);
+                    toast.success("Purchase Successfully");
+                    router.push('/events/event1/round1/waiting');
                 } else {
                     console.log("Purchase failed:", result.message);
                     toast.error(` ${result.message}`)

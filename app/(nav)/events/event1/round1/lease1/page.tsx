@@ -241,6 +241,7 @@ export default function Testing() {
         if (response.status === 200) {
           socket.emit("lease1", selectedResource.id);
           toast.success("Resource successfully leased!");
+          router.push('/events/event1/round1/lease1&secondary');
         }
       } catch (error) {
         const axiosError = error as AxiosError;
