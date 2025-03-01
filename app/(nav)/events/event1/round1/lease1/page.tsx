@@ -259,7 +259,9 @@ export default function Testing() {
 
   const handleGoBack = () => {
     console.log("Going back to previous page");
-    router.back();
+    setTimeout(() => {
+        window.history.back();
+    }, 500);
   };
 
   return (
