@@ -49,10 +49,6 @@ export default function Island1Page() {
     return (
         <div
             className="relative w-full h-full min-h-screen overflow-hidden"
-            style={{
-                background:
-                    "radial-gradient(63.7% 63.7% at 50% 50%, #35C0FB 0%, #126E9D 100%)",
-            }}
         >
             <Image
                 src={island4}
@@ -64,7 +60,7 @@ export default function Island1Page() {
             <div className="relative w-full h-full overflow-auto">
             <Round2Form islandId={islandId} data={data} updateData={updateData} />
             </div>
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex justify-center">
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex justify-center">
                 <button 
                     onClick={handleGoBack}
                     className="px-8 py-3 text-white transition-all duration-300 shadow-lg active:shadow active:translate-y-1 flex items-center bg-black rounded-lg hover:shadow-md hover:scale-105 font-extrabold tracking-widest"
