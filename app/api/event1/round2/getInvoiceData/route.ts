@@ -3,11 +3,18 @@ import { dbConnect } from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/user.model";
-import MarketModel from "@/models/event1/CommonInfo.model";
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model";
-import TeamModelRound2 from "@/models/event1/round2Island.model";
+import { round2Island } from "@/models/event1/round2Island.model";
+import IslandRound2 from "@/models/event1/round2Island.model";
 
-export async function POST(request: Request): Promise<NextResponse> {
+type Custom = {
+    destination: number;
+    cost:number ;
+    transport: number;
+    elements: number[];
+}
+
+export async function GET(request: Request): Promise<NextResponse> {
     await dbConnect();
     try {
         const session = await getServerSession(authOptions);
@@ -29,6 +36,55 @@ export async function POST(request: Request): Promise<NextResponse> {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
+        const batch1 = team.islandBatch1;
+        const batch2 = team.islandBatch2;
+        const batch3 = team.islandBatch3;
+        const totalBatch1 : (Custom | null)[] = [];
+        const totalBatch2 : (Custom | null)[] = [];
+        const totalBatch3 : (Custom | null)[] = [];
+
+        for(let i=0;i<batch1.length;i++){
+            if(batch1[i]){
+                const island = await IslandRound2.findOne({ _id: batch1[i] });
+                const data: Custom={
+                    destination: i,
+                    cost: island?.totalQuantity ?? 0,
+                    transport: island?.modeOfTransport ?? -1,
+                    elements: island?.elementQuantity ?? [],
+                }
+
+                totalBatch1.push(data);
+            }
+        }
+
+        for(let i=0;i<batch2.length;i++){
+            if(batch2[i]){
+                const island = await IslandRound2.findOne({ _id: batch2[i] });
+                const data: Custom={
+                    destination: i,
+                    cost: island?.totalQuantity ?? 0,
+                    transport: island?.modeOfTransport ?? -1,
+                    elements: island?.elementQuantity ?? [],
+                }
+
+                totalBatch2.push(data);
+            }
+        }
+
+        for(let i=0;i<batch1.length;i++){
+            if(batch3[i]){
+                const island = await IslandRound2.findOne({ _id: batch3[i] });
+                const data: Custom={
+                    destination: i,
+                    cost: island?.totalQuantity ?? 0,
+                    transport: island?.modeOfTransport  ?? -1,
+                    elements: island?.elementQuantity ?? [],
+                }
+
+                totalBatch3.push(data);
+            }
+        }
+        
         // Return the portfolio as teamElements
         const teamElements = team.portfolio; // Assuming portfolio is an object with element names as keys
         const batchNumber = team.batch; // 1, 2, or 3
@@ -40,7 +96,9 @@ export async function POST(request: Request): Promise<NextResponse> {
         return NextResponse.json({
             message: "Data fetched successfully",
             teamElements: teamElements,
-            islandBatch: islandBatch ?? "",
+            totalBatch1,
+            totalBatch2,
+            totalBatch3,
         }, { status: 200 });
     } catch (error) {
         console.error("Error fetching data:", error);
