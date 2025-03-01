@@ -279,6 +279,7 @@
 // }
 
 "use client";
+import { useRef } from "react";
 import AnswerForQualifier from "@/components/round0/Answer";
 import Instructions from "@/components/round0/instructions";
 import QualifierTimer from "@/components/round0/timer";
@@ -318,31 +319,62 @@ export default function Qualifier() {
   }, [status]);
 
 
-  const autoSubmit = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`/api/event1/round0/autoSubmit`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: session?.accessTokenBackend
-            ? `Bearer ${session.accessTokenBackend}`
-            : "",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
+const isSubmitting = useRef(false);
 
-      if (!response.ok) throw new Error("Failed to auto-submit");
-      if (response.ok) {
-        console.log('reload')
-        location.reload();
-      }
-    } catch {
-      toast.error("Auto-submit failed");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+const autoSubmit = async () => {
+  if (isSubmitting.current) return;
+  isSubmitting.current = true;
+
+  setIsLoading(true);
+  try {
+    const response = await fetch(`/api/event1/round0/autoSubmit`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: session?.accessTokenBackend
+          ? `Bearer ${session.accessTokenBackend}`
+          : "",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+
+    if (!response.ok) throw new Error("Failed to auto-submit");
+
+    await fetchQuestionData();
+    setQuestionCategory("waiting");
+  } catch {
+    toast.error("Auto-submit failed");
+  } finally {
+    isSubmitting.current = false;
+    setIsLoading(false);
+  }
+};
+
+  // const autoSubmit = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await fetch(`/api/event1/round0/autoSubmit`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: session?.accessTokenBackend
+  //           ? `Bearer ${session.accessTokenBackend}`
+  //           : "",
+  //         "Access-Control-Allow-Origin": "*",
+  //       },
+  //     });
+
+  //     if (!response.ok) throw new Error("Failed to auto-submit");
+  //     if (response.ok) {
+  //       // console.log('reload')
+  //       location.reload();
+  //     }
+  //   } catch {
+  //     toast.error("Auto-submit failed");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const fetchUserData = async () => {
     setIsLoading(true);
