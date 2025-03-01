@@ -112,10 +112,6 @@ export default function Testing() {
   return (
     <div
       className="relative w-full h-full min-h-screen"
-      style={{
-        background:
-          "radial-gradient(63.7% 63.7% at 50% 50%, #35C0FB 0%, #126E9D 100%)",
-      }}
     >
       {/* Center Island */}
       <Image
