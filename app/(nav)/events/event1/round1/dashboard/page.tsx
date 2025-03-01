@@ -18,21 +18,54 @@ const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
 });
 
 interface ElementData {
-    id: number;
-    name: string;
-    basePrice: number;
-    teamsBought: number;
-    marketPrice: number;
+    id?: number;
+    name?: string;
+    basePrice?: number;
+    marketPrice?: number;
+    marketHistory?: number[];
 }
 
 const fetchMarketData = async () => {
-    const data: ElementData[] = resourceData.map((data, index) => ({
-        id: index,
-        name: data.name,
-        basePrice: data.base,
-        teamsBought: 0,
-        marketPrice: calculateMarketPrice(data.base, 0),
-    }));
+    const data: ElementData[] = resourceData.map((data, index) => {
+        const marketPrice = calculateMarketPrice(data.base, 0);
+        return {
+            id: index,
+            name: data.name,
+            basePrice: data.base,
+            marketPrice: marketPrice,
+            marketHistory: [marketPrice], // Initialize with current market price
+        };
+    });
+
+    try {
+        const response = await axios.get('/api/event1/round1/getMarketInfo');
+        if (response.status === 200) {
+            const {marketData} = response.data;
+            console.log(marketData);
+            if (marketData && Array.isArray(marketData)) {
+                marketData.forEach(item => {
+                    const elementIndex = data.findIndex(element => element.id === item.elementId);
+                    if (elementIndex !== -1) {
+                        // Replace or update marketHistory with the one from API
+                        data[elementIndex].marketHistory = [...item.marketHistory];
+                        // Update current market price
+                        data[elementIndex].marketPrice = item.marketPrice;
+                    }
+                });
+            }
+        }
+    } catch (error) {
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        if (axiosError) {
+            const errorData = axiosError.response?.data as ApiResponse;
+            toast.error(
+                errorData.message || "Error in fetching the data"
+            );
+        } else {
+            toast.error("An error occurred while fetching the marketData.");
+        }
+    }
     return data;
 };
 
@@ -82,11 +115,28 @@ const Dashboard: React.FC = () => {
     // Socket helper functions
     const onMarketPrice = (data: { elementId: number; marketPrice: number }) => {
         setMarketData((prevMarketData) =>
-            prevMarketData.map((item, index) =>
-                index === data.elementId
-                    ? { ...item, marketPrice: data.marketPrice }
-                    : item
-            )
+            prevMarketData.map((item, index) => {
+                if (index === data.elementId) {
+                    // Create a new history array with the updated price
+                    const newHistory = [...(item.marketHistory || []), data.marketPrice];
+                    return { 
+                        ...item, 
+                        marketPrice: data.marketPrice,
+                        marketHistory: newHistory
+                    };
+                } else {
+                    // For elements that didn't change, duplicate the last price in history
+                    const currentHistory = item.marketHistory || [];
+                    if (currentHistory.length > 0) {
+                        const lastPrice = currentHistory[currentHistory.length - 1];
+                        return {
+                            ...item,
+                            marketHistory: [...currentHistory, lastPrice]
+                        };
+                    }
+                    return item;
+                }
+            })
         );
         console.log(data);
     };
@@ -209,41 +259,57 @@ const Dashboard: React.FC = () => {
                             MARKET PRICE
                         </h2>
                         <div className="grid grid-cols-3 gap-2 w-full">
-                            {marketData.map((element, index) => (
-                                <div
-                                    key={element.id}
-                                    className="bg-white rounded-md p-2 cursor-pointer hover:shadow-lg transition-all duration-300"
-                                    onClick={() => openGraph(index)}
-                                >
-                                    <div className="h-[150px] w-full">
-                                        <Line
-                                            data={{
-                                                labels: ["9:30", "10:00", "10:30", "11:00", "11:30"],
-                                                datasets: [
-                                                    {
-                                                        label: `${element.name} Market Price`,
-                                                        data: [
-                                                            element.marketPrice,
-                                                            element.marketPrice * 1.02,
-                                                            element.marketPrice * 0.98,
-                                                            element.marketPrice * 1.01,
-                                                            element.marketPrice * 0.99,
-                                                        ],
-                                                        borderColor: `hsl(${index * 60}, 70%, 50%)`,
-                                                        backgroundColor: `hsla(${index * 60}, 70%, 50%, 0.2)`,
-                                                        tension: 0.1,
-                                                    },
-                                                ],
-                                            }}
-                                            options={{
-                                                responsive: true,
-                                                maintainAspectRatio: false,
-                                            }}
-                                        />
-                                    </div>
-                                    <p className="text-center font-semibold mt-2">{element.name}</p>
-                                </div>
-                            ))}
+                        {marketData.map((element, index) => (
+    <div
+        key={element.id}
+        className="bg-white rounded-md p-2 cursor-pointer hover:shadow-lg transition-all duration-300"
+        onClick={() => openGraph(index)}
+    >
+        <div className="h-[150px] w-full">
+            <Line
+                data={{
+                    labels: element.marketHistory ? Array(element.marketHistory.length).fill('') : [],
+                    datasets: [
+                        {
+                            label: `${element.name} Market Price`,
+                            data: element.marketHistory || [element.marketPrice],
+                            borderColor: `hsl(${index * 60}, 70%, 50%)`,
+                            backgroundColor: `hsla(${index * 60}, 70%, 50%, 0.2)`,
+                            tension: 0.1,
+                        },
+                    ],
+                }}
+                options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                        },
+                        x: {
+                            display: false  // No x-axis labels as requested
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false  // Hide legend
+                        }
+                    }
+                }}
+            />
+        </div>
+        <div className="flex justify-between items-center mt-2">
+            <p className="font-semibold">{element.name}</p>
+            <p className={element.marketHistory && element.marketHistory.length > 1 ? 
+                (element.marketHistory[element.marketHistory.length - 1] >= element.marketHistory[element.marketHistory.length - 2] ? 
+                    "text-green-600 font-bold" : "text-red-600 font-bold") : 
+                "font-bold"
+            }>
+                ${element.marketPrice?.toFixed(2)}
+            </p>
+        </div>
+    </div>
+))}
                         </div>
                     </div>
 
@@ -306,44 +372,47 @@ const Dashboard: React.FC = () => {
 
             {/* Popup for expanded graph */}
             {selectedGraph !== null && marketData.length > 0 && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-[0.7] backdrop-blur-sm z-[60] transition-all duration-300">
-                    <div className="bg-white p-6 rounded-xl w-[75vw] relative h-[80vh]">
-                        {/* Close Button */}
-                        <button
-                            onClick={closeGraph}
-                            className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full absolute top-[10px] right-[10px]"
-                        >
-                            Close
-                        </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-[0.7] backdrop-blur-sm z-[60] transition-all duration-300">
+        <div className="bg-white p-6 rounded-xl w-[75vw] relative h-[80vh]">
+            {/* Close Button */}
+            <button
+                onClick={closeGraph}
+                className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full absolute top-[10px] right-[10px]"
+            >
+                Close
+            </button>
 
-                        {/* Graph */}
-                        <Line
-                            data={{
-                                labels: ["9:30", "10:00", "10:30", "11:00", "11:30"],
-                                datasets: [
-                                    {
-                                        label: `${marketData[selectedGraph].name} Market Price`,
-                                        data: [
-                                            marketData[selectedGraph].marketPrice,
-                                            marketData[selectedGraph].marketPrice * 1.02,
-                                            marketData[selectedGraph].marketPrice * 0.98,
-                                            marketData[selectedGraph].marketPrice * 1.01,
-                                            marketData[selectedGraph].marketPrice * 0.99,
-                                        ],
-                                        borderColor: `hsl(${selectedGraph * 60}, 70%, 50%)`,
-                                        backgroundColor: `hsla(${selectedGraph * 60}, 70%, 50%, 0.2)`,
-                                        tension: 0.1,
-                                    },
-                                ],
-                            }}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                            }}
-                        />
-                    </div>
-                </div>
-            )}
+            {/* Graph */}
+            <Line
+                data={{
+                    labels: marketData[selectedGraph].marketHistory ? 
+                        Array(marketData[selectedGraph].marketHistory.length).fill('') : [],
+                    datasets: [
+                        {
+                            label: `${marketData[selectedGraph].name} Market Price`,
+                            data: marketData[selectedGraph].marketHistory || [marketData[selectedGraph].marketPrice],
+                            borderColor: `hsl(${selectedGraph * 60}, 70%, 50%)`,
+                            backgroundColor: `hsla(${selectedGraph * 60}, 70%, 50%, 0.2)`,
+                            tension: 0.1,
+                        },
+                    ],
+                }}
+                options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                        },
+                        x: {
+                            display: false  // No x-axis labels as requested
+                        }
+                    }
+                }}
+            />
+        </div>
+    </div>
+)}
 
             {/* Toast Notifications */}
             <Toaster />
