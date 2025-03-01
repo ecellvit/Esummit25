@@ -1,981 +1,980 @@
 {
-    "easy": [
-      {
-        "index": 0,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740833739/1_nfythf.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)Third-party marketplace",
-            " B)Kindle Direct Publishing ",
-            "C)Amazon Web Services (AWS)",
-            "D)Amazon Prime Video"
-          ]
-        }
+  "easy": [
+    {
+      "index": 0,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740833739/1_nfythf.png",
+        "content": ""
       },
-      {
-        "index": 1,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834092/2_b63jei.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A) Total asset management,which helps track a company's finances",
-            "B) Total addressable market,which indicated the potential revenue opportunity",
-            "C) Target audience market,which identifies the ideal customer base",
-            "D) Total addressable margin, which measures yearly profitability "
-          ]
-        }
-      },
-      {
-        "index": 2,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834239/3_bv2ifl.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A) Ideation stage",
-            "B) Seed stage",
-            "C) Growth stage",
-            "D) Maturity stage"
-          ]
-        }
-      },
-      {
-        "index": 3,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834369/4_vlizin.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A) Month 1 to Month 2",
-            "B) Month 2 to Month 3 ",
-            "C) Month 3 to Month 4 ",
-            "D) Month 4 to Month 5"
-          ]
-        }
-      },
-      {
-        "index": 4,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834532/5_yc2fsq.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)LTV=Rs 12,000 , Net profit=Rs 9,490",
-            "B)LTV=Rs 10,800 , Net profit=Rs 8,290",
-            "C)LTV=Rs 11,200 , Net profit=Rs 9,200 ",
-            "D)LTV=Rs 12,500 , Net profit=Rs 10,000"
-          ]
-        }
-      },
-      {
-        "index": 5,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834599/6_g0ig08.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "i)",
-            "ii)",
-            "iii)",
-            "iv)"
-          ]
-        }
-      },
-      {
-        "index": 6,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834697/7_tpzx3o.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)Designing an appealing storefront and bakery layout.",
-            "B)Competing with large commercial bakeries offering lower prices.",
-            "C)Establishing relationships with local farmers for ingredient sourcing.",
-            "D)Finding skilled bakers with experience in artisanal techniques.",
-            "E)Balancing production schedules to meet demand without excess waste"
-          ]
-        }
-      },
-      {
-        "index": 7,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834766/8_h4hvfm.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "i)",
-            "ii)",
-            "iii)",
-            "iv)"
-          ]
-        }
-      },
-      {
-        "index": 8,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834884/9_vo2k8n.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A) Burger King and KFC",
-            "B) KFC and Burger Singh",
-            "C) McDonald's and Indigo",
-            "D) KFC and Air India"
-          ]
-        }
-      },
-      {
-        "index": 9,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834940/10_h9k45c.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "i)",
-            " ii)",
-            "iii)",
-            "iv)"
-          ]
-        }
-      },
-      {
-        "index": 10,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835006/11_yuqtmn.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)Hiring",
-            "B)Employee turnover",
-            "C)Inadequate cash flow",
-            "D)Forecasting growth"
-          ]
-        }
-      },
-      {
-        "index": 11,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835091/12_w3oeuf.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)Goibibo",
-            "B)MakeMyTrip",
-            "C)Agoda",
-            "D)Booking.com"
-          ]
-        }
-      },
-      {
-        "index": 12,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835152/13_cwwips.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a)",
-            "b)",
-            "c)",
-            "d)"
-          ]
-        }
-      },
-      {
-        "index": 13,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835222/14_i5iuxl.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)A",
-            "B)C",
-            "C)D",
-            "D)B"
-          ]
-        }
-      },
-      {
-        "index": 14,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835299/15_tjjbhw.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)A",
-            "B)C",
-            "C)D",
-            "D)B"
-          ]
-        }
-      },
-      {
-        "index": 15,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835359/16_y3wtgc.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)",
-            "B)",
-            "C)",
-            "D)"
-          ]
-        }
-      },
-      {
-        "index": 16,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835444/17_gqz15t.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)Community development",
-            "B)Exports",
-            "C)Employee management",
-            "D)Balanced regional development"
-          ]
-        }
-      },
-      {
-        "index": 17,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835517/18_blsjki.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)They all focus on promoting traditional banking methods.",
-            "B)They have all contributed to enhancing financial literacy in India",
-            "C)They are all involved in advancing digital financial inclusion",
-            "D)They are all associated with the Reserve Bank of India"
-          ]
-        }
-      },
-      {
-        "index": 18,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835580/19_pooglo.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)They all involve government-backed digital infrastructure",
-            "B)They all involve contributors to India's IT and digital economy",
-            "C)They are all innovations in the financial services sector",
-            "D)They are all part of India's biometric identification system"
-          ]
-        }
-      },
-      {
-        "index": 19,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835645/20_cynr9e.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)EBITDA Ignores Asset Costs",
-            "B)Earnings Figures May Be Suspect",
-            "C)EBITDA hides the cash flow",
-            "D)Company Valuation Can Be Obscured"
-          ]
-        }
-      },
-      {
-        "index": 20,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740852797/21_m3txuv.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)EBITDA Ignores Asset Costs",
-            "B)Earnings Figures May Be Suspect",
-            "C)EBITDA hides the cash flow",
-            "D)Company Valuation Can Be Obscured"
-          ]
-        }
-      },
-      {
-        "index": 21,
-        "q": {
-          "questionType": "single",
-          "contentType": "audio",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/video/upload/v1740853199/Henry_Ford1_lvvfmw.m4a",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)EBITDA Ignores Asset Costs",
-            "B)Earnings Figures May Be Suspect",
-            "C)EBITDA hides the cash flow",
-            "D)Company Valuation Can Be Obscured"
-          ]
-        }
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
       }
-    ],
-    "medium": [
-      {
-        "index": 0,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836141/1_cvxkbk.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a",
-            "b",
-            "c",
-            "d"
-          ]
-        }
+    },
+    {
+      "index": 1,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834092/2_b63jei.png",
+        "content": ""
       },
-      {
-        "index": 1,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836198/2_mpovyd.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 2,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836285/3_dawabh.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 3,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836354/4_xhv0fh.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a)45%",
-            "b)30%",
-            "c)25%",
-            "d)50%"
-          ]
-        }
-      },
-      {
-        "index": 4,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836445/5_qenrsb.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a",
-            "b",
-            "c",
-            "d"
-          ]
-        }
-      },
-      {
-        "index": 5,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836531/6_d5uyb5.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a",
-            "b",
-            "c",
-            "d"
-          ]
-        }
-      },
-      {
-        "index": 6,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836602/7_eufhfp.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a",
-            "b",
-            "c",
-            "d"
-          ]
-        }
-      },
-      {
-        "index": 7,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836666/8_fvfvap.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a",
-            "b",
-            "c",
-            "d"
-          ]
-        }
-      },
-      {
-        "index": 8,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836745/9_tjdwjb.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 9,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836827/10_wejht3.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a)C",
-            "b)A",
-            "c)B",
-            "d)D"
-          ]
-        }
-      },
-      {
-        "index": 10,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836941/11_iw2tik.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 11,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837003/12_b6pksc.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a",
-            "b",
-            "c",
-            "d"
-          ]
-        }
-      },
-      {
-        "index": 12,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837091/13_kwjgut.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a",
-            "b",
-            "c",
-            "d"
-          ]
-        }
-      },
-      {
-        "index": 13,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837149/14_y9fn5i.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a",
-            "b",
-            "c",
-            "d"
-          ]
-        }
-      },
-      {
-        "index": 14,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837213/15_b7scv6.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 15,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837289/16_zpurrw.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 16,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837368/17_nm9c5s.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 17,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837444/18_dhrftu.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "a)Kelloggs",
-            "b)Duracell",
-            "c)Michelin",
-            "d)Burger King"
-          ]
-        }
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A)Head and Shoulders",
+          "B)Double Tap",
+          "C)Bullish Flag",
+          "D)Cup and Handle"
+        ]
       }
-    ],
-    "hard": [
-      {
-        "index": 0,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838202/1_pap3ph.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
+    },
+    {
+      "index": 2,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834239/3_bv2ifl.png",
+        "content": ""
       },
-      {
-        "index": 1,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838270/2_uos8u4.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)1,455",
-            "B)1,365",
-            "C)2,365",
-            "D)1,355"
-          ]
-        }
-      },
-      {
-        "index": 2,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838330/3_i05ffq.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)2,1,3,6,4,5",
-            "B)1,2,3,4,5,6",
-            "C)2,1,3,4,6,5",
-            "D)3,2,1,4,6,5"
-          ]
-        }
-      },
-      {
-        "index": 3,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838402/4_kf3i26.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)4+4=8",
-            "B)3+7=10",
-            "C)5+3=8",
-            "D)6+4=10"
-          ]
-        }
-      },
-      {
-        "index": 4,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838482/5_lq6spj.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)3",
-            "B)6",
-            "C)8",
-            "D)9"
-          ]
-        }
-      },
-      {
-        "index": 5,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838576/6_i5d97v.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)1-b,2-c,3-a,4-d,5-e",
-            "B)1-c,2-a,3-e,4-b,5-d",
-            "C)1-c,2-a,3-b,4-d,5-e",
-            "D)1-a,2-c,3-b,4-e,5-d"
-          ]
-        }
-      },
-      {
-        "index": 6,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838789/7_quhjnp.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 7,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838845/8_i1insm.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)1-(ii),2-(i),3-(iv),4-(iii)",
-            "B)1-(i),2-(iv),3-(ii),4-(iii)",
-            "C)1-(ii),2-(iii),3-(i),4-(iv)",
-            "D)1-(iv),2-(ii),3-(i),4-(iii)"
-          ]
-        }
-      },
-      {
-        "index": 8,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838919/9_stsal6.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 9,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838993/10_ndqzk3.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
-      },
-      {
-        "index": 10,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740839077/11_mtzzxs.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)Strong growth justifies high P/E",
-            "B)Risking stock,weakening fundamentals",
-            "C)Undervalued despite market share gains",
-            "D)Balanced growth and profitability"
-          ]
-        }
-      },
-      {
-        "index": 11,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740839158/12_ifc4k4.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)23%",
-            "B)20%",
-            "C)21%",
-            "D)25%"
-          ]
-        }
-      },
-      {
-        "index": 12,
-        "q": {
-          "questionType": "single",
-          "contentType": "image",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740839239/13_uc6ajl.png",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A)4,452,500",
-            "B)4,613,375",
-            "C)3,452,500",
-            "D)5,125,000"
-          ]
-        }
-      },
-      {
-        "index": 13,
-        "q": {
-          "questionType": "single",
-          "contentType": "audio",
-          "contentLink": "https://res.cloudinary.com/dvfrfe9px/video/upload/v1740848978/Andrew_Carnegie_fraevl.mp3",
-          "content": ""
-        },
-        "ans": {
-          "optionsType": "text",
-          "optionsContent": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-        }
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "a) A, B, C, D",
+          "b) A, D, B, C",
+          "c) B, A, C, D",
+          "d) D, C, A, B"
+        ]
       }
-    ]
-  }
+    },
+    {
+      "index": 3,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834369/4_vlizin.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834532/5_yc2fsq.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 1",
+          "B) 2",
+          "C) 3",
+          "D) 4 or more"
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834599/6_g0ig08.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Cloud Computing",
+          "B) Gamification",
+          "C) Artificial Intelligence (AI)",
+          "D) Blockchain"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834697/7_tpzx3o.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 1-d, 2-e, 3-a, 4-c",
+          "B) 1-a, 2-d, 3-c, 4-b",
+          "C) 1-d, 2-c, 3-a, 4-b",
+          "D) 1-b, 2-a, 3-d, 4-c"
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834766/8_h4hvfm.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Stripe",
+          "B) Venmo",
+          "C) PayPal",
+          "D) Square"
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834884/9_vo2k8n.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Penetration pricing",
+          "B) Price skimming",
+          "C) Psychological pricing",
+          "D) Price discrimination"
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740834940/10_h9k45c.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) International standardization",
+          "B) Regional expansion",
+          "C) Cultural adaptation",
+          "D) Diversification"
+        ]
+      }
+    },
+    {
+      "index": 10,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835006/11_yuqtmn.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) BSE",
+          "B) NASDAQ",
+          "C) TSE",
+          "D) NSE"
+        ]
+      }
+    },
+    {
+      "index": 11,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835091/12_w3oeuf.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 14%",
+          "B) 14.2%",
+          "C) 14.4%",
+          "D) 13.8%"
+        ]
+      }
+    },
+    {
+      "index": 12,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835152/13_cwwips.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 13,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835222/14_i5iuxl.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "C",
+          "D",
+          "B"
+        ]
+      }
+    },
+    {
+      "index": 14,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835299/15_tjjbhw.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Milk Bikis",
+          "B) Britannia",
+          "C) Parle G",
+          "D) MDH"
+        ]
+      }
+    },
+    {
+      "index": 15,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835359/16_y3wtgc.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "1-A, 2-B, 3-C, 4-D",
+          "1-C, 2-A, 3-B, 4-D",
+          "1-A, 2-B, 3-D, 4-C",
+          "1-B, 2-A, 3-C, 4-D"
+        ]
+      }
+    },
+    {
+      "index": 16,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835444/17_gqz15t.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 17,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835517/18_blsjki.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "(A) - (II), (B) - (IV), (C) - (I), (D) - (III)",
+          "(A) - (I), (B) - (IV), (C) - (III), (D) - (II)",
+          "(A) - (IV), (B) - (III), (C) - (I), (D)-(II)",
+          "(A) - (III), (B) - (II), (C) - (IV), (D) - (I)"
+        ]
+      }
+    },
+    {
+      "index": 18,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835580/19_pooglo.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Service",
+          "B) Manufacturing",
+          "C) Distribution",
+          "D) Agriculture"
+        ]
+      }
+    },
+    {
+      "index": 19,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740835645/20_cynr9e.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Google, amazon, Apple",
+          "B) Apple, amazon and tencent",
+          "C) Tencent,Google, amazon",
+          "D) Google,Tencent , Apple"
+        ]
+      }
+    },
+    {
+      "index": 20,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740852797/21_m3txuv.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Payback Period",
+          "B) Net Present Value (NPV)",
+          "C) Internal Rate of Return (IRR)",
+          "D) All of the above"
+        ]
+      }
+    },
+    {
+      "index": 21,
+      "q": {
+        "questionType": "single",
+        "contentType": "audio",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/video/upload/v1740853199/Henry_Ford1_lvvfmw.m4a",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Alfred P. Sloan",
+          "B) Henry Ford",
+          "C) Karl Benz",
+          "D) Walter Chrysler"
+        ]
+      }
+    }
+  ],
+  "medium": [
+    {
+      "index": 0,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836141/1_cvxkbk.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Expansion",
+          "B) Peak",
+          "C) Recession",
+          "D) Recovery"
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836198/2_mpovyd.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 1,4,5,6",
+          "B) 1,3,5,6",
+          "C) 2,3,4,5",
+          "D) 2,3,5,6"
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836285/3_dawabh.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836354/4_xhv0fh.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) B-C-A-D",
+          "B) D-C-A-B",
+          "C) D-A-B-C",
+          "D) B-D-C-A"
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836445/5_qenrsb.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836531/6_d5uyb5.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Strategic alliance",
+          "B) Market recognition",
+          "C) Horizontal integration",
+          "D) Market segmentation"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836602/7_eufhfp.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Penetration pricing",
+          "B) Promotional pricing",
+          "C) Price skimming",
+          "D) Psychological pricing"
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836666/8_fvfvap.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 25075",
+          "B) 26500",
+          "C) 29500",
+          "d)27860"
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836745/9_tjdwjb.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836827/10_wejht3.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 10,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740836941/11_iw2tik.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 1-iii,2-iv,3-i,4-ii",
+          "B) 1-ii,2-iii,3-iv,4-i",
+          "C) 1-iv,2-ii,3-iv,4-iii",
+          "D) 1-iv,2-iii,3-i,4-ii"
+        ]
+      }
+    },
+    {
+      "index": 11,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837003/12_b6pksc.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Price skimming",
+          "B) Market penetration",
+          "C) Information asymmetry",
+          "D) Information symmetry"
+        ]
+      }
+    },
+    {
+      "index": 12,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837091/13_kwjgut.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 28.8%",
+          "B) 29%",
+          "C) 28.5%",
+          "D) 29.3%"
+        ]
+      }
+    },
+    {
+      "index": 13,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837149/14_y9fn5i.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) A-2, B-1, C-3, D-4",
+          "B) A-1, B-2, C-4, D-3",
+          "C) A-3, B-4, C-2, D-1",
+          "D) A-4, B-3, C-1, D-2"
+        ]
+      }
+    },
+    {
+      "index": 14,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837213/15_b7scv6.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A and B",
+          "B and C",
+          "C and D",
+          "A and D"
+        ]
+      }
+    },
+    {
+      "index": 15,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837289/16_zpurrw.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Not testing the new formula with customers",
+          "B) Overestimating Pepsi's market threat",
+          "C) Poor marketing of the new product",
+          "D) Delayed response to customer backlash"
+        ]
+      }
+    },
+    {
+      "index": 16,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837368/17_nm9c5s.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Yellow > Blue > Green > Purple > Pink",
+          "B) Green > Purple > Blue > Pink > Yellow",
+          "C) Green > Yellow > Blue > Purple > Pink",
+          "D) Yellow > Green > Blue > Purple > Pink"
+        ]
+      }
+    },
+    {
+      "index": 17,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740837444/18_dhrftu.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 3",
+          "B) 6",
+          "C) 8",
+          "D) 9"
+        ]
+      }
+    }
+  ],
+  "hard": [
+    {
+      "index": 0,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838202/1_pap3ph.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 2",
+          "B) 3",
+          "C) 4",
+          "D) 5"
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838270/2_uos8u4.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) $400,000",
+          "B) $420,000",
+          "C) $500,000",
+          "D) $350,000"
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838330/3_i05ffq.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 1-B, 2-C, 3-D, 4-A",
+          "B) 1-A, 2-B, 3-C, 4-D",
+          "C) 1-C, 2-D, 3-B, 4-A",
+          "D) 1-B, 2-D, 3-C, 4-A"
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838402/4_kf3i26.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) Joey Zwillinger and Tim Brown",
+          "B) Kevin Plank and Kip Fulks",
+          "C) Tim Cook and David Karp",
+          "D) James Dyson and Mark Zuckerberg"
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838482/5_lq6spj.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 1-C, 2-A, 3-B, 4-D",
+          "B) 1-A, 2-B, 3-C, 4-D",
+          "C) 1-B, 2-D, 3-A, 4-C",
+          "D) 1-D, 2-C, 3-B, 4-A"
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838576/6_i5d97v.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838789/7_quhjnp.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) C → D → B → A",
+          "B) D → C → A → B",
+          "C) C → B → D → A",
+          "D) A → D → B → C"
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838845/8_i1insm.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838919/9_stsal6.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740838993/10_ndqzk3.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 89.3%",
+          "B) 91.5%",
+          "C) 92.2%",
+          "D) 87.8%"
+        ]
+      }
+    },
+    {
+      "index": 10,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740839077/11_mtzzxs.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 1-D, 2-C, 3-B, 4-A",
+          "B) 1-D, 2-B, 3-E, 4-C",
+          "C) 1-C, 2-E, 3-D, 4-A",
+          "D) 1-C, 2-B, 3-C, 4-B"
+        ]
+      }
+    },
+    {
+      "index": 11,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740839158/12_ifc4k4.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) 4+4=8",
+          "B) 3+7=10",
+          "C) 5+3=8",
+          "D) 6+4=10"
+        ]
+      }
+    },
+    {
+      "index": 12,
+      "q": {
+        "questionType": "single",
+        "contentType": "image",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740839239/13_uc6ajl.png",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "index": 13,
+      "q": {
+        "questionType": "single",
+        "contentType": "audio",
+        "contentLink": "https://res.cloudinary.com/dvfrfe9px/video/upload/v1740848978/Andrew_Carnegie_fraevl.mp3",
+        "content": ""
+      },
+      "ans": {
+        "optionsType": "text",
+        "optionsContent": [
+          "A) John D. Rockefeller",
+          "B) Andrew Carnegie",
+          "C) J.P. Morgan",
+          "D) Cornelius Vanderbilt"
+        ]
+      }
+    }
+  ]
+}
