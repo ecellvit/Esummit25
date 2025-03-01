@@ -146,8 +146,8 @@ export default function Testing() {
     }, []);
 
     const handleConfirmPurchase = async () => {
+        setLoading(true);
         if (selectedResource) {
-            setLoading(true);
             try {
                 const response = await fetch("/api/event1/round1/primaryelement", {
                     method: "POST",
@@ -178,8 +178,10 @@ export default function Testing() {
             } catch (error) {
                 console.log("Error during purchase:", error);
                 toast.error("Something went wrong. Please try again.");
+            }finally{
+
+                setLoading(false);
             }
-            setLoading(false);
         }
     };
 
@@ -262,10 +264,10 @@ export default function Testing() {
                             </button>
                             <button
                                 onClick={handleConfirmPurchase}
-                                className="px-8 py-4 text-white font-bold rounded-md"
+                                className="px-8 py-4 flex justify-center text-white font-bold rounded-md"
                                 style={{ background: "linear-gradient(180deg, #BB2121 0%, #550F0F 100%)" }}
                             >
-                                Confirm
+                                {loading ? <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>:"Confirm"}
                             </button>
                         </div>
                     </div>
