@@ -372,7 +372,7 @@ export default function Schedule() {
               </p>
               {!hasRegisteredPioneira ? (
                 <div className="flex flex-row gap-2">
-                    { activeIndex!=0 &&
+                    { activeIndex!=0  && 
                 userCounts && userCounts[activeIndex] >= limit[activeIndex] ? (
                   session?.user?.events?.includes(activeIndex + 1) ? (
                     <button
@@ -399,10 +399,11 @@ export default function Schedule() {
                     className="text-white flex px-8 py-2 mt-2 border-[#D22121] border-solid border-4 rounded-md text-lg font-[GreaterTheory] transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-110 active:shadow-[0_0_15px_#D22121]"
                     style={{ background: gradientStyle }}
                     // onClick={() => }
-                    onClick={() =>
+                    onClick={() =>{
+                      
                       session?.user.events?.includes(activeIndex + 1)
                         ? handleDeregister(activeIndex + 1)
-                        : handleRedirect(activeIndex + 1)
+                        : activeIndex===0 ? toast.error("Registrations are closed"):handleRedirect(activeIndex + 1)}
                     }
                   >
                     {isLoading ? (
@@ -411,7 +412,7 @@ export default function Schedule() {
                     ) : session?.user.events?.includes(activeIndex + 1) ? (
                       "Deregister"
                     ) : (
-                      "Register"
+                      activeIndex===0 ?"Registration Closed":"Register"
                     )}
                   </button>
                 )}

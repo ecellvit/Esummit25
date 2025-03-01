@@ -39,6 +39,7 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    if(!(session?.user?.events?.includes(1))) router.push('/');
     getData();
   }, []);
 

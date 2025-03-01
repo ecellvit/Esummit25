@@ -22,6 +22,7 @@ export default function JoinTeam() {
       router.push("/");
       toast.error("Please Log in or Sign up");
     }
+    if(!(session?.user?.events?.includes(1))) router.push('/');
   }, [status, router]);
 
   const fetchTeamName = async (e: React.FormEvent) => {
