@@ -360,6 +360,42 @@
             "D)Company Valuation Can Be Obscured"
           ]
         }
+      },
+      {
+        "index": 20,
+        "q": {
+          "questionType": "single",
+          "contentType": "image",
+          "contentLink": "https://res.cloudinary.com/dvfrfe9px/image/upload/v1740852797/21_m3txuv.png",
+          "content": ""
+        },
+        "ans": {
+          "optionsType": "text",
+          "optionsContent": [
+            "A)EBITDA Ignores Asset Costs",
+            "B)Earnings Figures May Be Suspect",
+            "C)EBITDA hides the cash flow",
+            "D)Company Valuation Can Be Obscured"
+          ]
+        }
+      },
+      {
+        "index": 21,
+        "q": {
+          "questionType": "single",
+          "contentType": "audio",
+          "contentLink": "https://res.cloudinary.com/dvfrfe9px/video/upload/v1740853199/Henry_Ford1_lvvfmw.m4a",
+          "content": ""
+        },
+        "ans": {
+          "optionsType": "text",
+          "optionsContent": [
+            "A)EBITDA Ignores Asset Costs",
+            "B)Earnings Figures May Be Suspect",
+            "C)EBITDA hides the cash flow",
+            "D)Company Valuation Can Be Obscured"
+          ]
+        }
       }
     ],
     "medium": [
