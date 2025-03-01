@@ -200,6 +200,7 @@ export default function Page() {
   };
 
   useEffect(() => {
+    if(!(session?.user?.events?.includes(1))) router.push('/');
     setLoadingButton(false);
   }, []);
 

@@ -217,7 +217,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                   </p>
                   {!hasRegisteredPioneira ? (
                     <div>
-                      {userCounts && userCounts[idx] >= limit[idx] ? (
+                      {userCounts  && session?.user?.events?.includes(1) && userCounts[idx] >= limit[idx] ? (
                         session?.user?.events?.includes(idx + 1) ? (
                           <button
                             key={idx + 1}
@@ -250,8 +250,8 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                               active:scale-110 active:shadow-lg border-2 border-red-800"
                           onClick={() =>
                             session?.user.events?.includes(idx + 1)
-                              ? handleDeregister(idx + 1)
-                              : handleRedirect(idx + 1)
+                        ? handleDeregister(idx + 1)
+                        : idx===0 ? toast.error("Registrations are closed"):handleRedirect(idx + 1)
                           }
                         >
                           {loadingEventId === idx + 1 ? (
@@ -259,7 +259,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                           ) : session?.user.events?.includes(idx + 1) ? (
                             "Deregister"
                           ) : (
-                            "Register"
+                            idx===0 ?"Registration Closed":"Register"
                           )}
                         </button>
                       )}

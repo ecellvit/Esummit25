@@ -12,6 +12,7 @@ import Loader from "@/components/loader";
 
 export default function page() {
   const router = useRouter();
+  const { data: session, update } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(false); // Add a loading state
 
   const joinTeam = () => {
@@ -44,6 +45,7 @@ export default function page() {
   };
 
   useEffect(() => {
+    if(!(session?.user?.events?.includes(1))) router.push('/');
     setIsLoading(false); // Ensure that loader is hidden when the page loads
   }, []);
 

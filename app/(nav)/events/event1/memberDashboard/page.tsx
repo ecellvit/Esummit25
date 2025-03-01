@@ -263,6 +263,7 @@ export default function MemberDashboard() {
 
   useEffect(() => {
     setLoading(true);
+    if(!(session?.user?.events?.includes(1))) router.push('/');
     getData();
   }, [session?.user?.event1TeamRole]);
 
