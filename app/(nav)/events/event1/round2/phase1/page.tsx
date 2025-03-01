@@ -73,6 +73,12 @@ export default function Testing() {
   const [showInvoice, setShowInvoice] = useState(false);
   const [showConfirmDispatch, setShowConfirmDispatch] = useState(false);
   const [selectedInsurance, setSelectedInsurance] = React.useState("");
+  const insuranceOptions = [
+    'No Insurance (Cost - 0)', 
+    'Basic Plan (Cost - 15,000)', 
+    'Premium Plan (Cost - 30,000)', 
+    'Platinum Plan (Cost - 60,000)'
+  ];
 
   const handleButtonClick = () => {
     setShowConfirmation(true);
@@ -260,44 +266,44 @@ export default function Testing() {
         </div>
       )}
 
-      {showInsurance && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center transform transition-all duration-300 scale-105">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Select Insurance Type</h2>
-            <div className="mb-6 space-y-3">
-              {['No Insurance (Cost - 0)', 'Basic Plan (Cost - 15,000)', 'Premium Plan (Cost - 30,000)', 'Platinum Plan (Cost - 60,000)'].map((option, index) => (
-                <label key={index} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="insurance"
-                    value={option}
-                    onChange={(e) => setSelectedInsurance(e.target.value)}
-                    className="hidden"
-                  />
-                  <div className={`w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center ${selectedInsurance === option ? 'bg-blue-500 border-blue-500' : ''}`}>
-                    {selectedInsurance === option && <div className="w-3 h-3 rounded-full bg-white"></div>}
-                  </div>
-                  <span className="text-gray-700">{option}</span>
-                </label>
-              ))}
+{showInsurance && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
+    <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center transform transition-all duration-300 scale-105">
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">Select Insurance Type</h2>
+      <div className="mb-6 space-y-3">
+        {insuranceOptions.map((option, index) => (
+          <label key={index} className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="insurance"
+              value={option}
+              onChange={(e) => setSelectedInsurance(e.target.value)}
+              className="hidden"
+            />
+            <div className={`w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center ${selectedInsurance === option ? 'bg-blue-500 border-blue-500' : ''}`}>
+              {selectedInsurance === option && <div className="w-3 h-3 rounded-full bg-white"></div>}
             </div>
-            <div className="flex justify-center gap-4">
-              <button
-                className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={handleCloseInsurance}
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={handleConfirmInsurance}
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+            <span className="text-gray-700">{option}</span>
+          </label>
+        ))}
+      </div>
+      <div className="flex justify-center gap-4">
+        <button
+          className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+          onClick={handleCloseInsurance}
+        >
+          Cancel
+        </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+          onClick={handleConfirmInsurance}
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {showInvoice && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">

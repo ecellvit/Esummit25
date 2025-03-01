@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 interface InvoiceItem {
   destination: string;
@@ -12,18 +12,9 @@ const TRANSPORT_COSTS = {
 };
 
 const invoiceData: InvoiceItem[] = [
-  { destination: "Island A", elements: [
-      { name: "Iron", quantity: 5 }, 
-      { name: "Nickel", quantity: 2 }
-    ], mode: "land" },
-  { destination: "Island B", elements: [
-      { name: "Cobalt", quantity: 3 }, 
-      { name: "Copper", quantity: 4 }
-    ], mode: "air" },
-  { destination: "Island C", elements: [
-      { name: "Iron", quantity: 7 }, 
-      { name: "Zinc", quantity: 1 }
-    ], mode: "land" },
+  { destination: "Island A", elements: [{ name: "Iron", quantity: 5 }, { name: "Nickel", quantity: 2 }], mode: "land" },
+  { destination: "Island B", elements: [{ name: "Cobalt", quantity: 3 }, { name: "Copper", quantity: 4 }], mode: "air" },
+  { destination: "Island C", elements: [{ name: "Iron", quantity: 7 }, { name: "Zinc", quantity: 1 }], mode: "land" },
 ];
 
 const Invoice: React.FC = () => {
@@ -35,6 +26,27 @@ const Invoice: React.FC = () => {
   );
 
   const totalCost = invoiceItems.reduce((sum, item) => sum + item.cost, 0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/event1/round2/getInvoiceData", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ invoiceItems, totalCost }),
+        });
+
+        const data = await response.json();
+        console.log("Response Data:", data);
+      } catch (error) {
+        console.error("Error fetching invoice data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
