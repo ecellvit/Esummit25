@@ -344,7 +344,7 @@ export default function MemberDashboard() {
             {teamName}
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl px-8 py-10">
-            {teamMembers.map((member) => (
+            {teamMembers.map((member,index) => (
               <div
                 key={member.id}
                 className="rounded-lg p-3 text-center shadow-lg transform hover:scale-105 transition-transform duration-300 flex flex-row items-center justify-between space-x-4"
@@ -363,6 +363,9 @@ export default function MemberDashboard() {
                   <p className="text-sm text-white">
                     Mobile No.: {member.mobNo}
                   </p>
+                  <h1 className="text-lg font-bold mb-1 font-[PoppinsRegular] text-white">
+                        {member.event1TeamRole === 0 ? "LEADER" : "MEMBER"}
+                      </h1>
                 </div>
               </div>
             ))}
