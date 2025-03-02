@@ -366,9 +366,9 @@ export default function Page() {
               ) : (
                 <button
                   className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
-                  onClick={() => handleShowModal(null, "leave")}
+                  onClick={() => router.push('/events/event1/round1/start')}
                 >
-                  Leave Team
+                  Start Round 1
                 </button>
               )}
             </div>
