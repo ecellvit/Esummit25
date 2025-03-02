@@ -262,7 +262,7 @@ export default function Testing() {
       `}</style>
 
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-        {["Batch 1", "Batch 2", "Batch 3"].map((batch, index) => (
+        {["Submit"].map((batch, index) => (
           <button
             key={index}
             className="p-2 text-white font-bold rounded-lg bg-green-500 ml-8 hover:bg-green-700 w-32 text-center"
