@@ -33,7 +33,7 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
                 className="h-auto w-auto"
               />
             ) : (
-              <p>No image available for this question</p>
+              <p>Listen to the audio and identify the person.</p>
             )}
             {questions[props.questionCategory][props.questionNumber]?.q.contentType === "audio" && (
               <div>
@@ -85,7 +85,7 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
                 className="h-auto w-auto"
               />
             ) : (
-              <p>No image available for this question</p>
+              <p>Listen to the audio and identify the person.</p>
             )}
             {questions[props.questionCategory][props.questionNumber]?.q.contentType === "audio" && (
               <div>
@@ -140,7 +140,7 @@ export default function QuestionForQualifier(props: QuestionForQualifierProps) {
                 className="h-auto w-auto"
               />
             ) : (
-              <p>No image available for this question</p>
+              <p>Listen to the audio and identify the person.</p>
             )}
             {questions[props.questionCategory][props.questionNumber]?.q.contentType === "audio" && (
               <div>

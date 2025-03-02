@@ -136,7 +136,7 @@ const Instructions: React.FC = () => {
   }, [loading]);
 
   // Fixed date format - months are 0-indexed in JavaScript Date
-  const targetDate: string = new Date(2025, 2, 2, 15,46, 0).toISOString(); //for March - 2 , Feb - 1
+  const targetDate: string = new Date(2025, 2, 2, 22,0, 0).toISOString(); //for March - 2 , Feb - 1
 
   const startQuiz = async (): Promise<void> => {
     try {
