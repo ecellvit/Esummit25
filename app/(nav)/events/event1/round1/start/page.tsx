@@ -1,14 +1,17 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import bg from "/assets/round1/bg1.svg";
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
+import Loader from "@/components/loader";
 
 export default function Testing() {
     const router=useRouter();
+    const [loading, setLoading] = useState<Boolean>(true);
 
     const fetchRoundData = async () => {
+        setLoading(true);
         const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
 
         if (response.status === 200) {
@@ -36,6 +39,7 @@ export default function Testing() {
         } else {
             router.refresh();
         }
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -44,6 +48,8 @@ export default function Testing() {
     
     return (
         <div className="relative w-full h-full min-h-screen bg-gray-100">
+            {loading && <Loader />}
+            
             {/* Background */}
             <div className="fixed inset-0 overflow-hidden">
                 <Image
