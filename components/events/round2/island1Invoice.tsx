@@ -8,7 +8,7 @@ const invoiceData = [
   { metal: "Nickel", ownCost: 65, corpTax: 46, localCost: 488, serviceTax: 97, marketPrice: 2636 },
 ];
 
-const island1Invoice = () => {
+const island1Invoice = (props:any) => {
   return (
     <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
       <h2 className="text-xl font-bold mb-4 text-center">Invoice - Island Ithaca</h2>
