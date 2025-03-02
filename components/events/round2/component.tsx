@@ -189,6 +189,7 @@ import toast, { Toaster } from "react-hot-toast";
 import React from "react";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
+import Loader from "@/components/loader";
 
 type ElementOption = string;
 type TransportMode = "Air" | "Water";
@@ -216,10 +217,14 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [available, setAvailable] = useState<number>(0);
   const [globalTotalQuantity, setGlobalTotalQuantity] = useState<number>(0);
+  const [loading,setLoading] = useState(false);
+  const elementArray = ["Lithium", "Iron", "Cobalt", "Nickel", "Copper"];
   var num = 0;
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
+
       try {
         const response = await fetch(`/api/event1/round2/getFormData`, {
           method: "GET",
@@ -236,17 +241,22 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
           setTeamPortfolio(data.teamElements);
         }
       } catch (error) {
+        toast.error("error fetching data");
         console.error("Error fetching data:", error);
+      }finally{
+        setLoading(false);
       }
     };
     fetchData();
   }, [islandId]);
 
   useEffect(() => {
+    setLoading(true);
     const savedTotal = localStorage.getItem("totalQuantity");
     if (savedTotal !== null) {
       setTotalQuantity(parseInt(savedTotal, 10) || 0);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -357,6 +367,8 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   };
 
   const addEntry = () => {
+    console.log('available entries',availableElements);
+    console.log('entries',entries);
     setEntries((prevEntries) => {
       const newEntries: FormEntry[] = [
         ...prevEntries,
@@ -388,6 +400,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
 
   return (
     <div className="p-6 max-w-lg ml-auto mr-10 my-10 border rounded-lg shadow-lg bg-white">
+      {loading && <Loader/>}
       <h2 className="text-xl font-bold mb-4 text-center">Round 2 Form</h2>
       {entries.map((entry, index) => (
         <div key={entry.id} className="mb-4 p-4 border rounded-lg bg-gray-100 relative">
@@ -405,7 +418,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
           >
             {availableElements.map((el) => (
               <option key={el} value={el}>
-                {el} (Available: {getRemainingStock(el)})
+                {elementArray[parseInt(el,10)]} (Available: {getRemainingStock(el)})
               </option>
             ))}
           </select>
