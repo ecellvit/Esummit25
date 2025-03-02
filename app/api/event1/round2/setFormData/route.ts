@@ -32,6 +32,21 @@
                 return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
             }
 
+            var batchNumber: number = team.batch;
+
+            if(batchNumber >= 4){
+                return NextResponse.json ({message: "Only 3 batches are allowed"}, {status: 450})
+            }
+
+            const selectedInsurance = insuranceData.find(el => el.id === insurance);
+            if (!selectedInsurance) {
+                return NextResponse.json({ message: "Invalid insurance option" }, { status: 400 });
+            }
+            const insuranceCost = selectedInsurance.cost_per_batch;
+            if (team.wallet < insuranceCost) {
+                return NextResponse.json({ message: "Insufficient funds for selected insurance" }, { status: 402 });
+            }
+
             const {islandData,insurance}= await request.json();
             console.log(islandData,insurance);
             const islands = ['island1','island2','island3','island4'];
@@ -44,7 +59,6 @@
             let trans;
             for(let i=0;i<indexes.length;i++){
                 const island = islandData[islands[indexes[i]]];
-                console.log('island ka data',island);
                 const elementQuantity=[0,0,0,0,0];
                 var totalQuantity = 0;
                 for(let j=0;j<island.length;j++){
@@ -56,6 +70,8 @@
                         trans = 1;
                     }
                 }
+
+                if(totalQuantity>200) return NextResponse.json({message:`quantity limit exceeded for batch${batchNumber}`},{status:405});
                 const batchData : round2Island = new IslandRound2({
                     teamLeaderId:user._id,
                     teamLeaderEmail: user.email,
@@ -71,17 +87,13 @@
 
 
             }
-            if (team.batch === 1) {
+            if (batchNumber === 1) {
                 team.islandBatch1 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
-            } else if (team.batch === 2) {
+            } else if (batchNumber === 2) {
                 team.islandBatch2 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
-            } else if (team.batch === 3) {
+            } else if (batchNumber === 3) {
                 team.islandBatch3 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
             }        
-
-            if(team.batch >= 4){
-                return NextResponse.json ({message: "Only 3 batches are allowed"}, {status: 450})
-            }
 
             batchArray.forEach((batchId, index) => {
                 if (!batchId) return; // Skip if batchId is null
@@ -94,19 +106,10 @@
                 });
             });
 
-            const selectedInsurance = insuranceData.find(el => el.id === insurance);
-            if (!selectedInsurance) {
-                return NextResponse.json({ message: "Invalid insurance option" }, { status: 400 });
-            }
-            const insuranceCost = selectedInsurance.cost_per_batch;
-            console.log("insurance cost", insuranceCost);
-            if (team.wallet < insuranceCost) {
-                return NextResponse.json({ message: "Insufficient funds for selected insurance" }, { status: 402 });
-            }
-
+            batchNumber++;
             team.wallet -= insuranceCost;
             team.insuranceType.push(insurance);
-            team.batch++;
+            team.batch = batchNumber;
             await team.save();
         // const elementQuantity=[0,0,0,0];
         // for(let i=0;i<entries.length;i++){
