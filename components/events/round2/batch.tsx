@@ -7,20 +7,6 @@ const Batch = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchBatch = async () => {
-      try {
-        const response = await fetch('/api/event1/round2/batch');
-        const data = await response.json();
-        if (response.ok)
-          setBatch("Batch " + data.batch);
-        else
-            setError(data.message);
-      } catch (error) {
-        console.error("Error Fetching :", error);
-        setError("Server Error");
-      }
-    };
-    fetchBatch();
   }, []);
 
   return (
