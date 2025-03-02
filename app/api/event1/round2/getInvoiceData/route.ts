@@ -87,7 +87,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         
         // Return the portfolio as teamElements
         const teamElements = team.portfolio; // Assuming portfolio is an object with element names as keys
-        const batchNumber = team.batch - 1; // 1, 2, or 3
+        const batchNumber = team.batch; // 1, 2, or 3
         const batchKey = `islandBatch${batchNumber}`; // Create the key dynamically
         const islandBatch = (team as any)[batchKey]; // Typecasting team as 'any' to access the dynamic key
         const insuranceType = team.insuranceType[batchNumber-1] ?? -1;
