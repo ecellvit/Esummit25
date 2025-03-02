@@ -536,7 +536,7 @@ const autoSubmit = async () => {
                         type="submit"
                         disabled={isLoading}
                         onClick={handleSubmit}
-                        className="px-4 py-2 flex justify-center text-white rounded-full bg-gradient-to-r from-red-500 to-red-800 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
+                        className="px-4 py-2 flex justify-center items-center text-white rounded-full bg-gradient-to-r from-red-500 to-red-800 mt-4 w-1/4 md:w-1/6 h-12 hover:scale-105 transition-all font-bold"
                     style={{ fontFamily: "GreaterTheory" }}
                       >
                         {isLoading ? (
