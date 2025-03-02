@@ -136,7 +136,7 @@ const Instructions: React.FC = () => {
   }, [loading]);
 
   // Fixed date format - months are 0-indexed in JavaScript Date
-  const targetDate: string = new Date(2025, 2, 2, 0,57, 0).toISOString(); //for March - 2 , Feb - 1
+  const targetDate: string = new Date(2025, 2, 2, 15,46, 0).toISOString(); //for March - 2 , Feb - 1
 
   const startQuiz = async (): Promise<void> => {
     try {
@@ -160,6 +160,9 @@ const Instructions: React.FC = () => {
         router.push("/events/event1/round0");
       } else if (res.status === 403) {
         toast.error("Quiz has not started yet.");
+      } else if (res.status === 405) {
+        router.push("/events/event1/round0");
+        toast.error("You have already attempted the quiz.");
       } else {
         console.log("Response data:", data);
         toast.error(data.message || "Too late to start.");

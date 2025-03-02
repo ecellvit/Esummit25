@@ -41,7 +41,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // Fetch the Round0 document associated with this team
     const round0Data = await Round0.findOne({ teamId: qualTeam._id });
 
-    const quizStartTime = new Date("March 2, 2025 00:57:00");
+
+    const questionCategory=round0Data?.questionCategory;
+    if(questionCategory==="waiting"){
+      return NextResponse.json({ message: "Round 0 has already been attempted" }, { status: 405 });
+    }
+
+    const quizStartTime = new Date("March 2, 2025 15:46:00");
     const currentTime =  new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
     console.log('Current Time:', currentTime);
     console.log('Quiz Start Time:', quizStartTime);
