@@ -146,10 +146,10 @@ export default function SellButton(): JSX.Element {
   return (
     <div className="flex justify-center items-center bg-transparent">
       <button
-        className="transition duration-300 ease-in-out bg-white text-red-800 px-20 py-2 font-bold rounded-xl hover:scale-110 active:scale-95 text-base md:text-lg"
+        className="px-8 py-3 text-white transition-all duration-300 shadow-lg active:shadow active:translate-y-1 flex items-center bg-[#B82121] rounded-lg hover:bg-[#8a1919] hover:shadow-md hover:scale-105  font-extrabold tracking-widest"
         onClick={handleSellClick}
       >
-        Sell
+        Sell Resources
       </button>
 
       {/* Modal */}
