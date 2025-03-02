@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import resourceData from '@/constant/round1/element.json'
 import calculateMarketPrice from "@/utils/calculateMarketPrice";
 import { ApiResponse } from "@/types/ApiResponse";
+import CurrentPageModel from "@/models/event1/currentPage.model";
 
 export async function PUT(req: Request): Promise<NextResponse<ApiResponse>> {
     await dbConnect()
@@ -35,6 +36,24 @@ export async function PUT(req: Request): Promise<NextResponse<ApiResponse>> {
     const { leaseElement, leaseRate, cost } = await req.json();
     if (!(leaseElement >= 0 && leaseElement <= 4) ||!leaseRate || !cost) {
         return NextResponse.json({ success: false, message: "Invalid request" }, { status: 400 });
+    }
+
+    const currentPage = await CurrentPageModel.findOne({ creator: true });
+    if (!currentPage) {
+      return NextResponse.json({ success: false, message: "Current page not found" }, { status: 404 });
+    }
+
+    const startTime = new Date(currentPage.startedAt).getTime();
+    const currentTime = Date.now();
+
+    const timePassed = Math.floor((currentTime - startTime) / 1000);
+
+    if (currentPage.round !== 1 || currentPage.page !== 3) {
+      return NextResponse.json({ success: false, message: "This round is over." }, { status: 403 });
+    }
+
+    if (currentPage.round === 1 && currentPage.page === 3 && timePassed > 5 * 60) {
+      return NextResponse.json({ success: false, message: "Time limit for this round has passed" }, { status: 403 });
     }
 
     if (team.wallet < cost) {
