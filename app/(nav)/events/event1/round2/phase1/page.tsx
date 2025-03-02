@@ -11,6 +11,7 @@ import plane from "/assets/round2/plane.svg";
 import Invoice from "@/components/events/round2/invoice";
 import Link from "next/link";
 import InsuranceComponent from "./insuranceComponent";
+import Loader from "@/components/loader";
 
 type FormEntry = {
   id: number;
@@ -34,6 +35,7 @@ const initialState: IslandData = {
 
 export default function Testing() {
   const [islandData, setIslandData] = useState<IslandData>(initialState);
+  const [loading,setLoading] = useState<boolean>(false);
   const [showPlanes, setShowPlanes] = useState({
     island1: false,
     island2: false,
@@ -56,11 +58,13 @@ export default function Testing() {
   }
 
   useEffect(() => {
+    setLoading(true);
     const savedData = localStorage.getItem("islandData");
     console.log('saved data', savedData)
     if (savedData) {
       setIslandData(JSON.parse(savedData));
     }
+    setLoading(false);
   }, []);
 
   const updateData = (islandId: string, newData: FormEntry[]) => {
@@ -74,7 +78,6 @@ export default function Testing() {
   const [showInvoice, setShowInvoice] = useState(false);
   const [showConfirmDispatch, setShowConfirmDispatch] = useState(false);
   const [selectedInsurance, setSelectedInsurance] = React.useState("");
-  const [loading,setLoading] = useState<boolean>(false);
   const insuranceOptions = [
     'No Insurance (Cost - 0)', 
     'Basic Plan (Cost - 15,000)', 
@@ -150,6 +153,7 @@ export default function Testing() {
       className="relative w-full h-full min-h-screen"
     >
       {/* Center Island */}
+      {loading && <Loader/>}
       <Image
         src={island0}
         alt="island0"

@@ -218,6 +218,8 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   const [available, setAvailable] = useState<number>(0);
   const [globalTotalQuantity, setGlobalTotalQuantity] = useState<number>(0);
   const [loading,setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTransport, setSelectedTransport] = useState<"Air" | "Water">("Air");
   const elementArray = ["Lithium", "Iron", "Cobalt", "Nickel", "Copper"];
   var num = 0;
 
@@ -266,10 +268,12 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   }, [totalQuantity]);
 
   useEffect(() => {
+    setLoading(true);
     const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
     const islandEntries = allData[islandId] ?? [];
     setEntries(islandEntries);
     setTotalQuantity(islandEntries.reduce((sum: number, entry: FormEntry) => sum + entry.quantity, 0)); // Recalculate total quantity when a new island is chosen
+    setLoading(false);
   }, [islandId]);
 
   useEffect(() => {
@@ -376,7 +380,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
           id: prevEntries.length + 1,
           element: availableElements[0] || "Unknown",
           quantity: 0,
-          transport: "Air",
+          transport: selectedTransport,
           batch: 1,
         },
       ];
@@ -391,11 +395,42 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   };
 
   const saveForm = () => {
+    console.log('these are the entries',entries)
     setIsSaving(true);
     setTimeout(() => {
       setIsSaving(false);
       toast.success("Data saved successfully!");
     }, 500);
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+  
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  
+  const confirmTransport = () => {
+    setEntries((prevEntries) => {
+      const updatedEntries = prevEntries.map((entry) => ({
+        ...entry,
+        transport: selectedTransport,
+      }));
+      
+      // Update localStorage with the new entries that include the transport mode
+      const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
+      allData[islandId] = updatedEntries;
+      localStorage.setItem("islandData", JSON.stringify(allData));
+      
+      // Update parent component's data
+      updateData(islandId, updatedEntries);
+      
+      return updatedEntries;
+    });
+    
+    closeModal();
+    saveForm();
   };
 
   return (
@@ -452,21 +487,47 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       </button>
 
       <button
-        onClick={saveForm}
-        className={`w-full mt-4 p-2 text-white font-bold rounded-lg  ${totalQuantity >= 201 ||
-          globalTotalQuantity >= 201 ||
-          entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-green-500 hover:bg-green-700"
-          }`}
-        disabled={
-          totalQuantity >= 201 ||
-          globalTotalQuantity >= 201 ||
-          entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
-        }
-      >
-        {isSaving ? "Saving..." : "Save"}
-      </button>
+      onClick={openModal}
+      className={`w-full mt-4 p-2 text-white font-bold rounded-lg  ${
+        totalQuantity >= 201 ||
+        globalTotalQuantity >= 201 ||
+        entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-green-500 hover:bg-green-700"
+      }`}
+      disabled={
+        totalQuantity >= 201 ||
+        globalTotalQuantity >= 201 ||
+        entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
+      }
+    >
+      {isSaving ? "Saving..." : "Save"}
+    </button>
+    {showModal && (
+      <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <h3 className="text-lg font-semibold mb-4">Select Mode of Transport</h3>
+          <div className="flex gap-4 mb-4">
+            <button
+              className={`px-4 py-2 rounded ${selectedTransport === "Air" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              onClick={() => setSelectedTransport("Air")}
+            >
+              Air
+            </button>
+            <button
+              className={`px-4 py-2 rounded ${selectedTransport === "Water" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              onClick={() => setSelectedTransport("Water")}
+            >
+              Water
+            </button>
+          </div>
+          <div className="flex justify-end gap-2">
+            <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+            <button onClick={confirmTransport} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Confirm</button>
+          </div>
+        </div>
+      </div>
+    )}
       <Toaster />
     </div>
   );
