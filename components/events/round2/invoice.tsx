@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import islandJson from "@/constant/round2/island.json";
 import elementJson from "@/constant/round1/element.json";
 import insuranceJson from "@/constant/round2/insurance.json";
+import toast, { Toaster } from "react-hot-toast";
 
 interface ElementItem {
   id: number;
@@ -48,6 +49,11 @@ const fetchInvoiceData = async () => {
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    if(response.status === 407){
+      toast.error("Invalid batch number");
+      return
     }
 
     const data = await response.json();
@@ -151,6 +157,7 @@ const Invoice: React.FC = () => {
       <div className="mt-2 text-right font-bold text-lg">
         Total Cost: ₹{totalCost.toLocaleString()}
       </div>
+      <Toaster/>
     </div>
   );
 };

@@ -84,15 +84,21 @@ export async function GET(request: Request): Promise<NextResponse> {
                 totalBatch3.push(data);
             }
         }
-        
+
+        var num = 0;
+        if(team.batch===2) num = 1;
+        else if(team.batch === 3) num = 2;
+        else if(team.batch === 4) num = 3;
+        else{
+            console.log("Invalid batch number",team.batch);
+            return NextResponse.json({message:"invalid batch number"},{status:407})
+        }
         // Return the portfolio as teamElements
         const teamElements = team.portfolio; // Assuming portfolio is an object with element names as keys
-        const batchNumber = team.batch; // 1, 2, or 3
+        const batchNumber = num; // 1, 2, or 3
         const batchKey = `islandBatch${batchNumber}`; // Create the key dynamically
         const islandBatch = (team as any)[batchKey]; // Typecasting team as 'any' to access the dynamic key
-        const insuranceType = team.insuranceType[batchNumber-1] ?? -1;
-
-
+        const insuranceType = team.insuranceType[num-1] ?? -1;
 
         return NextResponse.json({
             message: "Data fetched successfully",
