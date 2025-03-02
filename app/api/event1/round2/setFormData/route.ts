@@ -78,7 +78,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       const elementQuantity = [0, 0, 0, 0, 0];
       var totalQuantity = 0;
       for (let j = 0; j < island.length; j++) {
-        elementQuantity[j] += island[j].quantity;
+        elementQuantity[parseInt(island[j].element,10)] += island[j].quantity;
         totalQuantity += island[j].quantity;
         if (island[j].transport == "Air") {
           trans = 0;

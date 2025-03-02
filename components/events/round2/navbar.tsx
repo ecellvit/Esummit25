@@ -5,14 +5,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from "/assets/round2/logo.svg";
 import invoice from "/assets/round2/invoice.svg";
+import Invoice from './invoice';
 import { set } from 'mongoose';
-
 
 const Navbar = () => {
   const [timeLeft, setTimeLeft] = useState(600);
   const [walletBalance, setWalletBalance] = useState(0);
   const [teamName, setTeamName] = useState("Loading...");
   const [error, setError] = useState<string | null>(null);
+  const [showInvoice, setShowInvoice] = useState(false);
 
   useEffect(() => {
     const fetchTeamName = async () => {
@@ -51,6 +52,10 @@ const Navbar = () => {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  const handleInvoiceClick = () => {
+    setShowInvoice(true);
+  };
+
   return (
     <nav
       className="fixed -top-6 left-[50%] w-[60%] lg:w-[50%] h-[8vh]
@@ -73,7 +78,7 @@ const Navbar = () => {
         <div className="text-white px-4 py-2 rounded-lg" style={{ fontFamily: 'GreaterTheory' }}>
           {teamName}
         </div>
-        <div className="h-full flex items-center">
+        <div className="h-full flex items-center cursor-pointer" onClick={handleInvoiceClick}>
           <Image
             src={invoice}
             alt="Invoice"
@@ -81,6 +86,24 @@ const Navbar = () => {
           />
         </div>
       </div>
+      {showInvoice && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl min-w-fit text-center transform transition-all duration-300 scale-105 flex flex-col items-center justify-center">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Invoice Details</h2>
+            <div className="mb-6 text-gray-600 text-left ">
+              <Invoice />
+            </div>
+            <div className="flex justify-center">
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+              >
+                Confirm
+              </button>
+            </div>
+            
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

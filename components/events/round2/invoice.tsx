@@ -37,16 +37,21 @@ const Invoice: React.FC = () => {
           },
           body: JSON.stringify({ invoiceItems, totalCost }),
         });
-
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
         const data = await response.json();
-        console.log("Response Data:", data);
+        console.log("Invoice Data Fetched Successfully:", data);
       } catch (error) {
         console.error("Error fetching invoice data:", error);
       }
     };
-
+  
     fetchData();
-  }, []);
+  }, [invoiceItems, totalCost]);
+  
 
   return (
     <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
