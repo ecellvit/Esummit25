@@ -32,6 +32,19 @@
                 return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
             }
 
+            if(team.batch >= 4){
+                return NextResponse.json ({message: "Only 3 batches are allowed"}, {status: 450})
+            }
+
+            const selectedInsurance = insuranceData.find(el => el.id === insurance);
+            if (!selectedInsurance) {
+                return NextResponse.json({ message: "Invalid insurance option" }, { status: 400 });
+            }
+            const insuranceCost = selectedInsurance.cost_per_batch;
+            if (team.wallet < insuranceCost) {
+                return NextResponse.json({ message: "Insufficient funds for selected insurance" }, { status: 402 });
+            }
+
             const {islandData,insurance}= await request.json();
             console.log(islandData,insurance);
             const islands = ['island1','island2','island3','island4'];
@@ -44,7 +57,6 @@
             let trans;
             for(let i=0;i<indexes.length;i++){
                 const island = islandData[islands[indexes[i]]];
-                console.log('island ka data',island);
                 const elementQuantity=[0,0,0,0,0];
                 var totalQuantity = 0;
                 for(let j=0;j<island.length;j++){
@@ -79,10 +91,6 @@
                 team.islandBatch3 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
             }        
 
-            if(team.batch >= 4){
-                return NextResponse.json ({message: "Only 3 batches are allowed"}, {status: 450})
-            }
-
             batchArray.forEach((batchId, index) => {
                 if (!batchId) return; // Skip if batchId is null
             
@@ -93,15 +101,6 @@
                     }
                 });
             });
-
-            const selectedInsurance = insuranceData.find(el => el.id === insurance);
-            if (!selectedInsurance) {
-                return NextResponse.json({ message: "Invalid insurance option" }, { status: 400 });
-            }
-            const insuranceCost = selectedInsurance.cost_per_batch;
-            if (team.wallet < insuranceCost) {
-                return NextResponse.json({ message: "Insufficient funds for selected insurance" }, { status: 402 });
-            }
 
             team.wallet -= insuranceCost;
             team.insuranceType.push(insurance);
