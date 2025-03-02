@@ -222,7 +222,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
     const fetchData = async () => {
       try {
         const response = await fetch(`/api/event1/round2/getFormData`, {
-          method: "POST",
+          method: "GET",
           headers: { "Content-Type": "application/json" },
         });
 
@@ -440,7 +440,17 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
 
       <button
         onClick={saveForm}
-        className="w-full mt-4 p-2 text-white font-bold rounded-lg bg-green-500 hover:bg-green-700"
+        className={`w-full mt-4 p-2 text-white font-bold rounded-lg  ${totalQuantity >= 201 ||
+          globalTotalQuantity >= 201 ||
+          entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-green-500 hover:bg-green-700"
+          }`}
+        disabled={
+          totalQuantity >= 201 ||
+          globalTotalQuantity >= 201 ||
+          entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
+        }
       >
         {isSaving ? "Saving..." : "Save"}
       </button>

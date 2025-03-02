@@ -7,7 +7,7 @@ import MarketModel from "@/models/event1/CommonInfo.model"; // Adjust the import
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model";
 import TeamModelRound2 from "@/models/event1/round2Island.model";
 
-export async function POST(request: Request): Promise<NextResponse> {
+export async function GET(request: Request): Promise<NextResponse> {
     await dbConnect();
     try {
         const session = await getServerSession(authOptions);

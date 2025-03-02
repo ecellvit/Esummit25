@@ -299,7 +299,7 @@ export default function Testing() {
 {showInsurance && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
     <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center transform transition-all duration-300 scale-105">
-      <InsuranceComponent handleConfirmInsurance={handleConfirmInsurance} setSelectedInsurance={setSelectedInsurance} selectedInsurance={selectedInsurance}/>
+      <InsuranceComponent handleConfirmInsurance={handleConfirmInsurance} setSelectedInsurance={setSelectedInsurance} selectedInsurance={selectedInsurance} loading={loading}/>
     </div>
   </div>
 )}

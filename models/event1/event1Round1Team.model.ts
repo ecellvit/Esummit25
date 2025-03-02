@@ -145,7 +145,7 @@ const TeamSchema: Schema<round1Qualified> = new Schema(
     }
     
 },
-    { collection: "TeamsEvent1Round1" }
+    { collection: "TeamsEvent1Round1",timestamp:true }
 );
 
 const TeamModelRound1 = (mongoose.models.TeamsEvent1Round1 as mongoose.Model<round1Qualified>) || (mongoose.model<round1Qualified>("TeamsEvent1Round1", TeamSchema));

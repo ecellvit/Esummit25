@@ -12,6 +12,7 @@ const InsuranceComponent = (props:any) => {
   // Initialize selectedInsurance as a number (or null)
   // const [selectedInsurance, setSelectedInsurance] = useState<number | null>(null);
   const [showInsurance, setShowInsurance] = useState(true); // Assuming you have a way to toggle this
+  
 
   const handleCloseInsurance = () => {
     setShowInsurance(false);
@@ -54,10 +55,10 @@ const InsuranceComponent = (props:any) => {
                 Cancel
               </button>
               <button
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={props.handleConfirmInsurance}
+                className="bg-blue-500 hover:bg-blue-600 flex justify-center text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+                onClick={()=>{props.handleConfirmInsurance();}}
               >
-                Confirm
+                {props.loading?<span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>:"Confirm"}
               </button>
             </div>
           </div>
