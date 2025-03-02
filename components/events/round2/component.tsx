@@ -329,48 +329,34 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   const updateEntry = (index: number, key: keyof FormEntry, value: any) => {
     setEntries((prevEntries) => {
       const updatedEntries = [...prevEntries];
-
+  
       if (key === "quantity") {
         let numValue = Number(value.replace(/\D/g, ""));
         const selectedElement = updatedEntries[index].element;
-
-        // Correctly calculate remaining stock before updating the entry
-        const globalStock = calculateGlobalStock();
-        const availableStock = Math.max((teamPortfolio[selectedElement] || 0) - (globalStock[selectedElement] || 0), 0);
-
-        console.log("Before update:");
-        console.log("Available Stock:", availableStock);
-        console.log("Entered Quantity:", numValue);
-
-        // numValue = Math.min(numValue, availableStock);
+        
+        // Just update the entry in state (not localStorage)
         updatedEntries[index] = { ...updatedEntries[index], [key]: numValue };
-
-        console.log("After update:");
-        console.log("Updated Entries:", updatedEntries);
       } else {
         updatedEntries[index] = { ...updatedEntries[index], [key]: value };
       }
-
-      // Update localStorage
-      const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
-      allData[islandId] = updatedEntries;
-      localStorage.setItem("islandData", JSON.stringify(allData));
-
+  
       // Recalculate total quantity
       const newTotalQuantity = updatedEntries.reduce((sum, entry) => sum + (Number(entry.quantity) || 0), 0);
       setTotalQuantity(newTotalQuantity);
-      console.log('total quantity', newTotalQuantity);
-
-      // Ensure `getRemainingStock` reflects updated quantities
-      console.log("Final Available Stock:", getRemainingStock(updatedEntries[index].element));
-
-      updateData(islandId, updatedEntries);
-      calculateTotalGlobalQuantity();
+      
       return updatedEntries;
     });
   };
+  
+  
 
   const addEntry = () => {
+
+    if (!availableElements.length) {
+      toast.error("No elements available. Please wait for data to load.");
+      return;
+    }
+
     console.log('available entries',availableElements);
     console.log('entries',entries);
     setEntries((prevEntries) => {
@@ -378,7 +364,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
         ...prevEntries,
         {
           id: prevEntries.length + 1,
-          element: availableElements[0] || "Unknown",
+          element: availableElements[0],
           quantity: 0,
           transport: selectedTransport,
           batch: 1,
@@ -395,8 +381,25 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   };
 
   const saveForm = () => {
-    console.log('these are the entries',entries)
     setIsSaving(true);
+    
+    // First update all entries with the selected transport mode
+    const updatedEntries = entries.map((entry) => ({
+      ...entry,
+      transport: selectedTransport,
+    }));
+    
+    // Save to localStorage
+    const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
+    allData[islandId] = updatedEntries;
+    localStorage.setItem("islandData", JSON.stringify(allData));
+    
+    // Update parent component data
+    updateData(islandId, updatedEntries);
+    
+    // Recalculate global quantities
+    calculateTotalGlobalQuantity();
+    
     setTimeout(() => {
       setIsSaving(false);
       toast.success("Data saved successfully!");
@@ -470,21 +473,24 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       <p className="text-lg font-semibold text-gray-700">Global Total Quantity: {globalTotalQuantity}/200</p>
 
       <button
-        onClick={addEntry}
-        className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${totalQuantity >= 201 ||
-          globalTotalQuantity >= 201 ||
-          entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-700"
-          }`}
-        disabled={
-          totalQuantity >= 201 ||
-          globalTotalQuantity >= 201 ||
-          entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
-        }
-      >
-        Add Entry
-      </button>
+  onClick={addEntry}
+  className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${
+    totalQuantity >= 201 ||
+    globalTotalQuantity >= 201 ||
+    entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element))) ||
+    !availableElements.length // Add this condition
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-blue-500 hover:bg-blue-700"
+    }`}
+  disabled={
+    totalQuantity >= 201 ||
+    globalTotalQuantity >= 201 ||
+    entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element))) ||
+    !availableElements.length // Add this condition
+  }
+>
+  Add Entry
+</button>
 
       <button
       onClick={openModal}
