@@ -7,7 +7,6 @@ const Test: React.FC = () => {
     return (
         <div className="pt-64">
             {/* <Invoice /> */}
-            <Round2Form />
 
         </div>
     )
