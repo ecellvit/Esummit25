@@ -99,6 +99,7 @@
                 return NextResponse.json({ message: "Invalid insurance option" }, { status: 400 });
             }
             const insuranceCost = selectedInsurance.cost_per_batch;
+            console.log("insurance cost", insuranceCost);
             if (team.wallet < insuranceCost) {
                 return NextResponse.json({ message: "Insufficient funds for selected insurance" }, { status: 402 });
             }
