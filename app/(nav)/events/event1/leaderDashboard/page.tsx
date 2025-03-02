@@ -265,12 +265,12 @@ export default function Page() {
         <>
           <div
             className=" w-full  sm:w-3/4 lg:w-2/3 xl:w-1/2 flex flex-col items-center justify-start bg-cover opacity-100 bg-center rounded-lg "
-          // style={{
-          //   backgroundImage: `url(${background1.src})`,
-          //   backgroundSize: "cover",
-          //   backgroundPosition: "center",
-          //   backgroundColor: "rgba(255, 255, 255, 0.5)",
-          // }}
+            // style={{
+            //   backgroundImage: `url(${background1.src})`,
+            //   backgroundSize: "cover",
+            //   backgroundPosition: "center",
+            //   backgroundColor: "rgba(255, 255, 255, 0.5)",
+            // }}
           >
             <h1 className="text-2xl sm:text-4xl  font-[GreaterTheory] mb-4 pt-[10vh] text-center drop-shadow-lg text-red-700">
               {teamName || "Team Name Not Found"}
@@ -311,6 +311,7 @@ export default function Page() {
                         </button>
                       )} */}
                     </div>
+
                     {/* Right Section - Member Image */}
                     <div className="absolute right-0 top-0 w-[35%] h-full">
                       <Image
@@ -322,12 +323,27 @@ export default function Page() {
                       />
                     </div>
                   </div>
-
                 ))
               ) : (
                 <p className="text-white">No team members found.</p>
               )}
             </div>
+            {teamMembers.length > 0 && (
+              <div className="flex justify-center mt-4 w-full">
+                <button
+                  className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
+                  onClick={async () => {
+                    setLoading(true); // Set loading before the timeout
+                    setTimeout(() => {
+                      router.push("/events/event1/round0/instructions");
+                      setLoading(false); // Set loading false AFTER the navigation
+                    }, 1000);
+                  }}
+                >
+                  Attempt Quiz
+                </button>
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
               {/* Add Member Button */}
@@ -447,7 +463,9 @@ export default function Page() {
             {showModal && modalType === "changeTeamName" && (
               <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white p-4 rounded-lg shadow-lg text-center">
-                  <h2 className="text-xl font-bold mb-4 font-[GreaterTheory]">Enter New Team Name</h2>
+                  <h2 className="text-xl font-bold mb-4 font-[GreaterTheory]">
+                    Enter New Team Name
+                  </h2>
                   <input
                     type="text"
                     className="border p-2 rounded-md w-full "
@@ -455,10 +473,16 @@ export default function Page() {
                     onChange={(e) => setNewTeamName(e.target.value)}
                   />
                   <div className="flex justify-around mt-4">
-                    <button className="bg-green-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase" onClick={handleConfirmChangeTeamName}>
+                    <button
+                      className="bg-green-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase"
+                      onClick={handleConfirmChangeTeamName}
+                    >
                       Confirm
                     </button>
-                    <button className="bg-red-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase" onClick={() => setShowModal(false)}>
+                    <button
+                      className="bg-red-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase"
+                      onClick={() => setShowModal(false)}
+                    >
                       Cancel
                     </button>
                   </div>
@@ -469,21 +493,33 @@ export default function Page() {
             {showConfirmModal && (
               <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white p-4 rounded-lg shadow-lg text-center">
-                  <h2 className="text-xl font-bold mb-4 font-[GreaterTheory]">Confirm Team Name Change</h2>
-                  <p className="font-[PoppinsRegular]">Are you sure you want to change the team name to
-                    <span className="font-[GreaterTheory]">"{newTeamName}"</span>?</p>
+                  <h2 className="text-xl font-bold mb-4 font-[GreaterTheory]">
+                    Confirm Team Name Change
+                  </h2>
+                  <p className="font-[PoppinsRegular]">
+                    Are you sure you want to change the team name to
+                    <span className="font-[GreaterTheory]">
+                      "{newTeamName}"
+                    </span>
+                    ?
+                  </p>
                   <div className="flex justify-around mt-4">
-                    <button className="bg-green-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase" onClick={handleSubmitTeamNameChange}>
+                    <button
+                      className="bg-green-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase"
+                      onClick={handleSubmitTeamNameChange}
+                    >
                       Yes
                     </button>
-                    <button className="bg-red-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase" onClick={() => setShowConfirmModal(false)}>
+                    <button
+                      className="bg-red-700 text-white px-4 py-2 rounded-md font-[PoppinsRegular] uppercase"
+                      onClick={() => setShowConfirmModal(false)}
+                    >
                       No
                     </button>
                   </div>
                 </div>
               </div>
             )}
-
 
             {showModal && modalType === "chooseLeader" && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
