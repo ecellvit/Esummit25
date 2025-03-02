@@ -32,7 +32,9 @@
                 return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
             }
 
-            if(team.batch >= 4){
+            var batchNumber: number = team.batch;
+
+            if(batchNumber >= 4){
                 return NextResponse.json ({message: "Only 3 batches are allowed"}, {status: 450})
             }
 
@@ -68,6 +70,8 @@
                         trans = 1;
                     }
                 }
+
+                if(totalQuantity>200) return NextResponse.json({message:`quantity limit exceeded for batch${batchNumber}`},{status:405});
                 const batchData : round2Island = new IslandRound2({
                     teamLeaderId:user._id,
                     teamLeaderEmail: user.email,
@@ -83,11 +87,11 @@
 
 
             }
-            if (team.batch === 1) {
+            if (batchNumber === 1) {
                 team.islandBatch1 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
-            } else if (team.batch === 2) {
+            } else if (batchNumber === 2) {
                 team.islandBatch2 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
-            } else if (team.batch === 3) {
+            } else if (batchNumber === 3) {
                 team.islandBatch3 = batchArray.filter((id): id is mongoose.Schema.Types.ObjectId => id !== null);
             }        
 
@@ -102,9 +106,10 @@
                 });
             });
 
+            batchNumber++;
             team.wallet -= insuranceCost;
             team.insuranceType.push(insurance);
-            team.batch++;
+            team.batch = batchNumber;
             await team.save();
         // const elementQuantity=[0,0,0,0];
         // for(let i=0;i<entries.length;i++){
