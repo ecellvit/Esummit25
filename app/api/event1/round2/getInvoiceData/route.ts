@@ -90,7 +90,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         const batchNumber = team.batch; // 1, 2, or 3
         const batchKey = `islandBatch${batchNumber}`; // Create the key dynamically
         const islandBatch = (team as any)[batchKey]; // Typecasting team as 'any' to access the dynamic key
-        const insuranceType = team.insuranceType[batchNumber-1] ?? -1;
+        const insuranceType = team.insuranceType[batchNumber] ?? -1;
 
 
 
