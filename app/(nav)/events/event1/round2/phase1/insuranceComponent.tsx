@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 const InsuranceComponent = (props:any) => {
   const insuranceOptions = [
-    'No Insurance (Cost - 0)', 
+    'Self-Insurance (Cost - 0)', 
     'Basic Plan (Cost - 15,000)', 
     'Premium Plan (Cost - 30,000)', 
     'Platinum Plan (Cost - 60,000)'
-  ];
+];
+
 
   // Initialize selectedInsurance as a number (or null)
   // const [selectedInsurance, setSelectedInsurance] = useState<number | null>(null);

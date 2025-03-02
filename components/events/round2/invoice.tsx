@@ -72,7 +72,7 @@ const Invoice: React.FC = () => {
         setBatchNumber(data.batchNumber);
         const batchKey = `totalBatch${data.batchNumber}`;
         setInvoiceData(data[batchKey] || []);
-        const insurance = insurances.find((ins) => ins.id === data.insuranceType[0]);
+        const insurance = insurances.find((ins) => ins.id === data.insuranceType);
         if (insurance) {
           setInsuranceCost(insurance.cost_per_batch);
           setInsuranceType(insurance.type);
@@ -84,7 +84,7 @@ const Invoice: React.FC = () => {
   }, []);
 
   const getElementName = (index: number) => {
-    const element = elements.find((el) => el.id === index);
+    const element = elements[index];
     return element ? element.name : "Unknown";
   };
 
@@ -93,27 +93,26 @@ const Invoice: React.FC = () => {
     return island ? island.market : "Unknown";
   };
 
-  const getTransportCost = (islandId: number, transport: number, quantity: number) => {
+  const getTransportCost = (islandId: number, transport: number, quantity: number, index: number) => {
     const island = islands.find((is) => is.id === islandId);
-    if (!island) return 0;
+    const element = elements[index];
+    if (!island || !element) return 0;
     const costPerTn = transport === 0 ? island.air_transport_cost_per_tn : island.water_transport_cost_per_tn;
     return costPerTn * quantity;
   };
 
   const invoiceItems = invoiceData.flatMap((item) =>
-    item.elements
-      .map((quantity, index) =>
-        quantity > 0
-          ? {
-              destination: getIslandName(item.destination),
-              element: getElementName(index),
-              quantity: quantity,
-              cost: getTransportCost(item.destination, item.transport, quantity),
-              transport: item.transport === 0 ? "Air" : "Water",
-            }
-          : null
-      )
-      .filter(Boolean)
+    item.elements.map((quantity, index) =>
+      quantity > 0
+        ? {
+            destination: getIslandName(item.destination),
+            element: getElementName(index),
+            quantity: quantity,
+            cost: getTransportCost(item.destination, item.transport, quantity, index),
+            transport: item.transport === 0 ? "Air" : "Water",
+          }
+        : null
+    ).filter(Boolean)
   );
 
   const totalCost = invoiceItems.reduce((sum, item: any) => sum + item.cost, 0) + insuranceCost;
@@ -143,9 +142,15 @@ const Invoice: React.FC = () => {
           ))}
         </tbody>
       </table>
-      <div className="mt-4 text-right font-bold text-lg">Insurance Type: {insuranceType}</div>
-      <div className="mt-2 text-right font-bold text-lg">Insurance Cost: ₹{insuranceCost.toLocaleString()}</div>
-      <div className="mt-2 text-right font-bold text-lg">Total Cost: ₹{totalCost.toLocaleString()}</div>
+      <div className="mt-4 text-right font-bold text-lg">
+        Insurance Type: {insuranceType || "Not Available"}
+      </div>
+      <div className="mt-2 text-right font-bold text-lg">
+        Insurance Cost: ₹{insuranceCost.toLocaleString()}
+      </div>
+      <div className="mt-2 text-right font-bold text-lg">
+        Total Cost: ₹{totalCost.toLocaleString()}
+      </div>
     </div>
   );
 };
