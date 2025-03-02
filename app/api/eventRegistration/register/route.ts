@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Already registered for the event." }, { status: 407 });
     }
 
-    if(parsedNumber!=2 && parsedNumber!=5 && parsedNumber!=4){
+    if(parsedNumber!=2 && parsedNumber!=5){
       return NextResponse.json({message:"Registration's closed"},{status:407});
     }
     // const eventLimit = eventLimits[parsedNumber];
