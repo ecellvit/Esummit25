@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/user.model";
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model";
+import CurrentPageModel from "@/models/event1/currentPage.model";
 
 export async function POST(request: Request): Promise<NextResponse> {
     await dbConnect();
@@ -48,6 +49,24 @@ export async function POST(request: Request): Promise<NextResponse> {
         if (team.hasUpgraded) {
             return NextResponse.json({ message: "Upgrade already used. Cannot upgrade again." }, { status: 403 });
         }
+
+        const currentPage = await CurrentPageModel.findOne({ creator: true });
+        if (!currentPage) {
+          return NextResponse.json({ success: false, message: "Current page not found" }, { status: 404 });
+        }
+    
+        const startTime = new Date(currentPage.startedAt).getTime();
+        const currentTime = Date.now();
+    
+        const timePassed = Math.floor((currentTime - startTime) / 1000);
+    
+        if (currentPage.round !== 1 || currentPage.page !== 3) {
+          return NextResponse.json({ success: false, message: "This round is over." }, { status: 403 });
+        }
+    
+        if (currentPage.round === 1 && currentPage.page === 3 && timePassed > 5 * 60) {
+          return NextResponse.json({ success: false, message: "Time limit for this round has passed" }, { status: 403 });
+        }    
 
         // Parse request body
         const body = await request.json();

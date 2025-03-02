@@ -6,6 +6,7 @@ import { Users } from "@/models/user.model";
 import MarketModel from "@/models/event1/CommonInfo.model"; // Adjust the import path as needed
 import TeamModelRound1 from "@/models/event1/event1Round1Team.model"; // Adjust the import path as needed
 import calculateMarketPrice from "@/utils/calculateMarketPrice";
+import CurrentPageModel from "@/models/event1/currentPage.model";
 
 // Sell Route Handler
 export async function POST(request: Request): Promise<NextResponse> {
@@ -33,6 +34,15 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     if (user.event1TeamRole !== 0) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const currentPage = await CurrentPageModel.findOne({ creator: true });
+    if (!currentPage) {
+      return NextResponse.json({ success: false, message: "Current page not found" }, { status: 404 });
+    }
+
+    if (!currentPage.sellingStarted) {
+      return NextResponse.json({ success: false, message: "Selling has not started." }, { status: 403 });
     }
 
     let totalValue = 0;

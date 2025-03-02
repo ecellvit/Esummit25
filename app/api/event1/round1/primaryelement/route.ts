@@ -103,6 +103,7 @@ import TeamModelRound1 from "@/models/event1/event1Round1Team.model"; // Adjust 
 import MarketModel from "@/models/event1/CommonInfo.model";
 import resourceData from '@/constant/round1/element.json'
 import calculateMarketPrice from "@/utils/calculateMarketPrice";
+import CurrentPageModel from "@/models/event1/currentPage.model";
 
 export async function POST(request: Request): Promise<NextResponse> {
     await dbConnect();
@@ -154,6 +155,24 @@ export async function POST(request: Request): Promise<NextResponse> {
             console.log("Invalid ID or Rate:", id, rate);
             return NextResponse.json({ message: "id and rate are required" }, { status: 400 });
         }
+
+        const currentPage = await CurrentPageModel.findOne({ creator: true });
+        if (!currentPage) {
+          return NextResponse.json({ success: false, message: "Current page not found" }, { status: 404 });
+        }
+    
+        const startTime = new Date(currentPage.startedAt).getTime();
+        const currentTime = Date.now();
+    
+        const timePassed = Math.floor((currentTime - startTime) / 1000);
+    
+        if (currentPage.round !== 1 || currentPage.page !== 1) {
+          return NextResponse.json({ success: false, message: "This round is over." }, { status: 403 });
+        }
+    
+        if (currentPage.round === 1 && currentPage.page === 1 && timePassed > 10 * 60) {
+          return NextResponse.json({ success: false, message: "Time limit for this round has passed" }, { status: 403 });
+        }    
 
         const element = resourceData.find(el => el.id === id);
         if (!element) {
