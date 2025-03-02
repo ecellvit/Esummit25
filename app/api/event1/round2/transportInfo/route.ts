@@ -51,6 +51,7 @@ export async function GET(): Promise<NextResponse> {
         else if(batchNumber===2) batchData = team.islandBatch2 ;
         else if(batchNumber===3) batchData = team.islandBatch3 ;
         console.log(batchData);
+        var maxTime = 0;
         for(let i=0;i<batchData.length;i++){
             if(batchData[i]){
                 const islands = await IslandRound2.findOne({ _id: batchData[i] });
@@ -58,7 +59,9 @@ export async function GET(): Promise<NextResponse> {
                 var time : number;
                 if(islands?.modeOfTransport===0) time = ele["air_travel_time_secs"];
                 else time = ele["water_travel_time_secs"];
-
+                if (time > maxTime) {
+                    maxTime = time;
+                }
                 const data: transport={
                     batch: batchNumber,
                     mode: islands?.modeOfTransport === 0 ? "plane" : "ship",
@@ -73,6 +76,7 @@ export async function GET(): Promise<NextResponse> {
         return NextResponse.json({
             message: "Data fetched successfully",
             dataArray,
+            maxTime,
         }, { status: 200 });
     } catch (error) {
         console.error("Error fetching data:", error);
