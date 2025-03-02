@@ -280,7 +280,7 @@ export default function Page() {
             {/* <button className="btn-primary btn-secondary font-[PoppinsRegular] uppercase  bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2" onClick={handleChangeTeamName} >
               Edit Team Name
             </button> */}
-            <div className="flex flex-grow flex-wrap flex-col items-center overflow-scroll  rounded-lg mt-4 p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl px-8 py-10">
               {teamMembers.length > 0 ? (
                 teamMembers.map((member, index) => (
                   <div
