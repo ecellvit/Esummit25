@@ -17,7 +17,6 @@ const islandResourceSchema: Schema = new Schema({
   teamLeaderId: {
     type: Schema.Types.ObjectId,
     ref: "Users",
-    required: [true, "Team leader is required"],
   },
   teamLeaderName: {
     type: String,
@@ -26,7 +25,6 @@ const islandResourceSchema: Schema = new Schema({
   teamLeaderEmail: {
     type: String,
     required: [true, "Team leader email is required"],
-    unique: true,
   },
   resourcesAvailable: {
     type: [Number],
