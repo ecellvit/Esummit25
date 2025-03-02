@@ -106,17 +106,11 @@ export async function POST(request: Request): Promise<NextResponse> {
       batchArray[idx] = batchData._id as mongoose.Schema.Types.ObjectId;
     }
     if (batchNumber === 1) {
-      team.islandBatch1 = batchArray.filter(
-        (id): id is mongoose.Schema.Types.ObjectId => id !== null
-      );
+      team.islandBatch1 = batchArray;
     } else if (batchNumber === 2) {
-      team.islandBatch2 = batchArray.filter(
-        (id): id is mongoose.Schema.Types.ObjectId => id !== null
-      );
+      team.islandBatch2 = batchArray;
     } else if (batchNumber === 3) {
-      team.islandBatch3 = batchArray.filter(
-        (id): id is mongoose.Schema.Types.ObjectId => id !== null
-      );
+      team.islandBatch3 = batchArray;
     }
 
     batchArray.forEach((batchId, index) => {
