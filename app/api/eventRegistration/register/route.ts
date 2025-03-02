@@ -7,8 +7,8 @@ import { authOptions } from '@/lib/authOptions';
 const eventLimits = [
   { limit: Infinity, deadline: new Date('2025-03-01T12:00:00Z') },
   { limit: 1400, deadline: null },
-  { limit: 600, deadline: null },
-  { limit: 600, deadline: null },
+  { limit: 800, deadline: null },
+  { limit: 900, deadline: null },
   { limit: Infinity, deadline: null },
 ];
 
@@ -49,6 +49,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Already registered for the event." }, { status: 407 });
     }
 
+    if(parsedNumber!=2 && parsedNumber!=5 && parsedNumber!=4){
+      return NextResponse.json({message:"Registration's closed"},{status:407});
+    }
     // const eventLimit = eventLimits[parsedNumber];
     // if (eventLimit.deadline && new Date() > eventLimit.deadline) {
     //   return NextResponse.json({ message: "Registration deadline has passed." }, { status: 403 });
