@@ -1,12 +1,15 @@
 'use client'
 
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Loader from '@/components/loader';
 
 const WaitingPage: FC = () => {
   const router=useRouter();
+  const [loading, setLoading] = useState<Boolean>(true);
 
   const fetchRoundData = async () => {
+    setLoading(true);
     const response1 = await fetch("/api/event1/getPageDetails", { method: "GET" });
     const response2 = await fetch("/api/event1/userInfo", { method: "GET" });
 
@@ -36,6 +39,7 @@ const WaitingPage: FC = () => {
     } else {
       router.refresh();
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -44,6 +48,7 @@ const WaitingPage: FC = () => {
 
   return (
     <main className="text-white flex justify-center items-center h-screen z-10">
+      {loading && <Loader />}
       <div className="border p-10 bg-red-800 rounded-xl flex flex-col items-center w-5/6 text-center">
         <h1 className="text-2xl p-6 leading-3 font-[PoppinsSemibold]">
           Congratulations on completing this Phase of First Round!
