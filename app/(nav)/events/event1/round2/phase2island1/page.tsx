@@ -7,6 +7,7 @@ import island2 from "/assets/round2/island2.svg";
 import island3 from "/assets/round2/island3.svg";
 import island4 from "/assets/round2/island4.svg";
 import Round2Form from "@/components/events/round2/component";
+import Island1Invoice from "@/components/events/round2/island1Invoice";
 
 type FormEntry = {
     id: number;
@@ -63,6 +64,7 @@ export default function Island1Page() {
 
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex items-center justify-center">
+            <Island1Invoice data={data} />
             <div className="flex space-x-8 w-1/2">
                 <div
                     className="bg-white p-8 rounded-lg shadow-lg text-center w-1/2 h-60 flex flex-col items-center justify-center border border-gray-300 cursor-pointer"
@@ -81,8 +83,7 @@ export default function Island1Page() {
                 <div className="absolute bg-white p-10 rounded-lg shadow-xl flex flex-col items-center w-80 h-40 border border-gray-400">
                     <p className="mb-6 text-lg font-semibold">Are you sure?</p>
                     <div className="flex space-x-6">
-
-                    <button
+                        <button
                             className="px-8 py-3 bg-red-500 text-white rounded-lg text-lg font-bold"
                             onClick={() => setSelectedBox(null)}
                         >
@@ -94,7 +95,6 @@ export default function Island1Page() {
                         >
                             Confirm
                         </button>
-                       
                     </div>
                 </div>
             )}
