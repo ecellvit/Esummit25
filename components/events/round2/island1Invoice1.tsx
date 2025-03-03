@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { calculatePrice } from "./priceUtils"; // Import the utility function
 
 const invoiceData = [
   { metal: "Lithium", marketPrice: 1970 },
@@ -54,37 +55,14 @@ const Island1Invoice = () => {
     fetchData();
   }, []);
 
-  // Function to calculate the adjusted market price
-  const calculatePrice = (price: number): number => {
-    if (count === null) return price;
-
-    let increasePercentage = 0;
-
-    switch (count) {
-      case 12:
-        increasePercentage = 20;
-        break;
-      case 11:
-        increasePercentage = 18;
-        break;
-      case 10:
-        increasePercentage = 16;
-        break;
-      case 9:
-        increasePercentage = 14;
-        break;
-      default:
-        increasePercentage = 0;
-    }
-
-    const adjustedPrice = Math.round(price * (1 + increasePercentage / 100));
-    console.log(`Original Price: ${price}, Adjusted Price: ${adjustedPrice}`); // Log prices
-    return adjustedPrice;
-  };
-
   // Determine if the count is within the range 9-12
   const shouldApplyIncrease = count !== null && count >= 9 && count <= 12;
-  console.log("Should apply increase:", shouldApplyIncrease); // Log this condition
+
+  // Extract the market prices from invoiceData
+  const marketPrices = invoiceData.map((item) => item.marketPrice);
+
+  // Calculate adjusted prices (returns an array)
+  const adjustedPrices = calculatePrice(marketPrices, count);
 
   return (
     <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
@@ -107,7 +85,10 @@ const Island1Invoice = () => {
               <tr key={index} className="text-center">
                 <td className="border p-2">{item.metal}</td>
                 <td className="border p-2">
-                  ₹{shouldApplyIncrease ? calculatePrice(item.marketPrice).toLocaleString() : item.marketPrice.toLocaleString()}
+                  ₹
+                  {shouldApplyIncrease
+                    ? adjustedPrices[index].toLocaleString() // Use adjusted price
+                    : item.marketPrice.toLocaleString()} {/* Use original price */}
                 </td>
               </tr>
             ))}

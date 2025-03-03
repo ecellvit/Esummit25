@@ -33,7 +33,7 @@ export async function GET(request: Request): Promise<NextResponse> {
             teamLeaderEmail: user.email,
             modeOfTransport: 1
         });
-        const count = 12;
+        const count = 1;
         // Return the count in the response
         return NextResponse.json(
             { success: true, message: "Count calculated successfully", count },
