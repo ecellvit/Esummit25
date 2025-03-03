@@ -98,6 +98,8 @@ export async function POST(request: Request): Promise<NextResponse> {
         modeOfTransport: trans,
         elementQuantity,
         totalQuantity: totalQuantity,
+        batch:batchNumber,
+        insurance,
         startTime: Date.now(),
         island:indexes[i],
       });

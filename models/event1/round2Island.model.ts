@@ -5,6 +5,8 @@ export interface round2Island extends Document {
     teamLeaderEmail: string;
     cost: number;
     island:number;
+    batch:number;
+    insurance:number;
     startTime: Date;
     endTime: Date;
     modeOfTransport: number;
@@ -38,6 +40,14 @@ const TeamSchema: Schema<round2Island> = new Schema(
 
         },
         modeOfTransport: {
+            type: Number,
+        },
+        
+        batch: {
+            type: Number,
+        },
+        
+        insurance: {
             type: Number,
         },
         totalQuantity: {
