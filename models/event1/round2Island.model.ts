@@ -12,6 +12,7 @@ export interface round2Island extends Document {
     modeOfTransport: number;
     totalQuantity: number;
     elementQuantity: number[];
+    calamityHit: boolean;
 }
 
 const TeamSchema: Schema<round2Island> = new Schema(
@@ -37,16 +38,13 @@ const TeamSchema: Schema<round2Island> = new Schema(
         },
         endTime: {
             type: Date,
-
         },
         modeOfTransport: {
             type: Number,
         },
-        
         batch: {
             type: Number,
         },
-        
         insurance: {
             type: Number,
         },
@@ -57,7 +55,10 @@ const TeamSchema: Schema<round2Island> = new Schema(
             type: [Number],
             default:[],
         },
-        
+        calamityHit: {
+            type: Boolean,
+            default: false,
+        }
     },
     { collection: "TeamsEvent1Round2" , timestamps:true}
 );
