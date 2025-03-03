@@ -101,8 +101,74 @@ export default function Island1Page() {
                     <h2 className="text-3xl font-extrabold text-black">Local</h2>
                 </div>
             </div>
-            {dropdownVisible && selectedBox && (
+            {dropdownVisible && selectedBox === "local" && (
                 <div className="mt-2 w-3/4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
+                    <table className="w-full border-collapse border border-gray-400">
+                        <tbody>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Setup Time</th>
+                                <td className="border border-gray-400 p-2">Rate: 40 tn/min</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Processing Cost</th>
+                                <td className="border border-gray-400 p-2">High</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Efficiency</th>
+                                <td className="border border-gray-400 p-2">Lower</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Pros</th>
+                                <td className="border border-gray-400 p-2">Quick Processing, No setup needed</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Cons</th>
+                                <td className="border border-gray-400 p-2">Expensive per ton, Lower efficiency for non-primary resources</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div className="flex justify-center space-x-4 mt-4">
+                        <button 
+                            onClick={handleCancel}
+                            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-bold"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            onClick={handleConfirm}
+                            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all font-bold"
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            )}
+            {dropdownVisible && selectedBox === "own" && (
+                <div className="mt-2 w-3/4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
+                    <table className="w-full border-collapse border border-gray-400">
+                        <tbody>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Setup Time</th>
+                                <td className="border border-gray-400 p-2">Rate: 30 tn/min</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Processing Cost</th>
+                                <td className="border border-gray-400 p-2">Low</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Efficiency</th>
+                                <td className="border border-gray-400 p-2">Higher</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Pros</th>
+                                <td className="border border-gray-400 p-2">Cost-effective, More efficient</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Cons</th>
+                                <td className="border border-gray-400 p-2">Setup delay, Requires upfront investment</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <div className="flex justify-center space-x-4 mt-4">
                         <button 
                             onClick={handleCancel}
@@ -133,3 +199,4 @@ export default function Island1Page() {
         </div>
     );
 }
+ 
