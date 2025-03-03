@@ -251,7 +251,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                           onClick={() =>
                             session?.user.events?.includes(idx + 1)
                         ? handleDeregister(idx + 1)
-                        : idx===0 ? toast.error("Registrations are closed"):handleRedirect(idx + 1)
+                        : (idx===0 || idx===2 || idx===3) ? toast.error("Registrations are closed"):handleRedirect(idx + 1)
                           }
                         >
                           {loadingEventId === idx + 1 ? (
@@ -259,7 +259,7 @@ const MobileSchedule = ({ images }: { images: any[] }) => {
                           ) : session?.user.events?.includes(idx + 1) ? (
                             "Deregister"
                           ) : (
-                            idx===0 ?"Registration Closed":"Register"
+                            (idx===0 || idx===2 || idx===3) ?"Registration Closed":"Register"
                           )}
                         </button>
                       )}
