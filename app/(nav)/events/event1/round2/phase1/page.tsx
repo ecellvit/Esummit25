@@ -14,6 +14,7 @@ import InsuranceComponent from "./insuranceComponent";
 import Loader from "@/components/loader";
 import { set } from "mongoose";
 import toast, { Toaster } from "react-hot-toast";
+import { initializeSocket, socket } from "@/socket";
 
 type FormEntry = {
   id: number;
@@ -222,12 +223,68 @@ export default function Testing() {
     toast.success("Invoice saved successfully!");
   };
 
+  const onCalamityUpdate = (island: number) => {
+    console.log(`Calamity occurred on island ${island}!`);
+    // Update UI or perform any necessary actions here
+  }
+
+  const [socketLoading, setSocketLoading] = useState<boolean>(true);
+
+  // Socket Setup
+  useEffect(() => {
+    // Initial connection status check
+    console.log("Socket connection status:", socket.connected);
+
+    if (socket.connected) {
+      setSocketLoading(false);
+      onConnect();
+    }
+
+    async function setupSocket() {
+      const result = await initializeSocket();
+
+      if (!result.success) {
+        setSocketLoading(true);
+        setupSocket();
+      }
+
+      setSocketLoading(false);
+    }
+
+    if (!socket.connected) {
+      setupSocket();
+    }
+
+    function onConnect() {
+      socket.io.engine.on("upgrade", (transport) => {
+        console.log("upgrade ::", transport.name);
+      });
+    }
+
+    function onDisconnect(reason: string) {
+      console.warn("Socket disconnected:", reason);
+      if (reason === "ping timeout" || reason === "transport error") {
+        socket.connect(); // Try reconnecting manually
+      }
+    }
+
+    socket.on("connect", onConnect);
+    socket.on("calamityUpdate", onCalamityUpdate);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.on("calamityUpdate", onCalamityUpdate);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, [socket.connected]);
+
   return (
     <div
       className="relative w-full h-full min-h-screen"
     >
       {/* Center Island */}
-      {loading && <Loader />}
+      {(loading || socketLoading) && <Loader />}
       <Image
         src={island0}
         alt="island0"
