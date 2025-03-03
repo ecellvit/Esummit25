@@ -8,6 +8,8 @@ import island3 from "/assets/round2/island3.svg";
 import island4 from "/assets/round2/island4.svg";
 import Round2Form from "@/components/events/round2/component";
 import Island2Invoice from "@/components/events/round2/island2Invoice";
+import resourceData from "@/constant/round1/element.json";
+import { useRouter } from "next/navigation";
 
 type FormEntry = {
     id: number;
@@ -20,9 +22,12 @@ type FormEntry = {
 
 export default function Island1Page() {
     const islandId = "island2";
+    const router = useRouter();
     const [data, setData] = useState<FormEntry[]>([]);
     const [selectedBox, setSelectedBox] = useState<"setup" | "local" | null>(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [portfolio, setPortfolio] = useState<number[]>([0, 0, 0, 0, 0]);
+    const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
 
     useEffect(() => {
         const savedData = localStorage.getItem("islandData");
@@ -40,6 +45,14 @@ export default function Island1Page() {
             window.history.back();
         }, 500);
     };
+    const handleConfirm = () => {
+        if (selectedBox === "setup") {
+            console.log("setup");
+        } else if (selectedBox === "local") {
+            console.log("locally");
+        }
+        setDropdownVisible(false);
+    };
 
     const handleBoxClick = (box: "setup" | "local") => {
         setSelectedBox(box);
@@ -48,47 +61,71 @@ export default function Island1Page() {
 
     const handleCancel = () => {
         setDropdownVisible(false);
-        setSelectedBox(null); // Reset selection to restore original colors
+        setSelectedBox(null); // Reset the selected box to white
     };
-    
+    const getPageData = async () => {
+        // setLoading(true);
+        try {
+            const response = await fetch("/api/event1/getPageDetails", {
+                method: "GET",
+            });
 
-    const handleConfirm = async () => {
-        if (selectedBox) {
-            const refineryType = selectedBox;
-            const islandNumber = 0;
-            try {
-                const response = await fetch(`/api/event1/round2/setRefineryData?islandNumber=${islandNumber}&refineryData=${refineryType}`, {
-                    method: "GET", // GET requests should not have a body
-                    headers: {
-                        "Content-Type": "application/json",
+            if (response.status === 200) {
+                const { round, page, startedAt } = await response.json();
+
+                // Convert startedAt (ISO format) to timestamp
+                const startTime = new Date(startedAt).getTime();
+                const currentTime = Date.now();
+
+                if (
+                    (
+                        round !== 2 ||
+                        page !== 2 ||
+                        currentTime - startTime > 25 * 60 * 1000
+                    )
+                ) {
+                    if (round >= 2 && page > 2) {
+                        // toast.error("This phase is over.");
+                    } else {
+                        // toast.error("This phase has not started yet.");
                     }
-                });
-    
-                if (response.ok) {
-                    console.log(`Request sent successfully for ${refineryType}`);
-                    await fetch(`/api/event1/round2/setRefineryClick`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ islandNumber }),
-                    });
+                    router.push(`/events/event1/round2/waiting`);
+                    return;
                 } else {
-                    console.error("Failed to send request");
+                    try {
+                        const response = await fetch("/api/event1/userInfo", {
+                            method: "GET",
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            const team = data?.team;
+                            if (team.setup === 0 || team.setup === 1) {
+                                setSetupCompleted(true);
+                            }
+                        } else {
+                            console.log("bad response", response.status);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
                 }
-            } catch (error) {
-                console.error("Error while sending request:", error);
+            } else {
+                router.refresh();
+                console.log(response);
             }
+        } catch (err) {
+            console.log("first fetch failed");
+        } finally {
+            // setLoading(false);
         }
-        setDropdownVisible(false);
     };
-    
 
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
             <div className="mt-36"> 
                 <Island2Invoice data={data} />
             </div>
+            {!setupCompleted &&
             <div className="mt-10 flex space-x-8 w-1/2 justify-center">
                 <div
                     className={`p-8 rounded-lg shadow-lg text-center w-1/2 h-16 flex items-center justify-center border border-gray-300 cursor-pointer transition-all ${
@@ -107,29 +144,30 @@ export default function Island1Page() {
                     <h2 className="text-3xl font-extrabold">Local</h2>
                 </div>
             </div>
-            {dropdownVisible && selectedBox && (
+             }
+            {dropdownVisible && selectedBox &&(
                 <div className="mt-2 w-3/4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
                     <table className="w-full border-collapse border border-gray-400">
                         <tbody>
-                            <tr>
+                        <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Setup Time</th>
-                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Rate: 10 tn/min" : "Rate: 13 tn/min"}</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "local" ? "Rate: 13 tn/min" : "Rate: 10 tn/min"}</td>
                             </tr>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Processing Cost</th>
-                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Low" : "High"}</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "local" ? "High" : "Low"}</td>
                             </tr>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Efficiency</th>
-                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Higher" : "Lower"}</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "local" ? "Lower" : "Higher"}</td>
                             </tr>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Pros</th>
-                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Cost-effective, More efficient" : "Quick Processing, No setup needed"}</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "local" ? "Quick Processing, No setup needed" : "Cost-effective, More efficient"}</td>
                             </tr>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Cons</th>
-                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Setup delay, Requires upfront investment" : "Expensive per ton, Lower efficiency for non-primary resources"}</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "local" ? "Expensive per ton, Lower efficiency for non-primary resources" : "Setup delay, Requires upfront investment"}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -149,6 +187,35 @@ export default function Island1Page() {
                     </div>
                 </div>
             )}
+             {setupCompleted &&
+            <div className="w-1/3 bg-white px-20 py-10 mt-10 rounded-xl">
+                <h2
+                    className="text-2xl font-bold text-black text-center uppercase tracking-wider"
+                    style={{ fontFamily: "GreaterTheory" }}
+                >Resources</h2>
+                <table className="w-full border-collapse border-2 border-black"
+                    style={{ fontFamily: "poppins" }}>
+                    <thead>
+                        <tr className="bg-black">
+                            <th className="border-2 border-black px-4 py-2 justify-evenly text-white">
+                                RESOURCE NAME
+                            </th>
+                            <th className="border-2 border-black px-4 py-2 justify-evenly text-white">
+                                QUANTITY
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {resourceData.map((resource, index) => (
+                            <tr key={index} className="bg-white">
+                                <td className="border-2 border-black px-4 py-2">{resource.name}</td>
+                                <td className="border-2 border-black px-4 py-2">{portfolio[index] ?? 0}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            }
             <div className="bottom-4 left-1/2 transform flex justify-center mt-8">
                 <button
                     onClick={handleGoBack}
