@@ -222,13 +222,6 @@ export default function Testing() {
 
   const handleConfirmPurchase = async () => {
     if (selectedResource) {
-      console.log("Purchase confirmed:", {
-        id: selectedResource.id,
-        resource: selectedResource.name,
-        cost: selectedResource.cost,
-        rate: selectedResource.rate,
-      });
-
       setLoading(true);
       //? SEND THE AXIOS QUERY
       try {

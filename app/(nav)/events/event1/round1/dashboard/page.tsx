@@ -41,7 +41,6 @@ const fetchMarketData = async () => {
         const response = await axios.get('/api/event1/round1/getMarketInfo');
         if (response.status === 200) {
             const { marketData } = response.data;
-            console.log(marketData);
             if (marketData && Array.isArray(marketData)) {
                 marketData.forEach(item => {
                     const elementIndex = data.findIndex(element => element.id === item.elementId);
@@ -125,8 +124,6 @@ const Dashboard: React.FC = () => {
         } else {
             router.refresh();
         }
-
-        console.log(showSell);
     }
 
     // Socket helper functions
@@ -155,11 +152,9 @@ const Dashboard: React.FC = () => {
                 }
             })
         );
-        console.log(data);
     };
 
     const onPortfolioUpdate = (data: { portfolio: number[] }) => {
-        console.log(data);
         setPortfolio(data.portfolio);
     };
 
@@ -172,7 +167,6 @@ const Dashboard: React.FC = () => {
             setMarketData(marketData);
 
             const portfolioData = await fetchPortfolioData();
-            console.log(portfolioData);
             if (portfolioData) {
                 setPortfolio(portfolioData);
             }
