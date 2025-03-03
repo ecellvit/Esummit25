@@ -63,7 +63,7 @@ export async function GET(): Promise<NextResponse> {
                     maxTime = time;
                 }
                 const data: transport={
-                    batch: batchNumber,
+                    batch: batchNumber-1,
                     mode: islands?.modeOfTransport === 0 ? "plane" : "ship",
                     island: i+1,
                     time,

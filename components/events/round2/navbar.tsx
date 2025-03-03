@@ -102,7 +102,7 @@ const Navbar = () => {
       </div>
       {showInvoice && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl min-w-fit text-center transform transition-all duration-300 scale-105 flex flex-col items-center justify-center">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl min-w-fit text-center transform transition-all duration-300 scale-105 flex flex-col justify-end -mb-96">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Invoice Details</h2>
             <div className="mb-6 text-gray-600 text-left ">
               <Invoice />
