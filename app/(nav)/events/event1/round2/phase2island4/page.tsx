@@ -114,7 +114,7 @@ export default function Island1Page() {
                         if (response.ok) {
                             const data = await response.json();
                             const team = data?.team;
-                            if (team.setup === 0 || team.setup === 1) {
+                            if (team.setup[3] === 0 || team.setup[3] === 1) {
                                 setSetupCompleted(true);
                             }
                         } else {
