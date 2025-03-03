@@ -1,9 +1,6 @@
 import React from "react";
 
 const invoiceData = [
-  {
-    island: "Delos",
-    metals: [
       {
         name: "Nickel",
         marketPrice: 2600,
@@ -24,35 +21,31 @@ const invoiceData = [
         name: "Iron",
         marketPrice: 1516,
       },
-    ],
-  },
 ];
 
 const island2Invoice = (props:any) => {
   return (
     <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
-      <h2 className="text-xl font-bold mb-4 text-center">Invoice</h2>
-      {invoiceData.map((islandData, index) => (
-        <div key={index} className="mb-6">
-          <h3 className="text-lg font-semibold mb-2">{islandData.island}</h3>
-          <table className="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border p-2">Metal</th>
-                <th className="border p-2">Market Price (₹)</th>
+      <h2 className="text-xl font-bold mb-4 text-center">Invoice - Island Delos</h2>
+      <table className="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="border p-2">Metal</th>
+            <th className="border p-2">Market Price (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {invoiceData.map((item, index) => {
+
+            return (
+              <tr key={index} className="text-center">
+                <td className="border p-2">{item.name}</td>
+                <td className="border p-2">₹{item.marketPrice.toLocaleString()}</td>
               </tr>
-            </thead>
-            <tbody>
-              {islandData.metals.map((metal, metalIndex) => (
-                <tr key={metalIndex} className="text-center">
-                  <td className="border p-2">{metal.name}</td>
-                  <td className="border p-2">₹{metal.marketPrice}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };

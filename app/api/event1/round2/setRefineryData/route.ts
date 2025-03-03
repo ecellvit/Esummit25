@@ -50,7 +50,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         const islandRefineryData = (refineryData as Record<string, any>)[islandNumber];
         if (islandRefineryData && islandRefineryData[index]) {
           const cost =
-            refineryType === "own"
+            refineryType === "setup"
               ? islandRefineryData[index]["Total Own Cost"]
               : islandRefineryData[index]["Total Local Cost"];
           totalAmount += resource * cost;
@@ -69,7 +69,7 @@ export async function GET(request: Request): Promise<NextResponse> {
 
     
     var check;
-    if(refineryType==="own"){
+    if(refineryType==="setup"){
       check = 0
     }else check=1
     team.wallet -= totalAmount;
