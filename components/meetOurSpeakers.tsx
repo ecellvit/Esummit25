@@ -174,7 +174,7 @@ const MeetOurSpeakers: React.FC = () => {
         className="absolute top-[50vh] h-[100vh] w-full flex items-center justify-center rounded-t-3xl bg-gradient-to-b from-[#510D0D] to-[#C72423] z-10"
       >
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 p-7 md:p-3 lg:p-0 w-[90%] mx-auto">
-          {[s1, s2, s3, s4, s5, s6, s7, s8, s9, s10].map((speaker, index) => (
+          {[s2, s3, s4, s5, s6].map((speaker, index) => (
             <div key={index} className="flex justify-center items-center">
               <Image src={speaker} alt={`Speaker ${index + 1}`} className="w-full h-auto object-cover"/>
             </div>
