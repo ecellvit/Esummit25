@@ -143,9 +143,6 @@ const Navbar = () => {
     
   }
 
-  const handleDashboardClick = () => {
-    router.push('/events/event1/round2/dashboard2'); 
-  };
 
   return (
     <nav
@@ -171,9 +168,6 @@ const Navbar = () => {
         </div>
         <div className="flex h-full items-center font-[GreaterTheory] text-white">
           Wallet: {walletBalance}
-        </div>
-        <div className="flex h-full items-center cursor-pointer" onClick={handleDashboardClick}>
-          <Image src={dash} alt="Dashboard" className="h-6 lg:h-8 w-auto object-contain"/>
         </div>
         <div className="h-full flex items-center cursor-pointer" onClick={handleInvoiceClick}>
           <Image
