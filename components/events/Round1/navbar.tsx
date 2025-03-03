@@ -129,7 +129,7 @@ const Navbar = () => {
 
   const onWalletUpdate = (balance: number) => {
     console.log(walletBalance)
-    setWalletBalance(balance);
+    setWalletBalance(Math.round(balance * 100) / 100);
   };
 
   return (

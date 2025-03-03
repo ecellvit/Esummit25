@@ -24,13 +24,11 @@ const WaitingPage: FC = () => {
 
   //     if ( round === 2 ) {
   //       if ( page === 0 ) {
-  //         router.push('/events/event1/round1/start');
-  //       } else if ( page === 1 && timePassed < 10 * 60 && (team.primaryElement === undefined || team.primaryElement === null)) {
-  //         router.push('/events/event1/round1/primary')
-  //       } else if ( page === 2 && timePassed < 10 * 60 && (team.secondaryElement === undefined || team.secondaryElement === null || team.lease1Element === undefined || team.lease1Element === null)) {
-  //         router.push('/events/event1/round1/lease1&secondary')
-  //       } else if ( page === 3 && timePassed < 5 * 60 && (team.lease2Element === undefined || team.lease2Element === null || !team.hasUpgraded)) {
-  //         router.push('/events/event1/round1/lease2&upgrade')
+  //         router.push('/events/event1/round2/start');
+  //       } else if ( page === 1 && timePassed < 25 * 60) {
+  //         router.push('/events/event1/round2/phase1')
+  //       } else if ( page === 2 && timePassed < 25 * 60) {
+  //         router.push('/events/event1/round2/phase2')
   //       }
   //     } else {
   //       router.push('/events/event1/leaderDashboard');
