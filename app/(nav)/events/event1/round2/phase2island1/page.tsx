@@ -7,7 +7,7 @@ import island2 from "/assets/round2/island2.svg";
 import island3 from "/assets/round2/island3.svg";
 import island4 from "/assets/round2/island4.svg";
 import Round2Form from "@/components/events/round2/component";
-import Island1Invoice from "@/components/events/round2/island1Invoice";
+import Island4Invoice from "@/components/events/round2/island1Invoice";
 
 type FormEntry = {
     id: number;
@@ -61,7 +61,7 @@ export default function Island1Page() {
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-between space-y-8 p-8">
             <div className="flex items-center text-center flex-col mt-36 w-1/2">
-            <Island1Invoice data={data} /></div>
+            <Island4Invoice data={data} /></div>
             <div className="flex justify-center space-x-8 w-full">
                 <div
                     className="bg-white p-8 rounded-lg shadow-lg text-center w-1/4 h-60 flex flex-col items-center justify-center border border-gray-300 cursor-pointer"
