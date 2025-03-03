@@ -78,24 +78,8 @@ export default function Testing() {
     }
 
     // Fetch transport data on component mount
-    const fetchTransportData = async () => {
-      try {
-        const response = await fetch('/api/event1/round2/transportInfo');
-        if (response.ok) {
-          const data = await response.json();
-          setTransportData(data.dataArray);
-          setBatchTime(data.maxTime);
-          console.log(data);
-          localStorage.removeItem("islandData");
-          console.log("Local storage cleared after successful API response.");
-        } else {
-          console.error("Failed to fetch transport data:", response.status);
-        }
-      } catch (error) {
-        console.error("Error fetching transport data:", error);
-      }
-    };
-    fetchTransportData();
+    
+    // fetchTransportData();
   }, []);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -198,6 +182,23 @@ export default function Testing() {
   };
 
   const handleConfirmDispatchYes = () => {
+    const fetchTransportData = async () => {
+      try {
+        const response = await fetch('/api/event1/round2/transportInfo');
+        if (response.ok) {
+          const data = await response.json();
+          setTransportData(data.dataArray);
+          setBatchTime(data.maxTime);
+          console.log(data);
+          localStorage.removeItem("islandData");
+          console.log("Local storage cleared after successful API response.");
+        } else {
+          console.error("Failed to fetch transport data:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching transport data:", error);
+      }
+    };
     if (transportData) {
       transportData.forEach(item => {
         const islandNumber = `island${item.island}`;
