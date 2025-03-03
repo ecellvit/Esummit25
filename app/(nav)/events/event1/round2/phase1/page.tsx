@@ -12,6 +12,7 @@ import Invoice from "@/components/events/round2/invoice";
 import Link from "next/link";
 import InsuranceComponent from "./insuranceComponent";
 import Loader from "@/components/loader";
+import { set } from "mongoose";
 
 type FormEntry = {
   id: number;
@@ -33,9 +34,18 @@ const initialState: IslandData = {
   island4: [],
 };
 
+type TransportData = {
+  batch: number;
+  mode: string;
+  island: number;
+  time: number;
+}[];
+
 export default function Testing() {
   const [islandData, setIslandData] = useState<IslandData>(initialState);
   const [loading,setLoading] = useState<boolean>(false);
+  const disabled = false;
+  const [batchTime, setBatchTime] = useState<number>(0);
   const [showPlanes, setShowPlanes] = useState({
     island1: false,
     island2: false,
@@ -48,14 +58,16 @@ export default function Testing() {
     island3: false,
     island4: false
   });
-  const startPlaneAnimation = (islandNumber: string) => {
+  const [transportData, setTransportData] = useState<TransportData | null>(null);
+  
+  const startPlaneAnimation = (islandNumber: string, duration: number) => {
     setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
-    setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), 3000);
+    setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), duration);
   };
-  const startShipAnimation = (islandNumber: string) => {
+  const startShipAnimation = (islandNumber: string, duration: number) => {
     setShowShips(prev => ({ ...prev, [islandNumber]: true }));
-    setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), 3000);
-  }
+    setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), duration);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -65,6 +77,24 @@ export default function Testing() {
       setIslandData(JSON.parse(savedData));
     }
     setLoading(false);
+
+    // Fetch transport data on component mount
+    const fetchTransportData = async () => {
+      try {
+        const response = await fetch('/api/event1/round2/transportInfo');
+        if (response.ok) {
+          const data = await response.json();
+          setTransportData(data.dataArray);
+          setBatchTime(data.maxTime);
+        } else {
+          console.error("Failed to fetch transport data:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching transport data:", error);
+      }
+    };
+
+    fetchTransportData();
   }, []);
 
   const updateData = (islandId: string, newData: FormEntry[]) => {
@@ -99,10 +129,6 @@ export default function Testing() {
   };
 
   const handleConfirmDispatchNo = () => {
-    setShowConfirmDispatch(false);
-  };
-
-  const handleConfirmDispatchYes = () => {
     setShowConfirmDispatch(false);
   };
 
@@ -141,11 +167,25 @@ export default function Testing() {
   }catch(err){
     console.log(err)
   }finally{
-    
+
     setShowInsurance(false);
     setShowInvoice(true);
     setLoading(false);
   }
+  };
+
+  const handleConfirmDispatchYes = () => {
+    if (transportData) {
+      transportData.forEach(item => {
+        const islandNumber = `island${item.island}`;
+        const duration = item.time * 1000;
+        if (item.mode === "plane") {
+          startPlaneAnimation(islandNumber, duration);
+        } else if (item.mode === "ship") {
+          startShipAnimation(islandNumber, duration);
+        }
+      });
+    }
   };
 
   return (
@@ -188,6 +228,9 @@ export default function Testing() {
               island === "island3" ? "animate-fly-to-island3" :
               "animate-fly-to-island4"
             }`}
+            style={{
+              animationDuration: transportData?.find(item => `island${item.island}` === island)?.time + 's'
+            }}
           />
         )
       )}
@@ -205,63 +248,52 @@ export default function Testing() {
               island === "island3" ? "animate-fly-to-island3" :
               "animate-fly-to-island4"
             }`}
+            style={{
+              animationDuration: transportData?.find(item => `island${item.island}` === island)?.time + 's'
+            }}
           />
         )
       )}
 
-      {/* Dispatch Buttons */}
-      <div className="absolute bottom-28 left-72 transform translate-x-1/2 flex space-x-4">
-        {[1, 2, 3, 4].map((num) => (
-          <button
-            key={num}
-            className="bg-red-500 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-            onClick={() => startPlaneAnimation(`island${num}`)}
-          >
-            {num}
-          </button>
-        ))}
+      <div className="absolute bottom-10 z-100">
+        <button
+          className="p-2 text-white font-bold rounded-lg bg-green-500 ml-8 hover:bg-green-700 w-32 text-center"
+          onClick={handleConfirmDispatchYes}
+        >
+          Dispatch
+        </button>
       </div>
-      <div className="absolute bottom-28 right-72 transform -translate-x-1/2 flex space-x-4">
-        {[1, 2, 3, 4].map((num) => (
-          <button
-            key={num}
-            className="bg-green-500 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-            onClick={() => startShipAnimation(`island${num}`)}
-          >
-            {num}
-          </button>
-        ))}
-      </div>
+
 
       {/* CSS for animations - make sure class names match exactly what's used above */}
       <style jsx global>{`
-        @keyframes flyToIsland1 {
-          from { transform: translate(-160%, -40%); }
-          to { transform: translate(-1820%, -560%); }
+        @keyframes flyToIsland1 { 
+          from { transform: translate(-200%, -50%); }
+          to { transform: translate(-1000%, -400%); }
+        }
+        .animate-fly-to-island1 {
+          animation: flyToIsland1 1s linear forwards;
         }
         @keyframes flyToIsland2 {
           from { transform: translate(200%, -50%); }
-          to { transform: translate(600%, -300%); }
-        }
-        @keyframes flyToIsland3 {
-          from { transform: translate(-150%, 60%); }
-          to { transform: translate(-760%, 240%); }
-        }
-        @keyframes flyToIsland4 {
-          from { transform: translate(150%, 50%); }
-          to { transform: translate(780%, 280%); }
-        }
-        .animate-fly-to-island1 {
-          animation: flyToIsland1 5s linear forwards;
+          to { transform: translate(650%, -250%); }
         }
         .animate-fly-to-island2 {
-          animation: flyToIsland2 3s linear forwards;
+          animation: flyToIsland2 1s linear forwards;
+        }
+        @keyframes flyToIsland3 {
+          from { transform: translate(-150%, 80%); }
+          to { transform: translate(-760%, 240%); }
         }
         .animate-fly-to-island3 {
-          animation: flyToIsland3 3s linear forwards;
+          animation: flyToIsland3 1s linear forwards;
+        }
+        @keyframes flyToIsland4 {
+          from { transform: translate(160%, 75%); }
+          to { transform: translate(780%, 280%); }
         }
         .animate-fly-to-island4 {
-          animation: flyToIsland4 3s linear forwards;
+          animation: flyToIsland4 1s linear forwards;
         }
       `}</style>
 
