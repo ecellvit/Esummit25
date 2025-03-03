@@ -5,12 +5,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from "/assets/round2/logo.svg";
 import invoice from "/assets/round2/invoice.svg";
+import dash from "@/assets/round1/home.svg";
 import Invoice from './invoice';
 import { set } from 'mongoose';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const [timeLeft, setTimeLeft] = useState(600);
   const [walletBalance, setWalletBalance] = useState(0);
+  const router = useRouter();
   const [teamName, setTeamName] = useState("Loading...");
   const [error, setError] = useState<string | null>(null);
   const [showInvoice, setShowInvoice] = useState(false);
@@ -55,10 +58,15 @@ const Navbar = () => {
   const handleInvoiceClick = () => {
     setShowInvoice(true);
   };
+ 
+
+  const handleDashboardClick = () => {
+    router.push('/events/event1/round2/dashboard2'); 
+  };
 
   return (
     <nav
-      className="fixed -top-6 left-[50%] w-[60%] lg:w-[50%] h-[8vh]
+      className="fixed -top-6 left-[50%] w-[60%] lg:w-[80%] h-[8vh]
         rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-20
         transition-transform duration-300 transform -translate-x-1/2 
          bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg mt-10"
@@ -77,6 +85,12 @@ const Navbar = () => {
         </div>
         <div className="text-white px-4 py-2 rounded-lg" style={{ fontFamily: 'GreaterTheory' }}>
           {teamName}
+        </div>
+        <div className="flex h-full items-center font-[GreaterTheory] text-white">
+          Wallet: {walletBalance}
+        </div>
+        <div className="flex h-full items-center cursor-pointer" onClick={handleDashboardClick}>
+          <Image src={dash} alt="Dashboard" className="h-6 lg:h-8 w-auto object-contain"/>
         </div>
         <div className="h-full flex items-center cursor-pointer" onClick={handleInvoiceClick}>
           <Image
