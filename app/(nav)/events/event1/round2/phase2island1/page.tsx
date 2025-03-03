@@ -10,6 +10,8 @@ import Round2Form from "@/components/events/round2/component";
 import Island2Invoice from "@/components/events/round2/island2Invoice";
 import resourceData from "@/constant/round1/element.json";
 import { useRouter } from "next/navigation";
+import { initializeSocket, socket } from "@/socket";
+import Loader from "@/components/loader";
 
 type FormEntry = {
     id: number;
@@ -28,6 +30,7 @@ export default function Island1Page() {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [portfolio, setPortfolio] = useState<number[]>([0, 0, 0, 0, 0]);
     const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
+    const [socketLoading, setSocketLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const savedData = localStorage.getItem("islandData");
@@ -166,8 +169,61 @@ export default function Island1Page() {
         getPortfolioData();
     }, []);
 
+    const onPortfolioUpdate = (data: { portfolio: number[] }) => {
+        setPortfolio(data.portfolio);
+    };
+
+    // Connect to socket server
+    useEffect(() => {
+        // Initial connection status check
+        console.log("Socket connection status:", socket.connected);
+        if (socket.connected) {
+            setSocketLoading(false);
+            onConnect();
+        }
+
+        async function setupSocket() {
+            const result = await initializeSocket();
+
+            if (!result.success) {
+                setSocketLoading(true);
+                setupSocket();
+            }
+
+            setSocketLoading(false);
+        }
+
+        if (!socket.connected) {
+            setupSocket();
+        }
+
+        function onConnect() {
+            socket.io.engine.on("upgrade", (transport) => {
+                console.log("upgrade ::", transport.name);
+            });
+        }
+
+        function onDisconnect(reason: string) {
+            console.warn("Socket disconnected:", reason);
+            if (reason === "ping timeout" || reason === "transport error") {
+                socket.connect(); // Try reconnecting manually
+            }
+        }
+
+        socket.on("connect", onConnect);
+        socket.on("portfolioUpdate", onPortfolioUpdate);
+        socket.on("disconnect", onDisconnect);
+
+        return () => {
+            socket.off("connect", onConnect);
+            socket.off("portfolioUpdate", onPortfolioUpdate);
+            socket.off("disconnect", onDisconnect);
+        };
+    }, [socket.connected]);
+
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
+            {socketLoading && <Loader />}
             <div className="mt-36"> 
                 <Island2Invoice data={data} />
             </div>
