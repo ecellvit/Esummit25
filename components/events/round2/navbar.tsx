@@ -7,16 +7,21 @@ import logo from "/assets/round2/logo.svg";
 import invoice from "/assets/round2/invoice.svg";
 import dash from "@/assets/round1/home.svg";
 import Invoice from './invoice';
-import { set } from 'mongoose';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { initializeSocket, socket } from '@/socket';
 
 const Navbar = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [timeLeft, setTimeLeft] = useState(600);
   const [walletBalance, setWalletBalance] = useState(0);
-  const router = useRouter();
   const [teamName, setTeamName] = useState("Loading...");
   const [error, setError] = useState<string | null>(null);
   const [showInvoice, setShowInvoice] = useState(false);
+
+  useEffect(() => {
+    fetchTime();
+  }, [router, pathname]);
 
   useEffect(() => {
     const fetchTeamName = async () => {
@@ -35,6 +40,30 @@ const Navbar = () => {
     };
     fetchTeamName();
   }, []);
+
+  const fetchTime = async () => {
+    const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+
+    if (response.status === 200) {
+      const { startedAt } = await response.json();
+
+      // Convert startedAt (ISO format) to timestamp
+      const startTime = new Date(startedAt).getTime();
+      const currentTime = Date.now();
+
+      const timePassed = Math.floor((currentTime - startTime) / 1000);
+
+      if (pathname === '/events/event1/round2/phase1' || pathname === '/events/event1/round2/island1' || pathname === '/events/event1/round2/island2' || pathname === '/events/event1/round2/island3' || pathname === '/events/event1/round2/island4') {
+        const timeLeft = 25 * 60 - timePassed;
+        setTimeLeft(timeLeft > 0 ? timeLeft : 0);
+      } else {
+        const timeLeft = 25 * 60 - timePassed;
+        setTimeLeft(timeLeft > 0 ? timeLeft : 0);
+      }
+    } else {
+      router.refresh();
+    }
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -55,11 +84,60 @@ const Navbar = () => {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+// Connect to socket
+  useEffect(() => {
+    // Initial connection status check
+    console.log("Socket connection status:", socket.connected);
+
+    if (socket.connected) {
+      onConnect();
+    }
+
+    async function setupSocket() {
+      const result = await initializeSocket();
+
+      if (!result.success) {
+        setupSocket();
+      }
+    }
+
+    if (!socket.connected) {
+      setupSocket();
+    }
+
+    function onConnect() {
+      socket.io.engine.on("upgrade", (transport) => {
+        console.log("upgrade ::", transport.name);
+      });
+    }
+
+    function onDisconnect(reason: string) {
+      console.warn("Socket disconnected:", reason);
+      if (reason === "ping timeout" || reason === "transport error") {
+        socket.connect(); // Try reconnecting manually
+      }
+    }
+
+    socket.on("connect", onConnect);
+    socket.on("walletUpdate", onWalletUpdate);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("walletUpdate", onWalletUpdate);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, [socket.connected]);
+
+  const onWalletUpdate = (balance: number) => {
+    console.log(walletBalance)
+    setWalletBalance(Math.round(balance * 100) / 100);
+  };
+
   const handleInvoiceClick = () => {
     setShowInvoice(true);
   };
  
-
   const handleDashboardClick = () => {
     router.push('/events/event1/round2/dashboard2'); 
   };
