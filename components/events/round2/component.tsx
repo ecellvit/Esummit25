@@ -363,10 +363,8 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       const updatedEntries = [...prevEntries];
   
       if (key === "quantity") {
-        let numValue = Number(value.replace(/\D/g, ""));
-        const selectedElement = updatedEntries[index].element;
-        
-        // Just update the entry in state (not localStorage)
+        // Convert to number and validate
+        let numValue = parseInt(value.replace(/\D/g, ""), 10) || 0;
         updatedEntries[index] = { ...updatedEntries[index], [key]: numValue };
       } else {
         updatedEntries[index] = { ...updatedEntries[index], [key]: value };

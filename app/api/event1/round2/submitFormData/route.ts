@@ -8,6 +8,7 @@ import TeamModelRound1, { round1Qualified } from "@/models/event1/event1Round1Te
 import IslandRound2, { round2Island } from "@/models/event1/round2Island.model";
 import mongoose, { Types } from "mongoose";
 import insuranceData from "@/constant/round2/insurance.json";
+import { elements } from "chart.js";
 
 export async function POST(request: Request): Promise<NextResponse> {
   await dbConnect();
@@ -38,26 +39,23 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
 
     var batchNumber: number = team.batch;
-
+    
     if (batchNumber >= 4) {
       return NextResponse.json(
         { message: "Only 3 batches are allowed" },
         { status: 450 }
       );
     }
+    var insurance : number = team.insuranceType[batchNumber-1];
 
-    const { islandData, insurance } = await request.json();
-    console.log(islandData, insurance);
+    if(insurance<0 || insurance>3) return NextResponse.json({message:"invalid insurance number"},{status:401});
+
     const islands = ["island1", "island2", "island3", "island4"];
-    const batchArray: (mongoose.Schema.Types.ObjectId | null)[] =
+    var batchArray: (mongoose.Schema.Types.ObjectId | null)[] =
       Array(4).fill(null);
-    const indexes = Object.keys(islandData).map((island) =>
-      islands.indexOf(island)
-    );
+    
 
-    if(insurance<0 || insurance>3){
-      return NextResponse.json({ message: "Insurance value should be between 0 and 3"},{status:401})
-    }
+    
 
     const selectedInsurance = insuranceData[insurance];
     if (!selectedInsurance) {
@@ -74,68 +72,70 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
-    console.log(indexes);
 
-    let trans;
-    for (let i = 0; i < indexes.length; i++) {
-      const island = islandData[islands[indexes[i]]];
-      const elementQuantity = [0, 0, 0, 0, 0];
-      var totalQuantity = 0;
-      for (let j = 0; j < island.length; j++) {
-        elementQuantity[parseInt(island[j].element,10)] += island[j].quantity;
-        totalQuantity += island[j].quantity;
-        if (island[j].transport == "Air") {
-          trans = 0;
-        } else {
-          trans = 1;
-        }
-      }
-
-      if (totalQuantity > 200)
-        return NextResponse.json(
-          { message: `quantity limit exceeded for batch${batchNumber}` },
-          { status: 410 }
-        );
-      const batchData: round2Island = new IslandRound2({
-        teamLeaderId: user._id,
-        teamLeaderEmail: user.email,
-        modeOfTransport: trans,
-        elementQuantity,
-        totalQuantity: totalQuantity,
-        batch:batchNumber,
-        insurance:insurance,
-        startTime: Date.now(),
-        island:indexes[i],
-      });
-      await batchData.save();
-      console.log("this is the batch data", batchData);
-      let idx = indexes[i];
-      batchArray[idx] = batchData._id as mongoose.Schema.Types.ObjectId;
-    }
-    if (batchNumber === 1) {
-      team.islandBatch1 = batchArray;
-    } else if (batchNumber === 2) {
-      team.islandBatch2 = batchArray;
-    } else if (batchNumber === 3) {
-      team.islandBatch3 = batchArray;
-    }
-
-    // batchArray.forEach((batchId, index) => {
-    //   if (!batchId) return; // Skip if batchId is null
-
-    //   const island = islandData[islands[index]];
-    //   island.forEach((entry: { element: number; quantity: number }) => {
-    //     if (team.portfolio[entry.element] !== undefined) {
-    //       team.portfolio[entry.element] = Math.max(
-    //         0,
-    //         team.portfolio[entry.element] - entry.quantity
-    //       );
+    // let trans;
+    // for (let i = 0; i < indexes.length; i++) {
+    //   const island = islandData[islands[indexes[i]]];
+    //   const elementQuantity = [0, 0, 0, 0, 0];
+    //   var totalQuantity = 0;
+    //   for (let j = 0; j < island.length; j++) {
+    //     elementQuantity[parseInt(island[j].element,10)] += island[j].quantity;
+    //     totalQuantity += island[j].quantity;
+    //     if (island[j].transport == "Air") {
+    //       trans = 0;
+    //     } else {
+    //       trans = 1;
     //     }
-    //   });
-    // });
+    //   }
 
+    //   if (totalQuantity > 200)
+    //     return NextResponse.json(
+    //       { message: `quantity limit exceeded for batch${batchNumber}` },
+    //       { status: 410 }
+    //     );
+    //   const batchData: round2Island = new IslandRound2({
+    //     teamLeaderId: user._id,
+    //     teamLeaderEmail: user.email,
+    //     modeOfTransport: trans,
+    //     elementQuantity,
+    //     totalQuantity: totalQuantity,
+    //     batch:batchNumber,
+    //     insurance:insurance,
+    //     startTime: Date.now(),
+    //     island:indexes[i],
+    //   });
+    //   await batchData.save();
+    //   console.log("this is the batch data", batchData);
+    //   let idx = indexes[i];
+    //   batchArray[idx] = batchData._id as mongoose.Schema.Types.ObjectId;
+    // }
+    if (batchNumber === 1) {
+      batchArray = team.islandBatch1 ? [...team.islandBatch1] : [];
+  } else if (batchNumber === 2) {
+      batchArray = team.islandBatch2 ? [...team.islandBatch2] : [];
+  } else if (batchNumber === 3) {
+      batchArray = team.islandBatch3 ? [...team.islandBatch3] : [];
+  }
+  
+
+    console.log('batch array',batchArray);
+    for (const batchId of batchArray) {
+      if (!batchId) continue; // Skip if batchId is null
+    
+      const island = await IslandRound2.findOne({ _id: batchId });
+      console.log('islanf', island);
+      console.log('element', island?.elementQuantity);
+    
+      const elements = island?.elementQuantity ?? [0, 0, 0, 0, 0];
+    
+      for (let i = 0; i < elements.length; i++) {
+        team.portfolio[i] -= elements[i];
+      }
+    }
+    
+    console.log('team',team.portfolio)
     // batchNumber++;
-    // team.wallet -= insuranceCost;
+    team.wallet -= insuranceCost;
     team.insuranceType.push(insurance);
     team.batch = batchNumber;
     await team.save();

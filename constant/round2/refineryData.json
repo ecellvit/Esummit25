@@ -1,0 +1,31 @@
+{
+    "0": {
+      "0": {"Efficiency": 92, "Own Cost": 214, "Corp Tax": 51, "Total Own Cost": 265, "Local Cost": 507, "Service Tax": 101, "Total Local Cost": 608, "Market Price": 1970},
+      "2": {"Efficiency": 85, "Own Cost": 209, "Corp Tax": 50, "Total Own Cost": 259, "Local Cost": 506, "Service Tax": 101, "Total Local Cost": 607, "Market Price": 4193},
+      "1": {"Efficiency": 78, "Own Cost": 202, "Corp Tax": 48, "Total Own Cost": 250, "Local Cost": 492, "Service Tax": 98, "Total Local Cost": 590, "Market Price": 2315},
+      "4": {"Efficiency": 72, "Own Cost": 198, "Corp Tax": 47, "Total Own Cost": 245, "Local Cost": 496, "Service Tax": 99, "Total Local Cost": 595, "Market Price": 1623},
+      "3": {"Efficiency": 65, "Own Cost": 193, "Corp Tax": 46, "Total Own Cost": 239, "Local Cost": 488, "Service Tax": 97, "Total Local Cost": 585, "Market Price": 2636}
+    },
+    "1": {
+      "3": {"Efficiency": 91, "Own Cost": 212, "Corp Tax": 53, "Total Own Cost": 265, "Local Cost": 503, "Service Tax": 105, "Total Local Cost": 608, "Market Price": 2600},
+      "0": {"Efficiency": 82, "Own Cost": 203, "Corp Tax": 50, "Total Own Cost": 253, "Local Cost": 500, "Service Tax": 105, "Total Local Cost": 605, "Market Price": 1884},
+      "4": {"Efficiency": 79, "Own Cost": 207, "Corp Tax": 51, "Total Own Cost": 258, "Local Cost": 495, "Service Tax": 103, "Total Local Cost": 598, "Market Price": 2448},
+      "2": {"Efficiency": 72, "Own Cost": 199, "Corp Tax": 49, "Total Own Cost": 248, "Local Cost": 492, "Service Tax": 103, "Total Local Cost": 595, "Market Price": 4356},
+      "1": {"Efficiency": 67, "Own Cost": 194, "Corp Tax": 48, "Total Own Cost": 242, "Local Cost": 486, "Service Tax": 102, "Total Local Cost": 588, "Market Price": 1516}
+    },
+    "3": {
+      "1": {"Efficiency": 92, "Own Cost": 213, "Corp Tax": 55, "Total Own Cost": 268, "Local Cost": 506, "Service Tax": 111, "Total Local Cost": 617, "Market Price": 1702},
+      "2": {"Efficiency": 86, "Own Cost": 208, "Corp Tax": 54, "Total Own Cost": 262, "Local Cost": 510, "Service Tax": 112, "Total Local Cost": 622, "Market Price": 3921},
+      "0": {"Efficiency": 76, "Own Cost": 200, "Corp Tax": 52, "Total Own Cost": 252, "Local Cost": 497, "Service Tax": 109, "Total Local Cost": 606, "Market Price": 1914},
+      "3": {"Efficiency": 71, "Own Cost": 196, "Corp Tax": 50, "Total Own Cost": 246, "Local Cost": 488, "Service Tax": 107, "Total Local Cost": 595, "Market Price": 2782},
+      "4": {"Efficiency": 63, "Own Cost": 194, "Corp Tax": 50, "Total Own Cost": 244, "Local Cost": 485, "Service Tax": 106, "Total Local Cost": 591, "Market Price": 2195}
+    },
+    "2": {
+      "2": {"Efficiency": 94, "Own Cost": 214, "Corp Tax": 57, "Total Own Cost": 271, "Local Cost": 510, "Service Tax": 117, "Total Local Cost": 627, "Market Price": 4364},
+      "0": {"Efficiency": 88, "Own Cost": 209, "Corp Tax": 56, "Total Own Cost": 265, "Local Cost": 506, "Service Tax": 116, "Total Local Cost": 622, "Market Price": 1865},
+      "3": {"Efficiency": 81, "Own Cost": 200, "Corp Tax": 54, "Total Own Cost": 254, "Local Cost": 503, "Service Tax": 115, "Total Local Cost": 618, "Market Price": 2586},
+      "4": {"Efficiency": 74, "Own Cost": 198, "Corp Tax": 53, "Total Own Cost": 251, "Local Cost": 488, "Service Tax": 112, "Total Local Cost": 600, "Market Price": 2260},
+      "1": {"Efficiency": 67, "Own Cost": 193, "Corp Tax": 52, "Total Own Cost": 245, "Local Cost": 492, "Service Tax": 113, "Total Local Cost": 605, "Market Price": 1711}
+    }
+  }
+  

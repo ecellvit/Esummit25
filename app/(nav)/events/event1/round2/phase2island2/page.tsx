@@ -1,4 +1,3 @@
-//Not tested yet;
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
@@ -8,7 +7,7 @@ import island2 from "/assets/round2/island2.svg";
 import island3 from "/assets/round2/island3.svg";
 import island4 from "/assets/round2/island4.svg";
 import Round2Form from "@/components/events/round2/component";
-import Island2Invoice from "@/components/events/round2/island2Invoice";
+import Island1Invoice from "@/components/events/round2/island1Invoice";
 
 type FormEntry = {
     id: number;
@@ -19,8 +18,8 @@ type FormEntry = {
     warning?: string;
 };
 
-export default function Island2Page() {
-    const islandId = "island2";
+export default function Island1Page() {
+    const islandId = "island1";
     const [data, setData] = useState<FormEntry[]>([]);
     const [selectedBox, setSelectedBox] = useState<"own" | "local" | null>(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -31,7 +30,7 @@ export default function Island2Page() {
             const parsedData = JSON.parse(savedData);
             setData(parsedData[islandId] || []);
         } else {
-            setData([]); // Prevent undefined state
+            setData([]);
         }
         console.log("Island1Page rendered with data:", data);
     }, []);
@@ -41,39 +40,52 @@ export default function Island2Page() {
             window.history.back();
         }, 500);
     };
-    
-    const handleConfirm = () => {
-        if (selectedBox === "own") {
-            console.log("owned");
-        } else if (selectedBox === "local") {
-            console.log("locally");
-        }
-        setDropdownVisible(false);
-    };
-    const handleCancel = () => {
-        setDropdownVisible(false);
-    };
-
-    const updateData = (islandId: string, newData: FormEntry[]) => {
-        const savedData = localStorage.getItem("islandData");
-        const updatedData = savedData ? JSON.parse(savedData) : {};
-        updatedData[islandId] = newData;
-        localStorage.setItem("islandData", JSON.stringify(updatedData));
-        setData(newData);
-        console.log("Updated data:", updatedData);
-    };
 
     const handleBoxClick = (box: "own" | "local") => {
         setSelectedBox(box);
         setDropdownVisible((prev) => !prev);
     };
 
-  
+    const handleCancel = () => {
+        setDropdownVisible(false);
+    };
+
+    const handleConfirm = async () => {
+        if (selectedBox) {
+            const refineryType = selectedBox;
+            const islandNumber = 1;
+            try {
+                const response = await fetch(`/api/event1/round2/setRefineryData?islandNumber=${islandNumber}&refineryData=${refineryType}`, {
+                    method: "GET", // GET requests should not have a body
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+    
+                if (response.ok) {
+                    console.log(`Request sent successfully for ${refineryType}`);
+                    await fetch(`/api/event1/round2/setRefineryClick`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ islandNumber }),
+                    });
+                } else {
+                    console.error("Failed to send request");
+                }
+            } catch (error) {
+                console.error("Error while sending request:", error);
+            }
+        }
+        setDropdownVisible(false);
+    };
+    
 
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
             <div className="mt-36"> 
-                <Island2Invoice data={data} />
+                <Island1Invoice data={data} />
             </div>
             <div className="mt-10 flex space-x-8 w-1/2 justify-center">
                 <div

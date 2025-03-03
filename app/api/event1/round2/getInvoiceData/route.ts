@@ -86,9 +86,9 @@ export async function GET(request: Request): Promise<NextResponse> {
         }
 
         var num = 0;
-        if(team.batch===2) num = 1;
-        else if(team.batch === 3) num = 2;
-        else if(team.batch === 4) num = 3;
+        if(team.batch===1) num = 1;
+        else if(team.batch === 2) num = 2;
+        else if(team.batch === 3) num = 3;
         else{
             console.log("Invalid batch number",team.batch);
             return NextResponse.json({message:"invalid batch number"},{status:407})

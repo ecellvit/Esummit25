@@ -5,11 +5,6 @@ import { authOptions } from "@/lib/authOptions";
 import { Users } from "@/models/user.model";
 import islandResourcesModel from "@/models/event1/islandResources.model";
 
-interface IslandData {
-  islandNumber: number;
-  resourcesAvailable: number[];
-}
-
 export async function GET(request: Request): Promise<NextResponse> {
   await dbConnect();
   try {
@@ -29,28 +24,21 @@ export async function GET(request: Request): Promise<NextResponse> {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    let allIslandData: IslandData[] = [];
-
-    for (let i = 0; i <= 3; i++) {
-      const islandData = await islandResourcesModel.find({ islandNumber: i });
-      if (islandData && islandData.length > 0) {
-        const elementQuantities = islandData.map((island) => ({
-          islandNumber: island.islandNumber,
-          resourcesAvailable: island.resourcesAvailable,
-        }));
-        allIslandData = allIslandData.concat(elementQuantities);
-      }
+    // Fetch data based on teamLeaderEmail
+    const islandData = await islandResourcesModel.find({ teamLeaderEmail: user.email }).select("islandNumber resourcesAvailable").lean();
+    
+    if (!islandData || islandData.length === 0) {
+      return NextResponse.json({ message: "No data found for this team leader" }, { status: 404 });
     }
 
-    if (allIslandData.length === 0) {
-      return NextResponse.json({ message: "No data found for any islands" }, { status: 404 });
-    }
+    // Remove _id field from the response
+    const filteredData = islandData.map(({ _id, ...rest }) => rest);
 
     return NextResponse.json({
       message: "Data fetched successfully",
-      data: allIslandData,
+      data: filteredData,
     }, { status: 200 });
-
+  
   } catch (error) {
     console.error("Error fetching data:", error);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
