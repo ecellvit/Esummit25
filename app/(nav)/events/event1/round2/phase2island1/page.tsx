@@ -142,6 +142,30 @@ export default function Island1Page() {
         }
     };
 
+    const getPortfolioData = async () => {
+        try {
+            const response = await fetch(`/api/event1/round2/getIslandPortfolio?islandNumber=${encodeURIComponent(0)}`, {
+                method: "GET"
+            });
+    
+            if (response.status === 200) {
+                const data = await response.json();
+                const { portfolio } = data;
+                setPortfolio(portfolio);
+            } else {
+                const data = await response.json();
+                console.log("bad response", data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getPageData();
+        getPortfolioData();
+    }, []);
+
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
             <div className="mt-36"> 
