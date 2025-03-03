@@ -66,7 +66,6 @@ export async function GET(request: Request): Promise<NextResponse> {
                 });
             } else {
                 resource.resourcesAvailable = totalElements;
-                resource.maxResources = totalElements;
             }
 
             await resource.save();
