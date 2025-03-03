@@ -77,8 +77,14 @@ export default function Island1Page() {
     };
 
     const handleSubmitSelection = async () => {
-        // Log the selected resources to the console
-        console.log("Selected Resources:", selectedResources);
+        // Create an array of selected resources with their quantities
+        const selectedResourcesWithQuantity = selectedResources.map(resourceId => ({
+            id: resourceId,
+            quantity: availableResources[resourceId]
+        }));
+    
+        // Log the selected resources with their quantities to the console
+        console.log("Selected Resources with Quantities:", selectedResourcesWithQuantity);
     
         try {
             const response = await fetch(`/api/event1/round2/submitResources`, {
@@ -86,7 +92,7 @@ export default function Island1Page() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ selectedResources }),
+                body: JSON.stringify({ selectedResources: selectedResourcesWithQuantity }),
             });
     
             if (response.ok) {
