@@ -43,7 +43,7 @@ type TransportData = {
 
 export default function Testing() {
   const [islandData, setIslandData] = useState<IslandData>(initialState);
-  const [loading,setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const disabled = false;
   const [batchTime, setBatchTime] = useState<number>(0);
   const [showPlanes, setShowPlanes] = useState({
@@ -58,56 +58,58 @@ export default function Testing() {
     island3: false,
     island4: false
   });
-  const [transportData, setTransportData] = useState<TransportData | null>(null);
+  // const [transportData, setTransportData] = useState<TransportData | null>(null);
   
-  const startPlaneAnimation = (islandNumber: string, duration: number) => {
-    setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
-    setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), duration);
-  };
-  const startShipAnimation = (islandNumber: string, duration: number) => {
-    setShowShips(prev => ({ ...prev, [islandNumber]: true }));
-    setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), duration);
-  };
+  // const startPlaneAnimation = (islandNumber: string, duration: number) => {
+  //   setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
+  //   setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), duration);
+  // };
+  // const startShipAnimation = (islandNumber: string, duration: number) => {
+  //   setShowShips(prev => ({ ...prev, [islandNumber]: true }));
+  //   setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), duration);
+  // };
 
-  useEffect(() => {
-    setLoading(true);
-    const savedData = localStorage.getItem("islandData");
-    console.log('saved data', savedData)
-    if (savedData) {
-      setIslandData(JSON.parse(savedData));
-    }
-    setLoading(false);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const savedData = localStorage.getItem("islandData");
+  //   console.log('saved data', savedData)
+  //   if (savedData) {
+  //     setIslandData(JSON.parse(savedData));
+  //   }
+  //   setLoading(false);
 
-    // Fetch transport data on component mount
-    const fetchTransportData = async () => {
-      try {
-        const response = await fetch('/api/event1/round2/transportInfo');
-        if (response.ok) {
-          const data = await response.json();
-          setTransportData(data.dataArray);
-          setBatchTime(data.maxTime);
-        } else {
-          console.error("Failed to fetch transport data:", response.status);
-        }
-      } catch (error) {
-        console.error("Error fetching transport data:", error);
-      }
-    };
+  //   // Fetch transport data on component mount
+  //   const fetchTransportData = async () => {
+  //     try {
+  //       const response = await fetch('/api/event1/round2/transportInfo');
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setTransportData(data.dataArray);
+  //         setBatchTime(data.maxTime);
+  //       } else {
+  //         console.error("Failed to fetch transport data:", response.status);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching transport data:", error);
+  //     }
+  //   };
 
-    fetchTransportData();
-  }, []);
+  //   fetchTransportData();
+  // }, []);
 
-  const updateData = (islandId: string, newData: FormEntry[]) => {
-    const savedData = localStorage.getItem("islandData");
-    const updatedData = savedData ? JSON.parse(savedData) : {};
-    updatedData[islandId] = newData;
-    localStorage.setItem("islandData", JSON.stringify(updatedData));
-  };
+  // const updateData = (islandId: string, newData: FormEntry[]) => {
+  //   const savedData = localStorage.getItem("islandData");
+  //   const updatedData = savedData ? JSON.parse(savedData) : {};
+  //   updatedData[islandId] = newData;
+  //   localStorage.setItem("islandData", JSON.stringify(updatedData));
+  // };
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showInsurance, setShowInsurance] = useState(false);
   const [showInvoice, setShowInvoice] = useState(false);
   const [showConfirmDispatch, setShowConfirmDispatch] = useState(false);
+  const [showSkipConfirmation, setShowSkipConfirmation] = useState(false);
   const [selectedInsurance, setSelectedInsurance] = React.useState("");
+  const [submitClicked, setSubmitClicked] = useState(false);
   const insuranceOptions = [
     'No Insurance (Cost - 0)', 
     'Basic Plan (Cost - 15,000)', 
@@ -122,6 +124,7 @@ export default function Testing() {
   const handleConfirmYes = () => {
     setShowConfirmation(false);
     setShowInsurance(true);
+    setSubmitClicked(true);
   };
 
   const handleConfirmNo = () => {
@@ -134,6 +137,7 @@ export default function Testing() {
 
   const handleCloseInsurance = () => {
     setShowInsurance(false);
+    setSubmitClicked(false); // Allow the user to click "Submit" again if they close the insurance modal
   };
 
   const handleConfirmInvoice = () => {
@@ -188,12 +192,90 @@ export default function Testing() {
     }
   };
 
+  const handleSkipButtonClick = () => {
+    setShowSkipConfirmation(true);
+  };
+
+  const handleSkipConfirmYes = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/event1/round2/skipBatch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        localStorage.removeItem("islandData");
+        console.log("Local storage cleared after successful API response.");
+      } else {
+        console.log('Error', response.status);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setShowSkipConfirmation(false);
+      setLoading(false);
+    }
+  };
+
+  const handleSkipConfirmNo = () => {
+    setShowSkipConfirmation(false);
+  };
+
+  const startPlaneAnimation = (islandNumber: string, duration: number) => {
+    setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
+    setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), duration);
+  };
+
+  const startShipAnimation = (islandNumber: string, duration: number) => {
+    setShowShips(prev => ({ ...prev, [islandNumber]: true }));
+    setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), duration);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    const savedData = localStorage.getItem("islandData");
+    console.log('saved data', savedData)
+    if (savedData) {
+      setIslandData(JSON.parse(savedData));
+    }
+    setLoading(false);
+
+    // Fetch transport data on component mount
+    const fetchTransportData = async () => {
+      try {
+        const response = await fetch('/api/event1/round2/transportInfo');
+        if (response.ok) {
+          const data = await response.json();
+          setTransportData(data.dataArray);
+          setBatchTime(data.maxTime);
+        } else {
+          console.error("Failed to fetch transport data:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching transport data:", error);
+      }
+    };
+
+    fetchTransportData();
+  }, []);
+
+  const updateData = (islandId: string, newData: FormEntry[]) => {
+    const savedData = localStorage.getItem("islandData");
+    const updatedData = savedData ? JSON.parse(savedData) : {};
+    updatedData[islandId] = newData;
+    localStorage.setItem("islandData", JSON.stringify(updatedData));
+  };
+
   return (
     <div
       className="relative w-full h-full min-h-screen"
     >
       {/* Center Island */}
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <Image
         src={island0}
         alt="island0"
@@ -264,7 +346,6 @@ export default function Testing() {
         </button>
       </div>
 
-
       {/* CSS for animations - make sure class names match exactly what's used above */}
       <style jsx global>{`
         @keyframes flyToIsland1 { 
@@ -297,16 +378,21 @@ export default function Testing() {
         }
       `}</style>
 
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-        {["Submit"].map((batch, index) => (
-          <button
-            key={index}
-            className="p-2 text-white font-bold rounded-lg bg-green-500 ml-8 hover:bg-green-700 w-32 text-center"
-            onClick={handleButtonClick}
-          >
-            {batch}
-          </button>
-        ))}
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex gap-4">
+        <button
+          className="p-2 text-white font-bold rounded-lg bg-green-500 ml-8 hover:bg-green-700 w-32 text-center"
+          onClick={handleButtonClick}
+          disabled={submitClicked}
+        >
+          Submit
+        </button>
+        <button
+          className="p-2 text-white font-bold rounded-lg bg-red-500 ml-8 hover:bg-red-700 w-32 text-center"
+          onClick={handleSkipButtonClick}
+          disabled={submitClicked}
+        >
+          Skip
+        </button>
       </div>
 
       {showConfirmation && (
@@ -332,13 +418,19 @@ export default function Testing() {
         </div>
       )}
 
-{showInsurance && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
-    <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center transform transition-all duration-300 scale-105">
-      <InsuranceComponent handleConfirmInsurance={handleConfirmInsurance} setSelectedInsurance={setSelectedInsurance} selectedInsurance={selectedInsurance} loading={loading}/>
-    </div>
-  </div>
-)}
+      {showInsurance && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center transform transition-all duration-300 scale-105">
+            <InsuranceComponent handleConfirmInsurance={handleConfirmInsurance} setSelectedInsurance={setSelectedInsurance} selectedInsurance={selectedInsurance} loading={loading} />
+            <button
+              className="mt-4 bg-gray-300 hover:bg-gray-400 text-black py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+              onClick={handleCloseInsurance}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       {showInvoice && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
@@ -374,6 +466,29 @@ export default function Testing() {
               <button
                 className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
                 onClick={handleConfirmDispatchYes}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showSkipConfirmation && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center transform transition-all duration-300 scale-105">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Skip Confirmation</h2>
+            <p className="text-gray-600 mb-6">Are you sure you want to skip this batch?</p>
+            <div className="flex justify-center gap-4">
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+                onClick={handleSkipConfirmNo}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+                onClick={handleSkipConfirmYes}
               >
                 Confirm
               </button>
