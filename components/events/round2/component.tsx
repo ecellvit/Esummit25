@@ -207,10 +207,11 @@ interface FormEntry {
 interface Round2FormProps {
   islandId: string;
   data: FormEntry[];
+  setData: React.Dispatch<React.SetStateAction<FormEntry[]>>;
   updateData: (islandId: string, newData: FormEntry[]) => void;
 }
 
-const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) => {
+const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateData }) => {
   const [entries, setEntries] = useState<FormEntry[]>(data);
   const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
   const [teamPortfolio, setTeamPortfolio] = useState<Record<string, number>>({});
@@ -317,14 +318,64 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   const calculateTotalGlobalQuantity = () => {
     const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
     let total = 0;
-
+    
+    // Calculate total quantity without removing anything yet
     Object.values(allData).forEach((islandEntries: any) => {
       (islandEntries as FormEntry[]).forEach((entry) => {
         total += entry.quantity;
       });
     });
-
-    setGlobalTotalQuantity(total);
+    
+    // Check if total exceeds 200
+    if (total > 200) {
+      toast.error("Limit exceeded, removing last entry");
+      console.log("Limit exceeded, removing last entry");
+      
+      // Find the last entry across all islands
+      let lastIslandId = islandId; // Default to current island
+      let lastIslandEntries = allData[lastIslandId] as FormEntry[] || [];
+      
+      // If current island has no entries, find another island with entries
+      if (lastIslandEntries.length === 0) {
+        for (const [id, entries] of Object.entries(allData)) {
+          if ((entries as FormEntry[]).length > 0) {
+            lastIslandId = id;
+            lastIslandEntries = entries as FormEntry[];
+            break;
+          }
+        }
+      }
+      
+      // Remove the last entry from the identified island
+      if (lastIslandEntries.length > 0) {
+        lastIslandEntries.pop(); // Remove the last entry
+        allData[lastIslandId] = lastIslandEntries;
+        
+        // Save updated data back to localStorage
+        localStorage.setItem("islandData", JSON.stringify(allData));
+        
+        // If we're removing from the current island, update the local entries state
+        if (lastIslandId === islandId) {
+          setEntries([...lastIslandEntries]);
+        }
+        
+        // Recalculate total quantity after removal
+        total = 0;
+        Object.values(allData).forEach((islandEntries: any) => {
+          (islandEntries as FormEntry[]).forEach((entry) => {
+            total += entry.quantity;
+          });
+        });
+        
+        setIsSaving(false);
+      }
+    }
+    
+    if(total<=200){
+      setGlobalTotalQuantity(total);
+    }else{
+      return 0;
+    }
   };
 
   const calculateGlobalStock = () => {
@@ -431,12 +482,22 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
     updateData(islandId, updatedEntries);
     
     // Recalculate global quantities
-    calculateTotalGlobalQuantity();
+    var res = calculateTotalGlobalQuantity();
+    if(res===1){
+      setTimeout(() => {
+        setIsSaving(false);
+        toast.success("Data saved successfully!");
+      }, 500);
+    }else{
+      const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
+      allData[islandId] = []; // Clear only this island's data
+      console.log('all data',allData);
+      localStorage.setItem("islandData", JSON.stringify(allData));
+      console.log("data cleared:", allData);
+      setData([]);
+      updateData(islandId, []);
+    }
     
-    setTimeout(() => {
-      setIsSaving(false);
-      toast.success("Data saved successfully!");
-    }, 500);
   };
 
   const openModal = () => {

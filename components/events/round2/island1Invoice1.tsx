@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { calculatePrice } from "./priceUtils"; // Import the utility function
 
 const invoiceData = [
   { metal: "Lithium", marketPrice: 1970 },
@@ -19,21 +20,33 @@ const Island1Invoice = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/event1/round2/getWaterTransportCount`, {
-          method: "POST",
+        const response = await fetch(`/api/event1/round2/getTransportCount`, {
+          method: "GET",
           headers: { "Content-Type": "application/json" },
         });
 
-        const data = await response.json();
+        const text = await response.text();
 
-        if (response.ok) {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (jsonError) {
+          console.error("Failed to parse JSON:", text);
+          throw new Error("Invalid JSON response from server");
+        }
+
+        if (data.success) {
           setCount(data.count);
         } else {
           setError(data.message || "Error fetching count");
         }
       } catch (err) {
         console.error("Error fetching count:", err);
-        setError("Server Error");
+        setError("Failed to fetch data. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -42,17 +55,14 @@ const Island1Invoice = () => {
     fetchData();
   }, []);
 
-  // Function to calculate the adjusted market price
-  const calculatePrice = (price: number): number => {
-    let increasePercentage = 0;
+  // Determine if the count is within the range 9-12
+  const shouldApplyIncrease = count !== null && count >= 9 && count <= 12;
 
-    if (count === 12) increasePercentage = 20;
-    else if (count === 11) increasePercentage = 18;
-    else if (count === 10) increasePercentage = 16;
-    else if (count === 9) increasePercentage = 14;
+  // Extract the market prices from invoiceData
+  const marketPrices = invoiceData.map((item) => item.marketPrice);
 
-    return Math.round(price * (1 + increasePercentage / 100));
-  };
+  // Calculate adjusted prices (returns an array)
+  const adjustedPrices = calculatePrice(marketPrices, count);
 
   return (
     <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
@@ -74,7 +84,12 @@ const Island1Invoice = () => {
             {invoiceData.map((item, index) => (
               <tr key={index} className="text-center">
                 <td className="border p-2">{item.metal}</td>
-                <td className="border p-2">₹{calculatePrice(item.marketPrice).toLocaleString()}</td>
+                <td className="border p-2">
+                  ₹
+                  {shouldApplyIncrease
+                    ? adjustedPrices[index].toLocaleString() // Use adjusted price
+                    : item.marketPrice.toLocaleString()} {/* Use original price */}
+                </td>
               </tr>
             ))}
           </tbody>

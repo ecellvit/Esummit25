@@ -68,46 +68,6 @@ export default function Island1Page() {
         }, 500);
     };
 
-    const handleBoxClick = (box: "own" | "local") => {
-        setSelectedBox(box);
-        setDropdownVisible((prev) => !prev);
-    };
-
-    const handleCancel = () => {
-        setDropdownVisible(false);
-    };
-
-    const handleConfirm = async () => {
-        if (selectedBox) {
-            const refineryType = selectedBox;
-            const islandNumber = 0;
-            try {
-                const response = await fetch(`/api/event1/round2/setRefineryData?islandNumber=${islandNumber}&refineryData=${refineryType}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                });
-
-                if (response.ok) {
-                    console.log(`Request sent successfully for ${refineryType}`);
-                    await fetch(`/api/event1/round2/setRefineryClick`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ islandNumber }),
-                    });
-                } else {
-                    console.error("Failed to send request");
-                }
-            } catch (error) {
-                console.error("Error while sending request:", error);
-            }
-        }
-        setDropdownVisible(false);
-    };
-
     const handleResourceSelection = (resourceId: number) => {
         setSelectedResources((prev) =>
             prev.includes(resourceId)
@@ -117,15 +77,24 @@ export default function Island1Page() {
     };
 
     const handleSubmitSelection = async () => {
+        // Create an array of selected resources with their quantities
+        const selectedResourcesWithQuantity = selectedResources.map(resourceId => ({
+            id: resourceId,
+            quantity: availableResources[resourceId]
+        }));
+    
+        // Log the selected resources with their quantities to the console
+        console.log("Selected Resources with Quantities:", selectedResourcesWithQuantity);
+    
         try {
             const response = await fetch(`/api/event1/round2/submitResources`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ selectedResources }),
+                body: JSON.stringify({ selectedResources: selectedResourcesWithQuantity }),
             });
-
+    
             if (response.ok) {
                 console.log("Resources submitted successfully");
             } else {

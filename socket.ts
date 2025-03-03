@@ -45,7 +45,7 @@ export async function initializeSocket() {
 
 // Set up event listeners
 socket.on("connect", () => {
-  console.log("Socket connected with ID:", socket.id);
+  console.log("Socket connected");
 });
 
 socket.on("connected", () => {

@@ -10,6 +10,8 @@ import Round2Form from "@/components/events/round2/component";
 import Island2Invoice from "@/components/events/round2/island2Invoice";
 import resourceData from "@/constant/round1/element.json";
 import { useRouter } from "next/navigation";
+import { initializeSocket, socket } from "@/socket";
+import Loader from "@/components/loader";
 
 type FormEntry = {
     id: number;
@@ -28,6 +30,7 @@ export default function Island1Page() {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [portfolio, setPortfolio] = useState<number[]>([0, 0, 0, 0, 0]);
     const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
+    const [socketLoading, setSocketLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const savedData = localStorage.getItem("islandData");
@@ -45,11 +48,33 @@ export default function Island1Page() {
             window.history.back();
         }, 500);
     };
-    const handleConfirm = () => {
-        if (selectedBox === "setup") {
-            console.log("setup");
-        } else if (selectedBox === "local") {
-            console.log("locally");
+    const handleConfirm = async () => {
+        if (selectedBox) {
+            const refineryType = selectedBox;
+            const islandNumber = 0;
+            try {
+                const response = await fetch(`/api/event1/round2/setRefineryData?islandNumber=${islandNumber}&refineryData=${refineryType}`, {
+                    method: "GET", // GET requests should not have a body
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+    
+                if (response.ok) {
+                    console.log(`Request sent successfully for ${refineryType}`);
+                    await fetch(`/api/event1/round2/setRefineryClick`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ islandNumber }),
+                    });
+                } else {
+                    console.error("Failed to send request");
+                }
+            } catch (error) {
+                console.error("Error while sending request:", error);
+            }
         }
         setDropdownVisible(false);
     };
@@ -99,7 +124,7 @@ export default function Island1Page() {
                         if (response.ok) {
                             const data = await response.json();
                             const team = data?.team;
-                            if (team.setup === 0 || team.setup === 1) {
+                            if (team.setup[0] === 0 || team.setup[0] === 1) {
                                 setSetupCompleted(true);
                             }
                         } else {
@@ -120,8 +145,85 @@ export default function Island1Page() {
         }
     };
 
+    const getPortfolioData = async () => {
+        try {
+            const response = await fetch(`/api/event1/round2/getIslandPortfolio?islandNumber=${encodeURIComponent(0)}`, {
+                method: "GET"
+            });
+    
+            if (response.status === 200) {
+                const data = await response.json();
+                const { portfolio } = data;
+                setPortfolio(portfolio);
+            } else {
+                const data = await response.json();
+                console.log("bad response", data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getPageData();
+        getPortfolioData();
+    }, []);
+
+    const onPortfolioUpdate = (data: { portfolio: number[] }) => {
+        setPortfolio(data.portfolio);
+    };
+
+    // Connect to socket server
+    useEffect(() => {
+        // Initial connection status check
+        console.log("Socket connection status:", socket.connected);
+        if (socket.connected) {
+            setSocketLoading(false);
+            onConnect();
+        }
+
+        async function setupSocket() {
+            const result = await initializeSocket();
+
+            if (!result.success) {
+                setSocketLoading(true);
+                setupSocket();
+            }
+
+            setSocketLoading(false);
+        }
+
+        if (!socket.connected) {
+            setupSocket();
+        }
+
+        function onConnect() {
+            socket.io.engine.on("upgrade", (transport) => {
+                console.log("upgrade ::", transport.name);
+            });
+        }
+
+        function onDisconnect(reason: string) {
+            console.warn("Socket disconnected:", reason);
+            if (reason === "ping timeout" || reason === "transport error") {
+                socket.connect(); // Try reconnecting manually
+            }
+        }
+
+        socket.on("connect", onConnect);
+        socket.on("portfolioUpdate", onPortfolioUpdate);
+        socket.on("disconnect", onDisconnect);
+
+        return () => {
+            socket.off("connect", onConnect);
+            socket.off("portfolioUpdate", onPortfolioUpdate);
+            socket.off("disconnect", onDisconnect);
+        };
+    }, [socket.connected]);
+
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
+            {socketLoading && <Loader />}
             <div className="mt-36"> 
                 <Island2Invoice data={data} />
             </div>

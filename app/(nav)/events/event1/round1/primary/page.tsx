@@ -161,7 +161,6 @@ export default function Testing() {
                 });
 
                 const result = await response.json();
-                console.log("sdfghjkl", response.status);
 
                 if (response.ok) {
                     setSelectedResource(null);

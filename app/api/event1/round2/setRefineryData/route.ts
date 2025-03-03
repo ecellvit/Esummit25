@@ -23,7 +23,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     const url = new URL(request.url);
     const islandNumber = url.searchParams.get("islandNumber");
     const refineryType = url.searchParams.get("refineryData");
-    console.log(url,islandNumber,refineryType);
+    console.log(url, islandNumber, refineryType);
 
     const user = await Users.findOne({ email: sessionUser.email });
     if (!user) {
@@ -67,14 +67,12 @@ export async function GET(request: Request): Promise<NextResponse> {
       return NextResponse.json({ message: "Insufficient funds" }, { status: 400 });
     }
 
-    
-    var check;
-    if(refineryType==="setup"){
-      check = 0
-    }else check=1
+    const check = refineryType === "setup" ? 0 : 1;
+
     team.wallet -= totalAmount;
-    team.setup = check;
-    team.phase2spentamount = totalAmount
+    team.setup[parseInt(islandNumber!)] = check; // Store the setup check at the islandNumber index
+    team.phase2spentamount = totalAmount;
+
     await team.save();
 
     return NextResponse.json({ message: "Calculation successful", amount: totalAmount }, { status: 200 });

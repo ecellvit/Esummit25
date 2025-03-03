@@ -57,10 +57,8 @@ export default function Testing() {
             const response = await fetch("/api/event1/userInfo", { method: "GET" });
             if (response.status === 200) {
                 const {team} = await response.json();
-                console.log(team);
                 const lease2 = team.lease2Element;
                 const upgrade = team.hasUpgraded;
-                console.log(upgrade);
                 if (lease2 >= 0 && lease2 <= 4) {
                     setLease2Expired(true);
                 }
