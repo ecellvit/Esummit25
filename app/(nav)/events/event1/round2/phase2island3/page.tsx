@@ -62,6 +62,7 @@ export default function Island1Page() {
                         },
                         body: JSON.stringify({ islandNumber }),
                     });
+                    socket.emit("refine", { island: 2, setup: refineryType === 'setup' ? 0 : 1 });
                 } else {
                     console.error("Failed to send request");
                 }
@@ -162,8 +163,10 @@ export default function Island1Page() {
         getPortfolioData();
     }, []);
 
-    const onPortfolioUpdate = (data: { portfolio: number[] }) => {
-        setPortfolio(data.portfolio);
+    const onPortfolioUpdate = (data: { portfolio: number[], island: number }) => {
+        if (data.island === 2) {
+            setPortfolio(data.portfolio);
+        }
     };
 
     // Connect to socket server
@@ -204,12 +207,12 @@ export default function Island1Page() {
         }
 
         socket.on("connect", onConnect);
-        socket.on("portfolioUpdate", onPortfolioUpdate);
+        socket.on("islandPortfolioUpdate", onPortfolioUpdate);
         socket.on("disconnect", onDisconnect);
 
         return () => {
             socket.off("connect", onConnect);
-            socket.off("portfolioUpdate", onPortfolioUpdate);
+            socket.off("islandPortfolioUpdate", onPortfolioUpdate);
             socket.off("disconnect", onDisconnect);
         };
     }, [socket.connected]);
