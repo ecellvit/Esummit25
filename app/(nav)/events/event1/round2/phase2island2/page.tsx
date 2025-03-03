@@ -55,7 +55,7 @@ export default function Island1Page() {
     const handleConfirm = async () => {
         if (selectedBox) {
             const refineryType = selectedBox;
-            const islandNumber = 0;
+            const islandNumber = 1;
             try {
                 const response = await fetch(`/api/event1/round2/setRefineryData?islandNumber=${islandNumber}&refineryData=${refineryType}`, {
                     method: "GET", // GET requests should not have a body
