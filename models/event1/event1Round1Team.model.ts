@@ -28,6 +28,7 @@ export interface round1Qualified extends Document {
     islandBatch3: (ObjectId | null)[];
     insuranceType: number[];
     batch: number;
+    setup: number;
 
 }
 
@@ -142,6 +143,10 @@ const TeamSchema: Schema<round1Qualified> = new Schema(
     batch:{
         type: Number,
         default:1,
+    },
+    setup:{
+        type: Number,
+        default:-1,
     }
     
 },
