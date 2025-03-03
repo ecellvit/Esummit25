@@ -1,12 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import island0 from "/assets/round2/island0.svg";
-import island1 from "/assets/round2/island1.svg";
-import island2 from "/assets/round2/island2.svg";
-import island3 from "/assets/round2/island3.svg";
-import island4 from "/assets/round2/island4.svg";
-import Round2Form from "@/components/events/round2/component";
 import Island1Invoice from "@/components/events/round2/island1Invoice";
 
 type FormEntry = {
@@ -21,7 +14,7 @@ type FormEntry = {
 export default function Island1Page() {
     const islandId = "island1";
     const [data, setData] = useState<FormEntry[]>([]);
-    const [selectedBox, setSelectedBox] = useState<"own" | "local" | null>(null);
+    const [selectedBox, setSelectedBox] = useState<"setup" | "local" | null>(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
     useEffect(() => {
@@ -32,7 +25,6 @@ export default function Island1Page() {
         } else {
             setData([]);
         }
-        console.log("Island1Page rendered with data:", data);
     }, []);
 
     const handleGoBack = () => {
@@ -41,46 +33,24 @@ export default function Island1Page() {
         }, 500);
     };
 
-    const handleBoxClick = (box: "own" | "local") => {
+    const handleConfirm = () => {
+        if (selectedBox === "setup") {
+            console.log("setup");
+        } else if (selectedBox === "local") {
+            console.log("locally");
+        }
+        setDropdownVisible(false);
+    };
+
+    const handleBoxClick = (box: "setup" | "local") => {
         setSelectedBox(box);
-        setDropdownVisible((prev) => !prev);
+        setDropdownVisible(true);
     };
 
     const handleCancel = () => {
         setDropdownVisible(false);
+        setSelectedBox(null); // Reset the selected box to white
     };
-
-    const handleConfirm = async () => {
-        if (selectedBox) {
-            const refineryType = selectedBox;
-            const islandNumber = 0;
-            try {
-                const response = await fetch(`/api/event1/round2/setRefineryData?islandNumber=${islandNumber}&refineryData=${refineryType}`, {
-                    method: "GET", // GET requests should not have a body
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                });
-    
-                if (response.ok) {
-                    console.log(`Request sent successfully for ${refineryType}`);
-                    await fetch(`/api/event1/round2/setRefineryClick`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ islandNumber }),
-                    });
-                } else {
-                    console.error("Failed to send request");
-                }
-            } catch (error) {
-                console.error("Error while sending request:", error);
-            }
-        }
-        setDropdownVisible(false);
-    };
-    
 
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
@@ -89,83 +59,45 @@ export default function Island1Page() {
             </div>
             <div className="mt-10 flex space-x-8 w-1/2 justify-center">
                 <div
-                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/2 h-16 flex items-center justify-center border border-gray-300 cursor-pointer"
-                    onClick={() => handleBoxClick("own")}
+                    className={`p-8 rounded-lg shadow-lg text-center w-1/2 h-16 flex items-center justify-center border border-gray-300 cursor-pointer transition-all ${
+                        selectedBox === "setup" ? "bg-gradient-to-br from-[#B82121] to-[#000000] text-white" : "bg-white text-black"
+                    }`}
+                    onClick={() => handleBoxClick("setup")}
                 >
-                    <h2 className="text-3xl font-extrabold text-black">Own</h2>
+                    <h2 className="text-3xl font-extrabold">Setup</h2>
                 </div>
                 <div
-                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/2 h-16 flex items-center justify-center border border-gray-300 cursor-pointer"
+                    className={`p-8 rounded-lg shadow-lg text-center w-1/2 h-16 flex items-center justify-center border border-gray-300 cursor-pointer transition-all ${
+                        selectedBox === "local" ? "bg-gradient-to-br from-[#B82121] to-[#000000] text-white" : "bg-white text-black"
+                    }`}
                     onClick={() => handleBoxClick("local")}
                 >
-                    <h2 className="text-3xl font-extrabold text-black">Local</h2>
+                    <h2 className="text-3xl font-extrabold">Local</h2>
                 </div>
             </div>
-            {dropdownVisible && selectedBox === "local" && (
+            {dropdownVisible && selectedBox && (
                 <div className="mt-2 w-3/4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
                     <table className="w-full border-collapse border border-gray-400">
                         <tbody>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Setup Time</th>
-                                <td className="border border-gray-400 p-2">Rate: 40 tn/min</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Rate: 10 tn/min" : "Rate: 13 tn/min"}</td>
                             </tr>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Processing Cost</th>
-                                <td className="border border-gray-400 p-2">High</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Low" : "High"}</td>
                             </tr>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Efficiency</th>
-                                <td className="border border-gray-400 p-2">Lower</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Higher" : "Lower"}</td>
                             </tr>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Pros</th>
-                                <td className="border border-gray-400 p-2">Quick Processing, No setup needed</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Cost-effective, More efficient" : "Quick Processing, No setup needed"}</td>
                             </tr>
                             <tr>
                                 <th className="border border-gray-400 p-2 bg-gray-200 text-left">Cons</th>
-                                <td className="border border-gray-400 p-2">Expensive per ton, Lower efficiency for non-primary resources</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div className="flex justify-center space-x-4 mt-4">
-                        <button 
-                            onClick={handleCancel}
-                            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-bold"
-                        >
-                            Cancel
-                        </button>
-                        <button 
-                            onClick={handleConfirm}
-                            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all font-bold"
-                        >
-                            Confirm
-                        </button>
-                    </div>
-                </div>
-            )}
-            {dropdownVisible && selectedBox === "own" && (
-                <div className="mt-2 w-3/4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
-                    <table className="w-full border-collapse border border-gray-400">
-                        <tbody>
-                            <tr>
-                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Setup Time</th>
-                                <td className="border border-gray-400 p-2">Rate: 30 tn/min</td>
-                            </tr>
-                            <tr>
-                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Processing Cost</th>
-                                <td className="border border-gray-400 p-2">Low</td>
-                            </tr>
-                            <tr>
-                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Efficiency</th>
-                                <td className="border border-gray-400 p-2">Higher</td>
-                            </tr>
-                            <tr>
-                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Pros</th>
-                                <td className="border border-gray-400 p-2">Cost-effective, More efficient</td>
-                            </tr>
-                            <tr>
-                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Cons</th>
-                                <td className="border border-gray-400 p-2">Setup delay, Requires upfront investment</td>
+                                <td className="border border-gray-400 p-2">{selectedBox === "setup" ? "Setup delay, Requires upfront investment" : "Expensive per ton, Lower efficiency for non-primary resources"}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -199,4 +131,3 @@ export default function Island1Page() {
         </div>
     );
 }
- 

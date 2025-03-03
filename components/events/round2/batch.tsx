@@ -44,7 +44,7 @@ const Batch = () => {
     >
       <div className="flex items-center justify-center h-full lg:px-8">
           <div className="text-white px-4 py-2 rounded-lg font-[GreaterTheory]">
-            Batch: {batch} {/* ✅ Displays the batch number */}
+            Batch: {batch !== null ? batch : "N/A"} {/* ✅ Displays the batch number */}
           </div>
       </div>
     </nav>
