@@ -219,8 +219,34 @@ export default function Testing() {
     localStorage.setItem("islandData", JSON.stringify(updatedData));
   };
 
-  const handleSaveInvoice = () => {
-    setShowInvoice(false);
+  const handleSaveInvoice = async() => {
+    // setShowInvoice(false);
+    setLoading(true);
+    try{
+
+      const response = await fetch('/api/event1/round2/submitFormData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ })
+      });
+      if(response.ok){
+        setLoading(true);
+        const data = await response.json();
+        console.log(data);
+        localStorage.removeItem("islandData");
+        console.log("Local storage cleared after successful API response.");
+  
+      }else{
+        console.log('Error',response.status);
+      }
+    }catch(err){
+      console.log(err)
+    }finally{
+      setShowInvoice(false);
+      setLoading(false);
+    }
     toast.success("Invoice saved successfully!");
   };
 
@@ -450,11 +476,17 @@ export default function Testing() {
               <Invoice />
             </div>
             <div className="flex justify-center">
+            <button
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+                onClick={()=>setShowInvoice(false)}
+              >
+                Cancel
+              </button>
               <button
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+                className="bg-blue-500 hover:bg-blue-600 flex justify-center text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
                 onClick={handleSaveInvoice}
               >
-                Save
+                {loading?<span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>:"Confirm and Dispatch"}
               </button>
             </div>
           </div>

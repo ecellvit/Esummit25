@@ -18,6 +18,7 @@ const Navbar = () => {
   const [teamName, setTeamName] = useState("Loading...");
   const [error, setError] = useState<string | null>(null);
   const [showInvoice, setShowInvoice] = useState(false);
+  const [loading,setLoading] = useState(false);
 
   useEffect(() => {
     fetchTime();
@@ -137,7 +138,11 @@ const Navbar = () => {
   const handleInvoiceClick = () => {
     setShowInvoice(true);
   };
- 
+
+  const handleSubmitForm = async()=>{
+    
+  }
+
   const handleDashboardClick = () => {
     router.push('/events/event1/round2/dashboard2'); 
   };
@@ -147,7 +152,7 @@ const Navbar = () => {
       className="fixed -top-6 left-[50%] w-[60%] lg:w-[80%] h-[8vh]
         rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-20
         transition-transform duration-300 transform -translate-x-1/2 
-         bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg mt-10"
+        bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg mt-10"
     >
       <div className="flex items-center justify-between h-full px-4 lg:px-8">
         <div className="h-full flex items-center">
@@ -187,8 +192,9 @@ const Navbar = () => {
             </div>
             <div className="flex justify-center">
               <button
+                onClick={()=>{console.log('clicked');setShowInvoice(false)}}
                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={() => setShowInvoice(false)}  // ✅ Closes the invoice modal
+                 // ✅ Closes the invoice modal
               >
                 Confirm
               </button>
