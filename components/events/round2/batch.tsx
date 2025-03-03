@@ -1,13 +1,39 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { set } from 'mongoose';
+import Loader from '@/components/loader';
 
 const Batch = () => {
-  const [batch, setBatch] = useState("Batch 1");
+  const [batch, setBatch] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-  }, []);
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch(`/api/event1/round2/getFormData`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setBatch(data.batch); 
+        } else {
+          setError(data.message || "Error fetching batch data.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError("Server Error: Unable to fetch batch.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []); 
 
   return (
     <nav
@@ -17,9 +43,9 @@ const Batch = () => {
          bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg mt-10"
     >
       <div className="flex items-center justify-center h-full lg:px-8">
-        <div className="text-white px-4 py-2 rounded-lg" style={{ fontFamily: 'GreaterTheory' }}>
-          {batch}
-        </div>
+          <div className="text-white px-4 py-2 rounded-lg font-[GreaterTheory]">
+            Batch: {batch} {/* ✅ Displays the batch number */}
+          </div>
       </div>
     </nav>
   );
