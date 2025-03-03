@@ -1,12 +1,55 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import bg from "/assets/round2/bg1.svg";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import Loader from "@/components/loader";
 
 export default function Testing() {
+    const router=useRouter();
+    const [loading, setLoading] = useState<Boolean>(true);
+
+    const fetchRoundData = async () => {
+        setLoading(true);
+        const response = await fetch("/api/event1/getPageDetails", { method: "GET" });
+
+        if (response.status === 200) {
+            const { round, page, startedAt } = await response.json();
+
+            // Convert startedAt (ISO format) to timestamp
+            const startTime = new Date(startedAt).getTime();
+            const currentTime = Date.now();
+
+            const timePassed = Math.floor((currentTime - startTime) / 1000);
+
+            if ( round === 2 ) {
+                if ( page === 1 && timePassed < 25 * 60 ) {
+                    router.push('/events/event1/round2/phase1')
+                } else if ( page === 2 && timePassed < 25 * 60 ) {
+                    router.push('/events/event1/round2/phase2')
+                } else if ( page === 3 && timePassed < 10 * 60 ) {
+                    router.push('/events/event1/round2/phase2sell')
+                } else if ( page !== 0 ) {
+                    router.push('/events/event1/round2/waiting');
+                }
+            } else {
+                router.push('/events/event1/leaderDashboard');
+            }
+        } else {
+            router.refresh();
+        }
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchRoundData();
+    }, [router]);
+    
     return (
         <div className="relative w-full h-full min-h-screen bg-gray-100">
+            {loading && <Loader />}
+            
             {/* Background */}
             <div className="fixed inset-0 overflow-hidden">
                 <Image
