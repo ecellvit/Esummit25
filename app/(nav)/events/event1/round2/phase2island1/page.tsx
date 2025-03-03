@@ -29,7 +29,7 @@ export default function Island1Page() {
             const parsedData = JSON.parse(savedData);
             setData(parsedData[islandId] || []);
         } else {
-            setData([]); // Prevent undefined state
+            setData([]);
         }
         console.log("Island1Page rendered with data:", data);
     }, []);
@@ -54,26 +54,23 @@ export default function Island1Page() {
     };
 
     const handleConfirm = () => {
-        if (selectedBox === "own") {
-            console.log(0);
-        } else if (selectedBox === "local") {
-            console.log(1);
-        }
+        console.log(selectedBox === "own" ? 0 : 1);
         setSelectedBox(null);
     };
 
     return (
-        <div className="relative w-full h-full min-h-screen overflow-hidden flex items-center justify-center">
-            <Island1Invoice data={data} />
-            <div className="flex space-x-8 w-1/2">
+        <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-between space-y-8 p-8">
+            <div className="flex items-center text-center flex-col mt-36 w-1/2">
+            <Island1Invoice data={data} /></div>
+            <div className="flex justify-center space-x-8 w-full">
                 <div
-                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/2 h-60 flex flex-col items-center justify-center border border-gray-300 cursor-pointer"
+                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/4 h-60 flex flex-col items-center justify-center border border-gray-300 cursor-pointer"
                     onClick={() => handleBoxClick("own")}
                 >
                     <h2 className="text-3xl font-extrabold text-black">Own</h2>
                 </div>
                 <div
-                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/2 h-60 flex flex-col items-center justify-center border border-gray-300 cursor-pointer"
+                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/4 h-60 flex flex-col items-center justify-center border border-gray-300 cursor-pointer"
                     onClick={() => handleBoxClick("local")}
                 >
                     <h2 className="text-3xl font-extrabold text-black">Local</h2>
