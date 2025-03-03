@@ -1,11 +1,11 @@
 import React from "react";
 
 const invoiceData = [
-  { metal: "Lithium", Efficiency:92, ownCost: 214, corpTax: 51, localCost: 507, serviceTax: 101, marketPrice: 1970 },
-  { metal: "Cobalt", Efficiency:85, ownCost: 209, corpTax: 50, localCost: 506, serviceTax: 101, marketPrice: 4193 },
-  { metal: "Iron", Efficiency:78, ownCost: 202, corpTax: 48, localCost: 492, serviceTax: 98, marketPrice: 2315 },
-  { metal: "Copper", Efficiency:72, ownCost: 198, corpTax: 47, localCost: 496, serviceTax: 99, marketPrice: 1623 },
-  { metal: "Nickel", Efficiency:65, ownCost: 193, corpTax: 46, localCost: 488, serviceTax: 97, marketPrice: 2636 },
+  { metal: "Lithium", Efficiency:92, ownCost: 214, corpTax: 51,totalOwnCost:265, localCost: 507, serviceTax: 101,totalLocalCost:608, marketPrice: 1970 },
+  { metal: "Cobalt", Efficiency:85, ownCost: 209, corpTax: 50,totalOwnCost:259, localCost: 506, serviceTax: 101,totalLocalCost:607, marketPrice: 4193 },
+  { metal: "Iron", Efficiency:78, ownCost: 202, corpTax: 48,totalOwnCost:250, localCost: 492, serviceTax: 98,totalLocalCost:590, marketPrice: 2315 },
+  { metal: "Copper", Efficiency:72, ownCost: 198, corpTax: 47,totalOwnCost:245, localCost: 496, serviceTax: 99,totalLocalCost:595, marketPrice: 1623 },
+  { metal: "Nickel", Efficiency:65, ownCost: 193, corpTax: 46,totalOwnCost:239, localCost: 488, serviceTax: 97,totalLocalCost:585, marketPrice: 2636 },
 ];
 
 const island1Invoice = (props:any) => {
