@@ -45,7 +45,7 @@ type TransportData = {
 export default function Testing() {
   const [islandData, setIslandData] = useState<IslandData>(initialState);
   const [loading, setLoading] = useState<boolean>(false);
-  const disabled = false;
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [batchTime, setBatchTime] = useState<number>(0);
   const [showPlanes, setShowPlanes] = useState({
     island1: false,
@@ -60,6 +60,44 @@ export default function Testing() {
     island4: false
   });
   const [transportData, setTransportData] = useState<TransportData | null>(null);
+  
+  const startPlaneAnimation = (islandNumber: string, duration: number) => {
+    setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
+    setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), duration);
+  };
+  const startShipAnimation = (islandNumber: string, duration: number) => {
+    setShowShips(prev => ({ ...prev, [islandNumber]: true }));
+    setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), duration);
+  };
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("islandData");
+    console.log('saved data', savedData)
+    if (savedData) {
+      setIslandData(JSON.parse(savedData));
+    }
+
+    // Fetch transport data on component mount
+    const fetchTransportData = async () => {
+      try {
+        const response = await fetch('/api/event1/round2/transportInfo');
+        if (response.ok) {
+          const data = await response.json();
+          setTransportData(data.dataArray);
+          setBatchTime(data.maxTime);
+          console.log(data);
+          localStorage.removeItem("islandData");
+          console.log("Local storage cleared after successful API response.");
+        } else {
+          console.error("Failed to fetch transport data:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching transport data:", error);
+      }
+    };
+    fetchTransportData();
+  }, []);
+
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showInsurance, setShowInsurance] = useState(false);
   const [showInvoice, setShowInvoice] = useState(false);
@@ -89,7 +127,7 @@ export default function Testing() {
 
   const handleCloseInsurance = () => {
     setShowInsurance(false);
-    setSubmitClicked(false); // Allow the user to click "Submit" again if they close the insurance modal
+    setSubmitClicked(false);
   };
 
   const handleConfirmInsurance = async() => {
@@ -159,44 +197,19 @@ export default function Testing() {
     setShowSkipConfirmation(false);
   };
 
-  const startPlaneAnimation = (islandNumber: string, duration: number) => {
-    setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
-    setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), duration);
-  };
-
-  const startShipAnimation = (islandNumber: string, duration: number) => {
-    setShowShips(prev => ({ ...prev, [islandNumber]: true }));
-    setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), duration);
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    const savedData = localStorage.getItem("islandData");
-    console.log('saved data', savedData)
-    if (savedData) {
-      setIslandData(JSON.parse(savedData));
-    }
-    setLoading(false);
-
-    // Fetch transport data on component mount
-    const fetchTransportData = async () => {
-      try {
-        const response = await fetch('/api/event1/round2/transportInfo');
-        if (response.ok) {
-          const data = await response.json();
-          setTransportData(data.dataArray);
-          setBatchTime(data.maxTime);
-        } else {
-          console.error("Failed to fetch transport data:", response.status);
+  const handleConfirmDispatchYes = () => {
+    if (transportData) {
+      transportData.forEach(item => {
+        const islandNumber = `island${item.island}`;
+        const duration = item.time * 1000;
+        if (item.mode === "plane") {
+          startPlaneAnimation(islandNumber, duration);
+        } else if (item.mode === "ship") {
+          startShipAnimation(islandNumber, duration);
         }
-      } catch (error) {
-        console.error("Error fetching transport data:", error);
-      }
-    };
-
-    fetchTransportData();
-  }, []);
-
+      });
+    }
+  };
   const updateData = (islandId: string, newData: FormEntry[]) => {
     const savedData = localStorage.getItem("islandData");
     const updatedData = savedData ? JSON.parse(savedData) : {};
@@ -279,7 +292,7 @@ export default function Testing() {
       <div className="absolute bottom-10 z-100">
         <button
           className="p-2 text-white font-bold rounded-lg bg-green-500 ml-8 hover:bg-green-700 w-32 text-center"
-        >
+          onClick={handleConfirmDispatchYes}>
           Dispatch
         </button>
       </div>
