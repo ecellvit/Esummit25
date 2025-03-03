@@ -43,7 +43,7 @@ export async function GET(): Promise<NextResponse> {
 
         const batchNumber = team.batch;
 
-        if(batchNumber>=4 || batchNumber<0) return NextResponse.json({message:"Invalid batchnumber"},{status:405});
+        if(batchNumber>=4 || batchNumber<0) return NextResponse.json({message:"Invalid batchnumber"},{status:408});
         console.log('team',team);
         var dataArray : transport[] = []
         var batchData : (mongoose.Schema.Types.ObjectId | null)[] = [];
