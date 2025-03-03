@@ -35,6 +35,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         return NextResponse.json({
             message: "Data fetched successfully",
             teamElements: teamElements,
+            batch: team.batch,
         }, { status: 200 });
     } catch (error) {
         console.error("Error fetching data:", error);

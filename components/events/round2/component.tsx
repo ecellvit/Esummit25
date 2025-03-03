@@ -190,6 +190,7 @@ import React from "react";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import Loader from "@/components/loader";
+import Batch from "./batch";
 
 type ElementOption = string;
 type TransportMode = "Air" | "Water";
@@ -221,7 +222,9 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   const [showModal, setShowModal] = useState(false);
   const [selectedTransport, setSelectedTransport] = useState<"Air" | "Water">("Air");
   const elementArray = ["Lithium", "Iron", "Cobalt", "Nickel", "Copper"];
-  const [currentBatch, setCurrentBatch] = useState<number>(1); // Add state for current batch number
+  const [currentBatch, setCurrentBatch] = useState<number>(1); 
+  const [batch, setBatch] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
   var num = 0;
 
   useEffect(() => {
@@ -284,23 +287,32 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   }, [islandId]);
 
   useEffect(() => {
-    const fetchBatchNumber = async () => {
+    const fetchData = async () => {
+      setLoading(true);
+
       try {
-        const response = await fetch(`/api/event1/round2/getBatchNumber`, {
+        const response = await fetch(`/api/event1/round2/getFormData`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
 
         const data = await response.json();
+
         if (response.ok) {
-          setCurrentBatch(data.batchNumber); // Update the current batch number from the response
+          setBatch(data.batch); 
+        } else {
+          setError(data.message || "Error fetching batch data.");
         }
       } catch (error) {
-        console.error("Error fetching batch number:", error);
+        console.error("Error fetching data:", error);
+        setError("Server Error: Unable to fetch batch.");
+      } finally {
+        setLoading(false);
       }
     };
-    fetchBatchNumber();
-  }, []);
+
+    fetchData();
+  }, []); 
 
   const calculateTotalGlobalQuantity = () => {
     const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
@@ -494,7 +506,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       ))}
       <p className="text-lg font-semibold text-gray-700 mt-5">Total Quantity: {totalQuantity}</p>
       <p className="text-lg font-semibold text-gray-700">Global Total Quantity: {globalTotalQuantity}/200</p>
-      <p className="text-lg font-semibold text-gray-700">Current Batch: {currentBatch}</p> {/* Display current batch number */}
+      <p className="text-lg font-semibold text-gray-700">Current Batch: {batch}  </p> {/* Display current batch number */}
 
       <button
   onClick={addEntry}
