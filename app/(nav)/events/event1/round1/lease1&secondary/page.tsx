@@ -40,9 +40,29 @@ export default function Testing() {
             console.log(response);
         }
     }
+    
+    const checkStatus = async () => {
+        try {
+            const response = await fetch("/api/event1/userInfo", { method: "GET" });
+            if (response.status === 200) {
+                const {team} = await response.json();
+                const lease1 = team.lease1Element;
+                const secondary = team.secondaryElement;
+                if (lease1 >= 0 && lease1 <= 4) {
+                    setLease1Expired(true);
+                }
+                if (secondary >= 0 && secondary <= 4) {
+                    setSecondaryExpired(true);
+                }
+            }
+        } catch (error) {
+            console.log("Error fetching team details:", error);
+        }
+    }
 
     useEffect(() => {
         getPageData();
+        checkStatus();
     }, []);
     
     useEffect(() => {
