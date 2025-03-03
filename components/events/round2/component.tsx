@@ -318,22 +318,63 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateD
   const calculateTotalGlobalQuantity = () => {
     const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
     let total = 0;
-
+    
+    // Calculate total quantity without removing anything yet
     Object.values(allData).forEach((islandEntries: any) => {
       (islandEntries as FormEntry[]).forEach((entry) => {
         total += entry.quantity;
-        
       });
     });
-    if(total>200){
-      toast.error("limit exceeded");
-      console.log("limit exceeded");
-      setIsSaving(false);
-      return 0;
-    }else{
+    
+    // Check if total exceeds 200
+    if (total > 200) {
+      toast.error("Limit exceeded, removing last entry");
+      console.log("Limit exceeded, removing last entry");
+      
+      // Find the last entry across all islands
+      let lastIslandId = islandId; // Default to current island
+      let lastIslandEntries = allData[lastIslandId] as FormEntry[] || [];
+      
+      // If current island has no entries, find another island with entries
+      if (lastIslandEntries.length === 0) {
+        for (const [id, entries] of Object.entries(allData)) {
+          if ((entries as FormEntry[]).length > 0) {
+            lastIslandId = id;
+            lastIslandEntries = entries as FormEntry[];
+            break;
+          }
+        }
+      }
+      
+      // Remove the last entry from the identified island
+      if (lastIslandEntries.length > 0) {
+        lastIslandEntries.pop(); // Remove the last entry
+        allData[lastIslandId] = lastIslandEntries;
+        
+        // Save updated data back to localStorage
+        localStorage.setItem("islandData", JSON.stringify(allData));
+        
+        // If we're removing from the current island, update the local entries state
+        if (lastIslandId === islandId) {
+          setEntries([...lastIslandEntries]);
+        }
+        
+        // Recalculate total quantity after removal
+        total = 0;
+        Object.values(allData).forEach((islandEntries: any) => {
+          (islandEntries as FormEntry[]).forEach((entry) => {
+            total += entry.quantity;
+          });
+        });
+        
+        setIsSaving(false);
+      }
+    }
+    
+    if(total<=200){
       setGlobalTotalQuantity(total);
-
-      return 1;
+    }else{
+      return 0;
     }
   };
 
