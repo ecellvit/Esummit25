@@ -29,6 +29,7 @@ export interface round1Qualified extends Document {
     insuranceType: number[];
     batch: number;
     setup: number;
+    phase2spentamount: number;
 
 }
 
@@ -145,6 +146,10 @@ const TeamSchema: Schema<round1Qualified> = new Schema(
         default:1,
     },
     setup:{
+        type: Number,
+        default:-1,
+    },
+    phase2spentamount:{
         type: Number,
         default:-1,
     }
