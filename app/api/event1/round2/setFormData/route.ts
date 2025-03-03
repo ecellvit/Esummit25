@@ -55,7 +55,11 @@ export async function POST(request: Request): Promise<NextResponse> {
       islands.indexOf(island)
     );
 
-    const selectedInsurance = insuranceData.find((el) => el.id === insurance);
+    if(insurance<0 || insurance>3){
+      return NextResponse.json({ message: "Insurance value should be between 0 and 3"},{status:401})
+    }
+
+    const selectedInsurance = insuranceData[insurance];
     if (!selectedInsurance) {
       return NextResponse.json(
         { message: "Invalid insurance option" },
@@ -99,7 +103,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         elementQuantity,
         totalQuantity: totalQuantity,
         batch:batchNumber,
-        insurance,
+        insurance:insurance,
         startTime: Date.now(),
         island:indexes[i],
       });
