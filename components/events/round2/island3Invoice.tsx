@@ -2,18 +2,19 @@ import React from "react";
 
 const islandsData = [
     {
-        name: "Sicily",
+        name: "Lemnos",
         metals: [
-          { metal: "Cobalt", efficiency: 94, ownCost: 214, corpTax: 57, totalOwnCost: 271, localCost: 510, serviceTax: 117, totalLocalCost: 627, marketPrice: 4364 },
-          { metal: "Lithium", efficiency: 88, ownCost: 209, corpTax: 56, totalOwnCost: 265, localCost: 506, serviceTax: 116, totalLocalCost: 622, marketPrice: 1865 },
-          { metal: "Nickel", efficiency: 81, ownCost: 200, corpTax: 54, totalOwnCost: 254, localCost: 503, serviceTax: 115, totalLocalCost: 618, marketPrice: 2586 },
-          { metal: "Copper", efficiency: 74, ownCost: 198, corpTax: 53, totalOwnCost: 251, localCost: 488, serviceTax: 112, totalLocalCost: 600, marketPrice: 2260 },
-          { metal: "Iron", efficiency: 67, ownCost: 193, corpTax: 52, totalOwnCost: 245, localCost: 492, serviceTax: 113, totalLocalCost: 605, marketPrice: 1711 }
+          { metal: "Iron", efficiency: 92, ownCost: 213, corpTax: 55, totalOwnCost: 268, localCost: 506, serviceTax: 111, totalLocalCost: 617, marketPrice: 1702 },
+          { metal: "Cobalt", efficiency: 86, ownCost: 208, corpTax: 54, totalOwnCost: 262, localCost: 510, serviceTax: 112, totalLocalCost: 622, marketPrice: 3921 },
+          { metal: "Lithium", efficiency: 76, ownCost: 200, corpTax: 52, totalOwnCost: 252, localCost: 497, serviceTax: 109, totalLocalCost: 606, marketPrice: 1914 },
+          { metal: "Nickel", efficiency: 71, ownCost: 196, corpTax: 50, totalOwnCost: 246, localCost: 488, serviceTax: 107, totalLocalCost: 595, marketPrice: 2782},
+          { metal: "Copper", efficiency: 63, ownCost: 194, corpTax: 50, totalOwnCost: 244, localCost: 485, serviceTax: 106, totalLocalCost: 591, marketPrice: 2195 },
+          
         ]
       }
 ];
 
-const island4Invoice = () => {
+const island3Invoice = (props:any) => {
   return (
     <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
       {islandsData.map((island, islandIndex) => (
@@ -25,10 +26,10 @@ const island4Invoice = () => {
                 <th className="border p-2">Metal</th>
                 <th className="border p-2">Efficiency</th>
                 <th className="border p-2">Own Cost (₹/tonne)</th>
-                <th className="border p-2">Corp Tax (₹)</th>
+                <th className="border p-2">Corp Tax(26%)(₹)</th>
                 <th className="border p-2">Total Own Cost (₹/tonne)</th>
                 <th className="border p-2">Local Cost (₹/tonne)</th>
-                <th className="border p-2">Service Tax (₹)</th>
+                <th className="border p-2">Service Tax (22%)(₹)</th>
                 <th className="border p-2">Total Local Cost (₹/tonne)</th>
                 <th className="border p-2">Market Price (₹)</th>
               </tr>
@@ -55,4 +56,4 @@ const island4Invoice = () => {
   );
 };
 
-export default island4Invoice;
+export default island3Invoice;
