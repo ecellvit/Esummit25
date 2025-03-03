@@ -1,7 +1,7 @@
 export default function Testing(){
     return (
         <div>
-            Hello World;
+            Hello;
         </div>
     )
 }
