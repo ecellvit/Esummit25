@@ -221,6 +221,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   const [showModal, setShowModal] = useState(false);
   const [selectedTransport, setSelectedTransport] = useState<"Air" | "Water">("Air");
   const elementArray = ["Lithium", "Iron", "Cobalt", "Nickel", "Copper"];
+  const [currentBatch, setCurrentBatch] = useState<number>(1); // Add state for current batch number
   var num = 0;
 
   useEffect(() => {
@@ -281,6 +282,25 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
     setEntries(allData[islandId] ?? []);
     calculateTotalGlobalQuantity();
   }, [islandId]);
+
+  useEffect(() => {
+    const fetchBatchNumber = async () => {
+      try {
+        const response = await fetch(`/api/event1/round2/getBatchNumber`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setCurrentBatch(data.batchNumber); // Update the current batch number from the response
+        }
+      } catch (error) {
+        console.error("Error fetching batch number:", error);
+      }
+    };
+    fetchBatchNumber();
+  }, []);
 
   const calculateTotalGlobalQuantity = () => {
     const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
@@ -367,7 +387,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
           element: availableElements[0],
           quantity: 0,
           transport: selectedTransport,
-          batch: 1,
+          batch: currentBatch, // Set the batch number dynamically
         },
       ];
       const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
@@ -471,6 +491,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       ))}
       <p className="text-lg font-semibold text-gray-700 mt-5">Total Quantity: {totalQuantity}</p>
       <p className="text-lg font-semibold text-gray-700">Global Total Quantity: {globalTotalQuantity}/200</p>
+      <p className="text-lg font-semibold text-gray-700">Current Batch: {currentBatch}</p> {/* Display current batch number */}
 
       <button
   onClick={addEntry}
