@@ -7,7 +7,7 @@ import island2 from "/assets/round2/island2.svg";
 import island3 from "/assets/round2/island3.svg";
 import island4 from "/assets/round2/island4.svg";
 import Round2Form from "@/components/events/round2/component";
-import Island4Invoice from "@/components/events/round2/island1Invoice";
+import Island1Invoice from "@/components/events/round2/island1Invoice";
 
 type FormEntry = {
     id: number;
@@ -22,6 +22,7 @@ export default function Island1Page() {
     const islandId = "island1";
     const [data, setData] = useState<FormEntry[]>([]);
     const [selectedBox, setSelectedBox] = useState<"own" | "local" | null>(null);
+    const [dropdownVisible, setDropdownVisible] = useState(false);
 
     useEffect(() => {
         const savedData = localStorage.getItem("islandData");
@@ -40,62 +41,128 @@ export default function Island1Page() {
         }, 500);
     };
 
-    const updateData = (islandId: string, newData: FormEntry[]) => {
-        const savedData = localStorage.getItem("islandData");
-        const updatedData = savedData ? JSON.parse(savedData) : {};
-        updatedData[islandId] = newData;
-        localStorage.setItem("islandData", JSON.stringify(updatedData));
-        setData(newData);
-        console.log("Updated data:", updatedData);
-    };
-
     const handleBoxClick = (box: "own" | "local") => {
         setSelectedBox(box);
+        setDropdownVisible((prev) => !prev);
+    };
+
+    const handleCancel = () => {
+        setDropdownVisible(false);
     };
 
     const handleConfirm = () => {
-        console.log(selectedBox === "own" ? 0 : 1);
-        setSelectedBox(null);
+        if (selectedBox === "own") {
+            console.log("owned");
+        } else if (selectedBox === "local") {
+            console.log("locally");
+        }
+        setDropdownVisible(false);
     };
 
     return (
-        <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-between space-y-8 p-8">
-            <div className="flex items-center text-center flex-col mt-36 w-1/2">
-            <Island4Invoice data={data} /></div>
-            <div className="flex justify-center space-x-8 w-full">
+        <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
+            <div className="mt-36"> 
+                <Island1Invoice data={data} />
+            </div>
+            <div className="mt-10 flex space-x-8 w-1/2 justify-center">
                 <div
-                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/4 h-60 flex flex-col items-center justify-center border border-gray-300 cursor-pointer"
+                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/2 h-16 flex items-center justify-center border border-gray-300 cursor-pointer"
                     onClick={() => handleBoxClick("own")}
                 >
                     <h2 className="text-3xl font-extrabold text-black">Own</h2>
                 </div>
                 <div
-                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/4 h-60 flex flex-col items-center justify-center border border-gray-300 cursor-pointer"
+                    className="bg-white p-8 rounded-lg shadow-lg text-center w-1/2 h-16 flex items-center justify-center border border-gray-300 cursor-pointer"
                     onClick={() => handleBoxClick("local")}
                 >
                     <h2 className="text-3xl font-extrabold text-black">Local</h2>
                 </div>
             </div>
-            {selectedBox && (
-                <div className="absolute bg-white p-10 rounded-lg shadow-xl flex flex-col items-center w-80 h-40 border border-gray-400">
-                    <p className="mb-6 text-lg font-semibold">Are you sure?</p>
-                    <div className="flex space-x-6">
-                        <button
-                            className="px-8 py-3 bg-red-500 text-white rounded-lg text-lg font-bold"
-                            onClick={() => setSelectedBox(null)}
+            {dropdownVisible && selectedBox === "local" && (
+                <div className="mt-2 w-3/4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
+                    <table className="w-full border-collapse border border-gray-400">
+                        <tbody>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Setup Time</th>
+                                <td className="border border-gray-400 p-2">Rate: 40 tn/min</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Processing Cost</th>
+                                <td className="border border-gray-400 p-2">High</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Efficiency</th>
+                                <td className="border border-gray-400 p-2">Lower</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Pros</th>
+                                <td className="border border-gray-400 p-2">Quick Processing, No setup needed</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Cons</th>
+                                <td className="border border-gray-400 p-2">Expensive per ton, Lower efficiency for non-primary resources</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div className="flex justify-center space-x-4 mt-4">
+                        <button 
+                            onClick={handleCancel}
+                            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-bold"
                         >
                             Cancel
                         </button>
-                        <button
-                            className="px-8 py-3 bg-green-500 text-white rounded-lg text-lg font-bold"
+                        <button 
                             onClick={handleConfirm}
+                            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all font-bold"
                         >
                             Confirm
                         </button>
                     </div>
                 </div>
             )}
-            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex justify-center">
+            {dropdownVisible && selectedBox === "own" && (
+                <div className="mt-2 w-3/4 bg-white p-6 rounded-lg shadow-lg border border-gray-300">
+                    <table className="w-full border-collapse border border-gray-400">
+                        <tbody>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Setup Time</th>
+                                <td className="border border-gray-400 p-2">Rate: 30 tn/min</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Processing Cost</th>
+                                <td className="border border-gray-400 p-2">Low</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Efficiency</th>
+                                <td className="border border-gray-400 p-2">Higher</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Pros</th>
+                                <td className="border border-gray-400 p-2">Cost-effective, More efficient</td>
+                            </tr>
+                            <tr>
+                                <th className="border border-gray-400 p-2 bg-gray-200 text-left">Cons</th>
+                                <td className="border border-gray-400 p-2">Setup delay, Requires upfront investment</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div className="flex justify-center space-x-4 mt-4">
+                        <button 
+                            onClick={handleCancel}
+                            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all font-bold"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            onClick={handleConfirm}
+                            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all font-bold"
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            )}
+            <div className="bottom-4 left-1/2 transform flex justify-center mt-8">
                 <button
                     onClick={handleGoBack}
                     className="px-8 py-3 text-white transition-all duration-300 shadow-lg active:shadow active:translate-y-1 flex items-center bg-black rounded-lg hover:shadow-md hover:scale-105 font-extrabold tracking-widest"

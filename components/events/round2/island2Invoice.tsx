@@ -63,7 +63,7 @@ const invoiceData = [
   },
 ];
 
-const island2Invoice = () => {
+const island2Invoice = (props:any) => {
   return (
     <div className="p-4 border rounded-lg shadow-lg w-full mx-auto mt-10 bg-white">
       <h2 className="text-xl font-bold mb-4 text-center">Invoice</h2>
