@@ -47,7 +47,6 @@ export default function Testing() {
   const [islandData, setIslandData] = useState<IslandData>(initialState);
   const [loading, setLoading] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
-  const [batchTime, setBatchTime] = useState<number>(0);
   const [showPlanes, setShowPlanes] = useState({
     island1: false,
     island2: false,
@@ -61,7 +60,7 @@ export default function Testing() {
     island4: false
   });
   const [transportData, setTransportData] = useState<TransportData | null>(null);
-  
+
   const startPlaneAnimation = (islandNumber: string, duration: number) => {
     setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
     setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), duration);
@@ -77,11 +76,21 @@ export default function Testing() {
     if (savedData) {
       setIslandData(JSON.parse(savedData));
     }
-
-    // Fetch transport data on component mount
-    
-    // fetchTransportData();
   }, []);
+
+  useEffect(() => {
+    if (transportData) {
+      transportData.forEach(item => {
+        const islandNumber = `island${item.island}`;
+        const duration = item.time * 1000;
+        if (item.mode === "plane") {
+          startPlaneAnimation(islandNumber, duration);
+        } else if (item.mode === "ship") {
+          startShipAnimation(islandNumber, duration);
+        }
+      });
+    }
+  }, [transportData]);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showInsurance, setShowInsurance] = useState(false);
@@ -90,9 +99,9 @@ export default function Testing() {
   const [selectedInsurance, setSelectedInsurance] = React.useState("");
   const [submitClicked, setSubmitClicked] = useState(false);
   const insuranceOptions = [
-    'No Insurance (Cost - 0)', 
-    'Basic Plan (Cost - 15,000)', 
-    'Premium Plan (Cost - 30,000)', 
+    'No Insurance (Cost - 0)',
+    'Basic Plan (Cost - 15,000)',
+    'Premium Plan (Cost - 30,000)',
     'Platinum Plan (Cost - 60,000)'
   ];
 
@@ -115,38 +124,38 @@ export default function Testing() {
     setSubmitClicked(false);
   };
 
-  const handleConfirmInsurance = async() => {
+  const handleConfirmInsurance = async () => {
     setLoading(true);
-    try{
+    try {
 
-    const response = await fetch('/api/event1/round2/setFormData', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+      const response = await fetch('/api/event1/round2/setFormData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           islandData: islandData,
           insurance: selectedInsurance
-          })
-    });
-    if(response.ok){
-      setLoading(true);
-      const data = await response.json();
-      console.log(data);
-      localStorage.removeItem("islandData");
-      console.log("Local storage cleared after successful API response.");
+        })
+      });
+      if (response.ok) {
+        setLoading(true);
+        const data = await response.json();
+        console.log(data);
+        localStorage.removeItem("islandData");
+        console.log("Local storage cleared after successful API response.");
 
-    }else{
-      console.log('Error',response.status);
+      } else {
+        console.log('Error', response.status);
+      }
+    } catch (err) {
+      console.log(err)
+    } finally {
+
+      setShowInsurance(false);
+      setShowInvoice(true);
+      setLoading(false);
     }
-  }catch(err){
-    console.log(err)
-  }finally{
-
-    setShowInsurance(false);
-    setShowInvoice(true);
-    setLoading(false);
-  }
   };
 
   const handleSkipButtonClick = () => {
@@ -182,36 +191,6 @@ export default function Testing() {
     setShowSkipConfirmation(false);
   };
 
-  const handleConfirmDispatchYes = () => {
-    const fetchTransportData = async () => {
-      try {
-        const response = await fetch('/api/event1/round2/transportInfo');
-        if (response.ok) {
-          const data = await response.json();
-          setTransportData(data.dataArray);
-          setBatchTime(data.maxTime);
-          console.log(data);
-          localStorage.removeItem("islandData");
-          console.log("Local storage cleared after successful API response.");
-        } else {
-          console.error("Failed to fetch transport data:", response.status);
-        }
-      } catch (error) {
-        console.error("Error fetching transport data:", error);
-      }
-    };
-    if (transportData) {
-      transportData.forEach(item => {
-        const islandNumber = `island${item.island}`;
-        const duration = item.time * 1000;
-        if (item.mode === "plane") {
-          startPlaneAnimation(islandNumber, duration);
-        } else if (item.mode === "ship") {
-          startShipAnimation(islandNumber, duration);
-        }
-      });
-    }
-  };
   const updateData = (islandId: string, newData: FormEntry[]) => {
     const savedData = localStorage.getItem("islandData");
     const updatedData = savedData ? JSON.parse(savedData) : {};
@@ -219,31 +198,49 @@ export default function Testing() {
     localStorage.setItem("islandData", JSON.stringify(updatedData));
   };
 
-  const handleSaveInvoice = async() => {
+  const handleSaveInvoice = async () => {
     // setShowInvoice(false);
     setLoading(true);
-    try{
+    try {
 
       const response = await fetch('/api/event1/round2/submitFormData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ })
+        },
+        body: JSON.stringify({})
       });
-      if(response.ok){
-        setLoading(true);
+      if (response.ok) {
         const data = await response.json();
         console.log(data);
+        try {
+          const response = await fetch('/api/event1/round2/transportInfo');
+          if (response.ok) {
+            setLoading(true);
+            const { message, dataArray, maxTime } = await response.json()
+            setTransportData(dataArray);
+            console.log("Max time:", maxTime);
+            if (maxTime > 0) {
+              setDisabled(true);
+              setTimeout(() => {
+                setDisabled(false);
+              }, maxTime * 1000);
+              toast.success("Batch dispatch completed!");
+            }
+          } else {
+            console.error("Failed to fetch transport data:", response.status);
+          }
+        } catch (error) {
+          console.error("Error fetching transport data:", error);
+        }
         localStorage.removeItem("islandData");
         console.log("Local storage cleared after successful API response.");
-  
-      }else{
-        console.log('Error',response.status);
+      } else {
+        console.log('Error', response.status);
       }
-    }catch(err){
+    } catch (err) {
       console.log(err)
-    }finally{
+    } finally {
       setShowInvoice(false);
       setLoading(false);
     }
@@ -320,16 +317,18 @@ export default function Testing() {
       />
 
       {["island1", "island2", "island3", "island4"].map((island, index) => (
-        <Link key={island} href={`./${island}`}>
-          <Image
-            src={{ island1, island2, island3, island4 }[island]}
-            alt={island}
-            className={`absolute ${index === 0 ? "top-16 left-20" :
-              index === 1 ? "top-28 right-48" :
-                index === 2 ? "bottom-20 left-60" : "bottom-12 right-44"
-              } w-auto h-48 object-cover z-10 animate-float`}
-            priority
-          />
+        <Link key={island} href={`./${island}`} className={disabled ? "pointer-events-none" : ""}>
+          <div>
+            <Image
+              src={{ island1, island2, island3, island4 }[island]}
+              alt={island}
+              className={`absolute ${index === 0 ? "top-16 left-20" :
+                index === 1 ? "top-28 right-48" :
+                  index === 2 ? "bottom-20 left-60" : "bottom-12 right-44"
+                } w-auto h-48 object-cover z-10 animate-float`}
+              priority
+            />
+          </div>
         </Link>
       ))}
 
@@ -340,12 +339,11 @@ export default function Testing() {
             key={`plane-${island}`}
             src={plane}
             alt={`plane-${island}`}
-            className={`absolute top-1/2 left-1/2 w-12 h-12 z-20 ${
-              island === "island1" ? "animate-fly-to-island1" :
-              island === "island2" ? "animate-fly-to-island2" :
-              island === "island3" ? "animate-fly-to-island3" :
-              "animate-fly-to-island4"
-            }`}
+            className={`absolute top-1/2 left-1/2 w-12 h-12 z-20 ${island === "island1" ? "animate-fly-to-island1" :
+                island === "island2" ? "animate-fly-to-island2" :
+                  island === "island3" ? "animate-fly-to-island3" :
+                    "animate-fly-to-island4"
+              }`}
             style={{
               animationDuration: transportData?.find(item => `island${item.island}` === island)?.time + 's'
             }}
@@ -360,12 +358,11 @@ export default function Testing() {
             key={`ship-${island}`}
             src={ship}
             alt={`ship-${island}`}
-            className={`absolute top-1/2 left-1/2 w-12 h-12 z-20 ${
-              island === "island1" ? "animate-fly-to-island1" :
-              island === "island2" ? "animate-fly-to-island2" :
-              island === "island3" ? "animate-fly-to-island3" :
-              "animate-fly-to-island4"
-            }`}
+            className={`absolute top-1/2 left-1/2 w-12 h-12 z-20 ${island === "island1" ? "animate-fly-to-island1" :
+                island === "island2" ? "animate-fly-to-island2" :
+                  island === "island3" ? "animate-fly-to-island3" :
+                    "animate-fly-to-island4"
+              }`}
             style={{
               animationDuration: transportData?.find(item => `island${item.island}` === island)?.time + 's'
             }}
@@ -373,13 +370,13 @@ export default function Testing() {
         )
       )}
 
-      <div className="absolute bottom-10 z-100">
+      {/* <div className="absolute bottom-10 z-100">
         <button
           className="p-2 text-white font-bold rounded-lg bg-green-500 ml-8 hover:bg-green-700 w-32 text-center"
           onClick={handleConfirmDispatchYes}>
           Dispatch
         </button>
-      </div>
+      </div> */}
 
       {/* CSS for animations - make sure class names match exactly what's used above */}
       <style jsx global>{`
@@ -476,9 +473,9 @@ export default function Testing() {
               <Invoice />
             </div>
             <div className="flex justify-center">
-            <button
+              <button
                 className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={()=>setShowInvoice(false)}
+                onClick={() => setShowInvoice(false)}
               >
                 Cancel
               </button>
@@ -486,7 +483,7 @@ export default function Testing() {
                 className="bg-blue-500 hover:bg-blue-600 flex justify-center text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
                 onClick={handleSaveInvoice}
               >
-                {loading?<span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>:"Confirm and Dispatch"}
+                {loading ? <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span> : "Confirm and Dispatch"}
               </button>
             </div>
           </div>
