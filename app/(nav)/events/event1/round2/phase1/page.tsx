@@ -13,6 +13,7 @@ import Link from "next/link";
 import InsuranceComponent from "./insuranceComponent";
 import Loader from "@/components/loader";
 import { set } from "mongoose";
+import toast, { Toaster } from "react-hot-toast";
 
 type FormEntry = {
   id: number;
@@ -58,55 +59,10 @@ export default function Testing() {
     island3: false,
     island4: false
   });
-  // const [transportData, setTransportData] = useState<TransportData | null>(null);
-  
-  // const startPlaneAnimation = (islandNumber: string, duration: number) => {
-  //   setShowPlanes(prev => ({ ...prev, [islandNumber]: true }));
-  //   setTimeout(() => setShowPlanes(prev => ({ ...prev, [islandNumber]: false })), duration);
-  // };
-  // const startShipAnimation = (islandNumber: string, duration: number) => {
-  //   setShowShips(prev => ({ ...prev, [islandNumber]: true }));
-  //   setTimeout(() => setShowShips(prev => ({ ...prev, [islandNumber]: false })), duration);
-  // };
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const savedData = localStorage.getItem("islandData");
-  //   console.log('saved data', savedData)
-  //   if (savedData) {
-  //     setIslandData(JSON.parse(savedData));
-  //   }
-  //   setLoading(false);
-
-  //   // Fetch transport data on component mount
-  //   const fetchTransportData = async () => {
-  //     try {
-  //       const response = await fetch('/api/event1/round2/transportInfo');
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setTransportData(data.dataArray);
-  //         setBatchTime(data.maxTime);
-  //       } else {
-  //         console.error("Failed to fetch transport data:", response.status);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching transport data:", error);
-  //     }
-  //   };
-
-  //   fetchTransportData();
-  // }, []);
-
-  // const updateData = (islandId: string, newData: FormEntry[]) => {
-  //   const savedData = localStorage.getItem("islandData");
-  //   const updatedData = savedData ? JSON.parse(savedData) : {};
-  //   updatedData[islandId] = newData;
-  //   localStorage.setItem("islandData", JSON.stringify(updatedData));
-  // };
+  const [transportData, setTransportData] = useState<TransportData | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showInsurance, setShowInsurance] = useState(false);
   const [showInvoice, setShowInvoice] = useState(false);
-  const [showConfirmDispatch, setShowConfirmDispatch] = useState(false);
   const [showSkipConfirmation, setShowSkipConfirmation] = useState(false);
   const [selectedInsurance, setSelectedInsurance] = React.useState("");
   const [submitClicked, setSubmitClicked] = useState(false);
@@ -131,18 +87,9 @@ export default function Testing() {
     setShowConfirmation(false);
   };
 
-  const handleConfirmDispatchNo = () => {
-    setShowConfirmDispatch(false);
-  };
-
   const handleCloseInsurance = () => {
     setShowInsurance(false);
     setSubmitClicked(false); // Allow the user to click "Submit" again if they close the insurance modal
-  };
-
-  const handleConfirmInvoice = () => {
-    setShowInvoice(false);
-    setShowConfirmDispatch(true);
   };
 
   const handleConfirmInsurance = async() => {
@@ -160,6 +107,7 @@ export default function Testing() {
           })
     });
     if(response.ok){
+      setLoading(true);
       const data = await response.json();
       console.log(data);
       localStorage.removeItem("islandData");
@@ -176,20 +124,6 @@ export default function Testing() {
     setShowInvoice(true);
     setLoading(false);
   }
-  };
-
-  const handleConfirmDispatchYes = () => {
-    if (transportData) {
-      transportData.forEach(item => {
-        const islandNumber = `island${item.island}`;
-        const duration = item.time * 1000;
-        if (item.mode === "plane") {
-          startPlaneAnimation(islandNumber, duration);
-        } else if (item.mode === "ship") {
-          startShipAnimation(islandNumber, duration);
-        }
-      });
-    }
   };
 
   const handleSkipButtonClick = () => {
@@ -270,6 +204,11 @@ export default function Testing() {
     localStorage.setItem("islandData", JSON.stringify(updatedData));
   };
 
+  const handleSaveInvoice = () => {
+    setShowInvoice(false);
+    toast.success("Invoice saved successfully!");
+  };
+
   return (
     <div
       className="relative w-full h-full min-h-screen"
@@ -340,7 +279,6 @@ export default function Testing() {
       <div className="absolute bottom-10 z-100">
         <button
           className="p-2 text-white font-bold rounded-lg bg-green-500 ml-8 hover:bg-green-700 w-32 text-center"
-          onClick={handleConfirmDispatchYes}
         >
           Dispatch
         </button>
@@ -435,6 +373,7 @@ export default function Testing() {
       {showInvoice && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
           <div className="bg-white p-8 rounded-2xl shadow-2xl min-w-fit text-center transform transition-all duration-300 scale-105">
+            {loading && <Loader />}
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Invoice Details</h2>
             <div className="mb-6 text-gray-600 text-left ">
               <Invoice />
@@ -442,32 +381,9 @@ export default function Testing() {
             <div className="flex justify-center">
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={handleConfirmInvoice}
+                onClick={handleSaveInvoice}
               >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showConfirmDispatch && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 text-center transform transition-all duration-300 scale-105">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Confirm Dispatch</h2>
-            <p className="text-gray-600 mb-6">Once you confirm, your dispatch will start and you won't be able to edit it.</p>
-            <div className="flex justify-center gap-4">
-              <button
-                className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={handleConfirmDispatchNo}
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
-                onClick={handleConfirmDispatchYes}
-              >
-                Confirm
+                Save
               </button>
             </div>
           </div>
@@ -496,6 +412,7 @@ export default function Testing() {
           </div>
         </div>
       )}
+      <Toaster />
     </div>
   );
 }
