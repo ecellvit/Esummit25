@@ -33,9 +33,10 @@ const islandResourceSchema: Schema = new Schema({
   },
   maxResources: {
     type: [Number],
-    required: true,
     default: [],
   },
 }, { timestamps: true });
 
-export default mongoose.models.IslandResource || mongoose.model<IslandResourceModel>("IslandResource", islandResourceSchema);
+const IslandResources = (mongoose.models.IslandResource as mongoose.Model<IslandResourceModel>) || (mongoose.model<IslandResourceModel>("IslandResource", islandResourceSchema));
+
+export default IslandResources;
