@@ -53,7 +53,7 @@ export default function Island1Page() {
             <Image
                 src={island1}
                 alt="island1"
-                className="fixed left-12 top-[10vh] w-auto h-[80vh] object-cover z-10"
+                className="fixed left-12 top-[10vh] w-auto max-w-[60vh] h-[80vh] object-fit z-10"
                 priority
                 id="island"
             />
