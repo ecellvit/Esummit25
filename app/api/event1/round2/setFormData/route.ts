@@ -99,7 +99,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         elementQuantity,
         totalQuantity: totalQuantity,
         startTime: Date.now(),
-        island:i,
+        island:indexes[i],
       });
       await batchData.save();
       console.log("this is the batch data", batchData);
