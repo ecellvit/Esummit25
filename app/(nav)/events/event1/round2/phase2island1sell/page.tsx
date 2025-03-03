@@ -18,11 +18,21 @@ type FormEntry = {
     warning?: string;
 };
 
+const resources = [
+    { id: 0, name: "Lithium", cost: 14000, rate: 12, base: 1313 },
+    { id: 1, name: "Iron", cost: 13000, rate: 14, base: 1082 },
+    { id: 2, name: "Cobalt", cost: 18000, rate: 6, base: 2795 },
+    { id: 3, name: "Nickel", cost: 15000, rate: 9, base: 1757 },
+    { id: 4, name: "Copper", cost: 20000, rate: 11, base: 1543 }
+];
+
 export default function Island1Page() {
     const islandId = "island1";
     const [data, setData] = useState<FormEntry[]>([]);
     const [selectedBox, setSelectedBox] = useState<"own" | "local" | null>(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [availableResources, setAvailableResources] = useState<number[]>([]);
+    const [selectedResources, setSelectedResources] = useState<number[]>([]);
 
     useEffect(() => {
         const savedData = localStorage.getItem("islandData");
@@ -36,10 +46,11 @@ export default function Island1Page() {
 
         const fetchData = async () => {
             try {
-                const response = await fetch(`/api/event1/round2/getPhase2SellData?islandNumber=1`);
+                const response = await fetch(`/api/event1/round2/getPhase2SellData?islandNumber=0`);
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Fetched data:", result);
+                    setAvailableResources(result.resourcesAvailable);
                 } else {
                     console.error("Failed to fetch data");
                 }
@@ -97,11 +108,93 @@ export default function Island1Page() {
         setDropdownVisible(false);
     };
 
+    const handleResourceSelection = (resourceId: number) => {
+        setSelectedResources((prev) =>
+            prev.includes(resourceId)
+                ? prev.filter((id) => id !== resourceId)
+                : [...prev, resourceId]
+        );
+    };
+
+    const handleSubmitSelection = async () => {
+        try {
+            const response = await fetch(`/api/event1/round2/submitResources`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ selectedResources }),
+            });
+
+            if (response.ok) {
+                console.log("Resources submitted successfully");
+            } else {
+                console.error("Failed to submit resources");
+            }
+        } catch (error) {
+            console.error("Error while submitting resources:", error);
+        }
+    };
+
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
             <div className="mt-36"> 
                 <Island1Invoice data={data} />
             </div>
+            <div className="mt-8 w-full max-w-2xl mx-auto">
+    <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Available Resources</h2>
+    <div className="flex justify-center">
+  <div className="bg-white rounded-lg shadow-md p-6 space-y-4 w-1/2">
+  {availableResources.filter((quantity) => quantity > 0).length === 0 ? (
+    <p className="text-center text-gray-600">No resources available</p>
+  ) : (
+    availableResources.map((quantity, index) => {
+      if (quantity > 0) {
+        const resource = resources.find((res) => res.id === index);
+        return (
+          <div
+            key={index}
+            className={`flex items-center justify-between p-4 rounded-lg transition-all duration-200 ${
+              selectedResources.includes(index)
+                ? "bg-blue-50 border border-blue-500"
+                : "bg-gray-50 border border-gray-200 hover:bg-gray-100"
+            }`}
+          >
+            <div className="flex items-center space-x-4">
+              <input
+                type="checkbox"
+                id={`resource-${index}`}
+                checked={selectedResources.includes(index)}
+                onChange={() => handleResourceSelection(index)}
+                className="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
+              />
+              <label
+                htmlFor={`resource-${index}`}
+                className="text-lg font-medium text-gray-800"
+              >
+                {resource?.name}
+              </label>
+            </div>
+            <p className="text-sm text-gray-600">
+              {quantity} tons available
+            </p>
+          </div>
+        );
+      }
+      return null;
+    })
+  )}
+  </div>
+</div>
+    <div className="mt-6 flex justify-center">
+        <button
+            onClick={handleSubmitSelection}
+            className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-all duration-300 shadow-md hover:shadow-lg"
+        >
+            Submit
+        </button>
+    </div>
+</div>
             <div className="bottom-4 left-1/2 transform flex justify-center mt-8">
                 <button
                     onClick={handleGoBack}

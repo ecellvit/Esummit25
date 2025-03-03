@@ -74,6 +74,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     }else check=1
     team.wallet -= totalAmount;
     team.setup = check;
+    team.phase2spentamount = totalAmount
     await team.save();
 
     return NextResponse.json({ message: "Calculation successful", amount: totalAmount }, { status: 200 });
