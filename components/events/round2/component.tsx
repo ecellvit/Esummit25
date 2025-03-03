@@ -207,10 +207,11 @@ interface FormEntry {
 interface Round2FormProps {
   islandId: string;
   data: FormEntry[];
+  setData: React.Dispatch<React.SetStateAction<FormEntry[]>>;
   updateData: (islandId: string, newData: FormEntry[]) => void;
 }
 
-const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) => {
+const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateData }) => {
   const [entries, setEntries] = useState<FormEntry[]>(data);
   const [availableElements, setAvailableElements] = useState<ElementOption[]>([]);
   const [teamPortfolio, setTeamPortfolio] = useState<Record<string, number>>({});
@@ -321,10 +322,19 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
     Object.values(allData).forEach((islandEntries: any) => {
       (islandEntries as FormEntry[]).forEach((entry) => {
         total += entry.quantity;
+        
       });
     });
+    if(total>200){
+      toast.error("limit exceeded");
+      console.log("limit exceeded");
+      setIsSaving(false);
+      return 0;
+    }else{
+      setGlobalTotalQuantity(total);
 
-    setGlobalTotalQuantity(total);
+      return 1;
+    }
   };
 
   const calculateGlobalStock = () => {
@@ -431,12 +441,22 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
     updateData(islandId, updatedEntries);
     
     // Recalculate global quantities
-    calculateTotalGlobalQuantity();
+    var res = calculateTotalGlobalQuantity();
+    if(res===1){
+      setTimeout(() => {
+        setIsSaving(false);
+        toast.success("Data saved successfully!");
+      }, 500);
+    }else{
+      const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
+      allData[islandId] = []; // Clear only this island's data
+      console.log('all data',allData);
+      localStorage.setItem("islandData", JSON.stringify(allData));
+      console.log("data cleared:", allData);
+      setData([]);
+      updateData(islandId, []);
+    }
     
-    setTimeout(() => {
-      setIsSaving(false);
-      toast.success("Data saved successfully!");
-    }, 500);
   };
 
   const openModal = () => {

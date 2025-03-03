@@ -41,10 +41,13 @@ export default function Island1Page() {
     const updateData = (islandId: string, newData: FormEntry[]) => {
         const savedData = localStorage.getItem("islandData");
         const updatedData = savedData ? JSON.parse(savedData) : {};
-        updatedData[islandId] = newData;
-        localStorage.setItem("islandData", JSON.stringify(updatedData));
-        setData(newData);
-        console.log("Updated data:", updatedData);
+        console.log('new data',newData);
+        if(newData.length!=0){
+            updatedData[islandId] = newData;
+            localStorage.setItem("islandData", JSON.stringify(updatedData));
+            setData(newData);
+        }
+        
     };
     return (
         <div
@@ -58,7 +61,7 @@ export default function Island1Page() {
                 id="island"
             />
             <div className="relative w-full h-full overflow-auto">
-            <Round2Form islandId={islandId} data={data} updateData={updateData} />
+            <Round2Form islandId={islandId} data={data} setData={setData} updateData={updateData} />
             </div>
             <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex justify-center">
                 <button 
