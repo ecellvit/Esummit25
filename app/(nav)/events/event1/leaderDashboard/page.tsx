@@ -328,7 +328,7 @@ export default function Page() {
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+            <div className="flex flex-row items-center justify-center gap-4 mt-6">
               {/* Add Member Button */}
               {/* <button
                 className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
@@ -339,7 +339,7 @@ export default function Page() {
                 
                 Add Member
               </button> */}
-              {teamMembers.length<4 && <button
+              {/* {teamMembers.length < 4 && <button
                 className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
                 onClick={async () => {
                   setIsLoading(true);
@@ -348,12 +348,12 @@ export default function Page() {
                 }}
                 disabled={isLoading}
               >
-                {isLoading ? (
-                  <span className="w-5 h-5 border-4 border-t-4 border-white border-t-transparent rounded-full animate-spin"></span>
-                ) : (
-                  "Add Member"
-                )}
-              </button>}
+                {/* {isLoading ? (
+              //     <span className="w-5 h-5 border-4 border-t-4 border-white border-t-transparent rounded-full animate-spin"></span>
+              //   ) : (
+              //     "Add Member"
+              //   )}
+              // </button>} */} 
 
 
               {teamMembers.length === 1 ? (
@@ -371,6 +371,21 @@ export default function Page() {
                   Start Round 1
                 </button>
               )}
+            {teamMembers.length === 1 ? (
+              <button
+                className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
+                onClick={() => router.push('/events/event1/round2/start')}
+              >
+                Start Round 2
+              </button>
+            ) : (
+              <button
+                className="btn-secondary bg-red-700 text-white px-4 py-2  mt-3 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
+                onClick={() => router.push('/events/event1/round2/start')}
+              >
+                Start Round 2
+              </button>
+            )}
             </div>
 
             {/* Modal for Remove */}
