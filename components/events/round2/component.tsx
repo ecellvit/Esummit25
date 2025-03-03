@@ -359,11 +359,14 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
       } else {
         updatedEntries[index] = { ...updatedEntries[index], [key]: value };
       }
+
+    
   
       // Recalculate total quantity
       const newTotalQuantity = updatedEntries.reduce((sum, entry) => sum + (Number(entry.quantity) || 0), 0);
       setTotalQuantity(newTotalQuantity);
       
+      calculateTotalGlobalQuantity();
       return updatedEntries;
     });
   };
@@ -390,10 +393,10 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
           batch: currentBatch, // Set the batch number dynamically
         },
       ];
-      const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
-      allData[islandId] = newEntries;
-      localStorage.setItem("islandData", JSON.stringify(allData));
-      updateData(islandId, newEntries);
+      // const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
+      // allData[islandId] = newEntries;
+      // localStorage.setItem("islandData", JSON.stringify(allData));
+      // updateData(islandId, newEntries);
       setTotalQuantity(newEntries.reduce((sum, entry) => sum + entry.quantity, 0)); // Set total quantity to the total quantity of elements being sent to that island
       calculateTotalGlobalQuantity();
       return newEntries;
@@ -413,7 +416,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
     const allData = JSON.parse(localStorage.getItem("islandData") || "{}");
     allData[islandId] = updatedEntries;
     localStorage.setItem("islandData", JSON.stringify(allData));
-    
+    console.log("data:", allData);
     // Update parent component data
     updateData(islandId, updatedEntries);
     
@@ -457,7 +460,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
   };
 
   return (
-    <div className="p-6 max-w-lg ml-auto mr-10 my-10 border rounded-lg shadow-lg bg-white">
+    <div className="mt-[15vh] p-6 max-w-lg ml-auto mr-10 my-10 border rounded-lg shadow-lg bg-white">
       {loading && <Loader/>}
       <h2 className="text-xl font-bold mb-4 text-center">Round 2 Form</h2>
       {entries.map((entry, index) => (
@@ -533,22 +536,22 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data, updateData }) =
     {showModal && (
       <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-50">
         <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-          <h3 className="text-lg font-semibold mb-4">Select Mode of Transport</h3>
-          <div className="flex gap-4 mb-4">
+          <h3 className="text-lg text-center font-semibold mb-4">Select Mode of Transport</h3>
+          <div className="flex justify-center gap-8 mb-4">
             <button
-              className={`px-4 py-2 rounded ${selectedTransport === "Air" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              className={`px-8 py-3 rounded-xl ${selectedTransport === "Air" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
               onClick={() => setSelectedTransport("Air")}
             >
               Air
             </button>
             <button
-              className={`px-4 py-2 rounded ${selectedTransport === "Water" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              className={`px-7 py-3 rounded-xl ${selectedTransport === "Water" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
               onClick={() => setSelectedTransport("Water")}
             >
               Water
             </button>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-center gap-5 mt-[3vh]">
             <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
             <button onClick={confirmTransport} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Confirm</button>
           </div>

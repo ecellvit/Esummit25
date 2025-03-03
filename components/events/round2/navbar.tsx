@@ -179,20 +179,20 @@ const Navbar = () => {
         </div>
       </div>
       {showInvoice && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20 backdrop-blur-sm">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl min-w-fit text-center transform transition-all duration-300 scale-105 flex flex-col items-center justify-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Invoice Details</h2>
-            <div className="mb-6 text-gray-600 text-left ">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-blur-sm">
+          <div className="bg-white p-6 rounded-2xl mt-96 shadow-2xl w-[50%] max-w-lg text-center transform transition-all duration-300 scale-105">
+            <h2 className="text-xl font-semibold text-gray-800">Invoice Details</h2>
+            <div className="mb-6 text-gray-600 text-left">
               <Invoice />
             </div>
             <div className="flex justify-center">
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg transition-all duration-300 shadow-md"
+                onClick={() => setShowInvoice(false)}  // ✅ Closes the invoice modal
               >
                 Confirm
               </button>
             </div>
-            
           </div>
         </div>
       )}
