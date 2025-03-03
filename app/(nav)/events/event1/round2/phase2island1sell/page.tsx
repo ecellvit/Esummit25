@@ -33,6 +33,22 @@ export default function Island1Page() {
             setData([]);
         }
         console.log("Island1Page rendered with data:", data);
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`/api/event1/round2/getPhase2SellData?islandNumber=1`);
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log("Fetched data:", result);
+                } else {
+                    console.error("Failed to fetch data");
+                }
+            } catch (error) {
+                console.error("Error while fetching data:", error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     const handleGoBack = () => {
@@ -56,12 +72,12 @@ export default function Island1Page() {
             const islandNumber = 0;
             try {
                 const response = await fetch(`/api/event1/round2/setRefineryData?islandNumber=${islandNumber}&refineryData=${refineryType}`, {
-                    method: "GET", // GET requests should not have a body
+                    method: "GET",
                     headers: {
                         "Content-Type": "application/json",
                     }
                 });
-    
+
                 if (response.ok) {
                     console.log(`Request sent successfully for ${refineryType}`);
                     await fetch(`/api/event1/round2/setRefineryClick`, {
@@ -80,7 +96,6 @@ export default function Island1Page() {
         }
         setDropdownVisible(false);
     };
-    
 
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
@@ -101,4 +116,3 @@ export default function Island1Page() {
         </div>
     );
 }
- 
