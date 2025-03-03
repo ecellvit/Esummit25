@@ -45,11 +45,33 @@ export default function Island1Page() {
             window.history.back();
         }, 500);
     };
-    const handleConfirm = () => {
-        if (selectedBox === "setup") {
-            console.log("setup");
-        } else if (selectedBox === "local") {
-            console.log("locally");
+    const handleConfirm = async () => {
+        if (selectedBox) {
+            const refineryType = selectedBox;
+            const islandNumber = 0;
+            try {
+                const response = await fetch(`/api/event1/round2/setRefineryData?islandNumber=${islandNumber}&refineryData=${refineryType}`, {
+                    method: "GET", // GET requests should not have a body
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+    
+                if (response.ok) {
+                    console.log(`Request sent successfully for ${refineryType}`);
+                    await fetch(`/api/event1/round2/setRefineryClick`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ islandNumber }),
+                    });
+                } else {
+                    console.error("Failed to send request");
+                }
+            } catch (error) {
+                console.error("Error while sending request:", error);
+            }
         }
         setDropdownVisible(false);
     };
