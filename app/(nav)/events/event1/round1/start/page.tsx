@@ -37,7 +37,7 @@ export default function Testing() {
                 router.push('/events/event1/leaderDashboard');
             }
         } else {
-            router.refresh();
+            router.push('/events/event1/leaderDashboard');
         }
         setLoading(false);
     }

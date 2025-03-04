@@ -271,4 +271,4 @@ export const authOptions: NextAuthOptions = {
       async redirect() {
         return "/userDetails";
       }}
-  }
+  } 
