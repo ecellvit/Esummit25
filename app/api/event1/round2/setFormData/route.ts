@@ -79,6 +79,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     let trans;
     for (let i = 0; i < indexes.length; i++) {
       const island = islandData[islands[indexes[i]]];
+
+      if (!island || island.length === 0) {
+        console.log(`Skipping island ${indexes[i]} because it has no entries`);
+        continue; // Skip to the next iteration of the loop
+      }
       const elementQuantity = [0, 0, 0, 0, 0];
       var totalQuantity = 0;
       for (let j = 0; j < island.length; j++) {
@@ -136,7 +141,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     // batchNumber++;
     // team.wallet -= insuranceCost;
-    team.insuranceType.push(insurance);
+    team.insuranceType[batchNumber-1] = insurance;
     team.batch = batchNumber;
     await team.save();
     // const elementQuantity=[0,0,0,0];
