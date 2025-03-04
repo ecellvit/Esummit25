@@ -328,24 +328,24 @@ export default function Page() {
                 <p className="text-white">No team members found.</p>
               )}
             </div>
-            {/* {teamMembers.length > 0 && (
+             {teamMembers.length > 0 && (
               <div className="flex justify-center mt-4 w-full">
                 <button
                   className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
                   onClick={async () => {
                     setLoading(true); // Set loading before the timeout
                     setTimeout(() => {
-                      router.push("/events/event1/round0/instructions");
+                      router.push('/events/event1/round1/start');
                       setLoading(false); // Set loading false AFTER the navigation
                     }, 1000);
                   }}
                 >
-                  Attempt Quiz
+                  Start round 1
                 </button>
               </div>
-            )} */}
+            )}
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+            <div className="flex flex-row items-center justify-center gap-4 mt-6">
               {/* Add Member Button */}
               {/* <button
                 className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 rounded-md hover:scale-105 transition-transform"
@@ -357,6 +357,7 @@ export default function Page() {
                 Add Member
               </button> */}
               {/* {teamMembers.length<4 && <button
+              {/* {teamMembers.length < 4 && <button
                 className="btn-primary btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform flex items-center justify-center gap-2"
                 onClick={async () => {
                   setIsLoading(true);
@@ -371,18 +372,44 @@ export default function Page() {
                   "Add Member"
                 )}
               </button>} */}
+                {/* {isLoading ? (
+              //     <span className="w-5 h-5 border-4 border-t-4 border-white border-t-transparent rounded-full animate-spin"></span>
+              //   ) : (
+              //     "Add Member"
+              //   )}
+              // </button>} */} 
 
 
               {/* {teamMembers.length === 1 ? (
                 <button
                   className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
-                  onClick={() => handleShowModal(null, "delete")}
+                  onClick={() => router.push('/events/event1/round1/start')}
                 >
-                  Delete Team
+                  Start Round 1
                 </button>
               ) : (
                 <button
                   className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
+                  onClick={() => router.push('/events/event1/round1/start')}
+                >
+                  Start Round 1
+                </button>
+              )}
+            {teamMembers.length === 1 ? (
+              <button
+                className="btn-secondary bg-red-700 text-white px-4 py-2 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
+                onClick={() => router.push('/events/event1/round2/start')}
+              >
+                Start Round 2
+              </button>
+            ) : (
+              <button
+                className="btn-secondary bg-red-700 text-white px-4 py-2  mt-3 font-[PoppinsRegular] uppercase rounded-md hover:scale-105 transition-transform"
+                onClick={() => router.push('/events/event1/round2/start')}
+              >
+                Start Round 2
+              </button>
+            )}
                   onClick={() => handleShowModal(null, "leave")}
                 >
                   Leave Team
