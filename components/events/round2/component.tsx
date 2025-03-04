@@ -532,10 +532,13 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateD
 
   return (
     <div className="mt-[15vh] p-6 max-w-lg ml-auto mr-10 my-10 border rounded-lg shadow-lg bg-white">
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <h2 className="text-xl font-bold mb-4 text-center">Round 2 Form</h2>
       {entries.map((entry, index) => (
-        <div key={entry.id} className="mb-4 p-4 border rounded-lg bg-gray-100 relative">
+        <div
+          key={entry.id}
+          className="mb-4 p-4 border rounded-lg bg-gray-100 relative"
+        >
           <button
             className="absolute top-2 right-2 text-red-500 hover:text-red-700"
             onClick={() => removeEntry(index)}
@@ -550,7 +553,8 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateD
           >
             {availableElements.map((el) => (
               <option key={el} value={el}>
-                {elementArray[parseInt(el,10)]} (Available: {getRemainingStock(el)})
+                {elementArray[parseInt(el, 10)]} (Available:{" "}
+                {getRemainingStock(el)})
               </option>
             ))}
           </select>
@@ -563,11 +567,17 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateD
           />
         </div>
       ))}
-      <p className="text-lg font-semibold text-gray-700 mt-5">Total Quantity: {totalQuantity}</p>
-      <p className="text-lg font-semibold text-gray-700">Global Total Quantity: {globalTotalQuantity}/200</p>
-      <p className="text-lg font-semibold text-gray-700">Current Batch: {batch}  </p> {/* Display current batch number */}
-
-      <button
+      <p className="text-lg font-semibold text-gray-700 mt-5">
+        Total Quantity: {totalQuantity}
+      </p>
+      <p className="text-lg font-semibold text-gray-700">
+        Global Total Quantity: {globalTotalQuantity}/200
+      </p>
+      <p className="text-lg font-semibold text-gray-700">
+        Current Batch: {batch}{" "}
+      </p>{" "}
+      {/* Display current batch number */}
+      {/* <button
   onClick={addEntry}
   className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${
     totalQuantity >= 201 ||
@@ -585,50 +595,106 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateD
   }
 >
   Add Entry
-</button>
-
+</button> */}
       <button
-      onClick={openModal}
-      className={`w-full mt-4 p-2 text-white font-bold rounded-lg  ${
-        totalQuantity >= 201 ||
-        globalTotalQuantity >= 201 ||
-        entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-green-500 hover:bg-green-700"
-      }`}
-      disabled={
-        totalQuantity >= 201 ||
-        globalTotalQuantity >= 201 ||
-        entries.some(entry => (entry.quantity) >= (entry.quantity + getRemainingStock(entry.element)))
-      }
-    >
-      {isSaving ? "Saving..." : "Save"}
-    </button>
-    {showModal && (
-      <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-          <h3 className="text-lg text-center font-semibold mb-4">Select Mode of Transport</h3>
-          <div className="flex justify-center gap-8 mb-4">
-            <button
-              className={`px-8 py-3 rounded-xl ${selectedTransport === "Air" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-              onClick={() => setSelectedTransport("Air")}
-            >
-              Air
-            </button>
-            <button
-              className={`px-7 py-3 rounded-xl ${selectedTransport === "Water" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-              onClick={() => setSelectedTransport("Water")}
-            >
-              Water
-            </button>
-          </div>
-          <div className="flex justify-center gap-5 mt-[3vh]">
-            <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-            <button onClick={confirmTransport} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Confirm</button>
+        onClick={addEntry}
+        className={`w-full mt-4 p-2 text-white font-bold rounded-lg ${
+          totalQuantity >= 201 ||
+          globalTotalQuantity >= 201 ||
+          entries.length >= elementArray.length || // Limit number of entries
+          entries.some(
+            (entry) =>
+              entry.quantity >=
+              entry.quantity + getRemainingStock(entry.element)
+          ) ||
+          !availableElements.length
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-700"
+        }`}
+        disabled={
+          totalQuantity >= 201 ||
+          globalTotalQuantity >= 201 ||
+          entries.length >= elementArray.length || // Limit number of entries
+          entries.some(
+            (entry) =>
+              entry.quantity >=
+              entry.quantity + getRemainingStock(entry.element)
+          ) ||
+          !availableElements.length
+        }
+      >
+        Add Entry
+      </button>
+      <button
+        onClick={openModal}
+        className={`w-full mt-4 p-2 text-white font-bold rounded-lg  ${
+          totalQuantity >= 201 ||
+          globalTotalQuantity >= 201 ||
+          entries.some(
+            (entry) =>
+              entry.quantity >=
+              entry.quantity + getRemainingStock(entry.element)
+          )
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-green-500 hover:bg-green-700"
+        }`}
+        disabled={
+          totalQuantity >= 201 ||
+          globalTotalQuantity >= 201 ||
+          entries.some(
+            (entry) =>
+              entry.quantity >=
+              entry.quantity + getRemainingStock(entry.element)
+          )
+        }
+      >
+        {isSaving ? "Saving..." : "Save"}
+      </button>
+      {showModal && (
+        <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 className="text-lg text-center font-semibold mb-4">
+              Select Mode of Transport
+            </h3>
+            <div className="flex justify-center gap-8 mb-4">
+              <button
+                className={`px-8 py-3 rounded-xl ${
+                  selectedTransport === "Air"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
+                }`}
+                onClick={() => setSelectedTransport("Air")}
+              >
+                Air
+              </button>
+              <button
+                className={`px-7 py-3 rounded-xl ${
+                  selectedTransport === "Water"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
+                }`}
+                onClick={() => setSelectedTransport("Water")}
+              >
+                Water
+              </button>
+            </div>
+            <div className="flex justify-center gap-5 mt-[3vh]">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmTransport}
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+              >
+                Confirm
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
       <Toaster />
     </div>
   );
