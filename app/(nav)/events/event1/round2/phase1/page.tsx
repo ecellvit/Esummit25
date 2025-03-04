@@ -242,7 +242,39 @@ export default function Testing() {
       console.log(err)
     } finally {
       setShowInvoice(false);
+      try {
+        const response = await fetch('/api/event1/round2/updateBatchNumber', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json', // Optional, based on API requirement
+          },
+        });
+      
+        if (response.status == 400) {
+          toast.error("Batch Number exceeded");
+        }
+        
+        if (!response.ok) {
+          console.error('Failed to fetch:', response.statusText);
+        } else {
+          const data = await response.json(); // If the response contains JSON data
+          toast.success("Next batch started");
+      
+          // Delay for 2 seconds before refreshing the page
+          setTimeout(() => {
+            window.location.reload(); // Refresh the page
+          }, 2000);
+      
+          console.log('Success:', data);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        console.log('Request completed');
+      }      
+      
       setLoading(false);
+
     }
     toast.success("Invoice saved successfully!");
   };
