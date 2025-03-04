@@ -136,7 +136,7 @@ const MeetOurSpeakers: React.FC = () => {
   }, []);
 
   return (
-    <section id="speakers" ref={sectionRef} className="relative w-full h-[150vh] bg-white">
+    <section id="speakers" ref={sectionRef} className="relative w-full min-h-[150vh] py-20 bg-white">
       <div className="sticky top-0 left-0 w-full h-[50vh] flex flex-col items-center justify-center z-0 bg-white">
         <div className="absolute inset-0 flex items-center overflow-hidden whitespace-nowrap">
           <div className="flex w-max animate-speakersMarquee">
