@@ -134,3 +134,13 @@ html::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #390303 0%, rgba(208, 33, 33, 0.888) 50%, #390303 100%);
 }
 
+
+/* Hide scrollbar for Chrome, Safari, and Edge */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.scrollbar-hide {
+  scrollbar-width: none;
+}
