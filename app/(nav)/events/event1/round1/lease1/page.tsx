@@ -64,7 +64,7 @@ function ResourceCard({
       <p className="text-md text-black font-medium">
         Cost:{" "}
         <span className="font-bold text-black">
-          {resource.cost.toLocaleString()}
+          {(resource.cost/10).toLocaleString()}
         </span>
       </p>
       <p className="text-md text-black font-medium">
@@ -228,7 +228,7 @@ export default function Testing() {
         const response = await axios.put("/api/event1/round1/leasing1", {
           leaseElement: selectedResource.id,
           leaseRate: selectedResource.rate,
-          cost: selectedResource.cost,
+          cost: selectedResource.cost/10,
         });
 
         if (response.status === 200) {
@@ -375,7 +375,7 @@ export default function Testing() {
                       WebkitTextFillColor: "transparent",
                     }}
                   >
-                    {selectedResource.cost.toLocaleString()}
+                    {(selectedResource.cost/10).toLocaleString()}
                   </p>
                 </div>
                 <div className="flex justify-between items-center px-4">
