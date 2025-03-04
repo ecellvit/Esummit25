@@ -366,13 +366,12 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateD
             total += entry.quantity;
           });
         });
-        
-        setIsSaving(false);
       }
     }
-    
+    setIsSaving(false);
     if(total<=200){
       setGlobalTotalQuantity(total);
+      return 1;
     }else{
       return 0;
     }
@@ -483,6 +482,7 @@ const Round2Form: React.FC<Round2FormProps> = ({ islandId, data,setData, updateD
     
     // Recalculate global quantities
     var res = calculateTotalGlobalQuantity();
+    console.log('res',res);
     if(res===1){
       setTimeout(() => {
         setIsSaving(false);
