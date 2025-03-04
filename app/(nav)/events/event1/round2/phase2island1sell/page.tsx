@@ -108,7 +108,7 @@ export default function Island1Page() {
     return (
         <div className="relative w-full h-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
             <div className="mt-36"> 
-                <Island1Invoice data={data} />
+                <Island1Invoice />
             </div>
             <div className="mt-8 w-full max-w-2xl mx-auto">
     <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Available Resources</h2>
