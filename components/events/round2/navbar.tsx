@@ -147,7 +147,7 @@ const Navbar = () => {
   return (
     <nav
       className="fixed -top-6 left-[50%] w-[60%] lg:w-[80%] h-[8vh]
-        rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-20
+        rounded-lg md:rounded-2xl border-2 border-white-700 shadow-xl z-[100]
         transition-transform duration-300 transform -translate-x-1/2 
         bg-gradient-to-br from-[#B82121] to-[#000000] bg-opacity-100 text-md lg:text-lg mt-10"
     >
@@ -178,7 +178,7 @@ const Navbar = () => {
         </div>
       </div>
       {showInvoice && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[150] backdrop-blur-sm">
           <div className="bg-white p-6 rounded-2xl mt-96 shadow-2xl w-[50%] max-w-lg text-center transform transition-all duration-300 scale-105">
             <h2 className="text-xl font-semibold text-gray-800">Invoice Details</h2>
             <div className="mb-6 text-gray-600 text-left">
