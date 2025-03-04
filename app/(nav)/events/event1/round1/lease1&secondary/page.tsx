@@ -122,12 +122,9 @@ export default function Testing() {
                     }}
                 >
                     <p className="text-sm">
-                        Lorem Ipsum is simply dummy text of the printing and 
-                        typesetting industry. Lorem Ipsum has been the industry's 
-                        standard dummy text ever since the 1500s.Lorem Ipsum is 
-                        simply dummy text of the printing and typesetting 
-                        industry. Lorem Ipsum has been the industry's standard 
-                        dummy text ever since the 1500s.
+                    The lease agreement allows them to extract additional elements at a premium rate. It as 
+                    a special permission that costs a bit more but opens up new opportunities for resource 
+                    diversity.
                     </p>
                     <div className="mt-4 flex justify-center">
                         <div 
@@ -172,12 +169,8 @@ export default function Testing() {
                     }}
                 >
                     <p className="text-sm">
-                        Lorem Ipsum is simply dummy text of the printing and 
-                        typesetting industry. Lorem Ipsum has been the industry's 
-                        standard dummy text ever since the 1500s.Lorem Ipsum is 
-                        simply dummy text of the printing and typesetting 
-                        industry. Lorem Ipsum has been the industry's standard 
-                        dummy text ever since the 1500s.
+                    Mining for the Secondary Element gives you ownership right , to mine and extract an 
+                    additional resource.
                     </p>
                     <div className="mt-4 flex justify-center">
                         <div 
