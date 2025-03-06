@@ -78,21 +78,34 @@ export default function Island1Page() {
 
     const handleSubmitSelection = async () => {
         // Create an array of selected resources with their quantities
-        const selectedResourcesWithQuantity = selectedResources.map(resourceId => ({
+        const selectedResourcesWithQuantity = selectedResources.map((resourceId: number) => ({
             id: resourceId,
             quantity: availableResources[resourceId]
         }));
     
-        // Log the selected resources with their quantities to the console
         console.log("Selected Resources with Quantities:", selectedResourcesWithQuantity);
+        
+        const storedPrices: number[] = JSON.parse(localStorage.getItem("adjustedPrices") || "[]");
+        console.log("Retrieved Prices:", storedPrices);
+    
+        // Calculate total price with 20% of the quantity
+        const totalPrice = selectedResourcesWithQuantity.reduce((total, resource) => {
+            const price = storedPrices[resource.id] || 0; // Use index to get price directly
+            const quantity = Math.floor(resource.quantity * 0.2); // Take only 20% of the quantity
+            return total + (price * quantity);
+        }, 0);
+    
+        console.log("Total Price (20% Quantity):", totalPrice);
+    
+        const ids = selectedResourcesWithQuantity.map(resource => resource.id);
+        const islandNumber = 0;
     
         try {
-            const response = await fetch(`/api/event1/round2/submitResources`, {
-                method: "POST",
+            const response = await fetch(`/api/event1/round2/submitResources?totalPrice=${totalPrice}&ids=${JSON.stringify(ids)}&islandNumber=${islandNumber}`, {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ selectedResources: selectedResourcesWithQuantity }),
             });
     
             if (response.ok) {
