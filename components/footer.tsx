@@ -96,7 +96,6 @@ export default function Footer() {
           <div className="text-center pointer-events-auto mb-8">
             <h1 className="text-6xl font-bold mb-1">E-CELL</h1>
             <p className="text-xl mb-2">#WeBreedBusiness</p>
-            <a href="tel:+918777793331" className="text-lg block mb-1">+91 87777 93331</a>
             <a href="mailto:ecell@vit.ac.in" className="text-lg mb-2">ecell@vit.ac.in</a>
           </div>
           <div className="items-center mb-4 px-2 pointer-events-auto flex flex-wrap justify-center gap-x-16 gap-y-4 text-sm">
